@@ -51,6 +51,9 @@ jobs:
           ref: dev
           clean: false
 
+      - name: Clean previous build
+        run: rm -rf dist node_modules
+
       - name: Install dependencies for dev
         run: npm install
 
