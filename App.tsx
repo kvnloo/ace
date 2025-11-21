@@ -244,7 +244,7 @@ const App: React.FC = () => {
                     </div>
                     <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
                         {/* Updated Image to Vertical Farm Look */}
-                       <img src="./vertical-farm.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Vertical Farming" />
+                       <img src="/api/placeholder/800/600" data-placeholder-src="vertical-farm-robots.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Vertical Farming with Autonomous Robots" />
                        <div className="absolute inset-0 flex items-center justify-center">
                          <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-tennis-yellow">STATUS: CULTIVATING</span>
                        </div>
@@ -278,7 +278,7 @@ const App: React.FC = () => {
                        </div>
                     </div>
                     <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="./tennis-hud.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Tennis Courts with HUD" />
+                        <img src="/api/placeholder/800/600" data-placeholder-src="tennis-court-biomechanics-hud.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Tennis Court with Real-time Biomechanics HUD" />
                     </div>
                   </div>
 

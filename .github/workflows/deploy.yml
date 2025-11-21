@@ -1,0 +1,84 @@
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build main branch
+        run: npm run build
+        env:
+          VITE_BASE_PATH: '/'
+
+      - name: Create deploy directory
+        run: mkdir -p deploy
+
+      - name: Copy main build to root
+        run: cp -r dist/* deploy/
+
+      - name: Checkout dev branch
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          clean: false
+
+      - name: Install dependencies for dev
+        run: npm ci
+
+      - name: Build dev branch
+        run: npm run build
+        env:
+          VITE_BASE_PATH: '/dev/'
+
+      - name: Copy dev build to /dev subdirectory
+        run: |
+          mkdir -p deploy/dev
+          cp -r dist/* deploy/dev/
+
+      - name: Upload combined artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./deploy
+
+  deploy:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
