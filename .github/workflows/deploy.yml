@@ -37,7 +37,7 @@ jobs:
       - name: Build main branch
         run: npm run build
         env:
-          VITE_BASE_PATH: '/'
+          VITE_BASE_PATH: '/ace/'
 
       - name: Create deploy directory
         run: mkdir -p deploy
@@ -60,7 +60,7 @@ jobs:
       - name: Build dev branch
         run: npm run build
         env:
-          VITE_BASE_PATH: '/dev/'
+          VITE_BASE_PATH: '/ace/dev/'
 
       - name: Copy dev build to /dev subdirectory
         run: |
