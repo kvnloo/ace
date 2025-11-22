@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 Kevin Rajan
+Copyright (c) 2025 LawnTech Dynamics (Kevin Rajan)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,22 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+SCOPE:
+This MIT License applies to all source code, algorithms, and software
+components in this repository, including:
+
+- TypeScript/JavaScript source code (*.ts, *.tsx, *.js, *.jsx)
+- Configuration files and build scripts
+- Test suites and testing utilities
+- Utility functions and helper libraries
+- Algorithm implementations (grass growth, energy optimization, etc.)
+
+For other asset types, see:
+- LICENSE-DESIGNS: Facility designs and blueprints (CC-BY-SA 4.0)
+- LICENSE-MODELS: 3D models and visualizations (CC-BY-SA 4.0)
+- LICENSE-DOCS: Documentation and guides (CC-BY-SA 4.0)
+
+See docs/LICENSE_RECOMMENDATIONS.md for complete licensing rationale.

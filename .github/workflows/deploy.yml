@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - dev
+      - enhance/3D
 
 permissions:
   contents: read
@@ -66,6 +67,28 @@ jobs:
         run: |
           mkdir -p deploy/dev
           cp -r dist/* deploy/dev/
+
+      - name: Checkout enhance/3D branch
+        uses: actions/checkout@v4
+        with:
+          ref: enhance/3D
+          clean: false
+
+      - name: Clean previous build
+        run: rm -rf dist node_modules
+
+      - name: Install dependencies for enhance/3D
+        run: npm install
+
+      - name: Build enhance/3D branch
+        run: npm run build
+        env:
+          VITE_BASE_PATH: '/ace/enhance-3D/'
+
+      - name: Copy enhance/3D build to /enhance-3D subdirectory
+        run: |
+          mkdir -p deploy/enhance-3D
+          cp -r dist/* deploy/enhance-3D/
 
       - name: Upload combined artifact
         uses: actions/upload-pages-artifact@v3

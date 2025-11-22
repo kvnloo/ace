@@ -1,0 +1,20 @@
+=== Development Server Monitor Started: 2025-11-21 18:00:00 ===
+[2025-11-21 18:00:15] [INFO] Monitor started in /home/kvn/workspace/ace
+[2025-11-21 18:00:16] [SUCCESS] Server running at http://localhost:5173
+[2025-11-21 18:05:23] [ERROR] TypeScript: TS2304: Cannot find name 'ThreeLODSystem'. Did you mean 'ThreeScene'?
+[2025-11-21 18:05:24] [ERROR] Build: Module not found: Can't resolve './components/LODSystem'
+[2025-11-21 18:08:45] [WARNING] Deprecated: componentWillMount has been renamed
+[2025-11-21 18:10:12] [ERROR] Runtime: Uncaught TypeError: Cannot read property 'position' of undefined
+[2025-11-21 18:12:33] [ERROR] TypeScript: TS2322: Type 'string' is not assignable to type 'number'
+[2025-11-21 18:15:01] [SUCCESS] compiled successfully
+[2025-11-21 18:18:22] [ERROR] Runtime: ReferenceError: THREE is not defined
+[2025-11-21 18:20:45] [WARNING] React does not recognize the `lodLevel` prop on a DOM element
+[2025-11-21 18:25:11] [ERROR] TypeScript: TS2345: Argument of type 'null' is not assignable to parameter of type 'Object3D'
+[2025-11-21 18:28:33] [ERROR] Build: Failed to resolve import "./geometry/OptimizedGeometry" from "components/LODBuilding.tsx"
+[2025-11-21 18:30:00] [ERROR] Runtime: Error: Failed to initialize WebGL context
+[2025-11-21 18:32:15] [WARNING] Performance warning: Large texture size may impact performance
+[2025-11-21 18:35:40] [ERROR] TypeScript: TS2339: Property 'updateMatrixWorld' does not exist on type 'Mesh'
+[2025-11-21 18:38:22] [ERROR] Runtime: TypeError: geometry.dispose is not a function
+[2025-11-21 18:40:10] [SUCCESS] compiled successfully
+[2025-11-21 18:42:33] [ERROR] Build: Compilation error in ThreeScene.tsx
+[2025-11-21 18:45:00] [INFO] Session ended

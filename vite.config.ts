@@ -23,6 +23,23 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        rollupOptions: {
+          external: [
+            'react',
+            'react-dom',
+            'react/',
+            'react-dom/',
+            'three',
+            'three/',
+            '@react-three/fiber',
+            '@react-three/drei',
+            'framer-motion',
+            'lucide-react',
+            '@google/genai'
+          ]
+        }
       }
     };
 });
