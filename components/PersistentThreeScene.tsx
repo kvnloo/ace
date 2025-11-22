@@ -16,8 +16,8 @@ interface PersistentThreeSceneProps {
  * canvas issue.
  */
 const PersistentThreeScene: React.FC<PersistentThreeSceneProps> = ({ onFeatureSelect }) => {
-  // TEMPORARY: Using pure Three.js due to R3F/React 19 compatibility issue
-  const USE_BASIC_SCENE = true;
+  // Using CDN patched version of R3F that works with React 19
+  const USE_BASIC_SCENE = false;
 
   if (USE_BASIC_SCENE) {
     return (
@@ -27,7 +27,7 @@ const PersistentThreeScene: React.FC<PersistentThreeSceneProps> = ({ onFeatureSe
     );
   }
 
-  // R3F version (currently broken with React 19)
+  // R3F version (now works with CDN imports!)
   const USE_TEST_SCENE = false;
 
   if (USE_TEST_SCENE) {
