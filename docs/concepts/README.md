@@ -30,7 +30,3 @@ This section contains **conceptual and vision documents** that describe:
 - **Architecture:** [../architecture/](../architecture/) - Detailed facility design
 - **Business Planning:** [../business/](../business/) - Financial models
 - **Code Implementation:** [../../claudedocs/](../../claudedocs/) - 3D visualization app
-
----
-
-**Last Updated:** 2025-11-22

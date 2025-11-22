@@ -44,7 +44,3 @@ This section contains **architectural blueprints** that describe:
 
 - **Specifications:** [../specifications/](../specifications/) - Detailed technical specs
 - **3D Visualization Code:** [../../claudedocs/01-architecture/](../../claudedocs/01-architecture/) - Code architecture
-
----
-
-**Last Updated:** 2025-11-22

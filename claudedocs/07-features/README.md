@@ -11,6 +11,11 @@
 - **FEATURE_ROADMAP.md** - Strategic feature planning and timeline
 - **IMPLEMENTED_FEATURES.md** - Completed features catalog
 - **PLANNED_FEATURES.md** - Future features backlog
+- **character-system/** - Character system documentation
+- **heatmap-system/** - Heatmap system documentation
+- **lighting-system/** - Lighting system documentation
+- **transport-pods/** - Transport pods documentation
+- **weather-system/** - Weather system documentation
 
 ## Feature Documentation Structure
 

@@ -1,0 +1,836 @@
+{
+  "metadata": {
+    "analysis_date": "2025-11-22",
+    "total_components": 44,
+    "total_exports": 85,
+    "description": "Component dependency graph for ACE Tennis Facility application",
+    "analyzer": "dependency-analyzer"
+  },
+
+  "core_dependencies": {
+    "description": "Most imported/used components across the codebase",
+    "components": [
+      {
+        "name": "three",
+        "type": "external_library",
+        "import_count": 35,
+        "used_in": ["ThreeScene", "BasicThreeScene", "Grass", "ClayCourtEffect", "CharacterSystem", "WeatherSystem", "LightingSystem", "HeatMapOverlay", "RecoverySuite", "BiometricLab", "CognitiveLab", "BMSControlRoom", "LockerRoom", "HydroponicsSystem", "MechanicalRooms", "ParkingLot", "ReceptionArea", "RoboticGrassSystem", "SupportSpaces", "TransportPods", "MovementStudio", "TennisCourtWithHeatMap"],
+        "criticality": "critical",
+        "purpose": "3D rendering engine - foundation of all 3D visualization"
+      },
+      {
+        "name": "@react-three/fiber",
+        "type": "external_library",
+        "import_count": 28,
+        "used_in": ["ThreeScene", "TestScene", "BasicThreeScene", "CharacterSystem", "WeatherSystem", "Grass", "ClayCourtEffect", "HeatMapOverlay", "RecoverySuite", "BiometricLab", "CognitiveLab", "HydroponicsSystem", "RoboticGrassSystem", "TransportPods", "MechanicalRooms", "MovementStudio", "SupportSpaces", "LightingSystem"],
+        "criticality": "critical",
+        "purpose": "React integration for Three.js - enables declarative 3D in React"
+      },
+      {
+        "name": "@react-three/drei",
+        "type": "external_library",
+        "import_count": 25,
+        "used_in": ["ThreeScene", "TestScene", "LightingDemo", "HeatMapExample", "WeatherSystemExample", "CharacterSystem", "RecoverySuite", "BiometricLab", "CognitiveLab", "LockerRoom", "HydroponicsSystem", "TransportPods", "ReceptionArea", "MovementStudio", "SupportSpaces", "HeatMapOverlay", "TennisCourtWithHeatMap"],
+        "criticality": "high",
+        "purpose": "Helper components for react-three-fiber - cameras, controls, effects"
+      },
+      {
+        "name": "types",
+        "type": "internal_types",
+        "import_count": 12,
+        "used_in": ["App", "NavBar", "SafeThreeScene", "LazyThreeScene", "PersistentThreeScene", "ThreeScene", "AIChat"],
+        "criticality": "high",
+        "purpose": "TypeScript type definitions - ensures type safety across app"
+      },
+      {
+        "name": "framer-motion",
+        "type": "external_library",
+        "import_count": 6,
+        "used_in": ["App", "AIChat", "Specifications", "Amenities", "LoadingProgress", "PerformanceMetrics"],
+        "criticality": "medium",
+        "purpose": "Animation library for UI transitions and interactions"
+      },
+      {
+        "name": "lucide-react",
+        "type": "external_library",
+        "import_count": 11,
+        "used_in": ["App", "NavBar", "AIChat", "ErrorBoundary", "DebugLogger", "Specifications", "Amenities", "ThreeScene", "HeatMapOverlay", "TennisCourtWithHeatMap", "HeatMapDemo", "WeatherControls", "LightingSystem", "LoadingProgress"],
+        "criticality": "low",
+        "purpose": "Icon library for UI elements"
+      }
+    ]
+  },
+
+  "component_dependency_tree": {
+    "entry_point": {
+      "name": "index.tsx",
+      "imports": ["App"],
+      "exports": [],
+      "type": "entry",
+      "purpose": "Application entry point - renders App to DOM"
+    },
+
+    "root_component": {
+      "name": "App",
+      "imports": [
+        "types",
+        "NavBar",
+        "ThreeScene",
+        "AIChat",
+        "Specifications",
+        "Amenities",
+        "ErrorBoundary",
+        "ThreeSceneDiagnostic",
+        "DebugLogger",
+        "framer-motion",
+        "lucide-react"
+      ],
+      "exports": ["default"],
+      "dependents": ["index.tsx"],
+      "type": "root",
+      "layer": "application",
+      "purpose": "Main application component - routes views and manages state"
+    },
+
+    "infrastructure_components": [
+      {
+        "name": "ErrorBoundary",
+        "imports": ["lucide-react"],
+        "exports": ["default"],
+        "dependents": ["App"],
+        "type": "infrastructure",
+        "layer": "error_handling",
+        "purpose": "Catches and displays errors in 3D scene"
+      },
+      {
+        "name": "LoadingProvider",
+        "imports": ["react"],
+        "exports": ["LoadingProvider", "useLoading", "LoadingContext", "LoadingState"],
+        "dependents": ["LazyThreeScene", "LoadingProgress"],
+        "type": "infrastructure",
+        "layer": "state_management",
+        "purpose": "Global loading state management context"
+      },
+      {
+        "name": "DebugLogger",
+        "imports": ["lucide-react"],
+        "exports": ["default"],
+        "dependents": ["App"],
+        "type": "infrastructure",
+        "layer": "debugging",
+        "purpose": "Development tool for logging and debugging"
+      }
+    ],
+
+    "navigation_components": [
+      {
+        "name": "NavBar",
+        "imports": ["types", "lucide-react"],
+        "exports": ["default"],
+        "dependents": ["App"],
+        "type": "navigation",
+        "layer": "ui",
+        "purpose": "Main navigation bar with view switching"
+      }
+    ],
+
+    "page_components": [
+      {
+        "name": "Specifications",
+        "imports": ["framer-motion", "lucide-react"],
+        "exports": ["default"],
+        "dependents": ["App"],
+        "type": "page",
+        "layer": "ui",
+        "purpose": "Technical specifications page"
+      },
+      {
+        "name": "Amenities",
+        "imports": ["framer-motion", "lucide-react"],
+        "exports": ["default"],
+        "dependents": ["App"],
+        "type": "page",
+        "layer": "ui",
+        "purpose": "Amenities showcase page"
+      },
+      {
+        "name": "AIChat",
+        "imports": ["framer-motion", "lucide-react", "geminiService", "types"],
+        "exports": ["default"],
+        "dependents": ["App"],
+        "type": "page",
+        "layer": "ui",
+        "purpose": "AI chat concierge interface"
+      }
+    ],
+
+    "scene_orchestration": [
+      {
+        "name": "ThreeScene",
+        "imports": [
+          "react-three-fiber",
+          "@react-three/drei",
+          "three",
+          "types",
+          "lucide-react",
+          "Grass",
+          "ClayCourtEffect",
+          "ReceptionArea",
+          "courtTextures",
+          "ParkingLot",
+          "BMSControlRoom",
+          "RoboticGrassSystem",
+          "TransportPods",
+          "HydroponicsSystem",
+          "MechanicalRooms",
+          "LockerRoom"
+        ],
+        "exports": ["default"],
+        "dependents": ["App", "PersistentThreeScene"],
+        "type": "scene_orchestrator",
+        "layer": "3d_core",
+        "purpose": "Main 3D scene - orchestrates all facility components",
+        "complexity": "high",
+        "lines_of_code": 1546
+      },
+      {
+        "name": "PersistentThreeScene",
+        "imports": ["ThreeScene", "TestScene", "BasicThreeScene", "types"],
+        "exports": ["default"],
+        "dependents": ["LazyThreeScene"],
+        "type": "scene_wrapper",
+        "layer": "3d_core",
+        "purpose": "Persistence layer for 3D scene state"
+      },
+      {
+        "name": "LazyThreeScene",
+        "imports": ["LoadingProvider", "LoadingProgress", "PersistentThreeScene", "types"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "scene_wrapper",
+        "layer": "3d_core",
+        "purpose": "Lazy loading wrapper for 3D scene"
+      },
+      {
+        "name": "SafeThreeScene",
+        "imports": ["react-error-boundary", "webglCheck", "types"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "scene_wrapper",
+        "layer": "3d_core",
+        "purpose": "WebGL detection and error handling wrapper"
+      }
+    ],
+
+    "3d_facility_components": [
+      {
+        "name": "Grass",
+        "imports": ["react-three-fiber", "three"],
+        "exports": ["default"],
+        "dependents": ["ThreeScene", "TennisCourtWithHeatMap", "WeatherSystemExample"],
+        "type": "3d_effect",
+        "layer": "visual_effects",
+        "purpose": "Animated grass blade rendering for courts"
+      },
+      {
+        "name": "ClayCourtEffect",
+        "imports": ["react-three-fiber", "three"],
+        "exports": ["default"],
+        "dependents": ["ThreeScene", "TennisCourtWithHeatMap"],
+        "type": "3d_effect",
+        "layer": "visual_effects",
+        "purpose": "Clay court texture and particle effects"
+      },
+      {
+        "name": "ReceptionArea",
+        "imports": ["@react-three/drei", "three"],
+        "exports": ["default"],
+        "dependents": ["ThreeScene"],
+        "type": "3d_facility",
+        "layer": "facility_spaces",
+        "purpose": "Main entrance and reception area"
+      },
+      {
+        "name": "LockerRoom",
+        "imports": ["@react-three/drei", "three"],
+        "exports": ["default", "LockerRoom"],
+        "dependents": ["ThreeScene"],
+        "type": "3d_facility",
+        "layer": "facility_spaces",
+        "purpose": "Locker room facilities visualization"
+      },
+      {
+        "name": "ParkingLot",
+        "imports": ["@react-three/drei"],
+        "exports": ["ParkingLot"],
+        "dependents": ["ThreeScene"],
+        "type": "3d_facility",
+        "layer": "facility_spaces",
+        "purpose": "Parking area with vehicles"
+      },
+      {
+        "name": "BMSControlRoom",
+        "imports": ["three"],
+        "exports": ["BMSControlRoom"],
+        "dependents": ["ThreeScene"],
+        "type": "3d_facility",
+        "layer": "facility_spaces",
+        "purpose": "Building management system control room"
+      },
+      {
+        "name": "HydroponicsSystem",
+        "imports": ["react-three-fiber", "@react-three/drei", "three"],
+        "exports": ["default"],
+        "dependents": ["ThreeScene"],
+        "type": "3d_facility",
+        "layer": "facility_spaces",
+        "purpose": "Vertical farming hydroponic towers"
+      },
+      {
+        "name": "MechanicalRooms",
+        "imports": ["react-three-fiber", "@react-three/drei", "three"],
+        "exports": ["default"],
+        "dependents": ["ThreeScene"],
+        "type": "3d_facility",
+        "layer": "facility_spaces",
+        "purpose": "HVAC and mechanical systems rooms"
+      },
+      {
+        "name": "TransportPods",
+        "imports": ["react-three-fiber", "@react-three/drei", "three"],
+        "exports": ["default"],
+        "dependents": ["ThreeScene"],
+        "type": "3d_facility",
+        "layer": "facility_spaces",
+        "purpose": "Autonomous transport pod system"
+      },
+      {
+        "name": "RoboticGrassSystem",
+        "imports": ["react-three-fiber", "@react-three/drei", "three"],
+        "exports": ["default"],
+        "dependents": ["ThreeScene"],
+        "type": "3d_facility",
+        "layer": "facility_spaces",
+        "purpose": "Robotic grass maintenance system"
+      },
+      {
+        "name": "SupportSpaces",
+        "imports": ["react-three-fiber", "@react-three/drei", "three"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "3d_facility",
+        "layer": "facility_spaces",
+        "purpose": "Support and utility spaces"
+      }
+    ],
+
+    "3d_systems": [
+      {
+        "name": "CharacterSystem",
+        "imports": ["react-three-fiber", "@react-three/drei", "three"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "3d_system",
+        "layer": "advanced_features",
+        "purpose": "Character animation and movement system"
+      },
+      {
+        "name": "WeatherSystem",
+        "imports": ["react-three-fiber", "three"],
+        "exports": ["default", "useWeather", "WeatherType"],
+        "dependents": ["WeatherSystemExample", "WeatherIntegrationSnippet"],
+        "type": "3d_system",
+        "layer": "advanced_features",
+        "purpose": "Dynamic weather effects (rain, snow, fog)"
+      },
+      {
+        "name": "WeatherControls",
+        "imports": ["lucide-react", "WeatherSystem"],
+        "exports": ["default"],
+        "dependents": ["WeatherSystemExample", "WeatherIntegrationSnippet"],
+        "type": "ui_control",
+        "layer": "advanced_features",
+        "purpose": "Weather system control panel UI"
+      },
+      {
+        "name": "LightingSystem",
+        "imports": ["react-three-fiber", "@react-three/drei", "three", "@react-three/postprocessing", "lucide-react"],
+        "exports": ["LightingSystem"],
+        "dependents": ["LightingDemo"],
+        "type": "3d_system",
+        "layer": "advanced_features",
+        "purpose": "Dynamic lighting and time-of-day system"
+      },
+      {
+        "name": "HeatMapOverlay",
+        "imports": ["react-three-fiber", "@react-three/drei", "three", "lucide-react"],
+        "exports": ["default", "HeatMapDataType", "HeatMapMode", "HeatMapPattern"],
+        "dependents": ["TennisCourtWithHeatMap", "HeatMapExample", "HeatMapDemo"],
+        "type": "3d_system",
+        "layer": "advanced_features",
+        "purpose": "Player analytics heat map visualization"
+      }
+    ],
+
+    "demo_components": [
+      {
+        "name": "BasicThreeScene",
+        "imports": ["react-three-fiber", "three"],
+        "exports": ["default"],
+        "dependents": ["PersistentThreeScene"],
+        "type": "demo",
+        "layer": "examples",
+        "purpose": "Basic 3D scene template"
+      },
+      {
+        "name": "TestScene",
+        "imports": ["react-three-fiber", "@react-three/drei"],
+        "exports": ["default"],
+        "dependents": ["PersistentThreeScene"],
+        "type": "demo",
+        "layer": "examples",
+        "purpose": "Test scene for debugging"
+      },
+      {
+        "name": "LightingDemo",
+        "imports": ["react-three-fiber", "@react-three/drei", "LightingSystem", "three"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "demo",
+        "layer": "examples",
+        "purpose": "Lighting system demonstration"
+      },
+      {
+        "name": "HeatMapDemo",
+        "imports": ["react-three-fiber", "@react-three/drei", "lucide-react", "HeatMapOverlay"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "demo",
+        "layer": "examples",
+        "purpose": "Heat map system demonstration"
+      },
+      {
+        "name": "HeatMapExample",
+        "imports": ["react-three-fiber", "@react-three/drei", "HeatMapOverlay"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "demo",
+        "layer": "examples",
+        "purpose": "Heat map usage example"
+      },
+      {
+        "name": "WeatherSystemExample",
+        "imports": ["react-three-fiber", "@react-three/drei", "WeatherSystem", "WeatherControls", "Grass"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "demo",
+        "layer": "examples",
+        "purpose": "Weather system demonstration"
+      },
+      {
+        "name": "TennisCourtWithHeatMap",
+        "imports": ["@react-three/drei", "three", "lucide-react", "HeatMapOverlay", "courtTextures", "Grass", "ClayCourtEffect"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "demo",
+        "layer": "examples",
+        "purpose": "Tennis court with heat map integration"
+      },
+      {
+        "name": "CognitiveLab",
+        "imports": ["react-three-fiber", "@react-three/drei", "three"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "demo",
+        "layer": "examples",
+        "purpose": "Cognitive training lab visualization"
+      },
+      {
+        "name": "RecoverySuite",
+        "imports": ["react-three-fiber", "@react-three/drei", "three"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "demo",
+        "layer": "examples",
+        "purpose": "Recovery and wellness suite"
+      },
+      {
+        "name": "BiometricLab",
+        "imports": ["react-three-fiber", "@react-three/drei", "three"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "demo",
+        "layer": "examples",
+        "purpose": "Biometric testing and analysis lab"
+      },
+      {
+        "name": "MovementStudio",
+        "imports": ["react-three-fiber", "@react-three/drei", "three"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "demo",
+        "layer": "examples",
+        "purpose": "Movement analysis and training studio"
+      }
+    ],
+
+    "diagnostic_components": [
+      {
+        "name": "ThreeSceneDiagnostic",
+        "imports": ["three"],
+        "exports": ["default"],
+        "dependents": ["App"],
+        "type": "diagnostic",
+        "layer": "debugging",
+        "purpose": "3D rendering diagnostics and performance info"
+      },
+      {
+        "name": "PerformanceMetrics",
+        "imports": ["framer-motion"],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "diagnostic",
+        "layer": "debugging",
+        "purpose": "Performance monitoring UI component"
+      },
+      {
+        "name": "LoadingProgress",
+        "imports": ["framer-motion", "LoadingProvider", "lucide-react"],
+        "exports": ["default"],
+        "dependents": ["LazyThreeScene"],
+        "type": "diagnostic",
+        "layer": "debugging",
+        "purpose": "Loading progress indicator"
+      },
+      {
+        "name": "QualityBadge",
+        "imports": [],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "diagnostic",
+        "layer": "debugging",
+        "purpose": "Visual quality indicator badge"
+      },
+      {
+        "name": "MissingComponentStub",
+        "imports": [],
+        "exports": ["default"],
+        "dependents": [],
+        "type": "diagnostic",
+        "layer": "debugging",
+        "purpose": "Placeholder for missing components"
+      }
+    ],
+
+    "utilities": [
+      {
+        "name": "courtTextures",
+        "imports": ["three"],
+        "exports": ["getCourtTexture", "CourtSurfaceType"],
+        "dependents": ["ThreeScene", "TennisCourtWithHeatMap"],
+        "type": "utility",
+        "layer": "utilities",
+        "purpose": "Court surface texture management"
+      },
+      {
+        "name": "geminiService",
+        "imports": ["@google/genai"],
+        "exports": ["sendQueryToConcierge"],
+        "dependents": ["AIChat"],
+        "type": "service",
+        "layer": "services",
+        "purpose": "AI concierge service integration"
+      },
+      {
+        "name": "webglCheck",
+        "imports": [],
+        "exports": ["hasWebGLSupport", "getWebGLErrorMessage", "checkWebGLSupport"],
+        "dependents": ["SafeThreeScene"],
+        "type": "utility",
+        "layer": "utilities",
+        "purpose": "WebGL capability detection"
+      }
+    ],
+
+    "integration_snippets": [
+      {
+        "name": "WeatherIntegrationSnippet",
+        "imports": ["WeatherSystem", "WeatherControls"],
+        "exports": [],
+        "dependents": [],
+        "type": "snippet",
+        "layer": "documentation",
+        "purpose": "Weather system integration example code"
+      }
+    ]
+  },
+
+  "leaf_components": {
+    "description": "Components with no dependencies on other internal components",
+    "components": [
+      "BasicThreeScene",
+      "TestScene",
+      "QualityBadge",
+      "MissingComponentStub",
+      "WeatherIntegrationSnippet",
+      "Grass",
+      "ClayCourtEffect",
+      "CharacterSystem",
+      "geminiService",
+      "courtTextures",
+      "webglCheck",
+      "types"
+    ],
+    "count": 12
+  },
+
+  "circular_dependencies": {
+    "detected": false,
+    "description": "No circular dependencies found. Architecture follows proper layering.",
+    "notes": "Components follow a clear dependency hierarchy: utilities → effects → systems → facilities → scenes → pages → app"
+  },
+
+  "dependency_layers": {
+    "description": "Components organized by architectural layer",
+    "layers": [
+      {
+        "name": "external_libraries",
+        "level": 0,
+        "components": ["react", "three", "@react-three/fiber", "@react-three/drei", "framer-motion", "lucide-react", "@google/genai", "@react-three/postprocessing"],
+        "purpose": "Third-party dependencies"
+      },
+      {
+        "name": "types_utilities",
+        "level": 1,
+        "components": ["types", "courtTextures", "webglCheck"],
+        "purpose": "Type definitions and utility functions"
+      },
+      {
+        "name": "services",
+        "level": 2,
+        "components": ["geminiService"],
+        "purpose": "External service integrations"
+      },
+      {
+        "name": "infrastructure",
+        "level": 3,
+        "components": ["ErrorBoundary", "LoadingProvider", "DebugLogger", "ThreeSceneDiagnostic"],
+        "purpose": "Error handling, loading states, debugging"
+      },
+      {
+        "name": "visual_effects",
+        "level": 4,
+        "components": ["Grass", "ClayCourtEffect"],
+        "purpose": "Reusable 3D visual effects"
+      },
+      {
+        "name": "advanced_features",
+        "level": 5,
+        "components": ["CharacterSystem", "WeatherSystem", "LightingSystem", "HeatMapOverlay"],
+        "purpose": "Complex 3D systems and features"
+      },
+      {
+        "name": "facility_spaces",
+        "level": 6,
+        "components": ["ReceptionArea", "LockerRoom", "ParkingLot", "BMSControlRoom", "HydroponicsSystem", "MechanicalRooms", "TransportPods", "RoboticGrassSystem", "SupportSpaces"],
+        "purpose": "3D facility component models"
+      },
+      {
+        "name": "3d_core",
+        "level": 7,
+        "components": ["ThreeScene", "PersistentThreeScene", "LazyThreeScene", "SafeThreeScene"],
+        "purpose": "Main 3D scene orchestration"
+      },
+      {
+        "name": "ui_components",
+        "level": 8,
+        "components": ["NavBar", "WeatherControls", "LoadingProgress"],
+        "purpose": "User interface controls"
+      },
+      {
+        "name": "pages",
+        "level": 9,
+        "components": ["Specifications", "Amenities", "AIChat"],
+        "purpose": "Full page components"
+      },
+      {
+        "name": "application",
+        "level": 10,
+        "components": ["App"],
+        "purpose": "Root application component"
+      },
+      {
+        "name": "entry",
+        "level": 11,
+        "components": ["index.tsx"],
+        "purpose": "Application entry point"
+      }
+    ]
+  },
+
+  "build_order_implications": {
+    "description": "Recommended build order based on dependencies",
+    "order": [
+      "1. Types and utilities (types.ts, courtTextures.ts, webglCheck utilities)",
+      "2. Services (geminiService.ts)",
+      "3. Infrastructure (ErrorBoundary, LoadingProvider)",
+      "4. Visual effects (Grass, ClayCourtEffect)",
+      "5. Advanced systems (CharacterSystem, WeatherSystem, LightingSystem, HeatMapOverlay)",
+      "6. Facility components (all facility spaces)",
+      "7. Scene orchestrators (ThreeScene, PersistentThreeScene, etc.)",
+      "8. UI components (NavBar, WeatherControls)",
+      "9. Pages (Specifications, Amenities, AIChat)",
+      "10. App (root component)",
+      "11. index.tsx (entry point)"
+    ],
+    "parallel_build_groups": [
+      {
+        "group": 1,
+        "components": ["types", "courtTextures", "webglCheck", "geminiService"],
+        "can_build_parallel": true
+      },
+      {
+        "group": 2,
+        "components": ["ErrorBoundary", "LoadingProvider", "DebugLogger"],
+        "can_build_parallel": true
+      },
+      {
+        "group": 3,
+        "components": ["Grass", "ClayCourtEffect", "CharacterSystem"],
+        "can_build_parallel": true
+      },
+      {
+        "group": 4,
+        "components": ["WeatherSystem", "LightingSystem", "HeatMapOverlay"],
+        "can_build_parallel": true
+      },
+      {
+        "group": 5,
+        "components": ["ReceptionArea", "LockerRoom", "ParkingLot", "BMSControlRoom", "HydroponicsSystem", "MechanicalRooms", "TransportPods", "RoboticGrassSystem"],
+        "can_build_parallel": true
+      }
+    ]
+  },
+
+  "critical_path_components": {
+    "description": "Components on the critical path for application startup",
+    "path": [
+      "index.tsx",
+      "App",
+      "ThreeScene",
+      "types",
+      "three",
+      "@react-three/fiber",
+      "@react-three/drei"
+    ],
+    "notes": "These components must load for the main 3D facility demo to function"
+  },
+
+  "high_fan_out_components": {
+    "description": "Components that many others depend on (change impact high)",
+    "components": [
+      {
+        "name": "types",
+        "dependents_count": 7,
+        "risk": "high",
+        "note": "Changes affect type contracts across app"
+      },
+      {
+        "name": "ThreeScene",
+        "dependents_count": 2,
+        "risk": "medium",
+        "note": "Main scene orchestrator - critical but encapsulated"
+      },
+      {
+        "name": "LoadingProvider",
+        "dependents_count": 2,
+        "risk": "medium",
+        "note": "Loading state management - isolated concern"
+      },
+      {
+        "name": "HeatMapOverlay",
+        "dependents_count": 3,
+        "risk": "low",
+        "note": "Used in demo components only"
+      },
+      {
+        "name": "WeatherSystem",
+        "dependents_count": 2,
+        "risk": "low",
+        "note": "Used in demo components only"
+      }
+    ]
+  },
+
+  "high_fan_in_components": {
+    "description": "Components with many dependencies (complexity high)",
+    "components": [
+      {
+        "name": "ThreeScene",
+        "dependency_count": 17,
+        "complexity": "very_high",
+        "note": "Main orchestrator - imports 11 facility components plus utilities"
+      },
+      {
+        "name": "TennisCourtWithHeatMap",
+        "dependency_count": 7,
+        "complexity": "high",
+        "note": "Complex demo combining multiple systems"
+      },
+      {
+        "name": "App",
+        "dependency_count": 12,
+        "complexity": "high",
+        "note": "Root component - orchestrates all views"
+      },
+      {
+        "name": "PersistentThreeScene",
+        "dependency_count": 4,
+        "complexity": "medium",
+        "note": "Scene wrapper with multiple scene type options"
+      }
+    ]
+  },
+
+  "component_categories": {
+    "infrastructure": 4,
+    "navigation": 1,
+    "pages": 3,
+    "3d_core": 4,
+    "3d_facility": 11,
+    "3d_systems": 5,
+    "visual_effects": 2,
+    "demo": 11,
+    "diagnostic": 5,
+    "utilities": 3,
+    "services": 1,
+    "total": 50
+  },
+
+  "recommendations": {
+    "refactoring": [
+      "Consider splitting ThreeScene.tsx (1546 lines) into smaller modules",
+      "Extract court rendering logic into separate CourtRenderer component",
+      "Create a FacilityComponentLoader for dynamic facility component loading",
+      "Consolidate demo components into a demos/ subdirectory"
+    ],
+    "testing": [
+      "Prioritize testing types, utilities, and services (foundational layer)",
+      "Test infrastructure components (ErrorBoundary, LoadingProvider) next",
+      "Visual regression testing for 3D components",
+      "Integration tests for ThreeScene with mocked 3D dependencies"
+    ],
+    "optimization": [
+      "Code-split demo components (not used in main app flow)",
+      "Lazy load advanced systems (WeatherSystem, CharacterSystem) on demand",
+      "Consider dynamic imports for facility components in ThreeScene",
+      "Bundle courtTextures utility separately from main bundle"
+    ],
+    "maintenance": [
+      "Document the dependency layers in architecture docs",
+      "Create a dependency update strategy (external libraries)",
+      "Establish component ownership (who maintains each layer)",
+      "Add pre-commit hooks to detect circular dependencies"
+    ]
+  }
+}

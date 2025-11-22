@@ -1,0 +1,18 @@
+# Workflow system .gitignore
+
+# Ignore backup files
+*.bak
+*.tmp
+*.swp
+*~
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Keep reviews directory but ignore temp files in it
+reviews/*.tmp
+reviews/*.bak
+
+# But keep the directory structure
+!reviews/.gitkeep

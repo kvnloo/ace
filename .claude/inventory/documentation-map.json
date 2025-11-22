@@ -1,0 +1,828 @@
+{
+  "metadata": {
+    "generated": "2025-11-22T17:41:00Z",
+    "agent": "documentation-reconciler",
+    "total_docs_files": 61,
+    "total_claudedocs_files": 98,
+    "total_files": 159,
+    "analysis_version": "1.0.0"
+  },
+  "documentation_strategy": {
+    "docs_focus": "Facility concept, architecture, and operations for non-technical stakeholders",
+    "claudedocs_focus": "3D visualization web application for software developers",
+    "separation_rationale": "Two parallel systems: WHAT the facility IS vs HOW the CODE works"
+  },
+  "facility_sections": {
+    "architecture": {
+      "path": "docs/architecture",
+      "purpose": "Physical facility layout and technical systems",
+      "audience": ["architects", "planners", "systems_engineers"],
+      "files": [
+        {
+          "file": "facility-blueprint.md",
+          "scope": "Consolidated design specification",
+          "topics": ["racket_sports_layout", "health_optimization", "vertical_farming", "multi_agent_orchestration"],
+          "related_technical_docs": [
+            "claudedocs/01-architecture/COURT_LAYOUT.md",
+            "claudedocs/07-features/robotic-systems/IMPLEMENTATION_SUMMARY.md"
+          ]
+        },
+        {
+          "file": "digital-twin-architecture.md",
+          "scope": "Unity digital twin planning system",
+          "topics": ["pre_construction_visualization", "operational_simulation", "cost_estimation", "ai_training"],
+          "related_technical_docs": [
+            "claudedocs/01-architecture/court-labels-3d-fix.md",
+            "claudedocs/02-implementation-guides/GRASS_IMPLEMENTATION.md"
+          ]
+        },
+        {
+          "file": "facility-architecture.md",
+          "scope": "Technical systems and components",
+          "topics": ["hierarchical_agent_system", "facility_components", "data_integration", "control_systems"],
+          "related_technical_docs": [
+            "claudedocs/07-features/COMPLETE_FEATURE_INVENTORY.md",
+            "claudedocs/04-monitoring-operations/monitoring/monitoring_architecture.md"
+          ]
+        },
+        {
+          "file": "bms-control-room.md",
+          "scope": "Building management system control room",
+          "topics": ["bms_controls", "monitoring_systems"],
+          "related_technical_docs": [
+            "claudedocs/04-monitoring-operations/MONITORING_SETUP_COMPLETE.md"
+          ]
+        },
+        {
+          "file": "reception-area/reception-area-design.md",
+          "scope": "Reception area layout and design",
+          "topics": ["reception_layout", "visitor_flow"],
+          "related_technical_docs": [
+            "claudedocs/01-architecture/COURT_LAYOUT.md"
+          ]
+        },
+        {
+          "file": "mechanical-rooms/MechanicalRooms-Documentation.md",
+          "scope": "Mechanical rooms specifications",
+          "topics": ["hvac_systems", "utilities", "equipment"],
+          "related_technical_docs": []
+        },
+        {
+          "file": "level-2/viewing-galleries.md",
+          "scope": "Second floor viewing galleries",
+          "topics": ["spectator_areas", "viewing_positions"],
+          "related_technical_docs": [
+            "claudedocs/01-architecture/COURT_LAYOUT.md"
+          ]
+        }
+      ],
+      "completeness_score": 0.85,
+      "gaps": ["detailed_utilities_specs", "hvac_integration_with_code"]
+    },
+    "concepts": {
+      "path": "docs/concepts",
+      "purpose": "Vision and value proposition",
+      "audience": ["investors", "stakeholders", "executives"],
+      "files": [
+        {
+          "file": "APEX-Facility-Summary.md",
+          "scope": "Health optimization facility vision",
+          "topics": ["apex_concept", "health_optimization", "value_proposition"],
+          "related_technical_docs": []
+        }
+      ],
+      "completeness_score": 0.60,
+      "gaps": ["technical_implementation_details", "roi_projections"]
+    },
+    "business": {
+      "path": "docs/business",
+      "purpose": "Revenue models and projections",
+      "audience": ["investors", "executives", "business_analysts"],
+      "files": [],
+      "completeness_score": 0.20,
+      "gaps": ["revenue_models", "financial_projections", "market_analysis", "business_plan"]
+    },
+    "operations": {
+      "path": "docs/operations",
+      "purpose": "Day-to-day procedures and maintenance",
+      "audience": ["facility_operators", "maintenance_staff"],
+      "files": [
+        {
+          "file": "VERIFICATION.md",
+          "scope": "Operational verification procedures",
+          "topics": ["verification_checklists", "quality_assurance"],
+          "related_technical_docs": [
+            "claudedocs/03-testing-quality/integration-tests/VERIFICATION_CHECKLIST.md"
+          ]
+        }
+      ],
+      "completeness_score": 0.30,
+      "gaps": ["daily_operations_manual", "maintenance_schedules", "safety_procedures", "emergency_protocols"]
+    },
+    "specifications": {
+      "path": "docs/specifications",
+      "purpose": "Detailed technical requirements",
+      "audience": ["engineers", "contractors", "architects"],
+      "files": [
+        {
+          "file": "building-sections-ab-specs.md",
+          "scope": "Building sections A-B specifications",
+          "topics": ["structural_specs", "dimensions"],
+          "related_technical_docs": []
+        },
+        {
+          "file": "building-sections-cd-specs.md",
+          "scope": "Building sections C-D specifications",
+          "topics": ["structural_specs", "dimensions"],
+          "related_technical_docs": []
+        },
+        {
+          "file": "building-sections-ef-specs.md",
+          "scope": "Building sections E-F specifications",
+          "topics": ["structural_specs", "dimensions"],
+          "related_technical_docs": []
+        },
+        {
+          "file": "materials-textures-specs.md",
+          "scope": "Materials and textures specifications",
+          "topics": ["material_specs", "texture_requirements"],
+          "related_technical_docs": [
+            "claudedocs/02-implementation-guides/TEXTURE_IMPLEMENTATION.md",
+            "claudedocs/02-implementation-guides/clay-court-tech-specs.md"
+          ]
+        }
+      ],
+      "completeness_score": 0.70,
+      "gaps": ["electrical_specs", "network_infrastructure", "security_systems"]
+    },
+    "systems": {
+      "path": "docs/systems",
+      "purpose": "Facility systems documentation",
+      "audience": ["systems_engineers", "integrators", "developers"],
+      "subsections": {
+        "character_system": {
+          "files": [
+            {
+              "file": "CHARACTER_SYSTEM.md",
+              "scope": "Character animation and interaction system",
+              "topics": ["character_animation", "npc_behavior"],
+              "related_technical_docs": [
+                "claudedocs/07-features/character-system/IMPLEMENTATION_SUMMARY.md",
+                "claudedocs/07-features/character-system/INTEGRATION.md"
+              ],
+              "cross_reference_quality": "excellent"
+            }
+          ]
+        },
+        "error_logging": {
+          "files": [
+            {
+              "file": "ERROR_LOGGING_SYSTEM.md",
+              "scope": "Error logging and monitoring system",
+              "topics": ["error_tracking", "logging_infrastructure"],
+              "related_technical_docs": [
+                "claudedocs/04-monitoring-operations/MONITORING_SETUP_COMPLETE.md",
+                "claudedocs/05-workflows/scripts/test-sentry.md"
+              ],
+              "cross_reference_quality": "excellent"
+            }
+          ]
+        },
+        "heatmap_system": {
+          "files": [
+            {
+              "file": "HEATMAP_SUMMARY.md",
+              "scope": "Court usage heatmap visualization",
+              "topics": ["usage_tracking", "heatmap_visualization"],
+              "related_technical_docs": [
+                "claudedocs/07-features/heatmap-system/HeatMapOverlay.md",
+                "claudedocs/07-features/heatmap-system/README.md"
+              ],
+              "cross_reference_quality": "good"
+            }
+          ]
+        },
+        "lighting_system": {
+          "files": [
+            {
+              "file": "LIGHTING_SYSTEM.md",
+              "scope": "Dynamic lighting control system",
+              "topics": ["lighting_control", "day_night_cycle", "ambiance"],
+              "related_technical_docs": [
+                "claudedocs/07-features/lighting-system/COMPONENT_README.md",
+                "claudedocs/07-features/lighting-system/CHANGELOG.md"
+              ],
+              "cross_reference_quality": "excellent"
+            }
+          ]
+        },
+        "robotic_systems": {
+          "files": [
+            {
+              "file": "ROBOTIC_SYSTEM_ARCHITECTURE.md",
+              "scope": "Robotic grass maintenance architecture",
+              "topics": ["autonomous_maintenance", "grass_care", "robotics"],
+              "related_technical_docs": [
+                "claudedocs/07-features/robotic-systems/IMPLEMENTATION_SUMMARY.md"
+              ],
+              "cross_reference_quality": "good"
+            }
+          ]
+        },
+        "transport_pods": {
+          "files": [
+            {
+              "file": "TRANSPORT_PODS.md",
+              "scope": "Autonomous transport pod system",
+              "topics": ["autonomous_transport", "navigation", "pod_control"],
+              "related_technical_docs": [],
+              "cross_reference_quality": "poor",
+              "gaps": ["implementation_details", "code_integration"]
+            }
+          ]
+        },
+        "weather_system": {
+          "files": [
+            {
+              "file": "WEATHER_SYSTEM.md",
+              "scope": "Weather simulation and effects",
+              "topics": ["weather_simulation", "environmental_effects"],
+              "related_technical_docs": [
+                "claudedocs/07-features/weather-system/COMPONENT_README.md",
+                "claudedocs/07-features/weather-system/IMPLEMENTATION_SUMMARY.md"
+              ],
+              "cross_reference_quality": "excellent"
+            }
+          ]
+        }
+      },
+      "completeness_score": 0.75,
+      "gaps": ["transport_pods_implementation", "system_integration_documentation"]
+    },
+    "research": {
+      "path": "docs/research",
+      "purpose": "Market research and feasibility studies",
+      "audience": ["researchers", "analysts", "executives"],
+      "files": [],
+      "completeness_score": 0.15,
+      "gaps": ["market_research", "feasibility_studies", "competitive_analysis"]
+    },
+    "community": {
+      "path": "docs/community",
+      "purpose": "Open source governance and contribution",
+      "audience": ["contributors", "developers", "community"],
+      "files": [
+        {
+          "file": "CODE_OF_CONDUCT.md",
+          "scope": "Community code of conduct",
+          "topics": ["community_guidelines", "behavior_standards"],
+          "related_technical_docs": []
+        },
+        {
+          "file": "CONTRIBUTING.md",
+          "scope": "Contribution guidelines",
+          "topics": ["contribution_process", "development_workflow"],
+          "related_technical_docs": [
+            "claudedocs/05-workflows/README.md"
+          ]
+        },
+        {
+          "file": "GOVERNANCE.md",
+          "scope": "Project governance model",
+          "topics": ["decision_making", "roles", "responsibilities"],
+          "related_technical_docs": []
+        }
+      ],
+      "completeness_score": 0.80,
+      "gaps": ["contributor_recognition", "roadmap_transparency"]
+    }
+  },
+  "technical_documentation": {
+    "architecture": {
+      "path": "claudedocs/01-architecture",
+      "purpose": "3D visualization scene structure and layout",
+      "audience": ["developers", "3d_artists"],
+      "files": [
+        {
+          "file": "COURT_LAYOUT.md",
+          "scope": "Complete facility layout with dimensions",
+          "topics": ["court_positions", "floor_levels", "3d_coordinates"],
+          "related_facility_docs": [
+            "docs/architecture/facility-blueprint.md",
+            "docs/architecture/level-2/viewing-galleries.md"
+          ],
+          "implementation_status": "complete"
+        },
+        {
+          "file": "court-labels-3d-fix.md",
+          "scope": "3D floating label system implementation",
+          "topics": ["label_rendering", "3d_text", "hover_effects"],
+          "related_facility_docs": [],
+          "implementation_status": "complete"
+        }
+      ],
+      "completeness_score": 0.90,
+      "gaps": ["camera_system_docs", "scene_optimization_guide"]
+    },
+    "implementation_guides": {
+      "path": "claudedocs/02-implementation-guides",
+      "purpose": "Step-by-step implementation instructions",
+      "audience": ["developers"],
+      "files": [
+        {
+          "file": "TEXTURE_IMPLEMENTATION.md",
+          "scope": "Texture system implementation guide",
+          "topics": ["texture_loading", "pbr_materials", "optimization"],
+          "related_facility_docs": [
+            "docs/specifications/materials-textures-specs.md"
+          ],
+          "implementation_status": "complete"
+        },
+        {
+          "file": "GRASS_IMPLEMENTATION.md",
+          "scope": "Grass court rendering implementation",
+          "topics": ["grass_rendering", "court_surfaces", "materials"],
+          "related_facility_docs": [
+            "docs/architecture/facility-blueprint.md"
+          ],
+          "implementation_status": "complete"
+        },
+        {
+          "file": "clay-court-implementation.md",
+          "scope": "Clay court rendering implementation",
+          "topics": ["clay_materials", "court_surfaces", "textures"],
+          "related_facility_docs": [
+            "docs/specifications/materials-textures-specs.md"
+          ],
+          "implementation_status": "complete"
+        }
+      ],
+      "completeness_score": 0.85,
+      "gaps": ["hard_court_guide", "wood_court_guide"]
+    },
+    "testing_quality": {
+      "path": "claudedocs/03-testing-quality",
+      "purpose": "Testing strategies and quality assurance",
+      "audience": ["qa_engineers", "developers"],
+      "files": [
+        {
+          "file": "integration-tests/README.md",
+          "scope": "Integration testing framework",
+          "topics": ["playwright_tests", "visual_regression", "e2e_testing"],
+          "related_facility_docs": [
+            "docs/operations/VERIFICATION.md"
+          ],
+          "implementation_status": "complete"
+        },
+        {
+          "file": "TDD_IMPLEMENTATION_SUMMARY.md",
+          "scope": "Test-driven development practices",
+          "topics": ["tdd_workflow", "unit_testing", "test_coverage"],
+          "related_facility_docs": [],
+          "implementation_status": "complete"
+        }
+      ],
+      "completeness_score": 0.80,
+      "gaps": ["performance_testing_guide", "accessibility_testing"]
+    },
+    "monitoring_operations": {
+      "path": "claudedocs/04-monitoring-operations",
+      "purpose": "Production monitoring and operations",
+      "audience": ["devops", "sre", "developers"],
+      "files": [
+        {
+          "file": "MONITORING_SETUP_COMPLETE.md",
+          "scope": "Monitoring infrastructure setup",
+          "topics": ["sentry_integration", "error_tracking", "metrics"],
+          "related_facility_docs": [
+            "docs/systems/error-logging/ERROR_LOGGING_SYSTEM.md"
+          ],
+          "implementation_status": "complete"
+        },
+        {
+          "file": "monitoring/monitoring_architecture.md",
+          "scope": "Monitoring system architecture",
+          "topics": ["monitoring_design", "alerting", "dashboards"],
+          "related_facility_docs": [
+            "docs/architecture/facility-architecture.md"
+          ],
+          "implementation_status": "complete"
+        },
+        {
+          "file": "PERFORMANCE_TESTING_SUMMARY.md",
+          "scope": "Performance testing results and benchmarks",
+          "topics": ["performance_metrics", "load_testing", "optimization"],
+          "related_facility_docs": [],
+          "implementation_status": "complete"
+        }
+      ],
+      "completeness_score": 0.90,
+      "gaps": ["uptime_monitoring", "user_analytics"]
+    },
+    "workflows": {
+      "path": "claudedocs/05-workflows",
+      "purpose": "Development and deployment workflows",
+      "audience": ["developers", "devops"],
+      "files": [
+        {
+          "file": "DEPLOYMENT.md",
+          "scope": "Deployment procedures and configuration",
+          "topics": ["github_pages", "build_process", "ci_cd"],
+          "related_facility_docs": [],
+          "implementation_status": "complete"
+        },
+        {
+          "file": "ROLLBACK_SYSTEM_COMPLETE.md",
+          "scope": "Rollback and recovery procedures",
+          "topics": ["emergency_recovery", "version_rollback", "backup_restore"],
+          "related_facility_docs": [],
+          "implementation_status": "complete"
+        }
+      ],
+      "completeness_score": 0.85,
+      "gaps": ["staging_environment", "feature_flags"]
+    },
+    "research": {
+      "path": "claudedocs/06-research",
+      "purpose": "Technical investigations and exploratory work",
+      "audience": ["researchers", "developers"],
+      "active_research": 0,
+      "archived_research": 8,
+      "files": [
+        {
+          "file": "archive/3D-VISUALIZATION-TECHNICAL-GUIDE.md",
+          "scope": "3D visualization technical foundations",
+          "topics": ["threejs_fundamentals", "rendering_pipeline"],
+          "status": "archived"
+        },
+        {
+          "file": "archive/research/people_animation_research.md",
+          "scope": "Character animation research",
+          "topics": ["animation_systems", "character_rigging"],
+          "status": "archived"
+        }
+      ],
+      "completeness_score": 0.40,
+      "gaps": ["active_research_initiatives", "research_roadmap"]
+    },
+    "features": {
+      "path": "claudedocs/07-features",
+      "purpose": "Feature-specific documentation",
+      "audience": ["developers", "product_managers"],
+      "files": [
+        {
+          "file": "COMPLETE_FEATURE_INVENTORY.md",
+          "scope": "Comprehensive feature catalog",
+          "topics": ["feature_list", "implementation_status"],
+          "related_facility_docs": [
+            "docs/architecture/facility-architecture.md"
+          ],
+          "implementation_status": "maintained"
+        },
+        {
+          "file": "FEATURE_ROADMAP.md",
+          "scope": "Feature development roadmap",
+          "topics": ["planned_features", "timeline", "priorities"],
+          "related_facility_docs": [],
+          "implementation_status": "maintained"
+        },
+        {
+          "file": "STRATEGIC_ROADMAP_2025.md",
+          "scope": "2025 strategic roadmap",
+          "topics": ["strategic_initiatives", "goals", "milestones"],
+          "related_facility_docs": [],
+          "implementation_status": "maintained"
+        }
+      ],
+      "subsystems": {
+        "character_system": ["IMPLEMENTATION_SUMMARY.md", "INTEGRATION.md"],
+        "heatmap_system": ["HeatMapOverlay.md", "README.md"],
+        "lighting_system": ["COMPONENT_README.md", "CHANGELOG.md", "README.md"],
+        "robotic_systems": ["IMPLEMENTATION_SUMMARY.md"],
+        "weather_system": ["COMPONENT_README.md", "FILES_MANIFEST.md", "IMPLEMENTATION_SUMMARY.md"]
+      },
+      "completeness_score": 0.90,
+      "gaps": ["transport_pods_feature_docs"]
+    },
+    "stories": {
+      "path": "claudedocs/08-stories",
+      "purpose": "User stories and feature specifications",
+      "audience": ["product_managers", "developers"],
+      "files": [
+        {
+          "file": "INFRASTRUCTURE_COMPLETION.md",
+          "scope": "Infrastructure completion stories",
+          "topics": ["3d_visualization", "quality_badges", "performance"],
+          "related_facility_docs": [],
+          "status": "active"
+        },
+        {
+          "file": "AUTONOMOUS_SYSTEMS.md",
+          "scope": "Autonomous systems stories",
+          "topics": ["monitoring", "self_healing", "automation"],
+          "related_facility_docs": [
+            "docs/architecture/facility-architecture.md"
+          ],
+          "status": "active"
+        }
+      ],
+      "completeness_score": 0.70,
+      "gaps": ["user_acceptance_criteria", "story_prioritization"]
+    },
+    "milestones": {
+      "path": "claudedocs/09-milestones",
+      "purpose": "Project milestones and completion criteria",
+      "audience": ["project_managers", "stakeholders"],
+      "files": [
+        {
+          "file": "PHASE_1_COMPLETE.md",
+          "scope": "Phase 1 completion criteria",
+          "topics": ["foundation_infrastructure", "3d_visualization"],
+          "status": "complete"
+        },
+        {
+          "file": "MVP_COMPLETION.md",
+          "scope": "MVP completion criteria",
+          "topics": ["platform_readiness", "member_acquisition"],
+          "status": "in_progress"
+        }
+      ],
+      "completeness_score": 0.75,
+      "gaps": ["phase_2_definition", "long_term_milestones"]
+    }
+  },
+  "cross_references": {
+    "facility_to_technical": {
+      "facility_blueprint": {
+        "facility_doc": "docs/architecture/facility-blueprint.md",
+        "technical_docs": [
+          "claudedocs/01-architecture/COURT_LAYOUT.md",
+          "claudedocs/07-features/COMPLETE_FEATURE_INVENTORY.md"
+        ],
+        "link_strength": "strong",
+        "description": "Facility blueprint directly maps to 3D court layout implementation"
+      },
+      "character_system": {
+        "facility_doc": "docs/systems/character-system/CHARACTER_SYSTEM.md",
+        "technical_docs": [
+          "claudedocs/07-features/character-system/IMPLEMENTATION_SUMMARY.md",
+          "claudedocs/07-features/character-system/INTEGRATION.md"
+        ],
+        "link_strength": "excellent",
+        "description": "Perfect 1:1 mapping between concept and implementation"
+      },
+      "lighting_system": {
+        "facility_doc": "docs/systems/lighting-system/LIGHTING_SYSTEM.md",
+        "technical_docs": [
+          "claudedocs/07-features/lighting-system/COMPONENT_README.md",
+          "claudedocs/07-features/lighting-system/CHANGELOG.md"
+        ],
+        "link_strength": "excellent",
+        "description": "Comprehensive system documentation with version history"
+      },
+      "error_logging": {
+        "facility_doc": "docs/systems/error-logging/ERROR_LOGGING_SYSTEM.md",
+        "technical_docs": [
+          "claudedocs/04-monitoring-operations/MONITORING_SETUP_COMPLETE.md"
+        ],
+        "link_strength": "strong",
+        "description": "System concept linked to production implementation"
+      },
+      "weather_system": {
+        "facility_doc": "docs/systems/weather-system/WEATHER_SYSTEM.md",
+        "technical_docs": [
+          "claudedocs/07-features/weather-system/COMPONENT_README.md",
+          "claudedocs/07-features/weather-system/IMPLEMENTATION_SUMMARY.md"
+        ],
+        "link_strength": "excellent",
+        "description": "Complete traceability from concept to implementation"
+      },
+      "heatmap_system": {
+        "facility_doc": "docs/systems/heatmap-system/HEATMAP_SUMMARY.md",
+        "technical_docs": [
+          "claudedocs/07-features/heatmap-system/HeatMapOverlay.md"
+        ],
+        "link_strength": "good",
+        "description": "System overview with technical implementation details"
+      },
+      "robotic_systems": {
+        "facility_doc": "docs/systems/robotic-systems/ROBOTIC_SYSTEM_ARCHITECTURE.md",
+        "technical_docs": [
+          "claudedocs/07-features/robotic-systems/IMPLEMENTATION_SUMMARY.md"
+        ],
+        "link_strength": "good",
+        "description": "Architecture specification with implementation summary"
+      },
+      "materials_textures": {
+        "facility_doc": "docs/specifications/materials-textures-specs.md",
+        "technical_docs": [
+          "claudedocs/02-implementation-guides/TEXTURE_IMPLEMENTATION.md",
+          "claudedocs/02-implementation-guides/clay-court-tech-specs.md"
+        ],
+        "link_strength": "strong",
+        "description": "Material specifications implemented in texture system"
+      }
+    },
+    "technical_to_facility": {
+      "court_layout": {
+        "technical_doc": "claudedocs/01-architecture/COURT_LAYOUT.md",
+        "facility_docs": [
+          "docs/architecture/facility-blueprint.md",
+          "docs/architecture/level-2/viewing-galleries.md"
+        ],
+        "link_strength": "strong",
+        "description": "3D implementation of physical facility design"
+      },
+      "monitoring_setup": {
+        "technical_doc": "claudedocs/04-monitoring-operations/MONITORING_SETUP_COMPLETE.md",
+        "facility_docs": [
+          "docs/systems/error-logging/ERROR_LOGGING_SYSTEM.md",
+          "docs/architecture/bms-control-room.md"
+        ],
+        "link_strength": "moderate",
+        "description": "Technical monitoring implementation for facility systems"
+      }
+    },
+    "orphaned_facility_docs": [
+      "docs/systems/transport-pods/TRANSPORT_PODS.md (no technical implementation docs)",
+      "docs/research/ (mostly empty, no technical correlate)",
+      "docs/business/ (business planning, no technical docs expected)"
+    ],
+    "orphaned_technical_docs": [
+      "claudedocs/05-workflows/scripts/test-sentry.md (no facility doc correlate)",
+      "claudedocs/troubleshooting/*.md (technical troubleshooting only)"
+    ]
+  },
+  "documentation_quality": {
+    "overall_completeness": 0.72,
+    "facility_completeness": 0.58,
+    "technical_completeness": 0.82,
+    "cross_reference_quality": 0.75,
+    "areas_of_excellence": [
+      "Systems documentation (character, lighting, weather) - excellent facility-to-technical mapping",
+      "Implementation guides - comprehensive step-by-step instructions",
+      "Monitoring and operations - well-documented production systems",
+      "Architecture documentation - good separation of concerns"
+    ],
+    "critical_gaps": [
+      {
+        "area": "Business Documentation",
+        "severity": "high",
+        "description": "docs/business/ is nearly empty, no revenue models or financial projections",
+        "recommendation": "Create business plan, revenue models, and ROI documentation"
+      },
+      {
+        "area": "Operations Manual",
+        "severity": "high",
+        "description": "docs/operations/ lacks daily operations, maintenance, and safety procedures",
+        "recommendation": "Develop comprehensive operations and maintenance documentation"
+      },
+      {
+        "area": "Research Documentation",
+        "severity": "medium",
+        "description": "docs/research/ is empty, no market research or feasibility studies",
+        "recommendation": "Document market research, competitive analysis, and feasibility studies"
+      },
+      {
+        "area": "Transport Pods Implementation",
+        "severity": "medium",
+        "description": "Facility docs exist but no technical implementation in claudedocs/",
+        "recommendation": "Create transport pods feature implementation documentation"
+      },
+      {
+        "area": "Specification Completeness",
+        "severity": "medium",
+        "description": "Missing electrical, network, and security system specifications",
+        "recommendation": "Add comprehensive infrastructure specifications"
+      }
+    ],
+    "documentation_conflicts": [],
+    "version_mismatches": [],
+    "duplicate_content": [
+      {
+        "content": "Court layout information",
+        "locations": [
+          "docs/architecture/facility-blueprint.md",
+          "claudedocs/01-architecture/COURT_LAYOUT.md"
+        ],
+        "severity": "low",
+        "note": "Intentional duplication - facility vs technical perspectives"
+      }
+    ]
+  },
+  "lifecycle_zones": {
+    "active_areas": {
+      "research": "claudedocs/06-research/active/ (currently empty)",
+      "stories": "claudedocs/08-stories/ (2 active story files)",
+      "scratch": "claudedocs/scratch/ (temporary workspace)"
+    },
+    "archived_areas": {
+      "research": "claudedocs/06-research/archive/ (8 archived research docs)",
+      "stories": "claudedocs/08-stories/completed/ (empty)",
+      "general": "docs/archive/ (5 archived organizational docs)",
+      "technical": "claudedocs/archive/ (20+ archived technical docs)"
+    },
+    "lifecycle_health": {
+      "active_research_utilization": "low",
+      "archive_organization": "good",
+      "scratch_cleanup": "unknown",
+      "recommendations": [
+        "Activate research directory with ongoing investigations",
+        "Move completed stories from active to completed",
+        "Review and clean scratch directory regularly"
+      ]
+    }
+  },
+  "recommendations": {
+    "immediate_actions": [
+      {
+        "priority": "high",
+        "action": "Create business documentation",
+        "details": "Populate docs/business/ with revenue models, financial projections, and market analysis"
+      },
+      {
+        "priority": "high",
+        "action": "Develop operations manual",
+        "details": "Create comprehensive operational procedures, maintenance schedules, and safety protocols"
+      },
+      {
+        "priority": "medium",
+        "action": "Document transport pods implementation",
+        "details": "Create technical implementation docs in claudedocs/07-features/transport-pods/"
+      }
+    ],
+    "documentation_improvements": [
+      {
+        "area": "Cross-referencing",
+        "improvement": "Add explicit cross-reference sections in major documents linking facility and technical docs"
+      },
+      {
+        "area": "Completeness tracking",
+        "improvement": "Maintain documentation completeness scores in README files"
+      },
+      {
+        "area": "Lifecycle management",
+        "improvement": "Implement regular review cycles for active/archived content"
+      }
+    ],
+    "structural_improvements": [
+      {
+        "area": "Business planning",
+        "action": "Create docs/business/ structure with templates for financial models"
+      },
+      {
+        "area": "Operations",
+        "action": "Organize docs/operations/ into daily, weekly, monthly procedures"
+      },
+      {
+        "area": "Research",
+        "action": "Populate docs/research/ with market and technical research findings"
+      }
+    ]
+  },
+  "statistics": {
+    "documentation_distribution": {
+      "facility_docs_by_section": {
+        "architecture": 12,
+        "concepts": 1,
+        "business": 0,
+        "operations": 2,
+        "specifications": 5,
+        "systems": 21,
+        "research": 0,
+        "community": 7,
+        "archive": 5,
+        "misc": 8
+      },
+      "technical_docs_by_section": {
+        "architecture": 4,
+        "implementation_guides": 13,
+        "testing_quality": 7,
+        "monitoring_operations": 8,
+        "workflows": 9,
+        "research": 9,
+        "features": 19,
+        "stories": 3,
+        "milestones": 3,
+        "archive": 21,
+        "troubleshooting": 2
+      }
+    },
+    "file_types": {
+      "markdown_files": 159,
+      "readme_files": 15,
+      "summary_files": 12,
+      "guide_files": 18,
+      "implementation_files": 14,
+      "architecture_files": 16
+    },
+    "cross_reference_statistics": {
+      "facility_to_technical_links": 8,
+      "technical_to_facility_links": 2,
+      "bidirectional_mappings": 8,
+      "orphaned_facility_docs": 3,
+      "orphaned_technical_docs": 2,
+      "cross_reference_coverage": 0.75
+    }
+  }
+}

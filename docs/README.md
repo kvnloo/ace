@@ -4,8 +4,6 @@ Welcome to the facility documentation for the ACE project. This documentation fo
 
 > **Looking for code documentation?** See [claudedocs/](../claudedocs/README.md) for developer documentation about the 3D visualization web application.
 
-> **New here?** See [QUICK_START.md](QUICK_START.md) for role-based navigation to the right documentation.
-
 ## Quick Navigation
 
 ### Understand the Vision
@@ -32,29 +30,6 @@ Welcome to the facility documentation for the ACE project. This documentation fo
 
 #### For Researchers
 - [Research & Analysis](research/) - Market research and feasibility
-
-## Documentation Categories
-
-### 💡 [Concepts](concepts/)
-High-level vision and business concepts for the autonomous facility.
-
-### 🏗️ [Architecture](architecture/)
-Detailed architectural designs and technical systems.
-
-### 📋 [Specifications](specifications/)
-Technical specifications for facility components and systems.
-
-### ⚙️ [Operations](operations/)
-Operational guides and procedures for facility management.
-
-### 🔬 [Research](research/)
-Research, analysis, and feasibility studies.
-
-### 💼 [Business](business/)
-Business planning, financial models, and strategic partnerships.
-
-### 📦 [Archive](archive/)
-Historical documentation for reference purposes.
 
 ## Relationship to Code Documentation
 
