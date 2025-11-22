@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { View, FeatureData } from './types';
 import NavBar from './components/NavBar';
-import { LoadingProvider } from './components/LoadingProvider';
-import LazyThreeScene from './components/LazyThreeScene';
+import ThreeScene from './components/ThreeScene';
 import AIChat from './components/AIChat';
 import Specifications from './components/Specifications';
+import Amenities from './components/Amenities';
 import ThreeSceneDiagnostic from './components/ThreeSceneDiagnostic';
 import { 
   Zap, 
@@ -41,9 +41,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <LoadingProvider>
-      <div className="min-h-screen bg-slate-950 text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
-        <NavBar currentView={currentView} onChangeView={setCurrentView} />
+    <div className="min-h-screen bg-slate-950 text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
+      <NavBar currentView={currentView} onChangeView={setCurrentView} />
 
       <main className="relative w-full h-screen pt-20 overflow-hidden">
         <AnimatePresence mode="wait">
@@ -64,35 +63,35 @@ const App: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
                 
                 <div className="relative z-10 max-w-4xl text-center">
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-tennis-yellow/30 bg-tennis-yellow/10 text-tennis-yellow text-sm font-medium mb-6"
                   >
                     <Zap className="w-4 h-4" />
-                    <span>The Future of Tennis is Organic & Autonomous</span>
+                    <span>The Future of Racket Sports & Human Performance</span>
                   </motion.div>
-                  
-                  <motion.h1 
+
+                  <motion.h1
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
                     className="text-5xl md:text-8xl font-extrabold tracking-tighter mb-6 leading-tight"
                   >
-                    GRASS. <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">AUTONOMOUS.</span> <br />
-                    PERFECTION.
+                    AUTONOMOUS. <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">INTEGRATED.</span> <br />
+                    OPTIMIZED.
                   </motion.h1>
 
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
                     className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed"
                   >
-                    Experience the world's first fully autonomous indoor grass court facility. 
-                    Replaceable modular turf, AI coaching, and injury prevention technology.
+                    The world's first autonomous racket sports and health optimization facility with integrated vertical farming,
+                    AI coaching, and performance tracking across 147 biomarkers.
                   </motion.p>
 
                   <motion.div 
@@ -118,22 +117,101 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* Statistics Teaser */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6 py-20 border-t border-white/10">
-                <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                  <Cpu className="w-10 h-10 text-tennis-yellow mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Computer Vision</h3>
-                  <p className="text-gray-400">Real-time biomechanics analysis and injury prediction models running 60x per second.</p>
+              {/* 4-Pillar Feature Showcase */}
+              <div className="max-w-7xl mx-auto px-6 py-20 border-t border-white/10">
+                <div className="mb-16 text-center">
+                  <h2 className="text-3xl md:text-5xl font-bold mb-4">Integrated <span className="text-tennis-yellow">Platform</span></h2>
+                  <p className="text-xl text-gray-400 max-w-2xl mx-auto">Four pillars of autonomous optimization working together</p>
                 </div>
-                <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                  <Sprout className="w-10 h-10 text-tennis-yellow mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Modular Grass</h3>
-                  <p className="text-gray-400">Our on-site Grass Lab grows replacement grids. We swap worn turf in under 60 minutes.</p>
-                </div>
-                <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                  <Activity className="w-10 h-10 text-tennis-yellow mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Performance</h3>
-                  <p className="text-gray-400">Strobe glass training and smart ball machines designed to break your reaction time plateaus.</p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {/* Multi-Sport Excellence */}
+                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                    <Activity className="w-10 h-10 text-green-400 mb-4" />
+                    <h3 className="text-2xl font-bold mb-2">Multi-Sport Excellence</h3>
+                    <p className="text-gray-400 mb-4">Tennis, Pickleball, Badminton, Squash with computer vision coaching and real-time biomechanics analysis</p>
+                    <ul className="space-y-2 text-sm text-gray-500">
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>RGB + depth cameras</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>Multi-surface courts</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>Indoor grass courts (first of its kind)</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>AI coaching feedback</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* APEX Performance */}
+                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                    <Users className="w-10 h-10 text-red-400 mb-4" />
+                    <h3 className="text-2xl font-bold mb-2">APEX Performance</h3>
+                    <p className="text-gray-400 mb-4">147 biomarkers tracked daily with AI-driven protocols and Blueprint-style health optimization</p>
+                    <ul className="space-y-2 text-sm text-gray-500">
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>VO₂ Max +28% avg</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>Sleep efficiency 94%</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>247+ studies/day</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Vertical Farm */}
+                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                    <Sprout className="w-10 h-10 text-emerald-400 mb-4" />
+                    <h3 className="text-2xl font-bold mb-2">Vertical Farm</h3>
+                    <p className="text-gray-400 mb-4">Personalized nutrition grown on-site with 95% water efficiency and zero pesticides</p>
+                    <ul className="space-y-2 text-sm text-gray-500">
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>100% renewable energy</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>Genetic-optimized crops</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>Farm-to-table delivery</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Autonomous Operations */}
+                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                    <Cpu className="w-10 h-10 text-indigo-400 mb-4" />
+                    <h3 className="text-2xl font-bold mb-2">Autonomous Operations</h3>
+                    <p className="text-gray-400 mb-4">Digital twin control with multi-agent scheduling, biometric access, and smart energy management</p>
+                    <ul className="space-y-2 text-sm text-gray-500">
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>1000+ IoT sensors</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>Unity/Three.js twin</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                        <span>Robotic maintenance</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -165,7 +243,7 @@ const App: React.FC = () => {
             >
               <ThreeSceneDiagnostic />
               <div className="absolute inset-0 z-0">
-                <LazyThreeScene onFeatureSelect={setSelectedFeature} />
+                <ThreeScene onFeatureSelect={setSelectedFeature} />
               </div>
               
               {/* HUD Layer */}
@@ -215,136 +293,15 @@ const App: React.FC = () => {
 
           {/* AMENITIES VIEW */}
           {currentView === View.AMENITIES && (
-            <motion.div 
+            <motion.div
               key="amenities"
               initial="initial"
               animate="enter"
               exit="exit"
               variants={pageVariants}
-              className="h-full overflow-y-auto custom-scrollbar pb-20 px-6"
+              className="h-full overflow-y-auto custom-scrollbar pb-20"
             >
-              <div className="max-w-7xl mx-auto pt-10">
-                <h2 className="text-4xl font-bold mb-12 border-b border-white/10 pb-6">Facility Amenities</h2>
-                
-                <div className="space-y-24">
-                  
-                  {/* 1. Vertical Grass Lab */}
-                  <div className="flex flex-col md:flex-row items-center gap-12">
-                    <div className="flex-1 space-y-6">
-                      <div className="w-16 h-16 rounded-2xl bg-green-900/30 flex items-center justify-center text-tennis-yellow">
-                        <Sprout className="w-8 h-8" />
-                      </div>
-                      <h3 className="text-3xl font-bold">Level 3: The Vertical Grass Lab</h3>
-                      <p className="text-gray-400 text-lg leading-relaxed">
-                        Our facility houses a 2,000 m² autonomous vertical farm on the top floor, divided into four specialized sectors.
-                        We use advanced hydroponics and climate control to cultivate modular grass grids. 
-                        When a court wears down, robots transport and swap the turf in under 60 minutes.
-                      </p>
-                      <ul className="space-y-3 text-gray-300">
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> Automated Hydroponics & Climate Control</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> Robotic Patch Transport System</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> 100% Sustainable Organic Surfaces</li>
-                      </ul>
-                    </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        {/* Updated Image to Vertical Farm Look */}
-                       <img src="/api/placeholder/800/600" data-placeholder-src="vertical-farm-robots.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Vertical Farming with Autonomous Robots" />
-                       <div className="absolute inset-0 flex items-center justify-center">
-                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-tennis-yellow">STATUS: CULTIVATING</span>
-                       </div>
-                    </div>
-                  </div>
-
-                  {/* 2. The Racquet Ecosystem */}
-                  <div className="flex flex-col md:flex-row-reverse items-center gap-12">
-                    <div className="flex-1 space-y-6">
-                       <div className="w-16 h-16 rounded-2xl bg-blue-900/30 flex items-center justify-center text-blue-400">
-                        <Layers className="w-8 h-8" />
-                      </div>
-                      <h3 className="text-3xl font-bold">Multi-Sport Ecosystem</h3>
-                      <p className="text-gray-400 text-lg leading-relaxed">
-                        Spanning the Ground, 1st, and 2nd floors, we offer a comprehensive racquet experience. 
-                        From the high-speed action of Badminton and Table Tennis on the Mezzanine to the social atmosphere of Pickleball and the historic elegance of Real Tennis on the upper deck.
-                      </p>
-                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                          <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                            <span className="block font-bold text-white mb-1">Ground Floor</span>
-                            <span className="text-gray-400 text-xs">24 Tennis Courts (Hard, Clay, Grass, Wood)</span>
-                          </div>
-                          <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                            <span className="block font-bold text-white mb-1">First Floor</span>
-                            <span className="text-gray-400 text-xs">16 Badminton, 4 Squash, 16 Table Tennis</span>
-                          </div>
-                          <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors md:col-span-2">
-                            <span className="block font-bold text-white mb-1">Second Floor</span>
-                            <span className="text-gray-400 text-xs">8 Pickleball Courts, 1 Real Tennis Court</span>
-                          </div>
-                       </div>
-                    </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="/api/placeholder/800/600" data-placeholder-src="tennis-court-biomechanics-hud.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Tennis Court with Real-time Biomechanics HUD" />
-                    </div>
-                  </div>
-
-                  {/* 3. Autonomous Operations */}
-                  <div className="flex flex-col md:flex-row items-center gap-12">
-                    <div className="flex-1 space-y-6">
-                       <div className="w-16 h-16 rounded-2xl bg-purple-900/30 flex items-center justify-center text-purple-400">
-                        <Cpu className="w-8 h-8" />
-                      </div>
-                      <h3 className="text-3xl font-bold">Autonomous Operations</h3>
-                      <p className="text-gray-400 text-lg leading-relaxed">
-                        The facility runs itself. A centralized Building Management System (BMS) optimizes HVAC and lighting using solar power.
-                        Robotic mowers maintain the courts while overhead drones constantly analyze surface quality. 
-                        Entry is seamless with biometric scanning, removing the need for keys or cards.
-                      </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
-                            <Wind className="w-5 h-5 text-purple-400" />
-                            <div>
-                                <h4 className="font-bold text-white">Smart HVAC</h4>
-                                <p className="text-xs text-gray-400">AI Climate Control</p>
-                            </div>
-                        </div>
-                         <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
-                            <ShieldCheck className="w-5 h-5 text-purple-400" />
-                            <div>
-                                <h4 className="font-bold text-white">Biometric Entry</h4>
-                                <p className="text-xs text-gray-400">Secure & Seamless</p>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=2006&auto=format&fit=crop" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" alt="Autonomous Tech" />
-                    </div>
-                  </div>
-
-                   {/* 4. Member Experience */}
-                  <div className="flex flex-col md:flex-row-reverse items-center gap-12">
-                    <div className="flex-1 space-y-6">
-                       <div className="w-16 h-16 rounded-2xl bg-orange-900/30 flex items-center justify-center text-orange-400">
-                        <ShoppingBag className="w-8 h-8" />
-                      </div>
-                      <h3 className="text-3xl font-bold">Member Experience</h3>
-                      <p className="text-gray-400 text-lg leading-relaxed">
-                        We prioritize comfort and recovery. Our Pro Shop is stocked with the latest gear. 
-                        Locker rooms and waiting areas are managed by smart sensors to ensure cleanliness and supply availability.
-                        Automated emergency systems monitor the entire facility to instantly alert services if an incident occurs.
-                      </p>
-                       <ul className="space-y-3 text-gray-300">
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Smart Bathroom Sanitation Monitoring</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Automated Emergency Response</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Mobile App Booking & Payments</li>
-                      </ul>
-                    </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="https://images.unsplash.com/photo-1591123720164-de1348028a82?q=80&w=1974&auto=format&fit=crop" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" alt="Locker Room" />
-                    </div>
-                  </div>
-
-                </div>
-              </div>
+              <Amenities />
             </motion.div>
           )}
 
@@ -401,8 +358,7 @@ const App: React.FC = () => {
 
       {/* Global Elements */}
       <AIChat />
-      </div>
-    </LoadingProvider>
+    </div>
   );
 };
 
