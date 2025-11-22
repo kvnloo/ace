@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { 
-  OrbitControls, 
-  Html, 
-  Grid, 
-  PerspectiveCamera, 
-  Environment, 
+import {
+  OrbitControls,
+  Html,
+  Grid,
+  PerspectiveCamera,
+  Environment,
   Text,
   useCursor,
   ContactShadows,
@@ -16,6 +16,12 @@ import {
 import * as THREE from 'three';
 import { FeatureData } from '../types';
 import { Layers, Ruler, Eye, Box, Maximize2 } from 'lucide-react';
+import Grass from './Grass';
+import ClayCourtEffect from './ClayCourtEffect';
+import ReceptionArea from './ReceptionArea';
+import { getCourtTexture, type CourtSurfaceType } from '../src/utils/courtTextures';
+import { ParkingLot } from './ParkingLot';
+import { BMSControlRoom } from './BMSControlRoom';
 
 // --- Types & Constants ---
 
@@ -397,14 +403,150 @@ const Net = ({ width }: { width: number }) => (
     </group>
 )
 
+/**
+ * BleacherSection - Retractable spectator seating
+ *
+ * Architectural Decisions:
+ * - Low-poly geometry using box meshes for performance (500+ seats total)
+ * - Elevated 2m above court level for optimal viewing angles
+ * - Each section: 5 rows × 12-15 seats = 60-75 seats
+ * - Tiered design with 0.4m rise per row (standard bleacher ergonomics)
+ * - Accessible seating integrated at ground level (front row)
+ * - Retractable aesthetic suggested through mechanical support structure
+ *
+ * Performance: ~50 triangles per section × 8 sections = 400 triangles total
+ */
+interface BleacherSectionProps {
+  position: [number, number, number];
+  rotation?: [number, number, number];
+  rows?: number;
+  seatsPerRow?: number;
+}
+
+const BleacherSection: React.FC<BleacherSectionProps> = ({
+  position,
+  rotation = [0, 0, 0],
+  rows = 5,
+  seatsPerRow = 15
+}) => {
+  const SEAT_WIDTH = 0.45;
+  const SEAT_DEPTH = 0.4;
+  const SEAT_HEIGHT = 0.08;
+  const ROW_RISE = 0.4;
+  const BASE_ELEVATION = 2.0;
+
+  const totalWidth = seatsPerRow * SEAT_WIDTH;
+  const totalDepth = rows * SEAT_DEPTH;
+
+  return (
+    <group position={position} rotation={rotation}>
+      {/* Structural Support Platform */}
+      <mesh position={[0, BASE_ELEVATION - 0.2, totalDepth / 2]}>
+        <boxGeometry args={[totalWidth + 0.4, 0.4, totalDepth + 0.4]} />
+        <meshStandardMaterial color="#1e293b" metalness={0.6} roughness={0.4} />
+      </mesh>
+
+      {/* Support Legs (retractable mechanism aesthetic) */}
+      {[0, 0.33, 0.66, 1].map((ratio, i) => (
+        <group key={`leg-${i}`}>
+          <mesh position={[-totalWidth/2 + totalWidth * ratio, BASE_ELEVATION / 2, totalDepth / 4]}>
+            <boxGeometry args={[0.15, BASE_ELEVATION, 0.15]} />
+            <meshStandardMaterial color="#334155" metalness={0.7} roughness={0.3} />
+          </mesh>
+          <mesh position={[-totalWidth/2 + totalWidth * ratio, BASE_ELEVATION / 2, (totalDepth * 3) / 4]}>
+            <boxGeometry args={[0.15, BASE_ELEVATION, 0.15]} />
+            <meshStandardMaterial color="#334155" metalness={0.7} roughness={0.3} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Bleacher Rows */}
+      {Array.from({ length: rows }).map((_, rowIdx) => {
+        const rowY = BASE_ELEVATION + rowIdx * ROW_RISE;
+        const rowZ = rowIdx * SEAT_DEPTH;
+
+        return (
+          <group key={`row-${rowIdx}`}>
+            {/* Row Platform (represents bench seating) */}
+            <mesh position={[0, rowY, rowZ + SEAT_DEPTH / 2]}>
+              <boxGeometry args={[totalWidth, SEAT_HEIGHT, SEAT_DEPTH]} />
+              <meshStandardMaterial
+                color={rowIdx === 0 ? "#3b82f6" : "#475569"}
+                roughness={0.6}
+              />
+            </mesh>
+
+            {/* Backrest */}
+            {rowIdx < rows - 1 && (
+              <mesh position={[0, rowY + 0.35, rowZ + SEAT_DEPTH]}>
+                <boxGeometry args={[totalWidth, 0.6, 0.05]} />
+                <meshStandardMaterial color="#64748b" roughness={0.7} />
+              </mesh>
+            )}
+
+            {/* Accessible Seating Marker (front row) */}
+            {rowIdx === 0 && (
+              <mesh position={[-totalWidth/2 + SEAT_WIDTH, rowY + SEAT_HEIGHT + 0.01, rowZ + SEAT_DEPTH / 2]}>
+                <planeGeometry args={[SEAT_WIDTH - 0.05, SEAT_DEPTH - 0.05]} />
+                <meshBasicMaterial color="#3b82f6" transparent opacity={0.8} />
+              </mesh>
+            )}
+          </group>
+        );
+      })}
+
+      {/* Safety Railing */}
+      <mesh position={[0, BASE_ELEVATION + rows * ROW_RISE, totalDepth + 0.2]}>
+        <boxGeometry args={[totalWidth, 0.15, 0.1]} />
+        <meshStandardMaterial color={BRAND_YELLOW} metalness={0.5} roughness={0.3} />
+      </mesh>
+    </group>
+  );
+};
+
 const TennisCourt: React.FC<{ position: [number, number, number], type: 'grass' | 'hard' | 'clay' | 'wood' }> = ({ position, type }) => {
     const colors = { grass: '#4d7c0f', hard: '#3b82f6', clay: '#ea580c', wood: '#d4a373' };
+
+    // Use enhanced ClayCourtEffect for clay courts
+    if (type === 'clay') {
+      return (
+        <group position={position}>
+          <ClayCourtEffect position={[0, 0, 0]} width={10} length={22} />
+          <Net width={10} />
+        </group>
+      );
+    }
+
+    // Get texture configuration for the court type (wood and hard courts get textures)
+    const textureConfig = useMemo(() => getCourtTexture(type as CourtSurfaceType), [type]);
+
     return (
     <group position={position}>
+      {/* Main court surface with textures for wood/hard, color-only for grass */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[10, 22]} />
-        <meshStandardMaterial color={colors[type]} roughness={type === 'wood' ? 0.2 : 0.8} />
+        <meshStandardMaterial
+          color={textureConfig.color}
+          map={textureConfig.map}
+          normalMap={textureConfig.normalMap}
+          roughnessMap={textureConfig.roughnessMap}
+          roughness={textureConfig.roughness}
+          metalness={textureConfig.metalness || 0}
+        />
       </mesh>
+
+      {/* Render grass blades for grass courts */}
+      {type === 'grass' && (
+        <Grass
+          position={[0, 0.1, 0]}
+          size={[10, 22]}
+          bladeCount={1500}
+          color="#4d7c0f"
+          animated={true}
+        />
+      )}
+
+      {/* Court lines and boundaries */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
         <planeGeometry args={[8, 20]} />
         <meshBasicMaterial color="white" wireframe={false} transparent opacity={0.8} />
@@ -560,6 +702,253 @@ const GreenWallBlock: React.FC<{ position: [number, number, number], args: [numb
     </mesh>
 )
 
+// --- 3D Court Label Component ---
+
+const CourtLabel = ({ position, label }: { position: [number, number, number], label: string }) => {
+    const [hovered, setHovered] = useState(false);
+    useCursor(hovered);
+
+    return (
+        <Float
+            speed={1.5}
+            rotationIntensity={0.1}
+            floatIntensity={0.3}
+        >
+            <group
+                position={position}
+                onPointerOver={() => setHovered(true)}
+                onPointerOut={() => setHovered(false)}
+            >
+                {/* Label Background Panel */}
+                <mesh position={[0, 0, 0]} castShadow>
+                    <boxGeometry args={[16, 4, 0.5]} />
+                    <meshStandardMaterial
+                        color={hovered ? BRAND_YELLOW : "#1e293b"}
+                        metalness={0.3}
+                        roughness={0.4}
+                        emissive={hovered ? BRAND_YELLOW : "#334155"}
+                        emissiveIntensity={hovered ? 0.3 : 0.1}
+                    />
+                </mesh>
+
+                {/* Accent Strip */}
+                <mesh position={[0, 0, 0.3]}>
+                    <boxGeometry args={[16, 0.3, 0.1]} />
+                    <meshStandardMaterial
+                        color={BRAND_YELLOW}
+                        emissive={BRAND_YELLOW}
+                        emissiveIntensity={0.5}
+                    />
+                </mesh>
+
+                {/* Label Text */}
+                <Text
+                    position={[0, 0, 0.3]}
+                    fontSize={1.8}
+                    color={hovered ? "#0f172a" : "white"}
+                    anchorX="center"
+                    anchorY="middle"
+                    font="/fonts/inter-bold.woff"
+                    letterSpacing={0.05}
+                    outlineWidth={0.05}
+                    outlineColor="#000"
+                >
+                    {label} COURTS
+                </Text>
+
+                {/* Support Post */}
+                <mesh position={[0, -2.5, 0]}>
+                    <cylinderGeometry args={[0.15, 0.15, 5, 8]} />
+                    <meshStandardMaterial
+                        color="#475569"
+                        metalness={0.6}
+                        roughness={0.3}
+                    />
+                </mesh>
+            </group>
+        </Float>
+    );
+};
+
+// --- Level 2 Viewing Gallery Components ---
+
+const GlassBarrier: React.FC<{
+    position: [number, number, number],
+    width: number,
+    rotation?: [number, number, number]
+}> = ({ position, width, rotation = [0, 0, 0] }) => (
+    <group position={position} rotation={rotation}>
+        {/* Glass Panel */}
+        <mesh position={[0, 1.2, 0]}>
+            <boxGeometry args={[width, 2.4, 0.15]} />
+            <meshPhysicalMaterial
+                color="#e0f2fe"
+                transmission={0.92}
+                opacity={0.15}
+                transparent
+                roughness={0.05}
+                metalness={0.1}
+                thickness={0.5}
+                envMapIntensity={1.2}
+                clearcoat={1}
+                clearcoatRoughness={0.1}
+            />
+        </mesh>
+
+        {/* Top Rail */}
+        <mesh position={[0, 2.4, 0]}>
+            <boxGeometry args={[width, 0.1, 0.15]} />
+            <meshStandardMaterial color="#94a3b8" metalness={0.8} roughness={0.2} />
+        </mesh>
+
+        {/* Bottom Rail */}
+        <mesh position={[0, 0, 0]}>
+            <boxGeometry args={[width, 0.1, 0.15]} />
+            <meshStandardMaterial color="#94a3b8" metalness={0.8} roughness={0.2} />
+        </mesh>
+
+        {/* Vertical Support Posts */}
+        {Array.from({length: Math.floor(width / 3) + 1}).map((_, i) => (
+            <mesh key={i} position={[-width/2 + i * 3, 1.2, 0]}>
+                <cylinderGeometry args={[0.04, 0.04, 2.4, 12]} />
+                <meshStandardMaterial color="#475569" metalness={0.9} roughness={0.1} />
+            </mesh>
+        ))}
+    </group>
+);
+
+const VIPViewingSuite: React.FC<{
+    position: [number, number, number],
+    rotation?: [number, number, number]
+}> = ({ position, rotation = [0, 0, 0] }) => (
+    <group position={position} rotation={rotation}>
+        {/* Floor */}
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+            <planeGeometry args={[8, 6]} />
+            <meshStandardMaterial color="#1e293b" roughness={0.3} metalness={0.1} />
+        </mesh>
+
+        {/* Back and Side Walls */}
+        <mesh position={[0, 1.5, -3]}>
+            <boxGeometry args={[8, 3, 0.2]} />
+            <meshStandardMaterial color="#334155" roughness={0.4} />
+        </mesh>
+        <mesh position={[-4, 1.5, 0]}>
+            <boxGeometry args={[0.2, 3, 6]} />
+            <meshStandardMaterial color="#334155" roughness={0.4} />
+        </mesh>
+        <mesh position={[4, 1.5, 0]}>
+            <boxGeometry args={[0.2, 3, 6]} />
+            <meshStandardMaterial color="#334155" roughness={0.4} />
+        </mesh>
+
+        {/* Glass Front (viewing window) */}
+        <mesh position={[0, 1.5, 3]}>
+            <boxGeometry args={[7.6, 2.8, 0.1]} />
+            <meshPhysicalMaterial
+                color="#bfdbfe"
+                transmission={0.95}
+                opacity={0.1}
+                transparent
+                roughness={0.02}
+                metalness={0.05}
+                thickness={0.3}
+                envMapIntensity={1.5}
+            />
+        </mesh>
+
+        {/* Ceiling with recessed lighting */}
+        <mesh position={[0, 3, 0]}>
+            <boxGeometry args={[8, 0.15, 6]} />
+            <meshStandardMaterial color="#1e293b" />
+        </mesh>
+
+        {/* Accent lighting strips */}
+        <pointLight position={[0, 2.8, 0]} intensity={0.8} distance={8} color="#fbbf24" />
+        <mesh position={[0, 2.85, 0]}>
+            <boxGeometry args={[6, 0.05, 4]} />
+            <meshBasicMaterial color="#fbbf24" toneMapped={false} />
+        </mesh>
+
+        {/* Seating (simple representation) */}
+        {Array.from({length: 4}).map((_, i) => (
+            <group key={i} position={[-3 + i * 2, 0.4, -1]}>
+                <mesh position={[0, 0.2, 0]}>
+                    <boxGeometry args={[0.6, 0.4, 0.6]} />
+                    <meshStandardMaterial color="#475569" />
+                </mesh>
+                <mesh position={[0, 0.6, -0.2]}>
+                    <boxGeometry args={[0.6, 0.4, 0.1]} />
+                    <meshStandardMaterial color="#475569" />
+                </mesh>
+            </group>
+        ))}
+
+        {/* Premium Table */}
+        <mesh position={[0, 0.7, 1]}>
+            <cylinderGeometry args={[1.2, 1.2, 0.05, 32]} />
+            <meshStandardMaterial color="#1e293b" metalness={0.5} roughness={0.3} />
+        </mesh>
+        <mesh position={[0, 0.35, 1]}>
+            <cylinderGeometry args={[0.08, 0.08, 0.7, 12]} />
+            <meshStandardMaterial color="#334155" metalness={0.6} roughness={0.2} />
+        </mesh>
+    </group>
+);
+
+const GlassWalkway: React.FC<{
+    position: [number, number, number],
+    length: number,
+    rotation?: [number, number, number]
+}> = ({ position, length, rotation = [0, 0, 0] }) => (
+    <group position={position} rotation={rotation}>
+        {/* Transparent Glass Floor with grid pattern */}
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+            <planeGeometry args={[4, length]} />
+            <meshPhysicalMaterial
+                color="#e0f2fe"
+                transmission={0.88}
+                opacity={0.25}
+                transparent
+                roughness={0.08}
+                metalness={0.15}
+                thickness={0.8}
+                envMapIntensity={1.1}
+                clearcoat={0.9}
+                clearcoatRoughness={0.15}
+            />
+        </mesh>
+
+        {/* Safety grid pattern */}
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
+            <planeGeometry args={[3.8, length - 0.2]} />
+            <meshBasicMaterial color="#cbd5e1" wireframe transparent opacity={0.15} />
+        </mesh>
+
+        {/* Structural support underneath */}
+        {Array.from({length: Math.floor(length / 4) + 1}).map((_, i) => (
+            <mesh key={i} position={[0, -0.3, -length/2 + i * 4]} rotation={[0, 0, Math.PI/2]}>
+                <boxGeometry args={[0.6, 3.5, 0.15]} />
+                <meshStandardMaterial color="#64748b" metalness={0.7} roughness={0.3} />
+            </mesh>
+        ))}
+
+        {/* LED accent lighting in walkway */}
+        {Array.from({length: Math.floor(length / 6) + 1}).map((_, i) => (
+            <group key={`light-${i}`} position={[0, -0.15, -length/2 + i * 6]}>
+                <pointLight intensity={0.3} distance={6} color="#60a5fa" />
+                <mesh>
+                    <boxGeometry args={[3.5, 0.05, 0.3]} />
+                    <meshBasicMaterial color="#60a5fa" toneMapped={false} opacity={0.6} transparent />
+                </mesh>
+            </group>
+        ))}
+
+        {/* Glass Barriers on both sides */}
+        <GlassBarrier position={[2, 0, 0]} width={length} rotation={[0, Math.PI / 2, 0]} />
+        <GlassBarrier position={[-2, 0, 0]} width={length} rotation={[0, Math.PI / 2, 0]} />
+    </group>
+);
 
 // --- Floor Layouts ---
 
@@ -573,10 +962,10 @@ const GroundFloor = ({ active, showMeasurements, showLabels }: { active: boolean
         const row = Math.floor(i / 6);
         const col = i % 6;
         courts.push(
-            <TennisCourt 
-                key={i} 
-                type={type} 
-                position={[-35 + col * 14, 0.1, -40 + row * 26]} 
+            <TennisCourt
+                key={i}
+                type={type}
+                position={[-35 + col * 14, 0.1, -40 + row * 26]}
             />
         );
     }
@@ -589,64 +978,117 @@ const GroundFloor = ({ active, showMeasurements, showLabels }: { active: boolean
         { z: 38, label: "WOOD" },
     ];
 
+    /**
+     * Spectator Seating Layout
+     *
+     * Strategic placement around perimeter for optimal viewing:
+     * - 2 sections at north/south ends (center court viewing)
+     * - 4 sections along east/west sides (row viewing)
+     * - 2 sections at corners (dual-court viewing)
+     *
+     * Total capacity: 8 sections × 75 seats = 600 seats
+     * Accessible seating: 8 sections × 1 accessible seat = 8 ADA-compliant positions
+     */
+    const seatingConfig = [
+      // North end - center courts viewing (Hard courts)
+      { position: [0, 0.1, -60] as [number, number, number], rotation: [0, 0, 0] as [number, number, number], seats: 15 },
+
+      // South end - center courts viewing (Wood courts)
+      { position: [0, 0.1, 52] as [number, number, number], rotation: [0, Math.PI, 0] as [number, number, number], seats: 15 },
+
+      // West side - Clay courts viewing
+      { position: [-55, 0.1, -14] as [number, number, number], rotation: [0, Math.PI/2, 0] as [number, number, number], seats: 12 },
+
+      // West side - Grass courts viewing
+      { position: [-55, 0.1, 12] as [number, number, number], rotation: [0, Math.PI/2, 0] as [number, number, number], seats: 12 },
+
+      // East side - Hard courts viewing
+      { position: [55, 0.1, -40] as [number, number, number], rotation: [0, -Math.PI/2, 0] as [number, number, number], seats: 12 },
+
+      // East side - Clay courts viewing
+      { position: [55, 0.1, -14] as [number, number, number], rotation: [0, -Math.PI/2, 0] as [number, number, number], seats: 12 },
+
+      // Northwest corner - dual court viewing
+      { position: [-50, 0.1, -50] as [number, number, number], rotation: [0, Math.PI/4, 0] as [number, number, number], seats: 12 },
+
+      // Northeast corner - dual court viewing
+      { position: [50, 0.1, -50] as [number, number, number], rotation: [0, -Math.PI/4, 0] as [number, number, number], seats: 12 },
+    ];
+
     return (
         <group position={[0, 0, 0]}>
-            <FloorPlate 
-                position={[0, 0, 0]} 
-                size={[BUILDING_WIDTH - 10, BUILDING_DEPTH - 10]} 
-                level={0} 
+            <FloorPlate
+                position={[0, 0, 0]}
+                size={[BUILDING_WIDTH - 10, BUILDING_DEPTH - 10]}
+                level={0}
                 isActiveFloor={active}
                 showMeasurements={showMeasurements}
             />
             {courts}
-            {/* Pro Shop Area */}
-            <mesh position={[0, 3, 55]} castShadow>
-                <boxGeometry args={[20, 6, 8]} />
-                <meshStandardMaterial color="#0f172a" />
-            </mesh>
+
+            {/* Spectator Seating - 8 sections around perimeter */}
+            {seatingConfig.map((config, i) => (
+              <BleacherSection
+                key={`bleacher-${i}`}
+                position={config.position}
+                rotation={config.rotation}
+                seatsPerRow={config.seats}
+                rows={5}
+              />
+            ))}
+
+            {/* Reception Area - South Facade Main Entrance */}
+            <ReceptionArea showMeasurements={showMeasurements} showLabels={showLabels} />
+
+            {/* Locker Rooms - East & West Ends (25m × 15m each) */}
+            {/* East Locker Room - Men's Facilities */}
+            <LockerRoom
+                position={[57.5, 0, 0]}
+                label="MEN'S LOCKER ROOM"
+                rotation={Math.PI / 2}
+            />
+
+            {/* West Locker Room - Women's Facilities */}
+            <LockerRoom
+                position={[-57.5, 0, 0]}
+                label="WOMEN'S LOCKER ROOM"
+                rotation={-Math.PI / 2}
+            />
 
              {/* Per-Cluster Dimensions */}
              {showMeasurements && rowConfigs.map((row, i) => (
                 <group key={i}>
                     {/* Cluster Width (spanning all 6 courts) */}
-                    <CadDimension 
-                        start={new THREE.Vector3(-40, 0.5, row.z - 12)} 
-                        end={new THREE.Vector3(40, 0.5, row.z - 12)} 
-                        offsetVec={new THREE.Vector3(0, 0, -3)} 
-                        label={`${row.label} 80m`} 
+                    <CadDimension
+                        start={new THREE.Vector3(-40, 0.5, row.z - 12)}
+                        end={new THREE.Vector3(40, 0.5, row.z - 12)}
+                        offsetVec={new THREE.Vector3(0, 0, -3)}
+                        label={`${row.label} 80m`}
                     />
-                    
+
                     {/* Single Court Dims (Leftmost court) */}
-                    <CadDimension 
-                        start={new THREE.Vector3(-40, 0.5, row.z + 11)} 
-                        end={new THREE.Vector3(-30, 0.5, row.z + 11)} 
-                        offsetVec={new THREE.Vector3(0, 0, 2)} 
-                        label="10m" 
+                    <CadDimension
+                        start={new THREE.Vector3(-40, 0.5, row.z + 11)}
+                        end={new THREE.Vector3(-30, 0.5, row.z + 11)}
+                        offsetVec={new THREE.Vector3(0, 0, 2)}
+                        label="10m"
                     />
-                    <CadDimension 
-                        start={new THREE.Vector3(-30, 0.5, row.z - 11)} 
-                        end={new THREE.Vector3(-30, 0.5, row.z + 11)} 
-                        offsetVec={new THREE.Vector3(2, 0, 0)} 
-                        label="22m" 
+                    <CadDimension
+                        start={new THREE.Vector3(-30, 0.5, row.z - 11)}
+                        end={new THREE.Vector3(-30, 0.5, row.z + 11)}
+                        offsetVec={new THREE.Vector3(2, 0, 0)}
+                        label="22m"
                     />
                 </group>
             ))}
 
-            {/* Explicit Labels */}
+            {/* 3D Floating Court Labels */}
             {showLabels && rowConfigs.map((row, i) => (
-                <Text
+                <CourtLabel
                     key={`lbl-${i}`}
-                    position={[-55, 1, row.z]}
-                    rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-                    fontSize={4}
-                    color="white"
-                    anchorX="center"
-                    anchorY="middle"
-                    outlineWidth={0.1}
-                    outlineColor="#000"
-                >
-                    {row.label} COURTS
-                </Text>
+                    position={[-55, 5, row.z]}
+                    label={row.label}
+                />
             ))}
         </group>
     )
@@ -675,27 +1117,156 @@ const LevelOne = ({ active, showMeasurements }: { active: boolean, showMeasureme
                     <mesh rotation={[-Math.PI/2, 0, 0]}><planeGeometry args={[1.5, 2.7]} /><meshStandardMaterial color="#1e3a8a" /></mesh>
                 </group>
             ))}
+
+            {/* BMS Control Room */}
+            <BMSControlRoom position={[-45, 0.1, 40]} />
+
+            {/* Control Room Dimensions */}
+            {showMeasurements && (
+                <group position={[-45, 1, 40]}>
+                    <CadDimension
+                        start={new THREE.Vector3(-7.5, 0, -5)}
+                        end={new THREE.Vector3(7.5, 0, -5)}
+                        offsetVec={new THREE.Vector3(0, 0, -2)}
+                        label="15m BMS WIDTH"
+                    />
+                    <CadDimension
+                        start={new THREE.Vector3(7.5, 0, -5)}
+                        end={new THREE.Vector3(7.5, 0, 5)}
+                        offsetVec={new THREE.Vector3(2, 0, 0)}
+                        label="10m DEPTH"
+                    />
+                </group>
+            )}
         </group>
     )
 }
 
 const LevelTwo = ({ active, showMeasurements }: { active: boolean, showMeasurements: boolean }) => {
+    const walkwayWidth = BUILDING_WIDTH - 30;
+    const walkwayDepth = BUILDING_DEPTH - 30;
+
     return (
         <group position={[0, FLOOR_HEIGHT * 2, 0]}>
-            <FloorPlate 
-                position={[0, 0, 0]} 
-                size={[BUILDING_WIDTH - 30, BUILDING_DEPTH - 30]} 
-                level={2} 
+            <FloorPlate
+                position={[0, 0, 0]}
+                size={[walkwayWidth, walkwayDepth]}
+                level={2}
                 isActiveFloor={active}
                 showMeasurements={showMeasurements}
             />
+
+            {/* Central Court Area - Pickleball Courts */}
             {Array.from({length:8}).map((_, i) => (
                <group key={`p${i}`} position={[-25 + (i%4)*10, 0.1, -15 + Math.floor(i/4)*16]}>
                     <mesh rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[6, 12]} /><meshStandardMaterial color="#8b5cf6" /></mesh>
                     <Net width={6} />
                </group>
             ))}
+
+            {/* Heritage Real Tennis Court */}
             <RealTennisCourt position={[30, 0.1, 0]} />
+
+            {/* 360 Glass Walkway System - North Side */}
+            <GlassWalkway
+                position={[0, 0.1, -walkwayDepth/2 + 2]}
+                length={walkwayWidth - 8}
+                rotation={[0, 0, 0]}
+            />
+
+            {/* 360 Glass Walkway System - South Side */}
+            <GlassWalkway
+                position={[0, 0.1, walkwayDepth/2 - 2]}
+                length={walkwayWidth - 8}
+                rotation={[0, 0, 0]}
+            />
+
+            {/* 360 Glass Walkway System - East Side */}
+            <GlassWalkway
+                position={[walkwayWidth/2 - 2, 0.1, 0]}
+                length={walkwayDepth - 8}
+                rotation={[0, Math.PI / 2, 0]}
+            />
+
+            {/* 360 Glass Walkway System - West Side */}
+            <GlassWalkway
+                position={[-walkwayWidth/2 + 2, 0.1, 0]}
+                length={walkwayDepth - 8}
+                rotation={[0, Math.PI / 2, 0]}
+            />
+
+            {/* VIP Viewing Suites - Corner Positions */}
+            <VIPViewingSuite
+                position={[walkwayWidth/2 - 7, 0.1, walkwayDepth/2 - 6]}
+                rotation={[0, -Math.PI / 4, 0]}
+            />
+            <VIPViewingSuite
+                position={[-walkwayWidth/2 + 7, 0.1, walkwayDepth/2 - 6]}
+                rotation={[0, Math.PI / 4, 0]}
+            />
+            <VIPViewingSuite
+                position={[walkwayWidth/2 - 7, 0.1, -walkwayDepth/2 + 6]}
+                rotation={[0, -3 * Math.PI / 4, 0]}
+            />
+            <VIPViewingSuite
+                position={[-walkwayWidth/2 + 7, 0.1, -walkwayDepth/2 + 6]}
+                rotation={[0, 3 * Math.PI / 4, 0]}
+            />
+
+            {/* Additional VIP Suites - Mid-wall Positions */}
+            <VIPViewingSuite
+                position={[walkwayWidth/2 - 7, 0.1, 0]}
+                rotation={[0, -Math.PI / 2, 0]}
+            />
+            <VIPViewingSuite
+                position={[-walkwayWidth/2 + 7, 0.1, 0]}
+                rotation={[0, Math.PI / 2, 0]}
+            />
+
+            {/* Viewing Cutouts in Floor for Ground Floor Visibility */}
+            {Array.from({length: 4}).map((_, i) => (
+                <group key={`viewing-${i}`} position={[-30 + i * 20, 0, -20]}>
+                    {/* Transparent viewing window in floor */}
+                    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.05, 0]}>
+                        <planeGeometry args={[6, 8]} />
+                        <meshPhysicalMaterial
+                            color="#dbeafe"
+                            transmission={0.95}
+                            opacity={0.1}
+                            transparent
+                            roughness={0.02}
+                            thickness={0.3}
+                        />
+                    </mesh>
+                    {/* Safety barrier around viewing window */}
+                    <GlassBarrier position={[0, 0, 4]} width={6} rotation={[0, 0, 0]} />
+                    <GlassBarrier position={[0, 0, -4]} width={6} rotation={[0, 0, 0]} />
+                    <GlassBarrier position={[3, 0, 0]} width={8} rotation={[0, Math.PI / 2, 0]} />
+                    <GlassBarrier position={[-3, 0, 0]} width={8} rotation={[0, Math.PI / 2, 0]} />
+                </group>
+            ))}
+
+            {/* Information Kiosks along walkways */}
+            {Array.from({length: 8}).map((_, i) => {
+                const angle = (i / 8) * Math.PI * 2;
+                const radius = (walkwayWidth + walkwayDepth) / 4;
+                return (
+                    <group key={`kiosk-${i}`} position={[Math.cos(angle) * radius * 0.7, 0.8, Math.sin(angle) * radius * 0.7]}>
+                        <mesh>
+                            <cylinderGeometry args={[0.3, 0.4, 1.6, 6]} />
+                            <meshStandardMaterial color="#334155" metalness={0.6} roughness={0.3} />
+                        </mesh>
+                        <mesh position={[0, 0.9, 0]} rotation={[0, -angle, 0]}>
+                            <boxGeometry args={[0.6, 0.8, 0.05]} />
+                            <meshStandardMaterial
+                                color="#1e293b"
+                                emissive="#3b82f6"
+                                emissiveIntensity={0.3}
+                            />
+                        </mesh>
+                    </group>
+                );
+            })}
         </group>
     )
 }
@@ -777,7 +1348,10 @@ const CampusGrounds = () => {
                 <TennisCourt position={[15, 0, 0]} type="hard" />
                 <TennisCourt position={[30, 0, 0]} type="grass" />
             </group>
-            
+
+            {/* Parking Lot - positioned to the left/north side of the facility */}
+            <ParkingLot position={[-100, 0.2, -20]} />
+
             {/* Trees & Landscaping */}
             {Array.from({length: 15}).map((_, i) => {
                 const angle = (i / 15) * Math.PI * 2;
