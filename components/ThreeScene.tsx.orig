@@ -25,8 +25,6 @@ import { BMSControlRoom } from './BMSControlRoom';
 import RoboticGrassSystem from './RoboticGrassSystem';
 import TransportPods from './TransportPods';
 import HydroponicsSystem from './HydroponicsSystem';
-import MechanicalRooms from './MechanicalRooms';
-import LockerRoom from './LockerRoom';
 
 // --- Types & Constants ---
 
@@ -41,7 +39,6 @@ const BRAND_YELLOW = "#DFFF4F";
 const FEATURES: FeatureData[] = [
   { id: 'ground_tennis', title: 'Ground: Tennis Arena', description: '24 Courts: 6 Hard, 6 Clay, 6 Grass, 6 Wood.', icon: '🎾', position: [0, 5, 20] },
   { id: 'level1_racquet', title: 'L1: Racquet Mezzanine', description: '16 Badminton, 4 Squash, 16 Table Tennis.', icon: '🏸', position: [-20, 25, 0] },
-  { id: 'level1_mechanical', title: 'L1: Mechanical Systems', description: 'HVAC, Electrical, Water Treatment, Backup Power & Maintenance Robots.', icon: '⚙️', position: [35, 25, -40] },
   { id: 'level2_social', title: 'L2: Pickleball & Heritage', description: '8 Pickleball courts and 1 Real Tennis court.', icon: '🏓', position: [20, 45, 0] },
   { id: 'level3_farm', title: 'L3: Vertical Grass Lab', description: '4x 500sqm Autonomous Farming Sectors.', icon: '🌱', position: [0, 65, 0] },
   { id: 'outdoor_plaza', title: 'Outdoor Plaza', description: 'Public courts and relaxation zones.', icon: '🌳', position: [80, 0, 80] },
@@ -1139,13 +1136,6 @@ const LevelOne = ({ active, showMeasurements }: { active: boolean, showMeasureme
             {/* BMS Control Room */}
             <BMSControlRoom position={[-45, 0.1, 40]} />
 
-            {/* Mechanical & Utility Rooms */}
-            <MechanicalRooms
-                position={[35, 0.1, -40]}
-                showMetrics={showMeasurements}
-                showLabels={showMeasurements}
-            />
-
             {/* Control Room Dimensions */}
             {showMeasurements && (
                 <group position={[-45, 1, 40]}>
@@ -1464,9 +1454,6 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
             {(activeFloor === 'ALL' || activeFloor === 1) && <LevelOne active={activeFloor === 1} showMeasurements={showMeasurements} />}
             {(activeFloor === 'ALL' || activeFloor === 2) && <LevelTwo active={activeFloor === 2} showMeasurements={showMeasurements} />}
             {(activeFloor === 'ALL' || activeFloor === 3) && <LevelThree active={activeFloor === 3} showMeasurements={showMeasurements} />}
-
-            {/* Autonomous Transport Pod System */}
-            <TransportPods showRoutes={annotationMode === 'LABELS'} />
 
             {FEATURES.map((f) => {
                 let visible = showLabels;

@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { View, FeatureData } from './types';
 import NavBar from './components/NavBar';
-import ThreeScene from './components/ThreeScene';
+import { LoadingProvider } from './components/LoadingProvider';
+import LazyThreeScene from './components/LazyThreeScene';
 import AIChat from './components/AIChat';
 import Specifications from './components/Specifications';
+import ThreeSceneDiagnostic from './components/ThreeSceneDiagnostic';
 import { 
   Zap, 
   Activity, 
@@ -39,8 +41,9 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
-      <NavBar currentView={currentView} onChangeView={setCurrentView} />
+    <LoadingProvider>
+      <div className="min-h-screen bg-slate-950 text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
+        <NavBar currentView={currentView} onChangeView={setCurrentView} />
 
       <main className="relative w-full h-screen pt-20 overflow-hidden">
         <AnimatePresence mode="wait">
@@ -152,7 +155,7 @@ const App: React.FC = () => {
 
           {/* 3D FACILITY DEMO */}
           {currentView === View.FACILITY_DEMO && (
-            <motion.div 
+            <motion.div
               key="demo"
               initial="initial"
               animate="enter"
@@ -160,8 +163,9 @@ const App: React.FC = () => {
               variants={pageVariants}
               className="w-full h-full relative bg-gradient-to-b from-slate-900 to-black"
             >
+              <ThreeSceneDiagnostic />
               <div className="absolute inset-0 z-0">
-                <ThreeScene onFeatureSelect={setSelectedFeature} />
+                <LazyThreeScene onFeatureSelect={setSelectedFeature} />
               </div>
               
               {/* HUD Layer */}
@@ -397,7 +401,8 @@ const App: React.FC = () => {
 
       {/* Global Elements */}
       <AIChat />
-    </div>
+      </div>
+    </LoadingProvider>
   );
 };
 
