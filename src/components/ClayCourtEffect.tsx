@@ -1,6 +1,7 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useDebug } from '../contexts/DebugContext';
 
 interface ClayCourtEffectProps {
   position: [number, number, number];
@@ -22,10 +23,23 @@ const ClayCourtEffect: React.FC<ClayCourtEffectProps> = ({
   width = 10,
   length = 22
 }) => {
+  const { registerAsset, isAssetEnabled } = useDebug();
   const particlesRef = useRef<THREE.Points>(null);
   const textureRef = useRef<THREE.CanvasTexture | null>(null);
   const normalMapRef = useRef<THREE.CanvasTexture | null>(null);
   const roughnessMapRef = useRef<THREE.CanvasTexture | null>(null);
+
+  // Register debug asset
+  useEffect(() => {
+    registerAsset({
+      id: 'clay-court-particles',
+      name: 'Clay Court Dust Particles',
+      type: 'effects',
+      enabled: true,
+      performanceCost: 3,
+      dependencies: []
+    });
+  }, [registerAsset]);
 
   // Generate clay texture using canvas
   const clayTexture = useMemo(() => {
@@ -187,7 +201,8 @@ const ClayCourtEffect: React.FC<ClayCourtEffectProps> = ({
 
   // Animate particles
   useFrame((state, delta) => {
-    if (!particlesRef.current) return;
+    // Check if particles are enabled via debug
+    if (!particlesRef.current || !isAssetEnabled('clay-court-particles')) return;
 
     const positions = particlesRef.current.geometry.attributes.position.array as Float32Array;
     const particleCount = positions.length / 3;
@@ -244,31 +259,33 @@ const ClayCourtEffect: React.FC<ClayCourtEffectProps> = ({
       </mesh>
 
       {/* Dust Particles */}
-      <points ref={particlesRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={particles.positions.length / 3}
-            array={particles.positions}
-            itemSize={3}
+      {isAssetEnabled('clay-court-particles') && (
+        <points ref={particlesRef}>
+          <bufferGeometry>
+            <bufferAttribute
+              attach="attributes-position"
+              count={particles.positions.length / 3}
+              array={particles.positions}
+              itemSize={3}
+            />
+            <bufferAttribute
+              attach="attributes-size"
+              count={particles.sizes.length}
+              array={particles.sizes}
+              itemSize={1}
+            />
+          </bufferGeometry>
+          <pointsMaterial
+            size={0.1}
+            color="#d97706"
+            transparent
+            opacity={0.3}
+            sizeAttenuation
+            depthWrite={false}
+            blending={THREE.AdditiveBlending}
           />
-          <bufferAttribute
-            attach="attributes-size"
-            count={particles.sizes.length}
-            array={particles.sizes}
-            itemSize={1}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.1}
-          color="#d97706"
-          transparent
-          opacity={0.3}
-          sizeAttenuation
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </points>
+        </points>
+      )}
     </group>
   );
 };

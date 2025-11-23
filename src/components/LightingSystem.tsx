@@ -32,9 +32,7 @@ import * as THREE from 'three';
 import { Html } from '@react-three/drei';
 import { EffectComposer, Bloom, ToneMapping } from '@react-three/postprocessing';
 import { Sun, Moon, Zap, Eye } from 'lucide-react';
-
-// TODO: Import debug context when ready
-// import { useDebug } from '../contexts/DebugContext';
+import { useDebug } from '../contexts/DebugContext';
 
 // === TYPE DEFINITIONS ===
 
@@ -928,19 +926,17 @@ export const LightingSystem: React.FC<{
     ...initialConfig,
   });
 
-  // TODO: Uncomment when DebugContext is ready
-  // const { registerAsset, isAssetEnabled } = useDebug();
+  const { registerAsset, isAssetEnabled } = useDebug();
 
   // Debug asset registration
   useEffect(() => {
-    // TODO: Uncomment when DebugContext is ready
-    /*
     registerAsset({
       id: 'ambient-light',
       name: 'Ambient Light',
       type: 'lighting',
       enabled: true,
-      performanceCost: 1 // Low cost
+      performanceCost: 1, // Low cost
+      dependencies: []
     });
 
     registerAsset({
@@ -948,7 +944,8 @@ export const LightingSystem: React.FC<{
       name: 'Directional Light (Sun)',
       type: 'lighting',
       enabled: true,
-      performanceCost: 2
+      performanceCost: 2,
+      dependencies: []
     });
 
     registerAsset({
@@ -974,10 +971,29 @@ export const LightingSystem: React.FC<{
       name: 'HDR Environment Map',
       type: 'lighting',
       enabled: true,
-      performanceCost: 4
+      performanceCost: 4,
+      dependencies: []
     });
-    */
-  }, [/* registerAsset */]);
+
+    // Post-processing effects
+    registerAsset({
+      id: 'bloom-effects',
+      name: 'Bloom Lighting Effects',
+      type: 'effects',
+      enabled: true,
+      performanceCost: 4,
+      dependencies: ['hdr-environment']
+    });
+
+    registerAsset({
+      id: 'post-processing',
+      name: 'Post-Processing Pipeline',
+      type: 'effects',
+      enabled: true,
+      performanceCost: 6,
+      dependencies: []
+    });
+  }, [registerAsset]);
 
   const updateConfig = (partial: Partial<LightingConfig>) => {
     setConfig(prev => ({ ...prev, ...partial }));
@@ -999,14 +1015,13 @@ export const LightingSystem: React.FC<{
     };
   }, [config]);
 
-  // TODO: Uncomment when DebugContext is ready
   // Debug flags for conditional rendering
   const debugFlags = {
-    ambientLight: true, // isAssetEnabled('ambient-light')
-    directionalLight: true, // isAssetEnabled('directional-light')
-    spotLights: true, // isAssetEnabled('spot-lights')
-    dynamicShadows: true, // isAssetEnabled('dynamic-shadows')
-    hdrEnvironment: true, // isAssetEnabled('hdr-environment')
+    ambientLight: isAssetEnabled('ambient-light'),
+    directionalLight: isAssetEnabled('directional-light'),
+    spotLights: isAssetEnabled('spot-lights'),
+    dynamicShadows: isAssetEnabled('dynamic-shadows'),
+    hdrEnvironment: isAssetEnabled('hdr-environment'),
   };
 
   return (
