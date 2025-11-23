@@ -1,6 +1,7 @@
 import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useDebug } from '../contexts/DebugContext';
 
 // Weather type definitions
 export type WeatherType = 'clear' | 'rain' | 'snow' | 'windy' | 'storm';
@@ -61,6 +62,7 @@ const WeatherSystem: React.FC<WeatherSystemProps> = ({
   enableWetSurfaces = true,
   onWeatherChange
 }) => {
+  const { registerAsset, isAssetEnabled } = useDebug();
   const [currentWeather, setCurrentWeather] = useState<WeatherType>(weather);
   const [targetWeather, setTargetWeather] = useState<WeatherType>(weather);
   const [transitionProgress, setTransitionProgress] = useState(1);
@@ -70,6 +72,42 @@ const WeatherSystem: React.FC<WeatherSystemProps> = ({
   const snowMeshRef = useRef<THREE.InstancedMesh>(null);
   const windParticlesRef = useRef<THREE.Points>(null);
   const timeRef = useRef(0);
+
+  // Register debug assets for performance tracking
+  useEffect(() => {
+    registerAsset({
+      id: 'weather-particles',
+      name: 'Weather Particles (Rain/Snow)',
+      type: 'weather',
+      enabled: true,
+      performanceCost: 6 // Many particles
+    });
+
+    registerAsset({
+      id: 'clouds',
+      name: 'Cloud System',
+      type: 'weather',
+      enabled: true,
+      performanceCost: 4
+    });
+
+    registerAsset({
+      id: 'fog-system',
+      name: 'Volumetric Fog',
+      type: 'weather',
+      enabled: true,
+      performanceCost: 5
+    });
+
+    registerAsset({
+      id: 'wind-effects',
+      name: 'Wind Animation Effects',
+      type: 'weather',
+      enabled: true,
+      performanceCost: 3,
+      dependencies: ['grass-physics'] // affects grass
+    });
+  }, [registerAsset]);
 
   // Weather transition management
   useEffect(() => {
@@ -114,7 +152,9 @@ const WeatherSystem: React.FC<WeatherSystemProps> = ({
     <group>
       {/* Rain Effect */}
       {(currentWeather === 'rain' || targetWeather === 'rain' ||
-        currentWeather === 'storm' || targetWeather === 'storm') && enableEffects && (
+        currentWeather === 'storm' || targetWeather === 'storm') &&
+        enableEffects &&
+        isAssetEnabled('weather-particles') && (
         <RainEffect
           intensity={getCurrentIntensity() * (currentWeather === 'storm' || targetWeather === 'storm' ? 1.5 : 1)}
           meshRef={rainMeshRef}
@@ -124,7 +164,9 @@ const WeatherSystem: React.FC<WeatherSystemProps> = ({
       )}
 
       {/* Snow Effect */}
-      {(currentWeather === 'snow' || targetWeather === 'snow') && enableEffects && (
+      {(currentWeather === 'snow' || targetWeather === 'snow') &&
+        enableEffects &&
+        isAssetEnabled('weather-particles') && (
         <SnowEffect
           intensity={getCurrentIntensity()}
           meshRef={snowMeshRef}
@@ -135,7 +177,9 @@ const WeatherSystem: React.FC<WeatherSystemProps> = ({
 
       {/* Wind Effect */}
       {(currentWeather === 'windy' || targetWeather === 'windy' ||
-        currentWeather === 'storm' || targetWeather === 'storm') && enableEffects && (
+        currentWeather === 'storm' || targetWeather === 'storm') &&
+        enableEffects &&
+        isAssetEnabled('wind-effects') && (
         <WindEffect
           intensity={getCurrentIntensity() * (currentWeather === 'storm' || targetWeather === 'storm' ? 2 : 1)}
           particlesRef={windParticlesRef}
@@ -151,12 +195,12 @@ const WeatherSystem: React.FC<WeatherSystemProps> = ({
       />
 
       {/* Wet Surface Effects */}
-      {enableWetSurfaces && wetness > 0 && (
+      {enableWetSurfaces && wetness > 0 && isAssetEnabled('weather-particles') && (
         <WetSurfaceEffect wetness={wetness} areaSize={areaSize} />
       )}
 
       {/* Weather-specific ambient effects */}
-      {currentWeather === 'clear' && (
+      {currentWeather === 'clear' && isAssetEnabled('clouds') && (
         <SunEffect intensity={intensity} time={timeRef.current} />
       )}
     </group>
