@@ -1,0 +1,89 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation "Main navigation" [ref=e5]:
+    - generic [ref=e6]:
+      - button "Navigate to homepage" [ref=e7] [cursor=pointer]:
+        - text: LAWNTECH
+        - generic [ref=e9]: DYNAMICS
+      - generic [ref=e10]:
+        - button "Navigate to Vision" [ref=e11] [cursor=pointer]: Vision
+        - button "Navigate to Specs" [ref=e12] [cursor=pointer]: Specs
+        - button "Navigate to Court View" [ref=e13] [cursor=pointer]: Court View
+        - button "Navigate to Amenities" [ref=e14] [cursor=pointer]: Amenities
+        - button "Navigate to Invest" [ref=e15] [cursor=pointer]: Invest
+        - button "Join waiting list for facility access" [ref=e16] [cursor=pointer]: JOIN WAITING LIST
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - region "Hero" [ref=e19]:
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - img [ref=e24]
+            - generic [ref=e26]: The Future of Racket Sports & Human Performance
+          - heading "AUTONOMOUS. INTEGRATED. OPTIMIZED." [level=1] [ref=e27]:
+            - text: AUTONOMOUS.
+            - text: INTEGRATED.
+            - text: OPTIMIZED.
+          - paragraph [ref=e28]: The world's first autonomous racket sports and health optimization facility with integrated vertical farming, AI coaching, and performance tracking across 147 biomarkers.
+          - generic [ref=e29]:
+            - button "Navigate to 3D facility demo" [ref=e30] [cursor=pointer]:
+              - text: Explore 3D Demo
+              - img [ref=e31]
+            - button "View facility amenities and features" [ref=e34] [cursor=pointer]: View Amenities
+      - region "Features" [ref=e35]:
+        - generic [ref=e36]:
+          - heading "Integrated Platform" [level=2] [ref=e37]
+          - paragraph [ref=e38]: Four pillars of autonomous optimization working together
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - img [ref=e41]
+            - heading "Multi-Sport Excellence" [level=3] [ref=e43]
+            - paragraph [ref=e44]: Tennis, Pickleball, Badminton, Squash with computer vision coaching and real-time biomechanics analysis
+            - list [ref=e45]:
+              - listitem [ref=e46]:
+                - generic [ref=e48]: RGB + depth cameras
+              - listitem [ref=e49]:
+                - generic [ref=e51]: Multi-surface courts
+              - listitem [ref=e52]:
+                - generic [ref=e54]: Indoor grass courts (first of its kind)
+              - listitem [ref=e55]:
+                - generic [ref=e57]: AI coaching feedback
+          - generic [ref=e58]:
+            - img [ref=e59]
+            - heading "APEX Performance" [level=3] [ref=e64]
+            - paragraph [ref=e65]: 147 biomarkers tracked daily with AI-driven protocols and Blueprint-style health optimization
+            - list [ref=e66]:
+              - listitem [ref=e67]:
+                - generic [ref=e69]: VO₂ Max +28% avg
+              - listitem [ref=e70]:
+                - generic [ref=e72]: Sleep efficiency 94%
+              - listitem [ref=e73]:
+                - generic [ref=e75]: 247+ studies/day
+          - generic [ref=e76]:
+            - img [ref=e77]
+            - heading "Vertical Farm" [level=3] [ref=e81]
+            - paragraph [ref=e82]: Personalized nutrition grown on-site with 95% water efficiency and zero pesticides
+            - list [ref=e83]:
+              - listitem [ref=e84]:
+                - generic [ref=e86]: 100% renewable energy
+              - listitem [ref=e87]:
+                - generic [ref=e89]: Genetic-optimized crops
+              - listitem [ref=e90]:
+                - generic [ref=e92]: Farm-to-table delivery
+          - generic [ref=e93]:
+            - img [ref=e94]
+            - heading "Autonomous Operations" [level=3] [ref=e109]
+            - paragraph [ref=e110]: Digital twin control with multi-agent scheduling, biometric access, and smart energy management
+            - list [ref=e111]:
+              - listitem [ref=e112]:
+                - generic [ref=e114]: 1000+ IoT sensors
+              - listitem [ref=e115]:
+                - generic [ref=e117]: Unity/Three.js twin
+              - listitem [ref=e118]:
+                - generic [ref=e120]: Robotic maintenance
+  - button "Open AI chat" [ref=e122] [cursor=pointer]:
+    - img [ref=e123]
+```

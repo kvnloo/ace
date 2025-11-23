@@ -27,9 +27,6 @@ import TransportPods from './TransportPods';
 import HydroponicsSystem from './HydroponicsSystem';
 import MechanicalRooms from './MechanicalRooms';
 import LockerRoom from './LockerRoom';
-import { LoadingProvider } from './loading/LoadingProvider';
-import LoadingScreen from './loading/LoadingScreen';
-import { AssetRegistry } from '../utils/debug/assetRegistry';
 import WeatherSystem, { useWeather } from './WeatherSystem';
 import WeatherControls from './WeatherControls';
 
@@ -1583,7 +1580,6 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
     const [activeFloor, setActiveFloor] = useState<FloorLevel>('ALL');
     const [annotationMode, setAnnotationMode] = useState<AnnotationMode>('LABELS');
     const [performanceMode, setPerformanceMode] = useState<'high' | 'medium' | 'low'>('medium');
-    const [isLoadingComplete, setIsLoadingComplete] = useState(false);
     const controlsRef = useRef<any>(null);
     const isAnimatingRef = useRef(false);
 
@@ -1600,27 +1596,12 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
         if (feature.id.includes('level3')) setActiveFloor(3);
     };
 
-    const handleLoadingComplete = () => {
-        console.log('✅ All assets loaded, scene ready!');
-        setIsLoadingComplete(true);
-    };
-
     const showLabels = annotationMode === 'LABELS';
     const showMeasurements = annotationMode === 'MEASUREMENTS';
 
     return (
-        <LoadingProvider registry={AssetRegistry.getInstance()}>
-            <div className="w-full h-full absolute inset-0">
-                {!isLoadingComplete && (
-                    <LoadingScreen
-                        onComplete={handleLoadingComplete}
-                        minimumDisplayTime={2000}
-                        showFPSMonitor={true}
-                        qualityMode="auto"
-                    />
-                )}
-
-                <ControlsOverlay
+        <div className="w-full h-full absolute inset-0">
+            <ControlsOverlay
                     activeFloor={activeFloor}
                     setActiveFloor={setActiveFloor}
                     annotationMode={annotationMode}
@@ -1715,8 +1696,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
                 ECO-FACILITY VIEWER v3.3 <br />
                 INTERACTIVE ARCHITECTURAL MODEL
             </div>
-            </div>
-        </LoadingProvider>
+        </div>
     );
 };
 

@@ -496,10 +496,16 @@ export class AssetLoader {
   }
 
   /**
-   * Load asset resource (actual implementation)
+   * Enable asset component rendering (component-based loading)
    *
-   * Loads the actual 3D asset based on type and component path.
-   * Implements graceful degradation if asset fails to load.
+   * Instead of loading files, this enables React components to render by updating
+   * the AssetRegistry. Components use useAssetEnabled() hook to check if they should render.
+   *
+   * This implements phase-based progressive rendering:
+   * 1. Enable asset in registry
+   * 2. Components polling useAssetEnabled() detect change
+   * 3. Components render on next React cycle
+   * 4. Monitor FPS after render
    */
   private async simulateAssetLoad(assetId: string): Promise<void> {
     const asset = this.registry.get(assetId);
@@ -508,46 +514,56 @@ export class AssetLoader {
     }
 
     try {
-      // Asset is already enabled by default in AssetRegistry
-      // The registry.get() returns the asset if it exists
-      // Components check assetRegistry.isEnabled(id) to decide if they should render
+      // Enable the asset in registry (components will detect via useAssetEnabled hook)
+      const enableSuccess = this.registry.enable(assetId);
 
-      // For assets with component paths, verify component exists
-      if (asset.componentPath) {
-        await this.verifyComponentExists(asset.componentPath);
+      if (!enableSuccess) {
+        throw new Error(`Failed to enable asset: ${assetId} (circular dependency detected)`);
       }
 
-      // Log successful load
-      console.log(`  ✓ Loaded asset: ${assetId} (${asset.type})`);
+      // Wait for React to re-render (give components time to mount)
+      await this.waitForRender();
+
+      // Monitor FPS after component renders
+      const fpsAfterRender = this.getCurrentFPS();
+      const targetFPS = this.options.fpsThresholds?.get(this.currentPhase!) || 60;
+
+      if (fpsAfterRender < targetFPS * 0.8) {
+        console.warn(`  ⚠️ FPS dropped to ${fpsAfterRender.toFixed(1)} after enabling ${assetId}`);
+
+        // Optional: Disable asset if it causes severe performance issues
+        if (fpsAfterRender < this.options.minimalModeThreshold) {
+          console.warn(`  🔄 Auto-disabling ${assetId} due to severe performance impact`);
+          this.registry.disable(assetId);
+          throw new Error(`Asset ${assetId} disabled due to performance impact`);
+        }
+      }
+
+      console.log(`  ✓ Enabled component: ${assetId} (${asset.type}) - FPS: ${fpsAfterRender.toFixed(1)}`);
 
     } catch (error) {
-      console.error(`  ✗ Asset load failed: ${assetId}`, error);
+      console.error(`  ✗ Failed to enable asset: ${assetId}`, error);
 
-      // Graceful degradation - don't fail entire pipeline
-      // Just log error and continue
-      if (asset.type === 'court' || asset.type === 'building') {
-        console.warn(`  → Using fallback mesh for ${assetId}`);
-        // Fallback is handled by rendering components checking assetRegistry.isEnabled()
-      }
+      // Graceful degradation - disable the asset
+      this.registry.disable(assetId);
 
       throw error; // Re-throw to be caught by retry logic
     }
   }
 
   /**
-   * Verify component file exists (basic check)
+   * Wait for React render cycle to complete
+   * Gives components time to detect enabled state and mount
    */
-  private async verifyComponentExists(componentPath: string): Promise<void> {
-    // Component existence is verified at runtime by React
-    // If component doesn't exist, React will throw error during render
-    // We just validate the path format here
-    if (!componentPath.startsWith('components/')) {
-      console.warn(`Invalid component path: ${componentPath}`);
-    }
-
-    // In production, components are bundled so this check is sufficient
-    // For development, Vite will show clear errors if component is missing
-    return Promise.resolve();
+  private async waitForRender(): Promise<void> {
+    // Wait for 2 animation frames to ensure React has rendered
+    return new Promise(resolve => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          resolve();
+        });
+      });
+    });
   }
 
   /**

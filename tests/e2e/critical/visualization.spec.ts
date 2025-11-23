@@ -74,12 +74,16 @@ test.describe('Visualization Controls', () => {
 
     // Assert no console errors
     monitor.assertNoErrors();
+    monitor.assertNoThreeJSErrors();
+    monitor.assertNoCriticalErrors();
 
     // Note: Actual 3D heatmap rendering requires Three.js integration
     // This test verifies UI controls are functional
   });
 
   test('should change camera angle', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Verify camera controls are visible
     await expect(vizPage.cameraControls).toBeVisible();
 
@@ -98,11 +102,18 @@ test.describe('Visualization Controls', () => {
       await expect(button).toBeEnabled();
     }
 
+    // Assert no console errors during camera changes
+    monitor.assertNoErrors();
+    monitor.assertNoThreeJSErrors();
+    monitor.assertNoWebGLErrors();
+
     // Note: Actual camera movement requires Three.js integration
     // This test verifies UI controls are functional
   });
 
   test('should toggle weather effects', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Verify weather toggle button exists and is clickable
     await expect(vizPage.weatherToggle).toBeVisible();
     await expect(vizPage.weatherToggle).toBeEnabled();
@@ -114,11 +125,17 @@ test.describe('Visualization Controls', () => {
     // Verify button is still responsive after click
     await expect(vizPage.weatherToggle).toBeEnabled();
 
+    // Assert no console errors
+    monitor.assertNoErrors();
+    monitor.assertNoThreeJSErrors();
+
     // Note: Actual weather effects require Three.js integration
     // This test verifies UI controls are functional
   });
 
   test('should respond to all UI controls', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Test zoom controls
     await vizPage.zoom('in');
     await page.waitForTimeout(300);
@@ -145,11 +162,18 @@ test.describe('Visualization Controls', () => {
     await expect(vizPage.weatherToggle).toBeEnabled();
     await expect(vizPage.cameraControls).toBeVisible();
 
+    // Assert no errors occurred during all interactions
+    monitor.assertNoErrors();
+    monitor.assertNoThreeJSErrors();
+    monitor.assertNoComponentErrors();
+
     // Take final snapshot
     await vizPage.takeSnapshot('all-controls-tested');
   });
 
   test('should reset view to default', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Verify reset button exists
     await expect(vizPage.resetButton).toBeVisible();
     await expect(vizPage.resetButton).toBeEnabled();
@@ -168,6 +192,10 @@ test.describe('Visualization Controls', () => {
 
     // Verify reset button is still responsive
     await expect(vizPage.resetButton).toBeEnabled();
+
+    // Assert no errors during reset
+    monitor.assertNoErrors();
+    monitor.assertNoThreeJSErrors();
 
     // Note: Actual view reset requires Three.js integration
     // This test verifies UI controls are functional
@@ -216,6 +244,8 @@ test.describe('Visualization Controls', () => {
   });
 
   test('should handle rapid control changes', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Rapidly toggle controls to test UI responsiveness
     for (let i = 0; i < 5; i++) {
       await vizPage.toggleHeatMap();
@@ -229,6 +259,11 @@ test.describe('Visualization Controls', () => {
     await expect(vizPage.weatherToggle).toBeEnabled();
     await expect(vizPage.canvas3D).toBeAttached();
 
+    // Assert no errors during rapid interactions
+    monitor.assertNoErrors();
+    monitor.assertNoComponentErrors();
+    expect(monitor.getErrorCount(), 'Should have zero errors').toBe(0);
+
     // Note: This tests UI responsiveness, not 3D rendering
     // WebGL integration would require Three.js scene setup
   });
@@ -238,6 +273,7 @@ test.describe('Visualization Controls - Mobile Viewport', () => {
   test.use({ viewport: { width: 375, height: 667 } });
 
   test('should work on mobile devices', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
     const homePage = new HomePage(page);
     const courtViewPage = new CourtViewPage(page);
     const vizPage = new VisualizationPage(page);
@@ -263,10 +299,16 @@ test.describe('Visualization Controls - Mobile Viewport', () => {
     // Verify controls remain responsive
     await expect(vizPage.heatMapToggle).toBeEnabled();
 
+    // Assert no errors on mobile viewport
+    monitor.assertNoErrors();
+    monitor.assertNoThreeJSErrors();
+    monitor.assertNoWebGLErrors();
+
     // Note: Mobile viewport test verifies UI is responsive and accessible
   });
 
   test('should support touch gestures for camera control', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
     const homePage = new HomePage(page);
     const courtViewPage = new CourtViewPage(page);
     const vizPage = new VisualizationPage(page);
@@ -292,6 +334,10 @@ test.describe('Visualization Controls - Mobile Viewport', () => {
     // Verify mobile controls are touch-friendly (min 44x44px tap targets)
     const heatMapBounds = await vizPage.heatMapToggle.boundingBox();
     expect(heatMapBounds).toBeTruthy();
+
+    // Assert no errors on mobile touch interactions
+    monitor.assertNoErrors();
+    monitor.assertNoThreeJSErrors();
 
     // Note: Touch gestures require Three.js OrbitControls with touch support
     // This test verifies mobile-friendly UI elements are present

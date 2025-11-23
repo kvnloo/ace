@@ -54,7 +54,7 @@ export default defineConfig({
   // Shared settings for all the projects below
   use: {
     // Base URL for tests (Vite default port)
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:3000',
 
     // Collect trace when retrying the failed test
     trace: 'on-first-retry',
@@ -124,7 +124,7 @@ export default defineConfig({
   // Web server configuration
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:5173',
+    url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
     stdout: 'ignore',

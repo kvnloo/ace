@@ -5,12 +5,11 @@
  * Gracefully degrades to minimal building mesh if assets fail to load.
  */
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import ThreeScene from './ThreeScene';
 import ErrorBoundary from './ErrorBoundary';
 import FallbackUI from './FallbackUI';
-import { useLoading } from './loading/LoadingProvider';
 import { FeatureData } from '../types';
 
 interface ThreeSceneWrapperProps {
@@ -19,41 +18,26 @@ interface ThreeSceneWrapperProps {
 
 /**
  * Wrapper component for ThreeScene with error handling and fallback
+ * Fixed: Removed loading context dependency that was blocking rendering
  *
  * @param onFeatureSelect - Callback when a feature is selected in the scene
  */
 const ThreeSceneWrapper: React.FC<ThreeSceneWrapperProps> = ({ onFeatureSelect }) => {
-  const { error, fallbackMode, handleLoadingError, clearError } = useLoading();
   const [localError, setLocalError] = useState<Error | null>(null);
   const [showFallback, setShowFallback] = useState(false);
 
-  // Monitor fallback mode from loading provider
-  useEffect(() => {
-    if (fallbackMode) {
-      setShowFallback(true);
-    }
-  }, [fallbackMode]);
-
-  // Monitor local error state
-  useEffect(() => {
-    if (localError) {
-      setShowFallback(true);
-      handleLoadingError(localError);
-    }
-  }, [localError, handleLoadingError]);
-
   const handleRetry = useCallback(() => {
-    console.log('🔄 Retrying asset loading...');
+    console.log('🔄 Retrying 3D scene...');
     setLocalError(null);
     setShowFallback(false);
-    clearError();
     // Force reload the page to retry
     window.location.reload();
-  }, [clearError]);
+  }, []);
 
   const handleSceneError = useCallback((error: Error) => {
     console.error('❌ ThreeScene error caught:', error);
     setLocalError(error);
+    setShowFallback(true);
   }, []);
 
   return (
@@ -63,11 +47,11 @@ const ThreeSceneWrapper: React.FC<ThreeSceneWrapperProps> = ({ onFeatureSelect }
         <ThreeScene onFeatureSelect={onFeatureSelect} />
       </ErrorBoundary>
 
-      {/* Fallback UI Overlay */}
+      {/* Fallback UI Overlay - only show on actual error */}
       <AnimatePresence>
-        {showFallback && (
+        {showFallback && localError && (
           <FallbackUI
-            error={error || localError || undefined}
+            error={localError}
             onRetry={handleRetry}
             showBuilding={true}
           />

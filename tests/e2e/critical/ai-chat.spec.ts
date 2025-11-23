@@ -110,6 +110,8 @@ test.describe('AI Chat Interaction', () => {
   });
 
   test('should handle multiple rapid messages', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await homePage.openAIChat();
     await chatPage.verifyChatOpen();
 
@@ -143,6 +145,10 @@ test.describe('AI Chat Interaction', () => {
     // Verify message count increased
     const finalCount = await chatPage.getMessageCount();
     expect(finalCount).toBeGreaterThan(initialCount + messages.length);
+
+    // Assert no errors during rapid message handling
+    monitor.assertNoErrors();
+    monitor.assertNoComponentErrors();
   });
 
   test('should display typing indicator during response', async ({ page }) => {
@@ -195,6 +201,8 @@ test.describe('AI Chat Interaction', () => {
   });
 
   test('should handle API errors gracefully', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await homePage.openAIChat();
     await chatPage.verifyChatOpen();
 
@@ -211,6 +219,10 @@ test.describe('AI Chat Interaction', () => {
 
     // Message should be meaningful (either API response or fallback)
     expect(lastMessage).toBeTruthy();
+
+    // Assert error handling doesn't cause console errors
+    monitor.assertNoErrors();
+    monitor.assertNoComponentErrors();
   });
 });
 
@@ -218,6 +230,7 @@ test.describe('AI Chat - Mobile Viewport', () => {
   test.use({ viewport: { width: 375, height: 667 } });
 
   test('should work on mobile devices', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
     const homePage = new HomePage(page);
     const chatPage = new AIChatPage(page);
 
@@ -238,5 +251,9 @@ test.describe('AI Chat - Mobile Viewport', () => {
     // Verify response was received
     const finalCount = await chatPage.getMessageCount();
     expect(finalCount).toBeGreaterThan(initialCount);
+
+    // Assert no errors on mobile viewport
+    monitor.assertNoErrors();
+    monitor.assertNoComponentErrors();
   });
 });

@@ -152,6 +152,8 @@ test.describe('Court Navigation Flow', () => {
   });
 
   test('should show loading state during data fetch', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Delay API response to test loading state
     await page.route('**/api/courts/**', async (route) => {
       await page.waitForTimeout(1000);
@@ -174,9 +176,14 @@ test.describe('Court Navigation Flow', () => {
 
     // Loading indicator should be hidden
     await expect(courtViewPage.loadingIndicator).not.toBeVisible();
+
+    // Assert no console errors during loading
+    monitor.assertNoErrors();
   });
 
   test('should maintain performance metrics', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await homePage.goToCourtView();
     await courtViewPage.selectCourt(0);
     await courtViewPage.waitFor3DSceneLoad();
@@ -189,6 +196,10 @@ test.describe('Court Navigation Flow', () => {
     expect(perf.renderTime).toBeLessThan(5000); // DOM render time (relaxed for 3D scene)
 
     console.log('Performance metrics:', perf);
+
+    // Assert no performance-degrading errors
+    monitor.assertNoErrors();
+    monitor.assertNoThreeJSErrors();
   });
 });
 
@@ -196,6 +207,7 @@ test.describe('Court Navigation - Mobile Viewport', () => {
   test.use({ viewport: { width: 375, height: 667 } });
 
   test('should navigate courts on mobile device', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
     const homePage = new HomePage(page);
     const courtViewPage = new CourtViewPage(page);
 
@@ -214,6 +226,10 @@ test.describe('Court Navigation - Mobile Viewport', () => {
     // Verify 3D scene loads on mobile
     await courtViewPage.waitFor3DSceneLoad();
     await expect(courtViewPage.courtCanvas).toBeVisible();
+
+    // Assert no errors on mobile
+    monitor.assertNoErrors();
+    monitor.assertNoWebGLErrors();
 
     // Take mobile screenshot
     await expect(page).toHaveScreenshot('court-view-mobile.png');

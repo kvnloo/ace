@@ -1,16 +1,17 @@
 import { test, expect } from './fixtures';
 import { goToHome, waitForScene } from './helpers/navigation';
 import { expectCanvasRendered } from './helpers/assertions';
-import { ConsoleMonitor } from './helpers/consoleMonitor';
+import { ConsoleMonitor, createConsoleMonitor } from './helpers/consoleMonitor';
 
 /**
  * Smoke Tests for ACE Facility
  * Basic validation that the application loads and core features work
+ * Enhanced with comprehensive console error monitoring
  */
 
 test.describe('Application Smoke Tests', () => {
   test('should load homepage successfully', async ({ page }) => {
-    const monitor = new ConsoleMonitor(page);
+    const monitor = createConsoleMonitor(page);
 
     await goToHome(page);
 
@@ -21,12 +22,21 @@ test.describe('Application Smoke Tests', () => {
     const isLoaded = await page.evaluate(() => document.readyState === 'complete');
     expect(isLoaded).toBeTruthy();
 
-    // Assert no console errors
+    // Comprehensive error assertions
     monitor.assertNoErrors();
+    monitor.assertNoCriticalErrors();
+    monitor.assertNoPromiseRejections();
+    monitor.assertNoAssetErrors();
+    monitor.assertNoRuntimeErrors();
+
+    // Print summary if any warnings
+    if (monitor.getWarningCount() > 0) {
+      console.log(`⚠️ Warnings found on homepage: ${monitor.getWarningCount()}`);
+    }
   });
 
   test('should render Three.js canvas', async ({ canvasPage }) => {
-    const monitor = new ConsoleMonitor(canvasPage);
+    const monitor = createConsoleMonitor(canvasPage);
 
     // Canvas is already loaded by fixture
     await expectCanvasRendered(canvasPage);
@@ -49,8 +59,19 @@ test.describe('Application Smoke Tests', () => {
     expect(canvasSize.width).toBeGreaterThan(0);
     expect(canvasSize.height).toBeGreaterThan(0);
 
-    // Assert no console errors
+    // Comprehensive 3D-specific error assertions
     monitor.assertNoErrors();
+    monitor.assertNo3DRenderErrors();
+    monitor.assertNoWebGLErrors();
+    monitor.assertNoThreeJSErrors();
+    monitor.assertNoAssetErrors();
+    monitor.assertNoPromiseRejections();
+
+    // Check for WebGL warnings
+    const webglWarnings = monitor.getWebGLWarnings();
+    if (webglWarnings.length > 0) {
+      console.log(`⚠️ WebGL warnings in 3D canvas: ${webglWarnings.length}`);
+    }
   });
 
   test('should have no console errors on load', async ({ page }) => {
@@ -78,7 +99,7 @@ test.describe('Application Smoke Tests', () => {
   });
 
   test('should be responsive on mobile viewport', async ({ page }) => {
-    const monitor = new ConsoleMonitor(page);
+    const monitor = createConsoleMonitor(page);
 
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
@@ -90,12 +111,15 @@ test.describe('Application Smoke Tests', () => {
     expect(bodyBox).toBeTruthy();
     expect(bodyBox!.width).toBeLessThanOrEqual(375);
 
-    // Assert no console errors
+    // Enhanced error assertions for mobile
     monitor.assertNoErrors();
+    monitor.assertNoComponentErrors();
+    monitor.assertNoRuntimeErrors();
+    monitor.assertNoAssetErrors();
   });
 
   test('should handle page reload without errors', async ({ page }) => {
-    const monitor = new ConsoleMonitor(page);
+    const monitor = createConsoleMonitor(page);
 
     await goToHome(page);
     await page.waitForLoadState('networkidle');

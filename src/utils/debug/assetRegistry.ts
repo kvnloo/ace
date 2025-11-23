@@ -138,6 +138,15 @@ export class AssetRegistry {
   }
 
   /**
+   * Get all assets by category (for AssetLoader compatibility)
+   * Maps AssetType to category string
+   */
+  public getAssetsByCategory(category: string): RegisteredAsset[] {
+    // Category is essentially the same as type for our purposes
+    return this.getAll().filter(asset => asset.type === category);
+  }
+
+  /**
    * Get all enabled assets
    */
   public getEnabled(): RegisteredAsset[] {

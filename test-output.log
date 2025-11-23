@@ -1,0 +1,29 @@
+
+> lawntech-dynamics@0.0.0 test:e2e
+> playwright test
+
+
+Running 1955 tests using 10 workers
+
+  ✘     3 [chromium] › tests/e2e/3d-render-check.spec.ts:38:3 › 3D Rendering Quick Check › WebGL context created without errors (518ms)
+  ✘     2 [chromium] › tests/e2e/3d-render-check.spec.ts:123:3 › 3D Rendering Quick Check › Floor navigation buttons work (512ms)
+  ✘     4 [chromium] › tests/e2e/3d-render-check.spec.ts:98:3 › 3D Rendering Quick Check › Camera controls are functional (514ms)
+  ✘     1 [chromium] › tests/e2e/3d-render-check.spec.ts:84:3 › 3D Rendering Quick Check › Scene has rendered content (not blank) (513ms)
+  ✘     9 [chromium] › tests/e2e/3d-render-check.spec.ts:11:3 › 3D Rendering Quick Check › 3D scene renders with WebGL canvas visible (529ms)
+  ✘    10 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:103:5 › 3D Rendering Validation › WebGL Context Validation › WebGL context should be active and initialized (2.5s)
+  ✘     6 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:115:5 › 3D Rendering Validation › WebGL Context Validation › WebGL context should have valid viewport (2.5s)
+  ✓    13 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:179:5 › 3D Rendering Validation › Component Rendering Check › renderer should be initialized and running (2.6s)
+  ✘     5 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:49:5 › 3D Rendering Validation › Visual Pixel Detection › canvas should have varying pixel colors (not solid) (4.4s)
+  ✘    11 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:147:5 › 3D Rendering Validation › WebGL Context Validation › WebGL should have active buffers (4.2s)
+  ✘    15 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:130:5 › 3D Rendering Validation › WebGL Context Validation › WebGL should have active shader programs (4.3s)
+  ✘    14 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:168:5 › 3D Rendering Validation › Component Rendering Check › 3D scene components should be mounted in DOM (4.5s)
+  ✓    12 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:187:5 › 3D Rendering Validation › Component Rendering Check › multiple render cycles should occur (5.0s)
+  ✘    16 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:214:5 › 3D Rendering Validation › FPS Validation › FPS counter should be visible and updating (4.3s)
+  ✘    20 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:357:5 › 3D Rendering Validation › Asset Batch Test › all critical assets should be loaded (4.5s)
+  ✘    23 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:336:5 › 3D Rendering Validation › Asset Batch Test › components should load in expected phases (4.9s)
+  ✘     8 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:21:5 › 3D Rendering Validation › Visual Pixel Detection › canvas should contain non-blank pixels after render (12.6s)
+  ✓    24 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:374:5 › 3D Rendering Validation › Asset Batch Test › loading should complete within timeout (4.4s)
+  ✘    28 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:446:5 › 3D Rendering Validation › Rendering Performance › no WebGL errors should occur during render (4.4s)
+  ✓    27 [chromium] › tests/e2e/3d-rendering-validation.spec.ts:429:5 › 3D Rendering Validation › Rendering Performance › frame rendering should complete within budget (4.6s)
+✅ No accessibility violations found
+  ✓    29 [chromium] › tests/e2e/accessibility.spec.ts:32:3 › Accessibility Compliance (WCAG 2.1 AA) › should pass axe-core accessibility audit (3.6s)

@@ -103,6 +103,7 @@ const App: React.FC = () => {
             onComplete={() => setLoadingComplete(true)}
             minimumDisplayTime={2000}
             showFPSMonitor={true}
+            qualityMode="auto"
           />
         )}
       </AnimatePresence>
