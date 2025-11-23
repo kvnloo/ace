@@ -1,13 +1,12 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles,
   TrendingUp,
   AlertTriangle,
 } from 'lucide-react';
-import {
-  fpsPulseVariants,
-} from '../loading/animations';
+import { getPerformanceTracker } from '../../utils/debug/performanceTracker';
 
 // Copied from LoadingScreen.tsx
 interface FPSData {
@@ -42,65 +41,80 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
     history: [],
   });
   const [fpsLevel, setFpsLevel] = useState<FPSLevel>('excellent');
+  const isPortalMode = mode === 'overlay' || mode === 'transitioning';
 
-  // FPS Monitoring logic copied from LoadingScreen (lines 85-147)
+  // Portal container for overlay mode
+  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  // FPS Monitoring using global PerformanceTracker
   useEffect(() => {
     if (!showFPSMonitor) return;
 
-    let frameCount = 0;
-    let lastTime = performance.now();
+    const tracker = getPerformanceTracker();
     let animationFrameId: number;
 
-    const measureFPS = () => {
-      const currentTime = performance.now();
-      const delta = currentTime - lastTime;
+    const updateFPS = () => {
+      const fps = tracker.trackFPS();
+      const avgFPS = tracker.getAverageFPS(5); // 5 second average
 
-      if (delta >= 1000) {
-        const fps = Math.round((frameCount * 1000) / delta);
+      setFpsData((prev) => {
+        const newHistory = [...prev.history, fps].slice(-30);
+        const min = Math.min(...newHistory);
+        const max = Math.max(...newHistory);
 
-        setFpsData((prev) => {
-          const newHistory = [...prev.history, fps].slice(-30);
-          const average = Math.round(
-            newHistory.reduce((a, b) => a + b, 0) / newHistory.length
-          );
-          const min = Math.min(...newHistory);
-          const max = Math.max(...newHistory);
+        return {
+          current: fps,
+          average: avgFPS,
+          min,
+          max,
+          history: newHistory,
+        };
+      });
 
-          return {
-            current: fps,
-            average,
-            min,
-            max,
-            history: newHistory,
-          };
-        });
-
-        // Determine FPS level
-        const level: FPSLevel =
-          fps >= 55
-            ? 'excellent'
-            : fps >= 40
+      const level: FPSLevel =
+        fps >= 55
+          ? 'excellent'
+          : fps >= 40
             ? 'good'
             : fps >= 25
-            ? 'fair'
-            : 'poor';
+              ? 'fair'
+              : 'poor';
 
-        setFpsLevel(level);
+      setFpsLevel(level);
 
-        frameCount = 0;
-        lastTime = currentTime;
-      }
-
-      frameCount++;
-      animationFrameId = requestAnimationFrame(measureFPS);
+      animationFrameId = requestAnimationFrame(updateFPS);
     };
 
-    animationFrameId = requestAnimationFrame(measureFPS);
+    animationFrameId = requestAnimationFrame(updateFPS);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
   }, [showFPSMonitor]);
+
+  // Create portal container for overlay/transitioning modes
+  useEffect(() => {
+    if (isPortalMode) {
+      const container = document.createElement('div');
+      container.id = 'fps-monitor-portal';
+      container.style.position = 'fixed';
+      container.style.top = '0';
+      container.style.left = '0';
+      container.style.width = '100%';
+      container.style.height = '100%';
+      container.style.pointerEvents = 'none'; // Allow clicks to pass through
+      container.style.zIndex = '10000';
+
+      document.body.appendChild(container);
+      setPortalContainer(container);
+
+      return () => {
+        document.body.removeChild(container);
+        setPortalContainer(null);
+      };
+    }
+  }, [isPortalMode]);
 
   // Helper functions copied from LoadingScreen
   const getFPSColor = useCallback((level: FPSLevel) => {
@@ -126,22 +140,31 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
 
   if (!showFPSMonitor) return null;
 
-  // Render FPS Monitor - copied from LoadingScreen (lines 337-418)
-  return (
+  // Render FPS Monitor - with Portal support for overlay/transitioning
+  const monitorContent = (
     <motion.div
-      className={`${className} ${mode === 'overlay' ? 'fixed top-20 right-4 z-50' : ''}`}
-      variants={fpsPulseVariants}
-      animate={fpsLevel === 'poor' ? 'warning' : 'excellent'}
+      layoutId="fps-monitor-container"
+      ref={elementRef}
+      className={`${className} ${isPortalMode ? 'fixed top-20 right-4 z-50' : ''}`}
       data-testid="fps-meter"
-      initial={mode === 'transitioning' ? { scale: 1, opacity: 1 } : false}
-      transition={
+      layout
+      transition={{
+        layout: { type: "spring", stiffness: 300, damping: 30 },
+        scale: { duration: 0.4 },
+        opacity: { duration: 0.4 }
+      }}
+      initial={mode === 'transitioning' ? { scale: 1.1, boxShadow: "0px 10px 30px rgba(0,0,0,0.5)" } : undefined}
+      animate={
         mode === 'transitioning'
           ? {
-              duration: 1.2,
-              ease: [0.22, 1, 0.36, 1],
-            }
-          : undefined
+            scale: 0.8, // Shrink slightly as it moves to corner
+            boxShadow: "0px 5px 15px rgba(0,0,0,0.3)",
+          }
+          : mode === 'overlay'
+            ? { scale: 1, boxShadow: "none" }
+            : undefined
       }
+      style={isPortalMode ? { pointerEvents: 'auto' } : undefined}
     >
       {mode === 'embedded' ? (
         // Embedded mode - original layout from LoadingScreen
@@ -162,10 +185,10 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
                   {fpsLevel === 'excellent'
                     ? 'Excellent'
                     : fpsLevel === 'good'
-                    ? 'Good'
-                    : fpsLevel === 'fair'
-                    ? 'Fair'
-                    : 'Poor'}
+                      ? 'Good'
+                      : fpsLevel === 'fair'
+                        ? 'Fair'
+                        : 'Poor'}
                 </div>
               </div>
             </div>
@@ -202,10 +225,10 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
                       fps >= 55
                         ? 'excellent'
                         : fps >= 40
-                        ? 'good'
-                        : fps >= 25
-                        ? 'fair'
-                        : 'poor'
+                          ? 'good'
+                          : fps >= 25
+                            ? 'fair'
+                            : 'poor'
                     ),
                     opacity: 0.3 + (index / fpsData.history.length) * 0.7,
                   }}
@@ -224,9 +247,9 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
           animate={
             mode === 'transitioning'
               ? {
-                  scale: [1, 1.1, 0.6],
-                  y: [0, -20, 0],
-                }
+                scale: [1, 1.1, 0.6],
+                y: [0, -20, 0],
+              }
               : {}
           }
           transition={{
@@ -280,10 +303,10 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
                       fps >= 55
                         ? 'excellent'
                         : fps >= 40
-                        ? 'good'
-                        : fps >= 25
-                        ? 'fair'
-                        : 'poor'
+                          ? 'good'
+                          : fps >= 25
+                            ? 'fair'
+                            : 'poor'
                     ),
                     opacity: 0.3 + (index / 20) * 0.7,
                   }}
@@ -295,6 +318,13 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
       )}
     </motion.div>
   );
+
+  // Use portal for overlay/transitioning modes, normal render for embedded
+  if (isPortalMode && portalContainer) {
+    return createPortal(monitorContent, portalContainer);
+  }
+
+  return monitorContent;
 };
 
 export default FPSMonitor;

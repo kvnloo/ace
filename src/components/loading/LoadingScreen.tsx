@@ -16,7 +16,6 @@ import {
   cardVariants,
   progressBarVariants,
   shimmerVariants,
-  fpsPulseVariants,
   iconBounceVariants,
   buttonHoverVariants,
   recommendationCardVariants,
@@ -24,6 +23,8 @@ import {
   shakeVariants,
 } from './animations';
 import './styles.css';
+import FPSMonitor from '../performance/FPSMonitor';
+import { useFPSMonitorControl } from '../performance/FPSMonitorContext';
 
 interface LoadingScreenProps {
   onComplete?: () => void;
@@ -32,16 +33,6 @@ interface LoadingScreenProps {
   qualityMode?: 'auto' | 'high' | 'medium' | 'low';
 }
 
-interface FPSData {
-  current: number;
-  average: number;
-  min: number;
-  max: number;
-  history: number[];
-}
-
-type FPSLevel = 'excellent' | 'good' | 'fair' | 'poor';
-
 const LoadingScreen: React.FC<LoadingScreenProps> = ({
   onComplete,
   minimumDisplayTime = 2000,
@@ -49,10 +40,18 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
   qualityMode = 'auto',
 }) => {
   const { assets, overallProgress, loadedCount, totalCount, isLoading, currentPhase } = useLoading();
+  const { setMode: setFPSMode, startTransition } = useFPSMonitorControl();
   const [displayStartTime] = useState(Date.now());
   const [canDismiss, setCanDismiss] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
   const [showErrorUI, setShowErrorUI] = useState(false);
+
+  // Set initial FPS mode
+  useEffect(() => {
+    if (showFPSMonitor) {
+      setFPSMode('embedded');
+    }
+  }, [showFPSMonitor, setFPSMode]);
 
   // Skip loading screen for E2E tests
   const [isTestMode] = useState(() => {
@@ -68,83 +67,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       onComplete();
     }
   }, [isTestMode, onComplete]);
-  const [fpsData, setFpsData] = useState<FPSData>({
-    current: 0,
-    average: 0,
-    min: 0,
-    max: 0,
-    history: [],
-  });
+
   const [showMilestone, setShowMilestone] = useState(false);
   const [lastMilestone, setLastMilestone] = useState(0);
-  const [showRecommendation, setShowRecommendation] = useState(false);
-  const [fpsLevel, setFpsLevel] = useState<FPSLevel>('excellent');
-  const [prevFpsLevel, setPrevFpsLevel] = useState<FPSLevel>('excellent');
-
-  // FPS Monitoring
-  useEffect(() => {
-    if (!showFPSMonitor) return;
-
-    let frameCount = 0;
-    let lastTime = performance.now();
-    let animationFrameId: number;
-
-    const measureFPS = () => {
-      const currentTime = performance.now();
-      const delta = currentTime - lastTime;
-
-      if (delta >= 1000) {
-        const fps = Math.round((frameCount * 1000) / delta);
-
-        setFpsData((prev) => {
-          const newHistory = [...prev.history, fps].slice(-30);
-          const average = Math.round(
-            newHistory.reduce((a, b) => a + b, 0) / newHistory.length
-          );
-          const min = Math.min(...newHistory);
-          const max = Math.max(...newHistory);
-
-          return {
-            current: fps,
-            average,
-            min,
-            max,
-            history: newHistory,
-          };
-        });
-
-        // Determine FPS level
-        const level: FPSLevel =
-          fps >= 55
-            ? 'excellent'
-            : fps >= 40
-            ? 'good'
-            : fps >= 25
-            ? 'fair'
-            : 'poor';
-
-        setPrevFpsLevel(fpsLevel);
-        setFpsLevel(level);
-
-        // Show recommendation if FPS drops
-        if (level === 'fair' || level === 'poor') {
-          setShowRecommendation(true);
-        }
-
-        frameCount = 0;
-        lastTime = currentTime;
-      }
-
-      frameCount++;
-      animationFrameId = requestAnimationFrame(measureFPS);
-    };
-
-    animationFrameId = requestAnimationFrame(measureFPS);
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [showFPSMonitor, fpsLevel]);
 
   // Milestone detection
   useEffect(() => {
@@ -178,6 +103,10 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       setLoadingTimeout(true);
       if (onComplete) {
         console.log('[LoadingScreen] Calling onComplete() due to timeout');
+        // Ensure FPS monitor transitions even on timeout
+        if (showFPSMonitor) {
+          startTransition();
+        }
         onComplete();
       }
     }, 10000); // 10 second maximum wait
@@ -196,50 +125,20 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       const remaining = Math.max(0, minimumDisplayTime - elapsed);
 
       setTimeout(() => {
-        onComplete();
+        // Trigger FPS monitor transition before unmounting
+        if (showFPSMonitor) {
+          startTransition();
+        }
+
+        // Small delay to allow GlobalFPSMonitor to mount and grab layoutId
+        // before we unmount the embedded one
+        setTimeout(() => {
+          onComplete();
+        }, 100);
       }, remaining);
     }
-  }, [isLoading, loadedCount, totalCount, canDismiss, onComplete, displayStartTime, minimumDisplayTime]);
+  }, [isLoading, loadedCount, totalCount, canDismiss, onComplete, displayStartTime, minimumDisplayTime, showFPSMonitor, startTransition]);
 
-  const getFPSColor = useCallback((level: FPSLevel) => {
-    const colors = {
-      excellent: '#10b981',
-      good: '#3b82f6',
-      fair: '#f59e0b',
-      poor: '#ef4444',
-    };
-    return colors[level];
-  }, []);
-
-  const getFPSIcon = useCallback((level: FPSLevel) => {
-    const icons = {
-      excellent: Sparkles,
-      good: TrendingUp,
-      fair: AlertTriangle,
-      poor: AlertTriangle,
-    };
-    const Icon = icons[level];
-    return <Icon className="w-6 h-6" />;
-  }, []);
-
-  const getRecommendation = useCallback(() => {
-    if (fpsLevel === 'poor') {
-      return {
-        title: 'Performance Issues Detected',
-        description: 'Consider switching to Low quality mode for better performance',
-        action: 'Switch to Low Quality',
-        icon: Settings,
-      };
-    } else if (fpsLevel === 'fair') {
-      return {
-        title: 'Moderate Performance',
-        description: 'Medium quality mode recommended for optimal experience',
-        action: 'Switch to Medium Quality',
-        icon: Zap,
-      };
-    }
-    return null;
-  }, [fpsLevel]);
 
   // Don't render in test mode
   if (isTestMode) {
@@ -264,8 +163,6 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
   }
 
   console.log(`[LoadingScreen] Rendering: ${loadedCount}/${totalCount} assets, ${Math.round(overallProgress)}% progress`);
-
-  const recommendation = getRecommendation();
 
   return (
     <motion.div
@@ -317,15 +214,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
             {/* Overall Progress Bar */}
             <div className="relative w-full h-3 bg-white/5 rounded-full overflow-hidden" data-testid="loading-progress-bar">
               <motion.div
-                className={`absolute inset-y-0 left-0 rounded-full progress-shimmer ${
-                  fpsLevel === 'excellent'
-                    ? 'progress-gradient-excellent'
-                    : fpsLevel === 'good'
-                    ? 'progress-gradient-good'
-                    : fpsLevel === 'fair'
-                    ? 'progress-gradient-fair'
-                    : 'progress-gradient-poor'
-                }`}
+                className="absolute inset-y-0 left-0 rounded-full progress-shimmer progress-gradient-excellent"
                 custom={overallProgress}
                 variants={progressBarVariants}
                 initial="initial"
@@ -336,85 +225,10 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
 
           {/* FPS Monitor */}
           {showFPSMonitor && (
-            <motion.div
+            <FPSMonitor
+              mode="embedded"
               className="mb-8 pb-6 border-b border-white/10"
-              variants={fpsPulseVariants}
-              animate={fpsLevel === 'poor' ? 'warning' : 'excellent'}
-              data-testid="fps-meter"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`p-3 rounded-xl fps-${fpsLevel}`}
-                    style={{ color: getFPSColor(fpsLevel) }}
-                  >
-                    {getFPSIcon(fpsLevel)}
-                  </div>
-                  <div>
-                    <div className="text-white font-['Inter'] font-semibold">
-                      Performance
-                    </div>
-                    <div className="text-xs text-gray-200 font-['Inter']">
-                      {fpsLevel === 'excellent'
-                        ? 'Excellent'
-                        : fpsLevel === 'good'
-                        ? 'Good'
-                        : fpsLevel === 'fair'
-                        ? 'Fair'
-                        : 'Poor'}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-right">
-                  <div
-                    className="text-5xl font-bold font-['JetBrains_Mono']"
-                    style={{ color: getFPSColor(fpsLevel) }}
-                    data-testid="fps-value"
-                  >
-                    {fpsData.current}
-                  </div>
-                  <div className="text-xs text-gray-200 font-['Inter']">
-                    FPS
-                  </div>
-                </div>
-              </div>
-
-              {/* Mini FPS Graph */}
-              <div className="mt-4 h-16 flex items-end gap-1 justify-start">
-                {fpsData.history.map((fps, index) => {
-                  // Calculate height relative to the max FPS in history
-                  // This ensures the graph always uses the full height dynamically
-                  const maxFps = Math.max(...fpsData.history, 1); // Prevent division by zero
-                  const heightPercentage = (fps / maxFps) * 100;
-                  return (
-                    <motion.div
-                      key={index}
-                      className="rounded-t"
-                      style={{
-                        width: '8px',
-                        minWidth: '8px',
-                        height: `${heightPercentage}%`,
-                        maxHeight: '100%',
-                        backgroundColor: getFPSColor(
-                          fps >= 55
-                            ? 'excellent'
-                            : fps >= 40
-                            ? 'good'
-                            : fps >= 25
-                            ? 'fair'
-                            : 'poor'
-                        ),
-                        opacity: 0.3 + (index / fpsData.history.length) * 0.7,
-                      }}
-                      initial={{ scaleY: 0 }}
-                      animate={{ scaleY: 1 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  );
-                })}
-              </div>
-            </motion.div>
+            />
           )}
 
           {/* Asset List */}
@@ -468,8 +282,8 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                       {asset.error
                         ? 'Failed'
                         : asset.loaded
-                        ? 'Complete'
-                        : `${Math.round(asset.progress)}%`}
+                          ? 'Complete'
+                          : `${Math.round(asset.progress)}%`}
                     </span>
                   </div>
                 </motion.div>
@@ -498,78 +312,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
           </AnimatePresence>
         </div>
 
-        {/* Recommendation Card */}
-        <AnimatePresence>
-          {showRecommendation && recommendation && (
-            <motion.div
-              className="mt-6"
-              variants={recommendationCardVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              data-testid="fps-recommendation"
-            >
-              <div className="glass-card rounded-2xl p-6">
-                <div className="flex items-start gap-4">
-                  <motion.div
-                    className="p-3 rounded-xl bg-amber-500/20"
-                    variants={iconBounceVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    <recommendation.icon className="w-6 h-6 text-amber-400" />
-                  </motion.div>
-
-                  <div className="flex-1">
-                    <h3 className="text-white font-bold font-['Inter'] mb-1">
-                      {recommendation.title}
-                    </h3>
-                    <p className="text-gray-200 text-sm font-['Inter'] mb-4">
-                      {recommendation.description}
-                    </p>
-
-                    <div className="flex gap-2">
-                      <motion.button
-                        className="button-glow px-4 py-2 bg-amber-500 text-white rounded-lg font-['Inter'] font-semibold"
-                        variants={buttonHoverVariants}
-                        initial="rest"
-                        whileHover="hover"
-                        whileTap="tap"
-                        onClick={() => setShowRecommendation(false)}
-                        data-testid="apply-recommendation-button"
-                      >
-                        {recommendation.action}
-                      </motion.button>
-                      <motion.button
-                        className="px-4 py-2 bg-white/10 text-white rounded-lg font-['Inter'] font-semibold hover:bg-white/20"
-                        variants={buttonHoverVariants}
-                        initial="rest"
-                        whileHover="hover"
-                        whileTap="tap"
-                        onClick={() => setShowRecommendation(false)}
-                        data-testid="continue-loading-button"
-                      >
-                        Continue Anyway
-                      </motion.button>
-                    </div>
-                  </div>
-
-                  <button
-                    className="text-gray-200 hover:text-white transition-colors"
-                    onClick={() => setShowRecommendation(false)}
-                    aria-label="Dismiss recommendation"
-                  >
-                    ×
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Loading Spinner (decorative) */}
+        <div className="absolute top-8 left-8 loading-spinner" />
       </motion.div>
-
-      {/* Loading Spinner (decorative) */}
-      <div className="absolute top-8 left-8 loading-spinner" />
     </motion.div>
   );
 };
