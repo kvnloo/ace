@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1920" height="1080" fill="#0f172a"/>
+  <text x="960" y="540"
+        font-family="Arial, sans-serif"
+        font-size="72"
+        font-weight="bold"
+        fill="#DFFF4F"
+        text-anchor="middle">LawnTech Dynamics</text>
+  <text x="960" y="640"
+        font-family="Arial, sans-serif"
+        font-size="36"
+        fill="#DFFF4F"
+        text-anchor="middle"
+        opacity="0.8">3D Facility View - Desktop</text>
+</svg>

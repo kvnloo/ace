@@ -1,29 +1,53 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { View, FeatureData } from './types';
-import NavBar from './components/NavBar';
-import ThreeScene from './components/ThreeScene';
-import AIChat from './components/AIChat';
-import Specifications from './components/Specifications';
-import { 
-  Zap, 
-  Activity, 
-  Camera, 
-  Cpu, 
-  Sprout, 
-  Users, 
+import {
+  Zap,
+  Activity,
+  Camera,
+  Cpu,
+  Sprout,
+  Users,
   ArrowRight,
   PlayCircle,
   Layers,
   Wind,
   ShieldCheck,
-  ShoppingBag
+  ShoppingBag,
+  AlertCircle,
+  CheckCircle,
 } from 'lucide-react';
+import LoadingSpinner from './components/LoadingSpinner';
+import NavBar from './components/NavBar';
+import OfflineIndicator from './components/OfflineIndicator';
+import type { FeatureData } from './types';
+import { View } from './types';
+import {
+  validateInvestForm,
+  validateInvestFormField,
+  RateLimiter,
+  type InterestLevelType,
+} from './utils/validation';
+
+// Lazy load heavy components for better initial load performance
+const ThreeScene = lazy(() => import('./components/ThreeScene'));
+const AIChat = lazy(() => import('./components/AIChat'));
+const Specifications = lazy(() => import('./components/Specifications'));
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
   const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);
+
+  // Invest form state
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    interestLevel: 'Potential Investor' as InterestLevelType,
+    message: '',
+  });
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const rateLimiterRef = useRef(new RateLimiter(3000)); // 3 second cooldown
 
   // Reset selected feature when leaving demo view
   useEffect(() => {
@@ -32,22 +56,132 @@ const App: React.FC = () => {
     }
   }, [currentView]);
 
+  // Reset form when leaving invest view
+  useEffect(() => {
+    if (currentView !== View.INVEST) {
+      setFormData({
+        name: '',
+        email: '',
+        interestLevel: 'Potential Investor',
+        message: '',
+      });
+      setFormErrors({});
+      setSubmitSuccess(false);
+    }
+  }, [currentView]);
+
+  // Handle form field changes with real-time validation
+  const handleInputChange = (
+    field: keyof typeof formData,
+    value: string
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+
+    // Clear previous error for this field
+    if (formErrors[field]) {
+      setFormErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+
+    // Real-time validation on blur (debounced)
+    if (value.trim()) {
+      const result = validateInvestFormField(field, value);
+      if (!result.success) {
+        setFormErrors((prev) => ({ ...prev, [field]: result.error }));
+      }
+    }
+  };
+
+  // Handle form submission
+  const handleInvestFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitSuccess(false);
+
+    // Check rate limiting
+    if (!rateLimiterRef.current.canSubmit()) {
+      const remaining = Math.ceil(
+        rateLimiterRef.current.getRemainingCooldown() / 1000
+      );
+      setFormErrors({
+        submit: `Please wait ${remaining} seconds before submitting again.`,
+      });
+      return;
+    }
+
+    // Validate entire form
+    const result = validateInvestForm(formData);
+
+    if (!result.success) {
+      setFormErrors({ submit: result.error });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setFormErrors({});
+
+    try {
+      // Simulate API call (replace with actual submission logic)
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Record successful submission
+      rateLimiterRef.current.recordSubmission();
+
+      // Show success message
+      setSubmitSuccess(true);
+
+      // Reset form after success
+      setTimeout(() => {
+        setFormData({
+          name: '',
+          email: '',
+          interestLevel: 'Potential Investor',
+          message: '',
+        });
+        setSubmitSuccess(false);
+      }, 3000);
+    } catch (_error) {
+      setFormErrors({
+        submit:
+          'An error occurred while submitting the form. Please try again.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const pageVariants = {
     initial: { opacity: 0, y: 20 },
-    enter: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-    exit: { opacity: 0, y: -20, transition: { duration: 0.4 } }
+    enter: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1] as const,
+      },
+    },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.4 } },
   };
 
   return (
     <div className="min-h-screen bg-slate-950 text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
+      {/* Offline Indicator */}
+      <OfflineIndicator />
+
+      {/* Skip to main content link for keyboard navigation */}
+      <a href="#main-content" className="skip-to-content">
+        Skip to main content
+      </a>
+
       <NavBar currentView={currentView} onChangeView={setCurrentView} />
 
-      <main className="relative w-full h-screen pt-20 overflow-hidden">
+      <main id="main-content" className="relative w-full h-screen pt-20 overflow-hidden" tabIndex={-1}>
         <AnimatePresence mode="wait">
-          
           {/* HOME VIEW */}
           {currentView === View.HOME && (
-            <motion.div 
+            <motion.div
               key="home"
               initial="initial"
               animate="enter"
@@ -59,9 +193,9 @@ const App: React.FC = () => {
               <div className="relative h-[90vh] flex items-center justify-center px-6 overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1622163642998-1ea36b1dde3b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
-                
+
                 <div className="relative z-10 max-w-4xl text-center">
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
@@ -70,44 +204,49 @@ const App: React.FC = () => {
                     <Zap className="w-4 h-4" />
                     <span>The Future of Tennis is Organic & Autonomous</span>
                   </motion.div>
-                  
-                  <motion.h1 
+
+                  <motion.h1
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
                     className="text-5xl md:text-8xl font-extrabold tracking-tighter mb-6 leading-tight"
                   >
                     GRASS. <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">AUTONOMOUS.</span> <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">
+                      AUTONOMOUS.
+                    </span>{' '}
+                    <br />
                     PERFECTION.
                   </motion.h1>
 
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
                     className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed"
                   >
-                    Experience the world's first fully autonomous indoor grass court facility. 
+                    Experience the world's first fully autonomous indoor grass court facility.
                     Replaceable modular turf, AI coaching, and injury prevention technology.
                   </motion.p>
 
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
                     className="flex flex-col sm:flex-row items-center justify-center gap-4"
                   >
-                    <button 
+                    <button
                       onClick={() => setCurrentView(View.FACILITY_DEMO)}
                       className="px-8 py-4 bg-tennis-yellow text-tennis-dark font-bold rounded-full hover:bg-white transition-all flex items-center gap-2 group"
+                      aria-label="Explore interactive 3D facility demo"
                     >
                       Explore 3D Demo
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                     </button>
-                    <button 
+                    <button
                       onClick={() => setCurrentView(View.AMENITIES)}
                       className="px-8 py-4 bg-white/10 text-white font-bold rounded-full hover:bg-white/20 transition-all backdrop-blur-sm"
+                      aria-label="View facility amenities and features"
                     >
                       View Amenities
                     </button>
@@ -116,29 +255,38 @@ const App: React.FC = () => {
               </div>
 
               {/* Statistics Teaser */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6 py-20 border-t border-white/10">
-                <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                  <Cpu className="w-10 h-10 text-tennis-yellow mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Computer Vision</h3>
-                  <p className="text-gray-400">Real-time biomechanics analysis and injury prediction models running 60x per second.</p>
-                </div>
-                <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                  <Sprout className="w-10 h-10 text-tennis-yellow mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Modular Grass</h3>
-                  <p className="text-gray-400">Our on-site Grass Lab grows replacement grids. We swap worn turf in under 60 minutes.</p>
-                </div>
-                <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                  <Activity className="w-10 h-10 text-tennis-yellow mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Performance</h3>
-                  <p className="text-gray-400">Strobe glass training and smart ball machines designed to break your reaction time plateaus.</p>
-                </div>
-              </div>
+              <section className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6 py-20 border-t border-white/10" aria-label="Key facility features">
+                <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                  <Cpu className="w-10 h-10 text-tennis-yellow mb-4" aria-hidden="true" />
+                  <h2 className="text-2xl font-bold mb-2">Computer Vision</h2>
+                  <p className="text-gray-400">
+                    Real-time biomechanics analysis and injury prediction models running 60x per
+                    second.
+                  </p>
+                </article>
+                <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                  <Sprout className="w-10 h-10 text-tennis-yellow mb-4" aria-hidden="true" />
+                  <h2 className="text-2xl font-bold mb-2">Modular Grass</h2>
+                  <p className="text-gray-400">
+                    Our on-site Grass Lab grows replacement grids. We swap worn turf in under 60
+                    minutes.
+                  </p>
+                </article>
+                <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                  <Activity className="w-10 h-10 text-tennis-yellow mb-4" aria-hidden="true" />
+                  <h2 className="text-2xl font-bold mb-2">Performance</h2>
+                  <p className="text-gray-400">
+                    Strobe glass training and smart ball machines designed to break your reaction
+                    time plateaus.
+                  </p>
+                </article>
+              </section>
             </motion.div>
           )}
 
           {/* SPECIFICATIONS VIEW */}
           {currentView === View.SPECIFICATIONS && (
-             <motion.div 
+            <motion.div
               key="specs"
               initial="initial"
               animate="enter"
@@ -146,13 +294,15 @@ const App: React.FC = () => {
               variants={pageVariants}
               className="h-full overflow-y-auto custom-scrollbar pb-20"
             >
-              <Specifications />
+              <Suspense fallback={<LoadingSpinner variant="specifications" />}>
+                <Specifications />
+              </Suspense>
             </motion.div>
           )}
 
           {/* 3D FACILITY DEMO */}
           {currentView === View.FACILITY_DEMO && (
-            <motion.div 
+            <motion.div
               key="demo"
               initial="initial"
               animate="enter"
@@ -161,23 +311,27 @@ const App: React.FC = () => {
               className="w-full h-full relative bg-gradient-to-b from-slate-900 to-black"
             >
               <div className="absolute inset-0 z-0">
-                <ThreeScene onFeatureSelect={setSelectedFeature} />
+                <Suspense fallback={<LoadingSpinner variant="threeScene" />}>
+                  <ThreeScene onFeatureSelect={setSelectedFeature} />
+                </Suspense>
               </div>
-              
+
               {/* HUD Layer */}
               <div className="absolute inset-0 z-10 pointer-events-none p-6 flex flex-col justify-between">
                 <div className="mt-12">
-                   <h2 className="text-3xl font-bold text-white drop-shadow-lg">Facility Interactive Map</h2>
-                   <p className="text-white/70 text-sm max-w-md drop-shadow-md mt-2">
-                     24 Courts • Vertical Farm • Performance Gym <br/>
-                     Rotate the view to explore the entire complex.
-                   </p>
+                  <h2 className="text-3xl font-bold text-white drop-shadow-lg">
+                    Facility Interactive Map
+                  </h2>
+                  <p className="text-white/70 text-sm max-w-md drop-shadow-md mt-2">
+                    24 Courts • Vertical Farm • Performance Gym <br />
+                    Rotate the view to explore the entire complex.
+                  </p>
                 </div>
 
                 {/* Selected Feature Info Card */}
                 <AnimatePresence>
                   {selectedFeature && (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0, y: 50, scale: 0.9 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 20, scale: 0.9 }}
@@ -187,18 +341,24 @@ const App: React.FC = () => {
                         <div className="w-12 h-12 rounded-full bg-tennis-yellow/20 flex items-center justify-center text-2xl">
                           {selectedFeature.icon}
                         </div>
-                        <button 
+                        <button
                           onClick={() => setSelectedFeature(null)}
                           className="text-white/50 hover:text-white text-sm uppercase tracking-wider font-bold"
+                          aria-label="Close feature information"
                         >
                           Close
                         </button>
                       </div>
-                      <h3 className="text-2xl font-bold text-white mb-2">{selectedFeature.title}</h3>
-                      <p className="text-gray-300 leading-relaxed mb-4">{selectedFeature.description}</p>
-                      <button 
+                      <h3 className="text-2xl font-bold text-white mb-2">
+                        {selectedFeature.title}
+                      </h3>
+                      <p className="text-gray-300 leading-relaxed mb-4">
+                        {selectedFeature.description}
+                      </p>
+                      <button
                         onClick={() => setCurrentView(View.SPECIFICATIONS)}
                         className="w-full py-3 bg-tennis-yellow text-tennis-dark font-bold rounded-lg hover:bg-white transition-colors"
+                        aria-label="View full specifications"
                       >
                         View Full Specs
                       </button>
@@ -211,7 +371,7 @@ const App: React.FC = () => {
 
           {/* AMENITIES VIEW */}
           {currentView === View.AMENITIES && (
-            <motion.div 
+            <motion.div
               key="amenities"
               initial="initial"
               animate="enter"
@@ -220,10 +380,11 @@ const App: React.FC = () => {
               className="h-full overflow-y-auto custom-scrollbar pb-20 px-6"
             >
               <div className="max-w-7xl mx-auto pt-10">
-                <h2 className="text-4xl font-bold mb-12 border-b border-white/10 pb-6">Facility Amenities</h2>
-                
+                <h2 className="text-4xl font-bold mb-12 border-b border-white/10 pb-6">
+                  Facility Amenities
+                </h2>
+
                 <div className="space-y-24">
-                  
                   {/* 1. Vertical Grass Lab */}
                   <div className="flex flex-col md:flex-row items-center gap-12">
                     <div className="flex-1 space-y-6">
@@ -232,113 +393,161 @@ const App: React.FC = () => {
                       </div>
                       <h3 className="text-3xl font-bold">Level 3: The Vertical Grass Lab</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        Our facility houses a 2,000 m² autonomous vertical farm on the top floor, divided into four specialized sectors.
-                        We use advanced hydroponics and climate control to cultivate modular grass grids. 
-                        When a court wears down, robots transport and swap the turf in under 60 minutes.
+                        Our facility houses a 2,000 m² autonomous vertical farm on the top floor,
+                        divided into four specialized sectors. We use advanced hydroponics and
+                        climate control to cultivate modular grass grids. When a court wears down,
+                        robots transport and swap the turf in under 60 minutes.
                       </p>
                       <ul className="space-y-3 text-gray-300">
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> Automated Hydroponics & Climate Control</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> Robotic Patch Transport System</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> 100% Sustainable Organic Surfaces</li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-tennis-yellow rounded-full" /> Automated
+                          Hydroponics & Climate Control
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-tennis-yellow rounded-full" /> Robotic Patch
+                          Transport System
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-tennis-yellow rounded-full" /> 100% Sustainable
+                          Organic Surfaces
+                        </li>
                       </ul>
                     </div>
                     <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        {/* Updated Image to Vertical Farm Look */}
-                       <img src="/api/placeholder/800/600" data-placeholder-src="vertical-farm-robots.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Vertical Farming with Autonomous Robots" />
-                       <div className="absolute inset-0 flex items-center justify-center">
-                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-tennis-yellow">STATUS: CULTIVATING</span>
-                       </div>
+                      {/* Updated Image to Vertical Farm Look */}
+                      <img
+                        src="/api/placeholder/800/600"
+                        data-placeholder-src="vertical-farm-robots.jpg"
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                        alt="Vertical Farming with Autonomous Robots"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-tennis-yellow">
+                          STATUS: CULTIVATING
+                        </span>
+                      </div>
                     </div>
                   </div>
 
                   {/* 2. The Racquet Ecosystem */}
                   <div className="flex flex-col md:flex-row-reverse items-center gap-12">
                     <div className="flex-1 space-y-6">
-                       <div className="w-16 h-16 rounded-2xl bg-blue-900/30 flex items-center justify-center text-blue-400">
+                      <div className="w-16 h-16 rounded-2xl bg-blue-900/30 flex items-center justify-center text-blue-400">
                         <Layers className="w-8 h-8" />
                       </div>
                       <h3 className="text-3xl font-bold">Multi-Sport Ecosystem</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        Spanning the Ground, 1st, and 2nd floors, we offer a comprehensive racquet experience. 
-                        From the high-speed action of Badminton and Table Tennis on the Mezzanine to the social atmosphere of Pickleball and the historic elegance of Real Tennis on the upper deck.
+                        Spanning the Ground, 1st, and 2nd floors, we offer a comprehensive racquet
+                        experience. From the high-speed action of Badminton and Table Tennis on the
+                        Mezzanine to the social atmosphere of Pickleball and the historic elegance
+                        of Real Tennis on the upper deck.
                       </p>
-                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                          <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                            <span className="block font-bold text-white mb-1">Ground Floor</span>
-                            <span className="text-gray-400 text-xs">24 Tennis Courts (Hard, Clay, Grass, Wood)</span>
-                          </div>
-                          <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                            <span className="block font-bold text-white mb-1">First Floor</span>
-                            <span className="text-gray-400 text-xs">16 Badminton, 4 Squash, 16 Table Tennis</span>
-                          </div>
-                          <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors md:col-span-2">
-                            <span className="block font-bold text-white mb-1">Second Floor</span>
-                            <span className="text-gray-400 text-xs">8 Pickleball Courts, 1 Real Tennis Court</span>
-                          </div>
-                       </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                          <span className="block font-bold text-white mb-1">Ground Floor</span>
+                          <span className="text-gray-400 text-xs">
+                            24 Tennis Courts (Hard, Clay, Grass, Wood)
+                          </span>
+                        </div>
+                        <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                          <span className="block font-bold text-white mb-1">First Floor</span>
+                          <span className="text-gray-400 text-xs">
+                            16 Badminton, 4 Squash, 16 Table Tennis
+                          </span>
+                        </div>
+                        <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors md:col-span-2">
+                          <span className="block font-bold text-white mb-1">Second Floor</span>
+                          <span className="text-gray-400 text-xs">
+                            8 Pickleball Courts, 1 Real Tennis Court
+                          </span>
+                        </div>
+                      </div>
                     </div>
                     <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="/api/placeholder/800/600" data-placeholder-src="tennis-court-biomechanics-hud.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Tennis Court with Real-time Biomechanics HUD" />
+                      <img
+                        src="/api/placeholder/800/600"
+                        data-placeholder-src="tennis-court-biomechanics-hud.jpg"
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                        alt="Tennis Court with Real-time Biomechanics HUD"
+                      />
                     </div>
                   </div>
 
                   {/* 3. Autonomous Operations */}
                   <div className="flex flex-col md:flex-row items-center gap-12">
                     <div className="flex-1 space-y-6">
-                       <div className="w-16 h-16 rounded-2xl bg-purple-900/30 flex items-center justify-center text-purple-400">
+                      <div className="w-16 h-16 rounded-2xl bg-purple-900/30 flex items-center justify-center text-purple-400">
                         <Cpu className="w-8 h-8" />
                       </div>
                       <h3 className="text-3xl font-bold">Autonomous Operations</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        The facility runs itself. A centralized Building Management System (BMS) optimizes HVAC and lighting using solar power.
-                        Robotic mowers maintain the courts while overhead drones constantly analyze surface quality. 
-                        Entry is seamless with biometric scanning, removing the need for keys or cards.
+                        The facility runs itself. A centralized Building Management System (BMS)
+                        optimizes HVAC and lighting using solar power. Robotic mowers maintain the
+                        courts while overhead drones constantly analyze surface quality. Entry is
+                        seamless with biometric scanning, removing the need for keys or cards.
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
-                            <Wind className="w-5 h-5 text-purple-400" />
-                            <div>
-                                <h4 className="font-bold text-white">Smart HVAC</h4>
-                                <p className="text-xs text-gray-400">AI Climate Control</p>
-                            </div>
+                          <Wind className="w-5 h-5 text-purple-400" />
+                          <div>
+                            <h4 className="font-bold text-white">Smart HVAC</h4>
+                            <p className="text-xs text-gray-400">AI Climate Control</p>
+                          </div>
                         </div>
-                         <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
-                            <ShieldCheck className="w-5 h-5 text-purple-400" />
-                            <div>
-                                <h4 className="font-bold text-white">Biometric Entry</h4>
-                                <p className="text-xs text-gray-400">Secure & Seamless</p>
-                            </div>
+                        <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
+                          <ShieldCheck className="w-5 h-5 text-purple-400" />
+                          <div>
+                            <h4 className="font-bold text-white">Biometric Entry</h4>
+                            <p className="text-xs text-gray-400">Secure & Seamless</p>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=2006&auto=format&fit=crop" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" alt="Autonomous Tech" />
+                      <img
+                        src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=2006&auto=format&fit=crop"
+                        className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500"
+                        alt="Autonomous Tech"
+                      />
                     </div>
                   </div>
 
-                   {/* 4. Member Experience */}
+                  {/* 4. Member Experience */}
                   <div className="flex flex-col md:flex-row-reverse items-center gap-12">
                     <div className="flex-1 space-y-6">
-                       <div className="w-16 h-16 rounded-2xl bg-orange-900/30 flex items-center justify-center text-orange-400">
+                      <div className="w-16 h-16 rounded-2xl bg-orange-900/30 flex items-center justify-center text-orange-400">
                         <ShoppingBag className="w-8 h-8" />
                       </div>
                       <h3 className="text-3xl font-bold">Member Experience</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        We prioritize comfort and recovery. Our Pro Shop is stocked with the latest gear. 
-                        Locker rooms and waiting areas are managed by smart sensors to ensure cleanliness and supply availability.
-                        Automated emergency systems monitor the entire facility to instantly alert services if an incident occurs.
+                        We prioritize comfort and recovery. Our Pro Shop is stocked with the latest
+                        gear. Locker rooms and waiting areas are managed by smart sensors to ensure
+                        cleanliness and supply availability. Automated emergency systems monitor the
+                        entire facility to instantly alert services if an incident occurs.
                       </p>
-                       <ul className="space-y-3 text-gray-300">
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Smart Bathroom Sanitation Monitoring</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Automated Emergency Response</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Mobile App Booking & Payments</li>
+                      <ul className="space-y-3 text-gray-300">
+                        <li className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-orange-400 rounded-full" /> Smart Bathroom
+                          Sanitation Monitoring
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-orange-400 rounded-full" /> Automated Emergency
+                          Response
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-orange-400 rounded-full" /> Mobile App Booking
+                          & Payments
+                        </li>
                       </ul>
                     </div>
                     <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="https://images.unsplash.com/photo-1591123720164-de1348028a82?q=80&w=1974&auto=format&fit=crop" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" alt="Locker Room" />
+                      <img
+                        src="https://images.unsplash.com/photo-1591123720164-de1348028a82?q=80&w=1974&auto=format&fit=crop"
+                        className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500"
+                        alt="Locker Room"
+                      />
                     </div>
                   </div>
-
                 </div>
               </div>
             </motion.div>
@@ -346,7 +555,7 @@ const App: React.FC = () => {
 
           {/* INVEST VIEW */}
           {currentView === View.INVEST && (
-             <motion.div 
+            <motion.div
               key="invest"
               initial="initial"
               animate="enter"
@@ -354,49 +563,182 @@ const App: React.FC = () => {
               variants={pageVariants}
               className="h-full overflow-y-auto custom-scrollbar pb-20 flex items-center justify-center px-6"
             >
-                <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 p-8 md:p-12 rounded-3xl backdrop-blur-xl">
-                    <div className="text-center mb-10">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">Join the Revolution</h2>
-                        <p className="text-gray-400">We are raising Series A funding to build the pilot facility in Austin, Texas.</p>
-                    </div>
-
-                    <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-gray-300">Full Name</label>
-                                <input type="text" className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors" placeholder="Jane Doe" />
-                             </div>
-                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-gray-300">Email Address</label>
-                                <input type="email" className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors" placeholder="jane@example.com" />
-                             </div>
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-sm font-bold text-gray-300">Interest Level</label>
-                            <select className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors text-gray-300">
-                                <option>Potential Investor</option>
-                                <option>Founding Member</option>
-                                <option>Technology Partner</option>
-                            </select>
-                        </div>
-                        <div className="space-y-2">
-                             <label className="text-sm font-bold text-gray-300">Message</label>
-                             <textarea className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors h-32" placeholder="Tell us about yourself..."></textarea>
-                        </div>
-                        
-                        <button className="w-full bg-tennis-yellow text-tennis-dark font-bold text-lg py-4 rounded-xl hover:bg-white transition-all">
-                            Request Pitch Deck
-                        </button>
-                    </form>
+              <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 p-8 md:p-12 rounded-3xl backdrop-blur-xl">
+                <div className="text-center mb-10">
+                  <h2 className="text-3xl md:text-5xl font-bold mb-4">Join the Revolution</h2>
+                  <p className="text-gray-400">
+                    We are raising Series A funding to build the pilot facility in Austin, Texas.
+                  </p>
                 </div>
+
+                <form className="space-y-6" onSubmit={handleInvestFormSubmit} aria-label="Investment inquiry form">
+                  {/* Success Message */}
+                  <AnimatePresence>
+                    {submitSuccess && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="flex items-center gap-3 p-4 bg-green-500/20 border border-green-500/50 rounded-xl"
+                      >
+                        <CheckCircle className="w-5 h-5 text-green-400" />
+                        <p className="text-green-400 text-sm font-medium">
+                          Thank you! Your inquiry has been submitted successfully.
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* General Error Message */}
+                  <AnimatePresence>
+                    {formErrors.submit && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="flex items-center gap-3 p-4 bg-red-500/20 border border-red-500/50 rounded-xl"
+                        role="alert"
+                      >
+                        <AlertCircle className="w-5 h-5 text-red-400" />
+                        <p className="text-red-400 text-sm font-medium">
+                          {formErrors.submit}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label htmlFor="full-name" className="text-sm font-bold text-gray-300">
+                        Full Name <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        id="full-name"
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                        className={`w-full bg-black/30 border rounded-xl px-4 py-3 focus:outline-none transition-colors ${
+                          formErrors.name
+                            ? 'border-red-500 focus:border-red-500'
+                            : 'border-white/10 focus:border-tennis-yellow'
+                        }`}
+                        placeholder="Jane Doe"
+                        aria-required="true"
+                        aria-invalid={!!formErrors.name}
+                        aria-describedby={formErrors.name ? 'name-error' : undefined}
+                      />
+                      {formErrors.name && (
+                        <p id="name-error" className="text-red-400 text-xs flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          {formErrors.name}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm font-bold text-gray-300">
+                        Email Address <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        className={`w-full bg-black/30 border rounded-xl px-4 py-3 focus:outline-none transition-colors ${
+                          formErrors.email
+                            ? 'border-red-500 focus:border-red-500'
+                            : 'border-white/10 focus:border-tennis-yellow'
+                        }`}
+                        placeholder="jane@example.com"
+                        aria-required="true"
+                        aria-invalid={!!formErrors.email}
+                        aria-describedby={formErrors.email ? 'email-error' : undefined}
+                      />
+                      {formErrors.email && (
+                        <p id="email-error" className="text-red-400 text-xs flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          {formErrors.email}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="interest-level" className="text-sm font-bold text-gray-300">
+                      Interest Level <span className="text-red-400">*</span>
+                    </label>
+                    <select
+                      id="interest-level"
+                      value={formData.interestLevel}
+                      onChange={(e) => handleInputChange('interestLevel', e.target.value as InterestLevelType)}
+                      className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors text-gray-300"
+                      aria-required="true"
+                    >
+                      <option>Potential Investor</option>
+                      <option>Founding Member</option>
+                      <option>Technology Partner</option>
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="message" className="text-sm font-bold text-gray-300">
+                      Message <span className="text-red-400">*</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      value={formData.message}
+                      onChange={(e) => handleInputChange('message', e.target.value)}
+                      className={`w-full bg-black/30 border rounded-xl px-4 py-3 focus:outline-none transition-colors h-32 ${
+                        formErrors.message
+                          ? 'border-red-500 focus:border-red-500'
+                          : 'border-white/10 focus:border-tennis-yellow'
+                      }`}
+                      placeholder="Tell us about yourself..."
+                      aria-required="true"
+                      aria-invalid={!!formErrors.message}
+                      aria-describedby={formErrors.message ? 'message-error' : undefined}
+                     />
+                     {formErrors.message && (
+                       <p id="message-error" className="text-red-400 text-xs flex items-center gap-1">
+                         <AlertCircle className="w-3 h-3" />
+                         {formErrors.message}
+                       </p>
+                     )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || submitSuccess}
+                    className="w-full bg-tennis-yellow text-tennis-dark font-bold text-lg py-4 rounded-xl hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    aria-label="Submit investment inquiry and request pitch deck"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                        >
+                          <Activity className="w-5 h-5" />
+                        </motion.div>
+                        Submitting...
+                      </>
+                    ) : submitSuccess ? (
+                      <>
+                        <CheckCircle className="w-5 h-5" />
+                        Submitted!
+                      </>
+                    ) : (
+                      'Request Pitch Deck'
+                    )}
+                  </button>
+                </form>
+              </div>
             </motion.div>
           )}
-
         </AnimatePresence>
       </main>
 
       {/* Global Elements */}
-      <AIChat />
+      <Suspense fallback={<LoadingSpinner variant="aiChat" />}>
+        <AIChat />
+      </Suspense>
     </div>
   );
 };

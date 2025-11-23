@@ -1,0 +1,66 @@
+# robots.txt for LawnTech Dynamics
+# Last updated: 2025-11-23
+
+# Allow all search engines
+User-agent: *
+Allow: /
+Allow: /ace/
+Allow: /ace/dev/
+
+# Disallow no pages - all content is public
+# Disallow:
+
+# Allow specific user agents
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# Specify sitemap locations for both production and dev
+Sitemap: https://kvnloo.github.io/ace/sitemap.xml
+Sitemap: https://kvnloo.github.io/ace/dev/sitemap.xml
+
+# Cache control
+Cache-delay: 604800
+
+# Performance settings for major search engines
+User-agent: Googlebot
+Request-rate: 0.5
+Visit-time: 0600-2359
+
+User-agent: Bingbot
+Request-rate: 1
+Visit-time: 0600-2359
+
+# Block bad bots
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+# Allow social media crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: whatsapp
+Allow: /
+
+User-agent: Slotovod
+Disallow: /

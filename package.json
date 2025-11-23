@@ -5,23 +5,91 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build && npm run generate:sitemap",
+    "build:analyze": "vite build && npm run generate:sitemap && open dist/stats.html",
+    "build:analyze:ci": "vite build && npm run generate:sitemap",
+    "preview": "vite preview",
+    "generate:sitemap": "node scripts/generate-sitemap.js https://kvnloo.github.io /ace ./public/sitemap.xml",
+    "generate:sitemap:dev": "node scripts/generate-sitemap.js https://kvnloo.github.io /ace/dev ./public/sitemap.xml",
+    "generate:sitemap:custom": "node scripts/generate-sitemap.js",
+    "generate:icons": "node scripts/generate-icons.js",
+    "pwa:check": "echo 'To validate PWA, run: npm run build && npm run preview, then use Lighthouse in Chrome DevTools'",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "lint:report": "eslint . --ext .ts,.tsx,.js,.jsx --format json --output-file eslint-report.json || true",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:chromium": "playwright test --project=chromium",
+    "test:e2e:firefox": "playwright test --project=firefox",
+    "test:e2e:webkit": "playwright test --project=webkit",
+    "test:e2e:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
-    "framer-motion": "^12.23.24",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
     "@google/genai": "^1.30.0",
-    "lucide-react": "^0.554.0",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.0",
-    "three": "^0.181.2"
+    "framer-motion": "^12.23.24",
+    "lucide-react": "^0.554.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "three": "^0.181.2",
+    "web-vitals": "^4.2.4",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.14.0",
+    "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.47.0",
+    "@typescript-eslint/parser": "^8.47.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/coverage-v8": "^4.0.13",
+    "@vitest/ui": "^4.0.13",
+    "eslint": "^9.39.1",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "jsdom": "^27.2.0",
+    "rollup-plugin-visualizer": "^6.0.5",
+    "terser": "^5.44.1",
     "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "vite": "^6.2.0",
+    "vitest": "^4.0.13"
+  },
+  "performanceBudgets": {
+    "description": "Core Web Vitals performance targets - Monitor in development",
+    "LCP": {
+      "target": "2.5s",
+      "threshold": "4.0s"
+    },
+    "FID": {
+      "target": "100ms",
+      "threshold": "300ms"
+    },
+    "CLS": {
+      "target": "0.1",
+      "threshold": "0.25"
+    },
+    "TTFB": {
+      "target": "800ms",
+      "threshold": "1.8s"
+    },
+    "INP": {
+      "target": "200ms",
+      "threshold": "500ms"
+    }
   }
 }
