@@ -355,28 +355,33 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
 
               {/* Mini FPS Graph */}
               <div className="mt-4 h-16 flex items-end gap-1">
-                {fpsData.history.map((fps, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex-1 rounded-t"
-                    style={{
-                      height: `${(fps / 60) * 100}%`,
-                      backgroundColor: getFPSColor(
-                        fps >= 55
-                          ? 'excellent'
-                          : fps >= 40
-                          ? 'good'
-                          : fps >= 25
-                          ? 'fair'
-                          : 'poor'
-                      ),
-                      opacity: 0.3 + (index / fpsData.history.length) * 0.7,
-                    }}
-                    initial={{ scaleY: 0 }}
-                    animate={{ scaleY: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                ))}
+                {fpsData.history.map((fps, index) => {
+                  // Cap height at 100% by using Math.min
+                  const heightPercentage = Math.min((fps / 60) * 100, 100);
+                  return (
+                    <motion.div
+                      key={index}
+                      className="flex-1 rounded-t"
+                      style={{
+                        height: `${heightPercentage}%`,
+                        maxHeight: '100%',
+                        backgroundColor: getFPSColor(
+                          fps >= 55
+                            ? 'excellent'
+                            : fps >= 40
+                            ? 'good'
+                            : fps >= 25
+                            ? 'fair'
+                            : 'poor'
+                        ),
+                        opacity: 0.3 + (index / fpsData.history.length) * 0.7,
+                      }}
+                      initial={{ scaleY: 0 }}
+                      animate={{ scaleY: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  );
+                })}
               </div>
             </motion.div>
           )}

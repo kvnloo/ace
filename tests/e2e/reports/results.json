@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 1
+      "actualWorkers": 10
     },
     "preserveOutput": "always",
     "reporter": [
@@ -43,7 +43,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 10
         },
         "id": "chromium",
         "name": "chromium",
@@ -59,7 +59,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 10
         },
         "id": "firefox",
         "name": "firefox",
@@ -75,7 +75,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 10
         },
         "id": "webkit",
         "name": "webkit",
@@ -91,7 +91,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 10
         },
         "id": "mobile-chrome",
         "name": "mobile-chrome",
@@ -107,7 +107,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 10
         },
         "id": "mobile-safari",
         "name": "mobile-safari",
@@ -123,7 +123,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 10
         },
         "id": "visual-regression",
         "name": "visual-regression",
@@ -172,6 +172,616 @@
               "specs": [
                 {
                   "title": "should show loading screen on first load",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 3713,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:30.860Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-041f6886bc1dceaad897",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 15,
+                  "column": 5
+                },
+                {
+                  "title": "should progress through all phases",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "failed",
+                          "duration": 18467,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"loading-phase\"]')\nExpected substring: \u001b[32m\"Core\"\u001b[39m\nReceived string:    \u001b[31m\"Essential\"\u001b[39m\nTimeout: 15000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"loading-phase\"]')\u001b[22m\n\u001b[2m    18 × locator resolved to <div data-testid=\"loading-phase\" class=\"text-xs text-blue-400 mt-1 font-['Inter']\">Essential</div>\u001b[22m\n\u001b[2m       - unexpected value \"Essential\"\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"loading-phase\"]')\nExpected substring: \u001b[32m\"Core\"\u001b[39m\nReceived string:    \u001b[31m\"Essential\"\u001b[39m\nTimeout: 15000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"loading-phase\"]')\u001b[22m\n\u001b[2m    18 × locator resolved to <div data-testid=\"loading-phase\" class=\"text-xs text-blue-400 mt-1 font-['Inter']\">Essential</div>\u001b[22m\n\u001b[2m       - unexpected value \"Essential\"\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:31:12",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 12,
+                              "line": 31
+                            },
+                            "snippet": "  29 |       for (const phase of phases) {\n  30 |         await expect(page.locator('[data-testid=\"loading-phase\"]'))\n> 31 |           .toContainText(phase, { timeout: 15000 });\n     |            ^\n  32 |       }\n  33 |\n  34 |       // Loading should complete"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 12,
+                                "line": 31
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"loading-phase\"]')\nExpected substring: \u001b[32m\"Core\"\u001b[39m\nReceived string:    \u001b[31m\"Essential\"\u001b[39m\nTimeout: 15000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"loading-phase\"]')\u001b[22m\n\u001b[2m    18 × locator resolved to <div data-testid=\"loading-phase\" class=\"text-xs text-blue-400 mt-1 font-['Inter']\">Essential</div>\u001b[22m\n\u001b[2m       - unexpected value \"Essential\"\u001b[22m\n\n\n  29 |       for (const phase of phases) {\n  30 |         await expect(page.locator('[data-testid=\"loading-phase\"]'))\n> 31 |           .toContainText(phase, { timeout: 15000 });\n     |            ^\n  32 |       }\n  33 |\n  34 |       // Loading should complete\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:31:12"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:30.846Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--f1c46-progress-through-all-phases-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--f1c46-progress-through-all-phases-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 12,
+                            "line": 31
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-59bf1f2dda1ddf46c9b1",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 26,
+                  "column": 5
+                },
+                {
+                  "title": "should not show FPS recommendation for good performance",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "timedOut",
+                          "duration": 30951,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 18,
+                                "line": 48
+                              },
+                              "message": "Error: page.waitForSelector: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"loading-screen\"]') to be hidden\u001b[22m\n\u001b[2m    59 × locator resolved to visible <div data-testid=\"loading-screen\" class=\"fixed inset-0 z-50 flex items-center justify-center bg-slate-950\">…</div>\u001b[22m\n\n\n  46 |\n  47 |       // Should complete without warnings\n> 48 |       await page.waitForSelector('[data-testid=\"loading-screen\"]', {\n     |                  ^\n  49 |         state: 'hidden',\n  50 |         timeout: 30000\n  51 |       });\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:48:18"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:30.796Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--cf896-dation-for-good-performance-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--cf896-dation-for-good-performance-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-b107609235149d8fbccd",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 39,
+                  "column": 5
+                },
+                {
+                  "title": "should enable ultra mode automatically",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "timedOut",
+                          "duration": 30835,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 18,
+                                "line": 56
+                              },
+                              "message": "Error: page.waitForSelector: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"loading-screen\"]') to be hidden\u001b[22m\n\u001b[2m    55 × locator resolved to visible <div data-testid=\"loading-screen\" class=\"fixed inset-0 z-50 flex items-center justify-center bg-slate-950\">…</div>\u001b[22m\n\n\n  54 |     test('should enable ultra mode automatically', async ({ page }) => {\n  55 |       // Complete loading\n> 56 |       await page.waitForSelector('[data-testid=\"loading-screen\"]', {\n     |                  ^\n  57 |         state: 'hidden',\n  58 |         timeout: 30000\n  59 |       });\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:56:18"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:30.912Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--b1e5e-le-ultra-mode-automatically-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--b1e5e-le-ultra-mode-automatically-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-9fecc14fa464b2c247fd",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 54,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Medium-Performance Device",
+              "file": "adaptive-loading.spec.ts",
+              "line": 70,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should show FPS recommendation for balanced mode",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 4,
+                          "status": "failed",
+                          "duration": 16013,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"fps-recommendation\"]')\nExpected substring: \u001b[32m\"Balanced\"\u001b[39m\nReceived string:    \u001b[31m\"Performance Issues DetectedConsider switching to Low quality mode for better performanceSwitch to Low QualityContinue Anyway×\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]')\u001b[22m\n\u001b[2m    6 × locator resolved to <div class=\"mt-6\" data-testid=\"fps-recommendation\">…</div>\u001b[22m\n\u001b[2m      - unexpected value \"Performance Issues DetectedConsider switching to Low quality mode for better performanceSwitch to Low QualityContinue Anyway×\"\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"fps-recommendation\"]')\nExpected substring: \u001b[32m\"Balanced\"\u001b[39m\nReceived string:    \u001b[31m\"Performance Issues DetectedConsider switching to Low quality mode for better performanceSwitch to Low QualityContinue Anyway×\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]')\u001b[22m\n\u001b[2m    6 × locator resolved to <div class=\"mt-6\" data-testid=\"fps-recommendation\">…</div>\u001b[22m\n\u001b[2m      - unexpected value \"Performance Issues DetectedConsider switching to Low quality mode for better performanceSwitch to Low QualityContinue Anyway×\"\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:83:10",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 10,
+                              "line": 83
+                            },
+                            "snippet": "  81 |\n  82 |       await expect(page.locator('[data-testid=\"fps-recommendation\"]'))\n> 83 |         .toContainText('Balanced');\n     |          ^\n  84 |     });\n  85 |\n  86 |     test('should allow user to continue or apply recommendation', async ({ page }) => {"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 10,
+                                "line": 83
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"fps-recommendation\"]')\nExpected substring: \u001b[32m\"Balanced\"\u001b[39m\nReceived string:    \u001b[31m\"Performance Issues DetectedConsider switching to Low quality mode for better performanceSwitch to Low QualityContinue Anyway×\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]')\u001b[22m\n\u001b[2m    6 × locator resolved to <div class=\"mt-6\" data-testid=\"fps-recommendation\">…</div>\u001b[22m\n\u001b[2m      - unexpected value \"Performance Issues DetectedConsider switching to Low quality mode for better performanceSwitch to Low QualityContinue Anyway×\"\u001b[22m\n\n\n  81 |\n  82 |       await expect(page.locator('[data-testid=\"fps-recommendation\"]'))\n> 83 |         .toContainText('Balanced');\n     |          ^\n  84 |     });\n  85 |\n  86 |     test('should allow user to continue or apply recommendation', async ({ page }) => {\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:83:10"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:30.796Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--0a3fe-mendation-for-balanced-mode-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--0a3fe-mendation-for-balanced-mode-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 10,
+                            "line": 83
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-8b081a7a196de442dad9",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 71,
+                  "column": 5
+                },
+                {
+                  "title": "should allow user to continue or apply recommendation",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 5,
+                          "parallelIndex": 5,
+                          "status": "passed",
+                          "duration": 11100,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:30.842Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-1aec415694cf6078fc1f",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 86,
+                  "column": 5
+                },
+                {
+                  "title": "should apply balanced mode when accepted",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 6,
+                          "parallelIndex": 6,
+                          "status": "failed",
+                          "duration": 25641,
+                          "error": {
+                            "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"apply-recommendation-button\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button tabindex=\"0\" data-testid=\"apply-recommendation-button\" class=\"button-glow px-4 py-2 bg-amber-500 text-white rounded-lg font-['Inter'] font-semibold\">Switch to Low Quality</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - element is outside of the viewport\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n",
+                            "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"apply-recommendation-button\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button tabindex=\"0\" data-testid=\"apply-recommendation-button\" class=\"button-glow px-4 py-2 bg-amber-500 text-white rounded-lg font-['Inter'] font-semibold\">Switch to Low Quality</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - element is outside of the viewport\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:110:18",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 18,
+                              "line": 110
+                            },
+                            "snippet": "  108 |       // Wait for recommendation and accept\n  109 |       await page.waitForSelector('[data-testid=\"fps-recommendation\"]');\n> 110 |       await page.click('[data-testid=\"apply-recommendation-button\"]');\n      |                  ^\n  111 |\n  112 |       // Should complete loading faster\n  113 |       await page.waitForSelector('[data-testid=\"loading-screen\"]', {"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 18,
+                                "line": 110
+                              },
+                              "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"apply-recommendation-button\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button tabindex=\"0\" data-testid=\"apply-recommendation-button\" class=\"button-glow px-4 py-2 bg-amber-500 text-white rounded-lg font-['Inter'] font-semibold\">Switch to Low Quality</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - element is outside of the viewport\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\n\n  108 |       // Wait for recommendation and accept\n  109 |       await page.waitForSelector('[data-testid=\"fps-recommendation\"]');\n> 110 |       await page.click('[data-testid=\"apply-recommendation-button\"]');\n      |                  ^\n  111 |\n  112 |       // Should complete loading faster\n  113 |       await page.waitForSelector('[data-testid=\"loading-screen\"]', {\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:110:18"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:30.939Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--f1ec4-balanced-mode-when-accepted-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--f1ec4-balanced-mode-when-accepted-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 18,
+                            "line": 110
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-ce72380fdbfe6d3d9f99",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 102,
+                  "column": 5
+                },
+                {
+                  "title": "should continue full loading when declined",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 7,
+                          "parallelIndex": 7,
+                          "status": "failed",
+                          "duration": 24062,
+                          "error": {
+                            "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"continue-loading-button\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button tabindex=\"0\" data-testid=\"continue-loading-button\" class=\"px-4 py-2 bg-white/10 text-white rounded-lg font-['Inter'] font-semibold hover:bg-white/20\">Continue Anyway</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    3 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n",
+                            "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"continue-loading-button\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button tabindex=\"0\" data-testid=\"continue-loading-button\" class=\"px-4 py-2 bg-white/10 text-white rounded-lg font-['Inter'] font-semibold hover:bg-white/20\">Continue Anyway</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    3 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:132:18",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 18,
+                              "line": 132
+                            },
+                            "snippet": "  130 |       // Wait for recommendation and decline\n  131 |       await page.waitForSelector('[data-testid=\"fps-recommendation\"]');\n> 132 |       await page.click('[data-testid=\"continue-loading-button\"]');\n      |                  ^\n  133 |\n  134 |       // Should continue with all phases\n  135 |       await expect(page.locator('[data-testid=\"loading-phase\"]'))"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 18,
+                                "line": 132
+                              },
+                              "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"continue-loading-button\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button tabindex=\"0\" data-testid=\"continue-loading-button\" class=\"px-4 py-2 bg-white/10 text-white rounded-lg font-['Inter'] font-semibold hover:bg-white/20\">Continue Anyway</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    3 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\n\n  130 |       // Wait for recommendation and decline\n  131 |       await page.waitForSelector('[data-testid=\"fps-recommendation\"]');\n> 132 |       await page.click('[data-testid=\"continue-loading-button\"]');\n      |                  ^\n  133 |\n  134 |       // Should continue with all phases\n  135 |       await expect(page.locator('[data-testid=\"loading-phase\"]'))\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:132:18"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:30.840Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--32faf--full-loading-when-declined-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--32faf--full-loading-when-declined-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 18,
+                            "line": 132
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-c7555f823ef8e31495b1",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 124,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Low-Performance Device",
+              "file": "adaptive-loading.spec.ts",
+              "line": 140,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should show immediate recommendation for minimal mode",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 8,
+                          "status": "failed",
+                          "duration": 24734,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"fps-recommendation\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]')\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"fps-recommendation\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]')\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:150:10",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 10,
+                              "line": 150
+                            },
+                            "snippet": "  148 |       // Should show minimal mode recommendation quickly\n  149 |       await expect(page.locator('[data-testid=\"fps-recommendation\"]'))\n> 150 |         .toBeVisible({ timeout: 5000 });\n      |          ^\n  151 |\n  152 |       await expect(page.locator('[data-testid=\"fps-recommendation\"]'))\n  153 |         .toContainText('Minimal');"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 10,
+                                "line": 150
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"fps-recommendation\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]')\u001b[22m\n\n\n  148 |       // Should show minimal mode recommendation quickly\n  149 |       await expect(page.locator('[data-testid=\"fps-recommendation\"]'))\n> 150 |         .toBeVisible({ timeout: 5000 });\n      |          ^\n  151 |\n  152 |       await expect(page.locator('[data-testid=\"fps-recommendation\"]'))\n  153 |         .toContainText('Minimal');\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:150:10"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:30.795Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--8b6a8-mmendation-for-minimal-mode-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 10,
+                            "line": 150
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-c0fb008d7318b07c80ab",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 141,
+                  "column": 5
+                },
+                {
+                  "title": "should disable force load button for safety",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 9,
+                          "parallelIndex": 9,
+                          "status": "failed",
+                          "duration": 24169,
+                          "error": {
+                            "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]') to be visible\u001b[22m\n",
+                            "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]') to be visible\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:163:18",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 18,
+                              "line": 163
+                            },
+                            "snippet": "  161 |\n  162 |       // Wait for recommendation\n> 163 |       await page.waitForSelector('[data-testid=\"fps-recommendation\"]');\n      |                  ^\n  164 |\n  165 |       // Force load should be disabled\n  166 |       const forceButton = page.locator('[data-testid=\"force-load-button\"]');"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 18,
+                                "line": 163
+                              },
+                              "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]') to be visible\u001b[22m\n\n\n  161 |\n  162 |       // Wait for recommendation\n> 163 |       await page.waitForSelector('[data-testid=\"fps-recommendation\"]');\n      |                  ^\n  164 |\n  165 |       // Force load should be disabled\n  166 |       const forceButton = page.locator('[data-testid=\"force-load-button\"]');\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:163:18"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:30.766Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--4e859-orce-load-button-for-safety-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 18,
+                            "line": 163
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-9f29e59e881adc7cb0a3",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 156,
+                  "column": 5
+                },
+                {
+                  "title": "should load minimal mode quickly",
                   "ok": false,
                   "tags": [],
                   "tests": [
@@ -186,62 +796,839 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 5687,
+                          "duration": 23750,
                           "error": {
-                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"loading-screen\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"loading-screen\"]')\u001b[22m\n",
-                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"loading-screen\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"loading-screen\"]')\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:17:68",
+                            "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]') to be visible\u001b[22m\n",
+                            "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]') to be visible\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:181:18",
                             "location": {
                               "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
-                              "column": 68,
-                              "line": 17
+                              "column": 18,
+                              "line": 181
                             },
-                            "snippet": "  15 |     test('should show loading screen on first load', async ({ page }) => {\n  16 |       // Wait for loading screen to appear\n> 17 |       await expect(page.locator('[data-testid=\"loading-screen\"]')).toBeVisible();\n     |                                                                    ^\n  18 |\n  19 |       // Should show progress indicator\n  20 |       await expect(page.locator('[data-testid=\"loading-progress\"]')).toBeVisible();"
+                            "snippet": "  179 |\n  180 |       // Accept minimal mode\n> 181 |       await page.waitForSelector('[data-testid=\"fps-recommendation\"]');\n      |                  ^\n  182 |       await page.click('[data-testid=\"apply-recommendation-button\"]');\n  183 |\n  184 |       // Should complete loading quickly"
                           },
                           "errors": [
                             {
                               "location": {
                                 "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
-                                "column": 68,
-                                "line": 17
+                                "column": 18,
+                                "line": 181
                               },
-                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"loading-screen\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"loading-screen\"]')\u001b[22m\n\n\n  15 |     test('should show loading screen on first load', async ({ page }) => {\n  16 |       // Wait for loading screen to appear\n> 17 |       await expect(page.locator('[data-testid=\"loading-screen\"]')).toBeVisible();\n     |                                                                    ^\n  18 |\n  19 |       // Should show progress indicator\n  20 |       await expect(page.locator('[data-testid=\"loading-progress\"]')).toBeVisible();\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:17:68"
+                              "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]') to be visible\u001b[22m\n\n\n  179 |\n  180 |       // Accept minimal mode\n> 181 |       await page.waitForSelector('[data-testid=\"fps-recommendation\"]');\n      |                  ^\n  182 |       await page.click('[data-testid=\"apply-recommendation-button\"]');\n  183 |\n  184 |       // Should complete loading quickly\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:181:18"
                             }
                           ],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-11-23T04:21:08.315Z",
+                          "startTime": "2025-11-23T04:29:34.757Z",
                           "annotations": [],
                           "attachments": [
                             {
-                              "name": "screenshot",
-                              "contentType": "image/png",
-                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--52543-oading-screen-on-first-load-chromium/test-failed-1.png"
-                            },
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--52543-oading-screen-on-first-load-chromium/video.webm"
-                            },
-                            {
                               "name": "error-context",
                               "contentType": "text/markdown",
-                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--52543-oading-screen-on-first-load-chromium/error-context.md"
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--2b960-d-load-minimal-mode-quickly-chromium/error-context.md"
                             }
                           ],
                           "errorLocation": {
                             "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
-                            "column": 68,
-                            "line": 17
+                            "column": 18,
+                            "line": 181
                           }
                         }
                       ],
                       "status": "unexpected"
                     }
                   ],
-                  "id": "755d73b478ead90444ed-041f6886bc1dceaad897",
+                  "id": "755d73b478ead90444ed-df1a719aaf75c573463a",
                   "file": "adaptive-loading.spec.ts",
-                  "line": 15,
+                  "line": 172,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Skip Button",
+              "file": "adaptive-loading.spec.ts",
+              "line": 195,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should show skip button after initial phase",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 5,
+                          "parallelIndex": 5,
+                          "status": "failed",
+                          "duration": 7850,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"skip-loading-button\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"skip-loading-button\"]')\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"skip-loading-button\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"skip-loading-button\"]')\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:201:10",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 10,
+                              "line": 201
+                            },
+                            "snippet": "  199 |       // Skip button should appear after phase 1\n  200 |       await expect(page.locator('[data-testid=\"skip-loading-button\"]'))\n> 201 |         .toBeVisible({ timeout: 5000 });\n      |          ^\n  202 |     });\n  203 |\n  204 |     test('should load minimal mode when skip clicked', async ({ page }) => {"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 10,
+                                "line": 201
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"skip-loading-button\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"skip-loading-button\"]')\u001b[22m\n\n\n  199 |       // Skip button should appear after phase 1\n  200 |       await expect(page.locator('[data-testid=\"skip-loading-button\"]'))\n> 201 |         .toBeVisible({ timeout: 5000 });\n      |          ^\n  202 |     });\n  203 |\n  204 |     test('should load minimal mode when skip clicked', async ({ page }) => {\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:201:10"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:42.115Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--6c0c9--button-after-initial-phase-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--6c0c9--button-after-initial-phase-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 10,
+                            "line": 201
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-aad22becf3a08338ebfe",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 196,
+                  "column": 5
+                },
+                {
+                  "title": "should load minimal mode when skip clicked",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 10,
+                          "parallelIndex": 4,
+                          "status": "failed",
+                          "duration": 13757,
+                          "error": {
+                            "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"skip-loading-button\"]') to be visible\u001b[22m\n",
+                            "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"skip-loading-button\"]') to be visible\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:208:18",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 18,
+                              "line": 208
+                            },
+                            "snippet": "  206 |\n  207 |       // Click skip\n> 208 |       await page.waitForSelector('[data-testid=\"skip-loading-button\"]');\n      |                  ^\n  209 |       await page.click('[data-testid=\"skip-loading-button\"]');\n  210 |\n  211 |       // Should complete quickly with minimal mode"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 18,
+                                "line": 208
+                              },
+                              "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"skip-loading-button\"]') to be visible\u001b[22m\n\n\n  206 |\n  207 |       // Click skip\n> 208 |       await page.waitForSelector('[data-testid=\"skip-loading-button\"]');\n      |                  ^\n  209 |       await page.click('[data-testid=\"skip-loading-button\"]');\n  210 |\n  211 |       // Should complete quickly with minimal mode\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:208:18"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:48.742Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--a98b5-imal-mode-when-skip-clicked-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--a98b5-imal-mode-when-skip-clicked-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--a98b5-imal-mode-when-skip-clicked-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 18,
+                            "line": 208
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-6dcda31dabc570deb60f",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 204,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Force Load Button",
+              "file": "adaptive-loading.spec.ts",
+              "line": 224,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should show force load option with warning",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 11,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 13764,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:51.389Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-1bc18b7d82a9cf30c9fd",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 225,
+                  "column": 5
+                },
+                {
+                  "title": "should override recommendation when force load clicked",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 12,
+                          "parallelIndex": 5,
+                          "status": "passed",
+                          "duration": 12376,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:51.919Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-2ac5d5245f01016a8a5d",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 245,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Quality Mode Persistence",
+              "file": "adaptive-loading.spec.ts",
+              "line": 264,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should persist quality mode across sessions",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 13,
+                          "parallelIndex": 9,
+                          "status": "timedOut",
+                          "duration": 30181,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 18,
+                                "line": 269
+                              },
+                              "message": "Error: page.waitForSelector: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"loading-screen\"]') to be hidden\u001b[22m\n\u001b[2m    57 × locator resolved to visible <div data-testid=\"loading-screen\" class=\"fixed inset-0 z-50 flex items-center justify-center bg-slate-950\">…</div>\u001b[22m\n\n\n  267 |\n  268 |       // Complete loading\n> 269 |       await page.waitForSelector('[data-testid=\"loading-screen\"]', {\n      |                  ^\n  270 |         state: 'hidden',\n  271 |         timeout: 30000\n  272 |       });\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:269:18"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:56.681Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--640c8-uality-mode-across-sessions-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--640c8-uality-mode-across-sessions-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--640c8-uality-mode-across-sessions-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-8780c099bddf1027da80",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 265,
+                  "column": 5
+                },
+                {
+                  "title": "should persist quality mode in new tab",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 14,
+                          "parallelIndex": 7,
+                          "status": "timedOut",
+                          "duration": 30168,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 18,
+                                "line": 296
+                              },
+                              "message": "Error: page.waitForSelector: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"loading-screen\"]') to be hidden\u001b[22m\n\u001b[2m    56 × locator resolved to visible <div data-testid=\"loading-screen\" class=\"fixed inset-0 z-50 flex items-center justify-center bg-slate-950\">…</div>\u001b[22m\n\n\n  294 |\n  295 |       // Set ultra mode\n> 296 |       await page.waitForSelector('[data-testid=\"loading-screen\"]', {\n      |                  ^\n  297 |         state: 'hidden',\n  298 |         timeout: 30000\n  299 |       });\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:296:18"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:56.748Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--ff63b-ist-quality-mode-in-new-tab-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--ff63b-ist-quality-mode-in-new-tab-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--ff63b-ist-quality-mode-in-new-tab-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-ccbc664428201e8538e1",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 292,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Visual Indicators",
+              "file": "adaptive-loading.spec.ts",
+              "line": 320,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should show accurate progress percentage",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 15,
+                          "parallelIndex": 8,
+                          "status": "failed",
+                          "duration": 6021,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:331:37",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 37,
+                              "line": 331
+                            },
+                            "snippet": "  329 |       const laterProgress = await progressBar.getAttribute('aria-valuenow');\n  330 |\n> 331 |       expect(Number(laterProgress)).toBeGreaterThan(Number(initialProgress));\n      |                                     ^\n  332 |     });\n  333 |\n  334 |     test('should show current phase name', async ({ page }) => {"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 37,
+                                "line": 331
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  329 |       const laterProgress = await progressBar.getAttribute('aria-valuenow');\n  330 |\n> 331 |       expect(Number(laterProgress)).toBeGreaterThan(Number(initialProgress));\n      |                                     ^\n  332 |     });\n  333 |\n  334 |     test('should show current phase name', async ({ page }) => {\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:331:37"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:57.182Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--cf1c1-ccurate-progress-percentage-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--cf1c1-ccurate-progress-percentage-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--cf1c1-ccurate-progress-percentage-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 37,
+                            "line": 331
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-49b96bf71f14be946ed4",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 321,
+                  "column": 5
+                },
+                {
+                  "title": "should show current phase name",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 16,
+                          "parallelIndex": 6,
+                          "status": "passed",
+                          "duration": 4857,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:29:58.079Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-365673fb9e291d353ade",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 334,
+                  "column": 5
+                },
+                {
+                  "title": "should show FPS meter during loading",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 17,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 4069,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:353:32",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 32,
+                              "line": 353
+                            },
+                            "snippet": "  351 |       // Should show numeric FPS value\n  352 |       const fpsValue = await page.locator('[data-testid=\"fps-value\"]').textContent();\n> 353 |       expect(Number(fpsValue)).toBeGreaterThan(0);\n      |                                ^\n  354 |     });\n  355 |   });\n  356 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 32,
+                                "line": 353
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  351 |       // Should show numeric FPS value\n  352 |       const fpsValue = await page.locator('[data-testid=\"fps-value\"]').textContent();\n> 353 |       expect(Number(fpsValue)).toBeGreaterThan(0);\n      |                                ^\n  354 |     });\n  355 |   });\n  356 |\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:353:32"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:30:00.197Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--cca74-ow-FPS-meter-during-loading-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--cca74-ow-FPS-meter-during-loading-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--cca74-ow-FPS-meter-during-loading-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 32,
+                            "line": 353
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-eb742f9a4c36373be112",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 344,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Accessibility",
+              "file": "adaptive-loading.spec.ts",
+              "line": 357,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should have proper ARIA labels",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 18,
+                          "parallelIndex": 2,
+                          "status": "failed",
+                          "duration": 6985,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('[data-testid=\"loading-screen\"]')\nExpected: \u001b[32m\"progressbar\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"loading-screen\"]')\u001b[22m\n\u001b[2m    8 × locator resolved to <div data-testid=\"loading-screen\" class=\"fixed inset-0 z-50 flex items-center justify-center bg-slate-950\">…</div>\u001b[22m\n\u001b[2m      - unexpected value \"null\"\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('[data-testid=\"loading-screen\"]')\nExpected: \u001b[32m\"progressbar\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"loading-screen\"]')\u001b[22m\n\u001b[2m    8 × locator resolved to <div data-testid=\"loading-screen\" class=\"fixed inset-0 z-50 flex items-center justify-center bg-slate-950\">…</div>\u001b[22m\n\u001b[2m      - unexpected value \"null\"\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:363:10",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 10,
+                              "line": 363
+                            },
+                            "snippet": "  361 |       // Loading screen should have role\n  362 |       await expect(page.locator('[data-testid=\"loading-screen\"]'))\n> 363 |         .toHaveAttribute('role', 'progressbar');\n      |          ^\n  364 |\n  365 |       // Should have aria-label\n  366 |       await expect(page.locator('[data-testid=\"loading-screen\"]'))"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 10,
+                                "line": 363
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('[data-testid=\"loading-screen\"]')\nExpected: \u001b[32m\"progressbar\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"loading-screen\"]')\u001b[22m\n\u001b[2m    8 × locator resolved to <div data-testid=\"loading-screen\" class=\"fixed inset-0 z-50 flex items-center justify-center bg-slate-950\">…</div>\u001b[22m\n\u001b[2m      - unexpected value \"null\"\u001b[22m\n\n\n  361 |       // Loading screen should have role\n  362 |       await expect(page.locator('[data-testid=\"loading-screen\"]'))\n> 363 |         .toHaveAttribute('role', 'progressbar');\n      |          ^\n  364 |\n  365 |       // Should have aria-label\n  366 |       await expect(page.locator('[data-testid=\"loading-screen\"]'))\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:363:10"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:30:03.313Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--0a65d-uld-have-proper-ARIA-labels-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--0a65d-uld-have-proper-ARIA-labels-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--0a65d-uld-have-proper-ARIA-labels-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 10,
+                            "line": 363
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-e191d9bd093837017948",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 358,
+                  "column": 5
+                },
+                {
+                  "title": "should announce progress to screen readers",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 19,
+                          "parallelIndex": 3,
+                          "status": "failed",
+                          "duration": 6923,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[aria-live=\"polite\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[aria-live=\"polite\"]')\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[aria-live=\"polite\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[aria-live=\"polite\"]')\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:375:10",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 10,
+                              "line": 375
+                            },
+                            "snippet": "  373 |       // Should have aria-live region\n  374 |       await expect(page.locator('[aria-live=\"polite\"]'))\n> 375 |         .toBeVisible();\n      |          ^\n  376 |\n  377 |       // Progress updates should be announced\n  378 |       const liveRegion = page.locator('[aria-live=\"polite\"]');"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 10,
+                                "line": 375
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[aria-live=\"polite\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[aria-live=\"polite\"]')\u001b[22m\n\n\n  373 |       // Should have aria-live region\n  374 |       await expect(page.locator('[aria-live=\"polite\"]'))\n> 375 |         .toBeVisible();\n      |          ^\n  376 |\n  377 |       // Progress updates should be announced\n  378 |       const liveRegion = page.locator('[aria-live=\"polite\"]');\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:375:10"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:30:03.250Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--8c08d--progress-to-screen-readers-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--8c08d--progress-to-screen-readers-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--8c08d--progress-to-screen-readers-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 10,
+                            "line": 375
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-106555f159665da594f9",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 370,
+                  "column": 5
+                },
+                {
+                  "title": "should support keyboard navigation",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 20,
+                          "parallelIndex": 4,
+                          "status": "failed",
+                          "duration": 10876,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('[data-testid=\"fps-recommendation\"]')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]')\u001b[22m\n\u001b[2m    8 × locator resolved to <div class=\"mt-6\" data-testid=\"fps-recommendation\">…</div>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('[data-testid=\"fps-recommendation\"]')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]')\u001b[22m\n\u001b[2m    8 × locator resolved to <div class=\"mt-6\" data-testid=\"fps-recommendation\">…</div>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:404:14",
+                            "location": {
+                              "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                              "column": 14,
+                              "line": 404
+                            },
+                            "snippet": "  402 |       // Action should execute\n  403 |       await expect(page.locator('[data-testid=\"fps-recommendation\"]'))\n> 404 |         .not.toBeVisible({ timeout: 5000 });\n      |              ^\n  405 |     });\n  406 |   });\n  407 | });"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                                "column": 14,
+                                "line": 404
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('[data-testid=\"fps-recommendation\"]')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"fps-recommendation\"]')\u001b[22m\n\u001b[2m    8 × locator resolved to <div class=\"mt-6\" data-testid=\"fps-recommendation\">…</div>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n\n\n  402 |       // Action should execute\n  403 |       await expect(page.locator('[data-testid=\"fps-recommendation\"]'))\n> 404 |         .not.toBeVisible({ timeout: 5000 });\n      |              ^\n  405 |     });\n  406 |   });\n  407 | });\n    at /home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts:404:14"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-11-23T04:30:03.981Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--d4345-support-keyboard-navigation-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--d4345-support-keyboard-navigation-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/home/kvn/workspace/evolve/repos/ace/test-results/adaptive-loading-Adaptive--d4345-support-keyboard-navigation-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kvn/workspace/evolve/repos/ace/tests/e2e/adaptive-loading.spec.ts",
+                            "column": 14,
+                            "line": 404
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "755d73b478ead90444ed-c5d6fe208a8359f39105",
+                  "file": "adaptive-loading.spec.ts",
+                  "line": 386,
                   "column": 5
                 }
               ]
@@ -253,11 +1640,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-23T04:21:07.838Z",
-    "duration": 6252.644,
-    "expected": 0,
+    "startTime": "2025-11-23T04:29:30.209Z",
+    "duration": 56987.282,
+    "expected": 5,
     "skipped": 0,
-    "unexpected": 1,
+    "unexpected": 18,
     "flaky": 0
   }
 }

@@ -32,6 +32,7 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
   const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);
   const [loadingComplete, setLoadingComplete] = useState(false);
+  const [shouldShowLoading, setShouldShowLoading] = useState(false);
   const { isLoading } = useLoading();
 
   // Synchronize view with URL
@@ -79,6 +80,15 @@ const App: React.FC = () => {
     }
   }, [currentView]);
 
+  // Show loading screen only when entering court view
+  useEffect(() => {
+    if (currentView === View.FACILITY_DEMO && !loadingComplete) {
+      setShouldShowLoading(true);
+    } else {
+      setShouldShowLoading(false);
+    }
+  }, [currentView, loadingComplete]);
+
   const pageVariants = {
     initial: { opacity: 0, y: 20 },
     enter: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
@@ -87,9 +97,9 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
-      {/* Loading Screen */}
+      {/* Loading Screen - Only show when entering court view */}
       <AnimatePresence>
-        {!loadingComplete && (
+        {shouldShowLoading && !loadingComplete && (
           <LoadingScreen
             onComplete={() => setLoadingComplete(true)}
             minimumDisplayTime={2000}
