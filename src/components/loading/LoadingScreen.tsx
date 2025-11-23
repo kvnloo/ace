@@ -354,15 +354,19 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
               </div>
 
               {/* Mini FPS Graph */}
-              <div className="mt-4 h-16 flex items-end gap-1">
+              <div className="mt-4 h-16 flex items-end gap-1 justify-start">
                 {fpsData.history.map((fps, index) => {
-                  // Cap height at 100% by using Math.min
-                  const heightPercentage = Math.min((fps / 60) * 100, 100);
+                  // Calculate height relative to the max FPS in history
+                  // This ensures the graph always uses the full height dynamically
+                  const maxFps = Math.max(...fpsData.history, 1); // Prevent division by zero
+                  const heightPercentage = (fps / maxFps) * 100;
                   return (
                     <motion.div
                       key={index}
-                      className="flex-1 rounded-t"
+                      className="rounded-t"
                       style={{
+                        width: '8px',
+                        minWidth: '8px',
                         height: `${heightPercentage}%`,
                         maxHeight: '100%',
                         backgroundColor: getFPSColor(
