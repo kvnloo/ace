@@ -4,21 +4,117 @@ import { MessageSquare, X, Send, Bot, Loader2 } from 'lucide-react';
 import { sendQueryToConcierge } from '../services/geminiService';
 import { ChatMessage } from '../types';
 
+/**
+ * AI-powered chat interface for facility inquiries
+ *
+ * @remarks
+ * Floating chat widget providing conversational access to facility information via
+ * Google Gemini AI. Features include:
+ * - Expandable chat panel with smooth animations
+ * - Real-time message streaming
+ * - Auto-scrolling message history
+ * - Loading states with spinner indicator
+ * - Glass-morphism design matching app aesthetic
+ *
+ * **Architecture:**
+ * - UI: Framer Motion for animations, Lucide icons for consistent iconography
+ * - AI Backend: Google Gemini API via sendQueryToConcierge service
+ * - State: Local React state for messages, input, loading status
+ * - Conversation: Full history sent to API for context-aware responses
+ *
+ * **User Flow:**
+ * 1. User clicks floating button (bottom-right corner)
+ * 2. Chat panel expands with welcome message from AI concierge
+ * 3. User types query and sends (Enter key or Send button)
+ * 4. Message appears immediately (optimistic UI update)
+ * 5. Loading spinner shows while AI processes request
+ * 6. AI response streams into chat with auto-scroll
+ *
+ * **Message Format:**
+ * Messages use ChatMessage type with role ('user' | 'model') and text content.
+ * Conversation history maintains context across multiple exchanges.
+ *
+ * **Styling:**
+ * - Fixed positioning at bottom-right (z-index 50)
+ * - 350-400px wide panel with 500px height
+ * - User messages: Tennis green background, right-aligned
+ * - AI messages: White/10 background, left-aligned
+ * - Glass panel with backdrop blur and border effects
+ *
+ * **Performance:**
+ * - Auto-scroll implemented via useEffect + ref
+ * - Optimistic UI updates for instant user feedback
+ * - Loading state prevents duplicate submissions
+ *
+ * @example
+ * ```tsx
+ * import AIChat from './components/AIChat';
+ *
+ * function App() {
+ *   return (
+ *     <div>
+ *       <YourContent />
+ *       <AIChat />
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * @example
+ * Typical conversation flow:
+ * ```
+ * User: "Tell me about the autonomous grass courts"
+ * AI: "Our facility features revolutionary autonomous grass management..."
+ *
+ * User: "What surfaces are available?"
+ * AI: "We offer 24 courts with 4 surface types: hard, clay, grass, and wood..."
+ * ```
+ *
+ * @see {@link sendQueryToConcierge} for AI integration details
+ * @see {@link ChatMessage} for message data structure
+ */
 const AIChat: React.FC = () => {
+  /** Controls chat panel visibility (expanded/collapsed) */
   const [isOpen, setIsOpen] = useState(false);
+
+  /** Current user input text in message field */
   const [input, setInput] = useState('');
+
+  /** Loading state during AI response generation */
   const [isLoading, setIsLoading] = useState(false);
+
+  /** Full conversation history (user + AI messages) */
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: 'model', text: "Welcome to LawnTech Dynamics. I'm your AI Concierge. Ask me about our autonomous grass courts or replacement modular grids." }
   ]);
+
+  /** Ref for message container to enable auto-scroll */
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * Auto-scroll to bottom when new messages arrive
+   */
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
 
+  /**
+   * Handles message submission to AI backend
+   *
+   * @remarks
+   * Process flow:
+   * 1. Validates non-empty input
+   * 2. Clears input field immediately
+   * 3. Adds user message to UI (optimistic update)
+   * 4. Converts history to Gemini API format
+   * 5. Calls sendQueryToConcierge with full context
+   * 6. Appends AI response to messages
+   * 7. Clears loading state
+   *
+   * @internal
+   */
   const handleSend = async () => {
     if (!input.trim()) return;
     

@@ -30,12 +30,37 @@ import LockerRoom from './LockerRoom';
 
 // --- Types & Constants ---
 
+/**
+ * Annotation display mode for the 3D scene
+ *
+ * @remarks
+ * Controls what type of information overlays are shown in the visualization:
+ * - NONE: Clean view with no overlays
+ * - LABELS: Shows court labels and facility markers
+ * - MEASUREMENTS: Displays CAD-style dimensions and measurements
+ */
 type AnnotationMode = 'NONE' | 'LABELS' | 'MEASUREMENTS';
+
+/**
+ * Floor level selection for facility navigation
+ *
+ * @remarks
+ * Determines which floor is visible and active in the camera view:
+ * - ALL: Full facility overview from isometric angle
+ * - 0-3: Individual floor focus with immersive camera positioning
+ */
 type FloorLevel = 'ALL' | 0 | 1 | 2 | 3;
 
+/** Standard vertical height of each floor level in meters */
 const FLOOR_HEIGHT = 20;
+
+/** Total width of the building footprint in meters */
 const BUILDING_WIDTH = 140;
+
+/** Total depth of the building footprint in meters */
 const BUILDING_DEPTH = 120;
+
+/** Primary brand color - Tennis yellow accent */
 const BRAND_YELLOW = "#DFFF4F";
 
 const FEATURES: FeatureData[] = [
@@ -49,6 +74,21 @@ const FEATURES: FeatureData[] = [
 
 // --- Helper Components ---
 
+/**
+ * Camera animation controller for floor-based navigation
+ *
+ * @remarks
+ * Smoothly animates camera position and look-at target when floor selection changes.
+ * Uses lerp interpolation for natural movement. Animation can be interrupted by user
+ * interaction with OrbitControls.
+ *
+ * @param props - Camera rig configuration
+ * @param props.activeFloor - Currently selected floor level
+ * @param props.controlsRef - Reference to OrbitControls instance
+ * @param props.isAnimatingRef - Mutable ref controlling animation state
+ *
+ * @internal
+ */
 const CameraRig = ({
     activeFloor,
     controlsRef,
@@ -104,6 +144,27 @@ const CameraRig = ({
 
 // --- UI Components ---
 
+/**
+ * 2D overlay controls for scene navigation and visualization settings
+ *
+ * @remarks
+ * Provides user interface controls for:
+ * - Floor level selection (Ground to Level 3, or full facility view)
+ * - Annotation mode switching (Clean, Labels, Measurements)
+ * - Performance mode adjustment (High, Medium, Low quality)
+ *
+ * Uses glass-morphism design with backdrop blur and transparency effects.
+ *
+ * @param props - Control panel configuration
+ * @param props.activeFloor - Currently selected floor
+ * @param props.setActiveFloor - Floor selection callback
+ * @param props.annotationMode - Current annotation display mode
+ * @param props.setAnnotationMode - Annotation mode change callback
+ * @param props.performanceMode - Current rendering quality setting
+ * @param props.setPerformanceMode - Performance mode change callback
+ *
+ * @internal
+ */
 const ControlsOverlay = ({
     activeFloor,
     setActiveFloor,
@@ -198,6 +259,15 @@ const ControlsOverlay = ({
 
 // --- 3D Components ---
 
+/**
+ * Props for interactive 3D feature markers
+ *
+ * @property position - 3D world space coordinates [x, y, z] in meters
+ * @property title - Display name shown in marker label
+ * @property onClick - Callback when marker is clicked
+ * @property isSelected - Whether this marker is currently selected
+ * @property visible - Controls marker visibility based on floor/annotation mode
+ */
 interface MarkerProps {
     position: [number, number, number];
     title: string;
@@ -206,6 +276,23 @@ interface MarkerProps {
     visible: boolean;
 }
 
+/**
+ * Interactive 3D marker with floating sphere and HTML label
+ *
+ * @remarks
+ * Visual landmark for facility features. Includes:
+ * - Floating animated sphere (using Float from drei)
+ * - Ground ring indicator
+ * - HTML label with hover/selection states
+ * - Yellow highlight when selected or hovered
+ *
+ * Uses useCursor to show pointer on hover. Click events stop propagation
+ * to prevent camera orbit interference.
+ *
+ * @param props - Marker configuration
+ *
+ * @internal
+ */
 const Marker: React.FC<MarkerProps> = ({ position, title, onClick, isSelected, visible }) => {
     const [hovered, setHover] = useState(false);
     useCursor(hovered);
@@ -1432,10 +1519,60 @@ const CampusGrounds = () => {
 
 // --- Main Scene ---
 
+/**
+ * Props for the main ThreeScene component
+ *
+ * @property onFeatureSelect - Callback invoked when user clicks a facility feature marker
+ */
 interface ThreeSceneProps {
     onFeatureSelect: (feature: FeatureData) => void;
 }
 
+/**
+ * Interactive 3D visualization of multi-level tennis facility
+ *
+ * @remarks
+ * Comprehensive React Three Fiber scene featuring:
+ * - 4-level building with 60+ sport courts (tennis, badminton, pickleball, etc.)
+ * - Animated camera system with floor-by-floor navigation
+ * - CAD-style measurement overlays
+ * - Interactive feature markers
+ * - Dynamic performance scaling (high/medium/low quality)
+ * - Glass architecture, organic structures, solar panels
+ * - Autonomous systems (robotic grass management, transport pods, hydroponics)
+ *
+ * **Architecture:**
+ * - Ground Floor: 24 tennis courts (hard/clay/grass/wood), 600-seat bleachers, locker rooms
+ * - Level 1: 16 badminton, 4 squash, 16 table tennis, mechanical rooms, BMS control
+ * - Level 2: 8 pickleball courts, Real Tennis court, 360° glass walkways, VIP suites
+ * - Level 3: Vertical hydroponics farm with 4 autonomous sectors
+ *
+ * **Performance:**
+ * - Low mode: No shadows, basic rendering
+ * - Medium mode: Standard shadows, moderate quality
+ * - High mode: Full shadows, enhanced DPR, maximum quality
+ *
+ * **State Management:**
+ * - Floor selection (ALL or 0-3)
+ * - Annotation mode (NONE/LABELS/MEASUREMENTS)
+ * - Feature selection (syncs with parent component)
+ * - Camera animation control
+ *
+ * @example
+ * ```tsx
+ * <ThreeScene
+ *   onFeatureSelect={(feature) => {
+ *     console.log('Selected:', feature.title);
+ *   }}
+ * />
+ * ```
+ *
+ * @param props - Component configuration
+ * @param props.onFeatureSelect - Feature selection callback
+ *
+ * @see {@link FeatureData} for marker data structure
+ * @see {@link ControlsOverlay} for UI control documentation
+ */
 const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [activeFloor, setActiveFloor] = useState<FloorLevel>('ALL');

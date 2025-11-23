@@ -2,11 +2,81 @@ import React from 'react';
 import { View } from '../types';
 import { Menu, X } from 'lucide-react';
 
+/**
+ * Main navigation component for the ACE Tennis Facility application
+ *
+ * @remarks
+ * Responsive navigation bar with adaptive mobile/desktop layouts featuring:
+ * - Branding with animated pulse indicator
+ * - View-based routing (Vision, Specs, 3D Map, Amenities, Invest)
+ * - Mobile hamburger menu with slide-out panel
+ * - Call-to-action button for waiting list
+ * - Glass-morphism design with gradient background
+ * - Sticky positioning at viewport top
+ *
+ * **Layout Behavior:**
+ * - Desktop (≥768px): Horizontal inline navigation with all items visible
+ * - Mobile (<768px): Hamburger menu triggering full-width dropdown panel
+ *
+ * **Styling:**
+ * - Fixed positioning with z-index 40 (above content, below modals)
+ * - Gradient fade from slate-900/90 to transparent
+ * - Active route highlighted in tennis yellow (#DFFF4F)
+ * - Hover states with opacity transitions
+ *
+ * **Accessibility:**
+ * - Semantic nav element
+ * - Button elements for all interactive items
+ * - Mobile menu toggles with icon indicators
+ * - Focus states and keyboard navigation support
+ *
+ * @example
+ * ```tsx
+ * import { useState } from 'react';
+ * import NavBar from './components/NavBar';
+ * import { View } from './types';
+ *
+ * function App() {
+ *   const [view, setView] = useState(View.HOME);
+ *
+ *   return (
+ *     <NavBar
+ *       currentView={view}
+ *       onChangeView={setView}
+ *     />
+ *   );
+ * }
+ * ```
+ *
+ * @example
+ * Handle view changes with side effects:
+ * ```tsx
+ * <NavBar
+ *   currentView={currentView}
+ *   onChangeView={(view) => {
+ *     setCurrentView(view);
+ *     analytics.track('view_change', { to: view });
+ *   }}
+ * />
+ * ```
+ */
+
+/**
+ * Props for the NavBar component
+ *
+ * @property currentView - Currently active view determining highlighted nav item
+ * @property onChangeView - Callback invoked when user navigates to different view
+ */
 interface NavBarProps {
+  /** Currently active view - determines which nav item is highlighted */
   currentView: View;
+  /** Callback fired when user navigates to a different view */
   onChangeView: (view: View) => void;
 }
 
+/**
+ * @internal
+ */
 const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
 
