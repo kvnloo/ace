@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="750" height="1334" viewBox="0 0 750 1334" xmlns="http://www.w3.org/2000/svg">
+  <rect width="750" height="1334" fill="#0f172a"/>
+  <text x="375" y="667"
+        font-family="Arial, sans-serif"
+        font-size="48"
+        font-weight="bold"
+        fill="#DFFF4F"
+        text-anchor="middle">LawnTech Dynamics</text>
+  <text x="375" y="750"
+        font-family="Arial, sans-serif"
+        font-size="24"
+        fill="#DFFF4F"
+        text-anchor="middle"
+        opacity="0.8">Mobile Experience</text>
+</svg>

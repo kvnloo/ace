@@ -13,6 +13,7 @@ This project uses GitHub Actions to automatically build and deploy to GitHub Pag
 ### 2. Deployment Strategy
 
 The workflow automatically:
+
 - Builds the `main` branch and deploys to the root path (`/`)
 - Builds the `dev` branch and deploys to `/dev/` path
 - Combines both builds into a single deployment
@@ -20,6 +21,7 @@ The workflow automatically:
 ### 3. Triggering Deployments
 
 Deployments are triggered automatically when you push to either:
+
 - `main` branch → Updates the production site at `https://<username>.github.io/<repo>/`
 - `dev` branch → Updates the dev site at `https://<username>.github.io/<repo>/dev/`
 
@@ -54,15 +56,18 @@ Replace `<username>` with your GitHub username and `<repo>` with your repository
 ## Troubleshooting
 
 ### Deployment fails with "Artifact not found"
+
 - Ensure the workflow has completed the build phase successfully
 - Check the build logs for any compilation errors
 
 ### 404 errors on deployed site
+
 - Verify that GitHub Pages is enabled in repository settings
 - Confirm the source is set to "GitHub Actions"
 - Wait a few minutes after deployment completes
 
 ### Assets not loading correctly
+
 - Check that `vite.config.ts` correctly sets the base path
 - Verify the VITE_BASE_PATH environment variable in the workflow
 

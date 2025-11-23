@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Offline - LawnTech Dynamics</title>
+    <meta name="theme-color" content="#DFFF4F" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .offline-container {
+        text-align: center;
+        max-width: 600px;
+      }
+
+      .icon-container {
+        margin-bottom: 2rem;
+      }
+
+      .tennis-ball {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+        position: relative;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: #DFFF4F;
+      }
+
+      p {
+        font-size: 1.125rem;
+        line-height: 1.75;
+        color: #94a3b8;
+        margin-bottom: 2rem;
+      }
+
+      .retry-button {
+        display: inline-block;
+        padding: 14px 32px;
+        background: #DFFF4F;
+        color: #1A2E1B;
+        font-weight: 600;
+        font-size: 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 4px 12px rgba(223, 255, 79, 0.3);
+      }
+
+      .retry-button:hover {
+        background: #c9e946;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(223, 255, 79, 0.4);
+      }
+
+      .retry-button:active {
+        transform: translateY(0);
+      }
+
+      .status {
+        margin-top: 2rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .status-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ef4444;
+        margin-right: 8px;
+        animation: pulse 2s infinite;
+      }
+
+      .status-indicator.online {
+        background: #10b981;
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .features-list {
+        margin-top: 2rem;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .features-list h3 {
+        color: #DFFF4F;
+        margin-bottom: 1rem;
+        font-size: 1.125rem;
+      }
+
+      .features-list ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .features-list li {
+        padding: 0.5rem 0;
+        color: #cbd5e1;
+        display: flex;
+        align-items: center;
+      }
+
+      .features-list li::before {
+        content: "✓";
+        color: #DFFF4F;
+        font-weight: bold;
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="offline-container">
+      <div class="icon-container">
+        <svg class="tennis-ball" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="55" fill="#DFFF4F"/>
+          <path d="M 30 30 Q 45 45 60 60 Q 75 75 90 90"
+                stroke="#2C5F2D"
+                stroke-width="6"
+                fill="none"
+                stroke-linecap="round"/>
+          <path d="M 90 30 Q 75 45 60 60 Q 45 75 30 90"
+                stroke="#2C5F2D"
+                stroke-width="6"
+                fill="none"
+                stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <h1>You're Offline</h1>
+      <p>
+        It looks like you've lost your internet connection. Don't worry - LawnTech Dynamics
+        will be back as soon as you're online again.
+      </p>
+
+      <button class="retry-button" onclick="location.reload()">
+        Try Again
+      </button>
+
+      <div class="status">
+        <span class="status-indicator" id="status-indicator"></span>
+        <span id="status-text">Offline</span>
+      </div>
+
+      <div class="features-list">
+        <h3>Available when you're back online:</h3>
+        <ul>
+          <li>Interactive 3D Facility Visualization</li>
+          <li>AI-Powered Tennis Assistant</li>
+          <li>Real-time Court Availability</li>
+          <li>Performance Analytics Dashboard</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      // Monitor online/offline status
+      function updateOnlineStatus() {
+        const statusIndicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
+
+        if (navigator.onLine) {
+          statusIndicator.classList.add('online');
+          statusText.textContent = 'Back Online - Click "Try Again"';
+        } else {
+          statusIndicator.classList.remove('online');
+          statusText.textContent = 'Offline';
+        }
+      }
+
+      // Update status on load
+      updateOnlineStatus();
+
+      // Listen for online/offline events
+      window.addEventListener('online', () => {
+        updateOnlineStatus();
+        // Auto-reload after a short delay when back online
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      });
+
+      window.addEventListener('offline', updateOnlineStatus);
+
+      // Retry button functionality
+      document.querySelector('.retry-button').addEventListener('click', () => {
+        if (navigator.onLine) {
+          location.href = '/';
+        } else {
+          location.reload();
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" fill="#2C5F2D" rx="96"/>
+
+  <!-- Tennis ball -->
+  <circle cx="256" cy="256" r="140" fill="#DFFF4F"/>
+
+  <!-- Ball seam curves -->
+  <path d="M 180 180 Q 220 220 256 256 Q 292 292 332 332"
+        stroke="#2C5F2D"
+        stroke-width="8"
+        fill="none"
+        stroke-linecap="round"/>
+  <path d="M 332 180 Q 292 220 256 256 Q 220 292 180 332"
+        stroke="#2C5F2D"
+        stroke-width="8"
+        fill="none"
+        stroke-linecap="round"/>
+
+  <!-- LT monogram -->
+  <text x="256" y="440"
+        font-family="Arial, sans-serif"
+        font-size="48"
+        font-weight="bold"
+        fill="#DFFF4F"
+        text-anchor="middle">LT</text>
+</svg>

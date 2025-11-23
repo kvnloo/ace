@@ -45,6 +45,11 @@ jobs:
       - name: Copy main build to root
         run: cp -r dist/* deploy/
 
+      - name: Copy public assets to deploy root
+        run: |
+          cp -r public/* deploy/ 2>/dev/null || true
+          echo "Public files copied successfully"
+
       - name: Checkout dev branch
         uses: actions/checkout@v4
         with:
@@ -66,6 +71,11 @@ jobs:
         run: |
           mkdir -p deploy/dev
           cp -r dist/* deploy/dev/
+
+      - name: Copy public assets to dev subdirectory
+        run: |
+          cp -r public/* deploy/dev/ 2>/dev/null || true
+          echo "Public files copied to dev successfully"
 
       - name: Upload combined artifact
         uses: actions/upload-pages-artifact@v3

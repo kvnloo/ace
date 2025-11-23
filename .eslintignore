@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+*.production.min.js
+
+# Cache directories
+.cache/
+.vite/
+.eslintcache
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Config files
+vite.config.ts.timestamp-*
+
+# Test coverage
+coverage/
+
+# IDE
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+*.log
+
+# GitHub
+.github/

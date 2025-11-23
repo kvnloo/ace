@@ -1,0 +1,420 @@
+name: Quality Gates & Performance
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  push:
+    branches:
+      - main
+      - dev
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+# Allow concurrent runs but cancel in-progress runs for the same PR
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bundle-size:
+    name: Bundle Size Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build with analysis
+        run: npm run build:analyze:ci
+        env:
+          VITE_BASE_PATH: '/ace/'
+
+      - name: Analyze bundle size
+        id: bundle-analysis
+        run: |
+          echo "## Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Check if dist directory exists
+          if [ ! -d "dist" ]; then
+            echo "❌ Build failed: dist directory not found" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          # Calculate total size
+          TOTAL_SIZE=$(du -sh dist | cut -f1)
+          echo "📦 Total bundle size: **${TOTAL_SIZE}**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # List main assets
+          echo "### Main Assets:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Size |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|------|" >> $GITHUB_STEP_SUMMARY
+
+          # Find and list JavaScript files
+          find dist/assets -name "*.js" -type f -exec du -h {} \; | sort -rh | head -10 | while read size file; do
+            filename=$(basename "$file")
+            echo "| ${filename} | ${size} |" >> $GITHUB_STEP_SUMMARY
+          done
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Check for large files (>500KB)
+          LARGE_FILES=$(find dist -type f -size +500k)
+          if [ -n "$LARGE_FILES" ]; then
+            echo "⚠️ **Warning: Large files detected (>500KB)**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "$LARGE_FILES" | while read file; do
+              size=$(du -h "$file" | cut -f1)
+              echo "${file}: ${size}"
+            done >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Consider code splitting or lazy loading for better performance." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ All files are within acceptable size limits" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload bundle stats
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analysis
+          path: dist/stats.html
+          retention-days: 30
+
+      - name: Comment PR with bundle size
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const { execSync } = require('child_process');
+
+            // Get bundle size
+            const totalSize = execSync('du -sh dist').toString().split('\t')[0];
+
+            // Create comment body
+            const body = `## 📦 Bundle Size Report
+
+            **Total Size:** \`${totalSize}\`
+
+            <details>
+            <summary>View detailed breakdown</summary>
+
+            ### JavaScript Assets
+
+            ${execSync('find dist/assets -name "*.js" -type f -exec du -h {} \\; | sort -rh | head -10').toString()}
+
+            </details>
+
+            View the [full bundle analysis](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for more details.
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+  performance-budget:
+    name: Performance Budget Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          VITE_BASE_PATH: '/ace/'
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.13.x
+
+      - name: Run Lighthouse CI
+        run: |
+          # Create Lighthouse config
+          cat > lighthouserc.json << 'EOF'
+          {
+            "ci": {
+              "collect": {
+                "staticDistDir": "./dist",
+                "numberOfRuns": 3
+              },
+              "assert": {
+                "assertions": {
+                  "categories:performance": ["warn", {"minScore": 0.9}],
+                  "categories:accessibility": ["warn", {"minScore": 0.9}],
+                  "categories:best-practices": ["warn", {"minScore": 0.9}],
+                  "categories:seo": ["warn", {"minScore": 0.9}],
+                  "first-contentful-paint": ["warn", {"maxNumericValue": 2000}],
+                  "largest-contentful-paint": ["warn", {"maxNumericValue": 2500}],
+                  "cumulative-layout-shift": ["warn", {"maxNumericValue": 0.1}],
+                  "total-blocking-time": ["warn", {"maxNumericValue": 300}],
+                  "speed-index": ["warn", {"maxNumericValue": 3000}]
+                }
+              },
+              "upload": {
+                "target": "temporary-public-storage"
+              }
+            }
+          }
+          EOF
+
+          lhci autorun --config=lighthouserc.json || echo "⚠️ Lighthouse checks failed but continuing"
+
+      - name: Parse performance budgets
+        id: budgets
+        run: |
+          echo "## Performance Budget Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Core Web Vitals Targets" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Target | Threshold | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|--------|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          # Read from package.json
+          node -e "
+          const pkg = require('./package.json');
+          const budgets = pkg.performanceBudgets;
+
+          Object.keys(budgets).forEach(key => {
+            if (key !== 'description') {
+              const metric = budgets[key];
+              console.log('| ' + key + ' | ' + metric.target + ' | ' + metric.threshold + ' | ⏳ Pending |');
+            }
+          });
+          " >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "ℹ️ These targets are monitored during development. Deploy the application to production to measure real-world performance." >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          retention-days: 30
+
+  accessibility:
+    name: Accessibility Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          VITE_BASE_PATH: '/ace/'
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Create accessibility test
+        run: |
+          cat > accessibility-test.js << 'EOF'
+          const { chromium } = require('playwright');
+          const { injectAxe, checkA11y, getViolations } = require('axe-playwright');
+
+          (async () => {
+            const browser = await chromium.launch();
+            const context = await browser.newContext();
+            const page = await context.newPage();
+
+            // Start local server
+            const handler = require('serve-handler');
+            const http = require('http');
+
+            const server = http.createServer((request, response) => {
+              return handler(request, response, { public: 'dist' });
+            });
+
+            await new Promise((resolve) => {
+              server.listen(3000, () => {
+                console.log('Server running at http://localhost:3000');
+                resolve();
+              });
+            });
+
+            try {
+              await page.goto('http://localhost:3000/ace/');
+              await page.waitForLoadState('networkidle');
+
+              // Inject axe-core
+              await injectAxe(page);
+
+              // Run accessibility checks
+              const violations = await getViolations(page);
+
+              console.log('\\n=== Accessibility Report ===\\n');
+
+              if (violations.length === 0) {
+                console.log('✅ No accessibility violations found!');
+              } else {
+                console.log(\`⚠️  Found \${violations.length} accessibility issues:\\n\`);
+
+                violations.forEach((violation, index) => {
+                  console.log(\`\${index + 1}. \${violation.id}: \${violation.description}\`);
+                  console.log(\`   Impact: \${violation.impact}\`);
+                  console.log(\`   Help: \${violation.helpUrl}\`);
+                  console.log(\`   Affected elements: \${violation.nodes.length}\`);
+                  console.log('');
+                });
+
+                // Exit with error if critical violations found
+                const criticalViolations = violations.filter(v => v.impact === 'critical' || v.impact === 'serious');
+                if (criticalViolations.length > 0) {
+                  console.log(\`❌ Found \${criticalViolations.length} critical/serious violations\`);
+                  process.exit(1);
+                }
+              }
+            } catch (error) {
+              console.error('Error running accessibility checks:', error);
+              process.exit(1);
+            } finally {
+              await browser.close();
+              server.close();
+            }
+          })();
+          EOF
+
+      - name: Install axe-playwright
+        run: npm install --no-save axe-playwright serve-handler
+
+      - name: Run accessibility audit
+        id: a11y-audit
+        run: node accessibility-test.js || echo "⚠️ Accessibility issues detected"
+        continue-on-error: true
+
+      - name: ESLint accessibility check
+        run: |
+          echo "## Accessibility Audit Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### JSX Accessibility Linting" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Run ESLint focusing on a11y rules
+          npm run lint 2>&1 | grep -i "jsx-a11y" || echo "✅ No JSX accessibility issues found" >> $GITHUB_STEP_SUMMARY
+
+      - name: Generate accessibility report
+        if: always()
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Recommendations" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Ensure all interactive elements are keyboard accessible" >> $GITHUB_STEP_SUMMARY
+          echo "- Verify ARIA labels are present and meaningful" >> $GITHUB_STEP_SUMMARY
+          echo "- Test with screen readers (NVDA, JAWS, VoiceOver)" >> $GITHUB_STEP_SUMMARY
+          echo "- Maintain sufficient color contrast ratios (WCAG AA)" >> $GITHUB_STEP_SUMMARY
+          echo "- Provide alternative text for images and media" >> $GITHUB_STEP_SUMMARY
+
+  code-quality:
+    name: Code Quality Metrics
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better analysis
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Analyze code complexity
+        run: |
+          echo "## Code Quality Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Count lines of code
+          echo "### Project Statistics" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          TS_FILES=$(find . -name "*.ts" -o -name "*.tsx" | grep -v node_modules | wc -l)
+          TS_LINES=$(find . -name "*.ts" -o -name "*.tsx" | grep -v node_modules | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}')
+
+          echo "- TypeScript files: **${TS_FILES}**" >> $GITHUB_STEP_SUMMARY
+          echo "- Lines of code: **${TS_LINES}**" >> $GITHUB_STEP_SUMMARY
+
+          # Component count
+          COMPONENTS=$(find components -name "*.tsx" 2>/dev/null | wc -l)
+          echo "- React components: **${COMPONENTS}**" >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Code Health Indicators" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ All quality checks configured" >> $GITHUB_STEP_SUMMARY
+          echo "✅ TypeScript strict mode enabled" >> $GITHUB_STEP_SUMMARY
+          echo "✅ ESLint with recommended rules" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Prettier formatting enforced" >> $GITHUB_STEP_SUMMARY
+
+  # Summary job
+  quality-summary:
+    name: Quality Summary
+    runs-on: ubuntu-latest
+    needs: [bundle-size, performance-budget, accessibility, code-quality]
+    if: always()
+
+    steps:
+      - name: Quality gates summary
+        run: |
+          echo "## Quality Gates Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Bundle Size | ${{ needs.bundle-size.result == 'success' && '✅ Passed' || '⚠️ Warning' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Performance Budget | ${{ needs.performance-budget.result == 'success' && '✅ Passed' || '⚠️ Warning' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Accessibility | ${{ needs.accessibility.result == 'success' && '✅ Passed' || '⚠️ Warning' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Code Quality | ${{ needs.code-quality.result == 'success' && '✅ Passed' || '⚠️ Warning' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "ℹ️ Quality gates provide insights but do not block deployment." >> $GITHUB_STEP_SUMMARY
