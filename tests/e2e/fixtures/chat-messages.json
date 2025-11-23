@@ -1,0 +1,305 @@
+{
+  "conversations": [
+    {
+      "id": "conv-001",
+      "userId": "user-001",
+      "startedAt": "2025-01-22T14:30:00Z",
+      "status": "active",
+      "messages": [
+        {
+          "id": "msg-001",
+          "role": "assistant",
+          "content": "Hello! I'm your tennis facility assistant. How can I help you today?",
+          "timestamp": "2025-01-22T14:30:00Z",
+          "type": "greeting",
+          "metadata": {
+            "suggestedActions": [
+              "Check court availability",
+              "View weather conditions",
+              "Make a booking"
+            ]
+          }
+        },
+        {
+          "id": "msg-002",
+          "role": "user",
+          "content": "What courts are available right now?",
+          "timestamp": "2025-01-22T14:30:15Z",
+          "type": "query"
+        },
+        {
+          "id": "msg-003",
+          "role": "assistant",
+          "content": "Currently, we have **3 courts available**:\n\n1. **Centre Court** (Hard surface) - $45/hour\n2. **Court 3 - Practice** (Hard surface) - $35/hour\n3. **Court 4 - Doubles** (Hard surface) - $60/hour\n\nWould you like to book one of these courts?",
+          "timestamp": "2025-01-22T14:30:18Z",
+          "type": "response",
+          "metadata": {
+            "dataSource": "court-availability",
+            "actionButtons": [
+              {
+                "label": "Book Centre Court",
+                "action": "book-court",
+                "params": {"courtId": "court-001"}
+              },
+              {
+                "label": "Book Practice Court",
+                "action": "book-court",
+                "params": {"courtId": "court-004"}
+              },
+              {
+                "label": "Book Doubles Court",
+                "action": "book-court",
+                "params": {"courtId": "court-005"}
+              }
+            ]
+          }
+        },
+        {
+          "id": "msg-004",
+          "role": "user",
+          "content": "Book Centre Court for 2 hours starting at 3 PM",
+          "timestamp": "2025-01-22T14:30:45Z",
+          "type": "command"
+        },
+        {
+          "id": "msg-005",
+          "role": "assistant",
+          "content": "Great! I'm booking **Centre Court** for you:\n\n- **Date**: Today (Jan 22, 2025)\n- **Time**: 3:00 PM - 5:00 PM (2 hours)\n- **Court**: Centre Court (Hard surface)\n- **Rate**: $45/hour\n- **Total**: $90\n\nPlease confirm to complete the booking.",
+          "timestamp": "2025-01-22T14:30:48Z",
+          "type": "confirmation",
+          "metadata": {
+            "bookingDetails": {
+              "courtId": "court-001",
+              "startTime": "2025-01-22T15:00:00Z",
+              "endTime": "2025-01-22T17:00:00Z",
+              "duration": 120,
+              "rate": 45,
+              "total": 90
+            },
+            "actionButtons": [
+              {
+                "label": "✓ Confirm Booking",
+                "action": "confirm-booking",
+                "style": "primary"
+              },
+              {
+                "label": "× Cancel",
+                "action": "cancel-booking",
+                "style": "secondary"
+              }
+            ]
+          }
+        },
+        {
+          "id": "msg-006",
+          "role": "user",
+          "content": "✓ Confirm Booking",
+          "timestamp": "2025-01-22T14:31:00Z",
+          "type": "action"
+        },
+        {
+          "id": "msg-007",
+          "role": "assistant",
+          "content": "✅ **Booking Confirmed!**\n\nYour booking details:\n- **Booking ID**: #BK-20250122-001\n- **Court**: Centre Court\n- **Date**: Jan 22, 2025\n- **Time**: 3:00 PM - 5:00 PM\n- **Total**: $90\n\nYou'll receive a confirmation email at john.doe@example.com. Have a great game!",
+          "timestamp": "2025-01-22T14:31:03Z",
+          "type": "success",
+          "metadata": {
+            "bookingId": "BK-20250122-001",
+            "emailSent": true,
+            "nextActions": [
+              "View booking details",
+              "Add to calendar",
+              "Check weather forecast"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "conv-002",
+      "userId": "user-001",
+      "startedAt": "2025-01-22T13:00:00Z",
+      "status": "completed",
+      "messages": [
+        {
+          "id": "msg-101",
+          "role": "user",
+          "content": "What's the weather forecast for today?",
+          "timestamp": "2025-01-22T13:00:00Z",
+          "type": "query"
+        },
+        {
+          "id": "msg-102",
+          "role": "assistant",
+          "content": "Here's today's weather forecast:\n\n**Current Conditions** (1:00 PM):\n- 🌡️ Temperature: 22.5°C (feels like 21°C)\n- 💧 Humidity: 55%\n- 💨 Wind: 12.5 km/h SW\n- ☀️ UV Index: 6 (Moderate)\n- 🌤️ Conditions: Partly cloudy\n\n**Playing Conditions**: ✅ **Good** (Score: 85/100)\n\n**Recommendations**:\n- Apply sunscreen (UV index moderate)\n- Stay hydrated\n- Courts suitable for all skill levels\n\nWould you like to see the hourly forecast?",
+          "timestamp": "2025-01-22T13:00:05Z",
+          "type": "response",
+          "metadata": {
+            "weatherData": {
+              "source": "weather-api",
+              "playabilityScore": 85
+            }
+          }
+        },
+        {
+          "id": "msg-103",
+          "role": "user",
+          "content": "No, that's perfect. Thanks!",
+          "timestamp": "2025-01-22T13:00:20Z",
+          "type": "acknowledgment"
+        },
+        {
+          "id": "msg-104",
+          "role": "assistant",
+          "content": "You're welcome! Enjoy your tennis! ☺️",
+          "timestamp": "2025-01-22T13:00:22Z",
+          "type": "closing"
+        }
+      ]
+    },
+    {
+      "id": "conv-003",
+      "userId": "user-002",
+      "startedAt": "2025-01-22T10:00:00Z",
+      "status": "completed",
+      "messages": [
+        {
+          "id": "msg-201",
+          "role": "user",
+          "content": "What's the status of the BMS sensors?",
+          "timestamp": "2025-01-22T10:00:00Z",
+          "type": "query"
+        },
+        {
+          "id": "msg-202",
+          "role": "assistant",
+          "content": "Here's the current BMS sensor status:\n\n**All Systems Normal** ✅\n\n**Temperature Sensors**: 5/5 operational\n- Centre Court: 23.5°C ✅\n- Indoor Court 1: 21.0°C ✅\n- Grass Court: 24.0°C ✅\n\n**Humidity Sensors**: 3/3 operational\n- Average: 56% ✅\n\n**Light Sensors**: 4/4 operational\n- All courts: Optimal levels ✅\n\n**Active Alerts**: 1 warning\n- ⚠️ Indoor Court 1 temperature rising (approaching max threshold)\n\nWould you like more details on the alert?",
+          "timestamp": "2025-01-22T10:00:08Z",
+          "type": "response",
+          "metadata": {
+            "sensorCount": {
+              "total": 12,
+              "operational": 12,
+              "warning": 1,
+              "critical": 0
+            }
+          }
+        },
+        {
+          "id": "msg-203",
+          "role": "user",
+          "content": "Yes, show me the alert details",
+          "timestamp": "2025-01-22T10:00:25Z",
+          "type": "query"
+        },
+        {
+          "id": "msg-204",
+          "role": "assistant",
+          "content": "**Alert Details**:\n\n**Sensor**: Indoor Court 1 - Temperature\n**Status**: ⚠️ Warning (Medium severity)\n**Current**: 21.0°C\n**Threshold**: Max 24.0°C\n**Trend**: Rising (+0.5°C in last hour)\n\n**Triggered**: 2:45 PM (15 min ago)\n**Actions Taken**:\n- ✅ Notification sent to facility manager\n- ⏳ HVAC adjustment pending\n\n**Recommendation**: Monitor for next 30 minutes. If temperature exceeds 23°C, HVAC system will auto-adjust.\n\nWould you like to manually adjust the HVAC settings?",
+          "timestamp": "2025-01-22T10:00:30Z",
+          "type": "detailed-response",
+          "metadata": {
+            "alertId": "alert-001",
+            "actionButtons": [
+              {
+                "label": "Adjust HVAC",
+                "action": "hvac-control",
+                "requiresAdmin": true
+              },
+              {
+                "label": "Acknowledge Alert",
+                "action": "acknowledge-alert"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "messageTemplates": {
+    "greeting": [
+      "Hello! I'm your tennis facility assistant. How can I help you today?",
+      "Welcome! What can I assist you with?",
+      "Hi there! How may I help you with your tennis needs?"
+    ],
+    "courtAvailability": {
+      "allBooked": "All courts are currently booked. The next available slot is at {time}.",
+      "someAvailable": "Currently, we have **{count} courts available**:\n\n{courtList}",
+      "errorFetching": "I'm having trouble fetching court availability. Please try again or contact the front desk."
+    },
+    "booking": {
+      "confirmation": "Great! I'm booking **{courtName}** for you:\n\n{details}\n\nPlease confirm to complete the booking.",
+      "success": "✅ **Booking Confirmed!**\n\nYour booking details:\n{details}",
+      "error": "❌ Sorry, there was an error processing your booking. Please try again or contact support."
+    },
+    "weather": {
+      "normal": "Here's today's weather forecast:\n\n**Current Conditions**:\n{conditions}\n\n**Playing Conditions**: {playabilityStatus}",
+      "warning": "⚠️ **Weather Advisory**:\n\n{alert}\n\nCurrent conditions:\n{conditions}",
+      "unsuitable": "❌ **Courts Closed**:\n\n{reason}\n\nExpected to reopen: {reopenTime}"
+    },
+    "errors": {
+      "notUnderstood": "I'm not sure I understood that. Could you rephrase or try one of these options:\n\n{suggestedActions}",
+      "systemError": "I'm experiencing technical difficulties. Please try again in a moment.",
+      "permissionDenied": "You don't have permission to perform this action. Please contact an administrator."
+    }
+  },
+  "mockScenarios": {
+    "longConversation": {
+      "description": "Conversation with 20+ messages",
+      "messageCount": 25,
+      "topics": ["court-booking", "weather", "bms-check", "user-stats"]
+    },
+    "rapidMessages": {
+      "description": "User sends 5 messages in 10 seconds",
+      "messages": [
+        {"content": "Hey", "delay": 0},
+        {"content": "Are courts available?", "delay": 2000},
+        {"content": "Hello?", "delay": 5000},
+        {"content": "Anyone there?", "delay": 7000},
+        {"content": "Please respond", "delay": 9000}
+      ]
+    },
+    "multiLanguage": {
+      "description": "Conversation in multiple languages",
+      "messages": [
+        {"role": "user", "content": "Hola, ¿qué canchas están disponibles?", "lang": "es"},
+        {"role": "assistant", "content": "Hola! Actualmente tenemos 3 canchas disponibles...", "lang": "es"},
+        {"role": "user", "content": "Merci! Switching to English now", "lang": "en"},
+        {"role": "assistant", "content": "No problem! How can I assist you in English?", "lang": "en"}
+      ]
+    },
+    "codeSnippet": {
+      "description": "User shares code in message",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I'm getting this error:\n```\nError: Court not found\n  at bookCourt (api/courts.js:45)\n```",
+          "type": "error-report"
+        },
+        {
+          "role": "assistant",
+          "content": "I see you're experiencing a technical issue. I've logged this error and notified our tech team. In the meantime, try refreshing the page or use the booking form at the front desk.",
+          "type": "support"
+        }
+      ]
+    },
+    "emojiHeavy": {
+      "description": "Messages with many emojis",
+      "messages": [
+        {"role": "user", "content": "🎾🏟️ Courts available? ☀️🌡️"},
+        {"role": "assistant", "content": "✅ Yes! We have 3 courts available 🎾\n\n1️⃣ Centre Court 💪\n2️⃣ Practice Court 🏋️\n3️⃣ Doubles Court 👥"}
+      ]
+    },
+    "veryLongMessage": {
+      "description": "User sends 1000+ word message",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit... [truncated for brevity]",
+      "wordCount": 1250
+    }
+  },
+  "aiResponses": {
+    "typingIndicatorDuration": 1500,
+    "maxResponseTime": 5000,
+    "streamingEnabled": false,
+    "contextRetention": 10
+  }
+}

@@ -1,0 +1,390 @@
+{
+  "users": [
+    {
+      "id": "user-001",
+      "username": "john.doe",
+      "email": "john.doe@example.com",
+      "role": "member",
+      "preferences": {
+        "theme": "dark",
+        "language": "en",
+        "timezone": "America/New_York",
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "courtAvailability": true,
+          "weatherAlerts": true,
+          "bookingReminders": true,
+          "maintenanceUpdates": false
+        },
+        "dashboard": {
+          "defaultView": "courts",
+          "widgets": ["weather", "upcoming-bookings", "court-status"],
+          "layout": "grid",
+          "refreshInterval": 30
+        },
+        "bookings": {
+          "defaultDuration": 60,
+          "preferredCourts": ["court-001", "court-002"],
+          "preferredTimeSlots": ["morning", "evening"],
+          "autoConfirm": false,
+          "reminderTime": 60
+        },
+        "accessibility": {
+          "highContrast": false,
+          "reducedMotion": false,
+          "largeText": false,
+          "screenReader": false
+        },
+        "units": {
+          "temperature": "celsius",
+          "distance": "metric",
+          "speed": "kmh"
+        }
+      },
+      "favorites": {
+        "courts": ["court-001", "court-004"],
+        "partners": ["user-002", "user-005"]
+      },
+      "statistics": {
+        "totalBookings": 45,
+        "hoursPlayed": 120,
+        "favoriteCourtType": "hard",
+        "averageSessionDuration": 90
+      }
+    },
+    {
+      "id": "user-002",
+      "username": "jane.smith",
+      "email": "jane.smith@example.com",
+      "role": "admin",
+      "preferences": {
+        "theme": "light",
+        "language": "en",
+        "timezone": "America/New_York",
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": true,
+          "courtAvailability": true,
+          "weatherAlerts": true,
+          "bookingReminders": true,
+          "maintenanceUpdates": true,
+          "systemAlerts": true,
+          "bmsAlerts": true
+        },
+        "dashboard": {
+          "defaultView": "admin",
+          "widgets": [
+            "weather",
+            "court-status",
+            "bms-sensors",
+            "recent-bookings",
+            "system-health",
+            "revenue"
+          ],
+          "layout": "grid",
+          "refreshInterval": 15
+        },
+        "bookings": {
+          "defaultDuration": 90,
+          "preferredCourts": ["court-002"],
+          "preferredTimeSlots": ["afternoon"],
+          "autoConfirm": true,
+          "reminderTime": 120
+        },
+        "accessibility": {
+          "highContrast": false,
+          "reducedMotion": false,
+          "largeText": false,
+          "screenReader": false
+        },
+        "units": {
+          "temperature": "celsius",
+          "distance": "metric",
+          "speed": "kmh"
+        },
+        "admin": {
+          "showAdvancedSettings": true,
+          "enableDebugMode": false,
+          "logLevel": "info",
+          "allowBulkOperations": true
+        }
+      },
+      "favorites": {
+        "courts": ["court-002", "court-003"],
+        "partners": ["user-001"]
+      },
+      "statistics": {
+        "totalBookings": 120,
+        "hoursPlayed": 350,
+        "favoriteCourtType": "clay",
+        "averageSessionDuration": 105
+      }
+    },
+    {
+      "id": "user-003",
+      "username": "bob.wilson",
+      "email": "bob.wilson@example.com",
+      "role": "member",
+      "preferences": {
+        "theme": "auto",
+        "language": "es",
+        "timezone": "America/Los_Angeles",
+        "notifications": {
+          "email": true,
+          "push": false,
+          "sms": false,
+          "courtAvailability": true,
+          "weatherAlerts": false,
+          "bookingReminders": true,
+          "maintenanceUpdates": false
+        },
+        "dashboard": {
+          "defaultView": "bookings",
+          "widgets": ["upcoming-bookings", "court-status"],
+          "layout": "list",
+          "refreshInterval": 60
+        },
+        "bookings": {
+          "defaultDuration": 120,
+          "preferredCourts": ["court-004", "court-005"],
+          "preferredTimeSlots": ["morning"],
+          "autoConfirm": false,
+          "reminderTime": 30
+        },
+        "accessibility": {
+          "highContrast": true,
+          "reducedMotion": true,
+          "largeText": true,
+          "screenReader": false
+        },
+        "units": {
+          "temperature": "fahrenheit",
+          "distance": "imperial",
+          "speed": "mph"
+        }
+      },
+      "favorites": {
+        "courts": ["court-004"],
+        "partners": ["user-004", "user-005", "user-006"]
+      },
+      "statistics": {
+        "totalBookings": 15,
+        "hoursPlayed": 30,
+        "favoriteCourtType": "hard",
+        "averageSessionDuration": 75
+      }
+    },
+    {
+      "id": "user-004",
+      "username": "facility.manager",
+      "email": "manager@example.com",
+      "role": "staff",
+      "preferences": {
+        "theme": "light",
+        "language": "en",
+        "timezone": "America/New_York",
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": true,
+          "courtAvailability": false,
+          "weatherAlerts": true,
+          "bookingReminders": false,
+          "maintenanceUpdates": true,
+          "systemAlerts": true,
+          "bmsAlerts": true,
+          "staffSchedule": true
+        },
+        "dashboard": {
+          "defaultView": "maintenance",
+          "widgets": [
+            "weather",
+            "court-status",
+            "bms-sensors",
+            "maintenance-schedule",
+            "alerts",
+            "staff-schedule"
+          ],
+          "layout": "grid",
+          "refreshInterval": 15
+        },
+        "bookings": {
+          "defaultDuration": 60,
+          "preferredCourts": [],
+          "preferredTimeSlots": [],
+          "autoConfirm": false,
+          "reminderTime": 0
+        },
+        "accessibility": {
+          "highContrast": false,
+          "reducedMotion": false,
+          "largeText": false,
+          "screenReader": false
+        },
+        "units": {
+          "temperature": "celsius",
+          "distance": "metric",
+          "speed": "kmh"
+        },
+        "staff": {
+          "showMaintenanceLogs": true,
+          "enableQuickActions": true,
+          "showBMSControls": true,
+          "allowCourtOverride": true
+        }
+      },
+      "favorites": {
+        "courts": [],
+        "partners": []
+      },
+      "statistics": {
+        "totalBookings": 0,
+        "hoursPlayed": 0,
+        "favoriteCourtType": null,
+        "averageSessionDuration": 0
+      }
+    }
+  ],
+  "defaultPreferences": {
+    "theme": "auto",
+    "language": "en",
+    "timezone": "UTC",
+    "notifications": {
+      "email": true,
+      "push": false,
+      "sms": false,
+      "courtAvailability": true,
+      "weatherAlerts": true,
+      "bookingReminders": true,
+      "maintenanceUpdates": false
+    },
+    "dashboard": {
+      "defaultView": "courts",
+      "widgets": ["weather", "court-status"],
+      "layout": "grid",
+      "refreshInterval": 30
+    },
+    "bookings": {
+      "defaultDuration": 60,
+      "preferredCourts": [],
+      "preferredTimeSlots": [],
+      "autoConfirm": false,
+      "reminderTime": 60
+    },
+    "accessibility": {
+      "highContrast": false,
+      "reducedMotion": false,
+      "largeText": false,
+      "screenReader": false
+    },
+    "units": {
+      "temperature": "celsius",
+      "distance": "metric",
+      "speed": "kmh"
+    }
+  },
+  "rolePermissions": {
+    "guest": {
+      "viewCourts": true,
+      "viewWeather": true,
+      "makeBookings": false,
+      "viewBMS": false,
+      "manageUsers": false,
+      "manageSettings": false
+    },
+    "member": {
+      "viewCourts": true,
+      "viewWeather": true,
+      "makeBookings": true,
+      "cancelOwnBookings": true,
+      "viewBMS": false,
+      "manageUsers": false,
+      "manageSettings": false
+    },
+    "staff": {
+      "viewCourts": true,
+      "viewWeather": true,
+      "makeBookings": true,
+      "cancelAnyBookings": true,
+      "viewBMS": true,
+      "acknowledgeBMSAlerts": true,
+      "updateCourtStatus": true,
+      "scheduleMaintenance": true,
+      "manageUsers": false,
+      "manageSettings": false
+    },
+    "admin": {
+      "viewCourts": true,
+      "viewWeather": true,
+      "makeBookings": true,
+      "cancelAnyBookings": true,
+      "viewBMS": true,
+      "acknowledgeBMSAlerts": true,
+      "controlBMSSystems": true,
+      "updateCourtStatus": true,
+      "scheduleMaintenance": true,
+      "manageUsers": true,
+      "manageSettings": true,
+      "viewAnalytics": true,
+      "exportData": true
+    }
+  },
+  "mockScenarios": {
+    "firstTimeUser": {
+      "id": "user-new",
+      "username": "new.user",
+      "email": "new@example.com",
+      "role": "member",
+      "preferences": "default",
+      "favorites": {
+        "courts": [],
+        "partners": []
+      },
+      "statistics": {
+        "totalBookings": 0,
+        "hoursPlayed": 0,
+        "favoriteCourtType": null,
+        "averageSessionDuration": 0
+      },
+      "onboarding": {
+        "completed": false,
+        "currentStep": 1,
+        "steps": [
+          "welcome",
+          "preferences",
+          "court-tour",
+          "first-booking"
+        ]
+      }
+    },
+    "powerUser": {
+      "id": "user-power",
+      "username": "power.user",
+      "email": "power@example.com",
+      "role": "member",
+      "preferences": {
+        "theme": "dark",
+        "dashboard": {
+          "widgets": [
+            "weather",
+            "court-status",
+            "upcoming-bookings",
+            "bms-sensors",
+            "statistics",
+            "leaderboard"
+          ],
+          "refreshInterval": 10
+        }
+      },
+      "statistics": {
+        "totalBookings": 500,
+        "hoursPlayed": 1500,
+        "favoriteCourtType": "hard",
+        "averageSessionDuration": 120
+      }
+    }
+  }
+}
