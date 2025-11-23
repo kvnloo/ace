@@ -9,7 +9,7 @@
 
 This document applies industrial construction methodology to the ACE facility migration from current 3D visualization (React Three Fiber) to a comprehensive autonomous facility digital twin. Like building a real facility, we must establish foundations before walls, structure before systems, and infrastructure before aesthetics.
 
-**Key Insight**: The facility has 30+ components already built but lacks systematic organization. We need to retrofit the foundation under an existing structure while preparing for expansion.
+**Key Insight**: The facility has 44 components already built but lacks systematic organization. We need to retrofit the foundation under an existing structure while preparing for expansion.
 
 ---
 
@@ -560,7 +560,7 @@ interface AppState {
    - **Mitigation**: Clear state architecture (Phase 2.3)
    - **Fallback**: Simplified state model with manual refresh
 
-3. **Type Safety**: Retrofitting types to 30+ existing components
+3. **Type Safety**: Retrofitting types to 44 existing components
    - **Mitigation**: Incremental typing with `@ts-ignore` strategy
    - **Fallback**: Gradual migration, not big-bang rewrite
 

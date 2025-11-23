@@ -506,7 +506,7 @@ Indoor_Air_Quality:
     Dehumidification: Cooling coil with reheat
     Setpoint_Range: 45% ± 5% RH
     Sensor_Type: Capacitive RH sensor
-    Control_Authority: BAS proportional control
+    Control_Authority: BMS proportional control
 ```
 
 #### C.5.2 Lighting Systems
@@ -588,7 +588,7 @@ Emergency_Lighting_System:
     Lumen_Output: 1,000 lumens (emergency mode)
     Battery_Type: Sealed lead-acid or Li-ion
     Self_Testing: Monthly function test, annual duration test
-    Test_Results_Logging: BAS integration
+    Test_Results_Logging: BMS integration
 
   Exit_Signage:
     Type: LED pictogram with directional arrows
@@ -1460,7 +1460,7 @@ Lighting_Controls:
   Scene_Control:
     Preset_Scenes: Pre-event, event, intermission, cleaning
     Scene_Recall: Wall keypad or mobile app
-    Programming: BAS integration for scheduling
+    Programming: BMS integration for scheduling
 ```
 
 #### D.4.3 HVAC Systems (Clubhouse-Specific)
@@ -1754,17 +1754,17 @@ Alarm_System:
 
 ## Integration Specifications
 
-### I.1 Building Automation System (BAS)
+### I.1 Building Automation System (BMS)
 
 **System Architecture**
 
 ```yaml
-BAS_Overview:
+BMS_Overview:
   Platform: Open-protocol building automation system
   Protocol: BACnet/IP for all devices
 
   Central_Server:
-    Type: Enterprise-grade BAS server
+    Type: Enterprise-grade BMS server
     Location: Main server room
     Redundancy: Hot standby failover server
     User_Interface: Web-based graphical interface
@@ -1784,7 +1784,7 @@ BAS_Overview:
 **Integrated Systems**
 
 ```yaml
-Systems_Under_BAS_Control:
+Systems_Under_BMS_Control:
   HVAC:
     - Air handling units (start/stop, temperature control)
     - VAV boxes (damper position, reheat control)
@@ -2012,17 +2012,17 @@ LOD_Requirements:
 
 ### DT.2 Data Integration
 
-**BIM to BAS Data Exchange**
+**BIM to BMS Data Exchange**
 
 ```yaml
 Data_Synchronization:
   Equipment_Tagging:
     Standard: COBie (Construction Operations Building Information Exchange)
     Parameters: Equipment type, manufacturer, model, serial number
-    IDs: Unique equipment IDs matching BAS point names
+    IDs: Unique equipment IDs matching BMS point names
 
   Spatial_Data:
-    Room_Names: Synchronized between BIM and BAS
+    Room_Names: Synchronized between BIM and BMS
     Room_Numbers: Consistent numbering system
     Zone_Definitions: Spatial zones match control zones
 
