@@ -39,7 +39,7 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
         <div className="hidden md:flex items-center gap-8">
           <NavItem view={View.HOME} label="Vision" />
           <NavItem view={View.SPECIFICATIONS} label="Specs" />
-          <NavItem view={View.FACILITY_DEMO} label="3D Map" />
+          <NavItem view={View.FACILITY_DEMO} label="Court View" />
           <NavItem view={View.AMENITIES} label="Amenities" />
           <NavItem view={View.INVEST} label="Invest" />
           <button 
@@ -63,7 +63,7 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
         <div className="absolute top-full left-0 w-full bg-slate-900 border-b border-white/10 p-6 flex flex-col gap-6 md:hidden glass-panel">
           <NavItem view={View.HOME} label="Vision" />
           <NavItem view={View.SPECIFICATIONS} label="Specs" />
-          <NavItem view={View.FACILITY_DEMO} label="3D Map" />
+          <NavItem view={View.FACILITY_DEMO} label="Court View" />
           <NavItem view={View.AMENITIES} label="Amenities" />
           <NavItem view={View.INVEST} label="Invest" />
         </div>

@@ -1,0 +1,130 @@
+FPS-Batch Integration File Structure
+=====================================
+
+src/
+├── services/
+│   └── fps/                                    # FPS monitoring & batch management
+│       ├── ComponentBatchManager.ts            # Core batch management (12KB)
+│       ├── FPSBatchController.ts              # Integration controller (12KB)
+│       └── index.ts                           # Module exports (662B)
+│
+├── components/
+│   └── fps/                                    # UI components
+│       ├── BatchControlPanel.tsx              # Main UI component (12KB)
+│       └── BatchControlPanel.example.tsx      # Usage examples (9.4KB)
+│
+└── hooks/
+    └── useFPSBatchController.ts               # React integration hook (2.6KB)
+
+docs/
+├── fps-batch-integration.md                   # Complete documentation (9.7KB)
+├── fps-batch-implementation-summary.md        # Implementation summary (8.0KB)
+├── fps-batch-quick-reference.md              # Quick reference guide (4.3KB)
+└── fps-batch-file-tree.txt                   # This file
+
+Total Files Created: 10
+Total Code: ~50KB
+Total Documentation: ~22KB
+
+Key Components:
+===============
+
+1. ComponentBatchManager
+   - Manages 9 progressive batches
+   - Dependency resolution
+   - Manual override support
+   - Performance correlation tracking
+
+2. FPSBatchController
+   - FPS threshold monitoring
+   - Automatic batch adjustment
+   - Warning system
+   - Correlation data export
+
+3. BatchControlPanel
+   - Real-time FPS display
+   - Manual batch controls
+   - Warning notifications
+   - Performance stats
+
+4. useFPSBatchController Hook
+   - React state management
+   - Auto-start monitoring
+   - Warning collection
+   - Action helpers
+
+Integration Points:
+===================
+
+Existing Files (No Changes Required):
+- src/services/loading/FPSMonitor.ts          # Re-used for FPS tracking
+- src/services/loading/PerformanceGate.ts     # Compatible with batches
+- src/components/loading/LoadingScreen.tsx    # Can integrate panel
+
+Usage Flow:
+===========
+
+1. Import controller:
+   import { fpsBatchController } from '@/services/fps';
+
+2. Start monitoring:
+   fpsBatchController.start();
+
+3. Add UI:
+   <BatchControlPanel controller={fpsBatchController} />
+
+4. Listen to batch changes:
+   controller.getBatchManager().onBatchChange(event => {
+     // Update Three.js scene
+   });
+
+Component Batches (Priority Order):
+====================================
+
+0. COURTS_ONLY     (0 FPS)   - Always enabled
+1. BUILDINGS       (5 FPS)   - Structures
+2. GRASS          (10 FPS)   - Ground cover
+3. TREES           (8 FPS)   - Foliage
+4. SHADOWS        (12 FPS)   - Dynamic shadows
+5. WEATHER         (7 FPS)   - Atmosphere
+6. PARTICLES      (15 FPS)   - Effects
+7. POST_PROCESSING (10 FPS)  - Post-FX
+8. REFLECTIONS    (18 FPS)   - Advanced lighting
+
+FPS Thresholds:
+===============
+
+CRITICAL: < 25 FPS → Emergency mode (courts only)
+LOW:      < 40 FPS → Downgrade batches
+STABLE:   >= 55 FPS → Upgrade batches
+
+Stability Requirements:
+=======================
+
+Downgrade: 3 consecutive samples below threshold
+Upgrade:   6 consecutive samples above threshold
+Interval:  1 second between checks
+
+Features:
+=========
+
+✅ Automatic performance optimization
+✅ Manual batch control with locks
+✅ Real-time FPS monitoring
+✅ Warning notification system
+✅ Performance correlation tracking
+✅ Emergency mode for critical FPS
+✅ React hook integration
+✅ TypeScript type safety
+✅ Zero breaking changes
+✅ Comprehensive documentation
+
+Next Steps:
+===========
+
+1. Integrate in main App component
+2. Start monitoring after loading
+3. Add BatchControlPanel to UI
+4. Map batches to Three.js objects
+5. Test on target devices
+6. Tune thresholds and costs

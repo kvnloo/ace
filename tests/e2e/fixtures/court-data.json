@@ -1,0 +1,257 @@
+{
+  "courts": [
+    {
+      "id": "court-001",
+      "name": "Centre Court",
+      "type": "hard",
+      "surface": "DecoTurf",
+      "status": "available",
+      "lighting": "LED",
+      "hasRoof": false,
+      "capacity": 2,
+      "hourlyRate": 45.00,
+      "lastMaintenance": "2025-01-15T08:00:00Z",
+      "nextMaintenance": "2025-02-15T08:00:00Z",
+      "features": ["line-calling", "hawkeye", "scoreboard"],
+      "bookings": [],
+      "location": {
+        "lat": 40.7128,
+        "lng": -74.0060,
+        "building": "Main Complex",
+        "floor": 1
+      },
+      "sensors": {
+        "temperature": "sensor-temp-001",
+        "humidity": "sensor-hum-001",
+        "light": "sensor-light-001"
+      }
+    },
+    {
+      "id": "court-002",
+      "name": "Court 1 - Indoor",
+      "type": "clay",
+      "surface": "Red Clay",
+      "status": "playing",
+      "lighting": "Natural + LED",
+      "hasRoof": true,
+      "capacity": 2,
+      "hourlyRate": 50.00,
+      "currentBooking": {
+        "id": "booking-101",
+        "startTime": "2025-01-22T14:00:00Z",
+        "endTime": "2025-01-22T16:00:00Z",
+        "players": ["player-001", "player-002"],
+        "status": "in-progress"
+      },
+      "lastMaintenance": "2025-01-10T10:00:00Z",
+      "nextMaintenance": "2025-02-10T10:00:00Z",
+      "features": ["climate-control", "scoreboard"],
+      "bookings": [
+        {
+          "id": "booking-102",
+          "startTime": "2025-01-22T16:30:00Z",
+          "endTime": "2025-01-22T18:00:00Z",
+          "players": ["player-003", "player-004"],
+          "status": "confirmed"
+        }
+      ],
+      "location": {
+        "lat": 40.7130,
+        "lng": -74.0062,
+        "building": "Indoor Complex",
+        "floor": 2
+      },
+      "sensors": {
+        "temperature": "sensor-temp-002",
+        "humidity": "sensor-hum-002",
+        "light": "sensor-light-002"
+      }
+    },
+    {
+      "id": "court-003",
+      "name": "Court 2 - Outdoor",
+      "type": "grass",
+      "surface": "Rye Grass",
+      "status": "maintenance",
+      "lighting": "Halogen",
+      "hasRoof": false,
+      "capacity": 2,
+      "hourlyRate": 55.00,
+      "maintenanceReason": "Surface reseeding",
+      "maintenanceStart": "2025-01-20T06:00:00Z",
+      "maintenanceEnd": "2025-01-25T18:00:00Z",
+      "lastMaintenance": "2025-01-20T06:00:00Z",
+      "nextMaintenance": "2025-03-01T08:00:00Z",
+      "features": ["natural-grass", "drainage-system"],
+      "bookings": [],
+      "location": {
+        "lat": 40.7132,
+        "lng": -74.0058,
+        "building": "Outdoor Courts",
+        "floor": 0
+      },
+      "sensors": {
+        "temperature": "sensor-temp-003",
+        "humidity": "sensor-hum-003",
+        "light": "sensor-light-003",
+        "soil-moisture": "sensor-moisture-003"
+      }
+    },
+    {
+      "id": "court-004",
+      "name": "Court 3 - Practice",
+      "type": "hard",
+      "surface": "Plexipave",
+      "status": "available",
+      "lighting": "LED",
+      "hasRoof": false,
+      "capacity": 4,
+      "hourlyRate": 35.00,
+      "isPractice": true,
+      "lastMaintenance": "2025-01-12T09:00:00Z",
+      "nextMaintenance": "2025-02-12T09:00:00Z",
+      "features": ["ball-machine", "practice-wall", "scoreboard"],
+      "bookings": [
+        {
+          "id": "booking-201",
+          "startTime": "2025-01-22T18:00:00Z",
+          "endTime": "2025-01-22T20:00:00Z",
+          "players": ["player-005"],
+          "status": "confirmed",
+          "type": "practice"
+        }
+      ],
+      "location": {
+        "lat": 40.7134,
+        "lng": -74.0064,
+        "building": "Practice Facility",
+        "floor": 0
+      },
+      "sensors": {
+        "temperature": "sensor-temp-004",
+        "humidity": "sensor-hum-004",
+        "light": "sensor-light-004"
+      }
+    },
+    {
+      "id": "court-005",
+      "name": "Court 4 - Doubles",
+      "type": "hard",
+      "surface": "DecoTurf",
+      "status": "available",
+      "lighting": "LED",
+      "hasRoof": false,
+      "capacity": 4,
+      "hourlyRate": 60.00,
+      "isDoubles": true,
+      "lastMaintenance": "2025-01-18T07:00:00Z",
+      "nextMaintenance": "2025-02-18T07:00:00Z",
+      "features": ["wide-court", "spectator-seating", "scoreboard"],
+      "bookings": [],
+      "location": {
+        "lat": 40.7136,
+        "lng": -74.0066,
+        "building": "Main Complex",
+        "floor": 0
+      },
+      "sensors": {
+        "temperature": "sensor-temp-005",
+        "humidity": "sensor-hum-005",
+        "light": "sensor-light-005"
+      }
+    }
+  ],
+  "statusTypes": [
+    {
+      "value": "available",
+      "label": "Available",
+      "color": "green",
+      "icon": "check-circle"
+    },
+    {
+      "value": "playing",
+      "label": "In Use",
+      "color": "blue",
+      "icon": "users"
+    },
+    {
+      "value": "maintenance",
+      "label": "Maintenance",
+      "color": "orange",
+      "icon": "wrench"
+    },
+    {
+      "value": "reserved",
+      "label": "Reserved",
+      "color": "yellow",
+      "icon": "lock"
+    },
+    {
+      "value": "offline",
+      "label": "Offline",
+      "color": "red",
+      "icon": "x-circle"
+    }
+  ],
+  "surfaceTypes": [
+    {
+      "value": "hard",
+      "label": "Hard Court",
+      "materials": ["DecoTurf", "Plexipave", "Rebound Ace"]
+    },
+    {
+      "value": "clay",
+      "label": "Clay Court",
+      "materials": ["Red Clay", "Green Clay", "Har-Tru"]
+    },
+    {
+      "value": "grass",
+      "label": "Grass Court",
+      "materials": ["Rye Grass", "Perennial Ryegrass"]
+    },
+    {
+      "value": "carpet",
+      "label": "Carpet Court",
+      "materials": ["Synthetic Turf", "Indoor Carpet"]
+    }
+  ],
+  "mockUpdates": {
+    "statusChange": {
+      "courtId": "court-001",
+      "previousStatus": "available",
+      "newStatus": "playing",
+      "timestamp": "2025-01-22T15:30:00Z",
+      "booking": {
+        "id": "booking-301",
+        "startTime": "2025-01-22T15:30:00Z",
+        "endTime": "2025-01-22T17:00:00Z",
+        "players": ["player-006", "player-007"]
+      }
+    },
+    "maintenanceScheduled": {
+      "courtId": "court-005",
+      "scheduledFor": "2025-01-23T06:00:00Z",
+      "estimatedDuration": 120,
+      "reason": "Line repainting",
+      "priority": "low"
+    },
+    "emergencyMaintenance": {
+      "courtId": "court-001",
+      "reason": "Net damage",
+      "reportedAt": "2025-01-22T15:45:00Z",
+      "expectedResolution": "2025-01-22T16:30:00Z",
+      "priority": "high"
+    }
+  },
+  "largeMockDataset": {
+    "description": "For performance testing",
+    "count": 50,
+    "generatePattern": {
+      "id": "court-{index:3d}",
+      "name": "Court {index}",
+      "type": "{random:hard,clay,grass}",
+      "status": "{random:available,playing,maintenance}",
+      "hourlyRate": "{random:30-70}"
+    }
+  }
+}

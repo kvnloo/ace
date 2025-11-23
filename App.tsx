@@ -6,29 +6,33 @@ import NavBar from './components/NavBar';
 import ThreeScene from './components/ThreeScene';
 import AIChat from './components/AIChat';
 import Specifications from './components/Specifications';
-import { 
-  Zap, 
-  Activity, 
-  Camera, 
-  Cpu, 
-  Sprout, 
-  Users, 
-  ArrowRight,
-  PlayCircle,
-  Layers,
-  Wind,
-  ShieldCheck,
-  ShoppingBag
+import Amenities from './components/Amenities';
+import LoadingScreen from './components/loading/LoadingScreen';
+import {
+  Zap,
+  Activity,
+  Cpu,
+  Sprout,
+  ArrowRight
 } from 'lucide-react';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
   const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);
+  const [show3DLoading, setShow3DLoading] = useState(false);
+
+  // Show loading screen when entering 3D view
+  useEffect(() => {
+    if (currentView === View.FACILITY_DEMO) {
+      setShow3DLoading(true);
+    }
+  }, [currentView]);
 
   // Reset selected feature when leaving demo view
   useEffect(() => {
     if (currentView !== View.FACILITY_DEMO) {
       setSelectedFeature(null);
+      setShow3DLoading(false);
     }
   }, [currentView]);
 
@@ -152,7 +156,7 @@ const App: React.FC = () => {
 
           {/* 3D FACILITY DEMO */}
           {currentView === View.FACILITY_DEMO && (
-            <motion.div 
+            <motion.div
               key="demo"
               initial="initial"
               animate="enter"
@@ -160,10 +164,19 @@ const App: React.FC = () => {
               variants={pageVariants}
               className="w-full h-full relative bg-gradient-to-b from-slate-900 to-black"
             >
+              {/* Loading Screen */}
+              {show3DLoading && (
+                <LoadingScreen
+                  onComplete={() => setShow3DLoading(false)}
+                  minimumDisplayTime={2000}
+                  showFPSMonitor={true}
+                />
+              )}
+
               <div className="absolute inset-0 z-0">
                 <ThreeScene onFeatureSelect={setSelectedFeature} />
               </div>
-              
+
               {/* HUD Layer */}
               <div className="absolute inset-0 z-10 pointer-events-none p-6 flex flex-col justify-between">
                 <div className="mt-12">
@@ -211,136 +224,15 @@ const App: React.FC = () => {
 
           {/* AMENITIES VIEW */}
           {currentView === View.AMENITIES && (
-            <motion.div 
+            <motion.div
               key="amenities"
               initial="initial"
               animate="enter"
               exit="exit"
               variants={pageVariants}
-              className="h-full overflow-y-auto custom-scrollbar pb-20 px-6"
+              className="h-full overflow-y-auto custom-scrollbar pb-20"
             >
-              <div className="max-w-7xl mx-auto pt-10">
-                <h2 className="text-4xl font-bold mb-12 border-b border-white/10 pb-6">Facility Amenities</h2>
-                
-                <div className="space-y-24">
-                  
-                  {/* 1. Vertical Grass Lab */}
-                  <div className="flex flex-col md:flex-row items-center gap-12">
-                    <div className="flex-1 space-y-6">
-                      <div className="w-16 h-16 rounded-2xl bg-green-900/30 flex items-center justify-center text-tennis-yellow">
-                        <Sprout className="w-8 h-8" />
-                      </div>
-                      <h3 className="text-3xl font-bold">Level 3: The Vertical Grass Lab</h3>
-                      <p className="text-gray-400 text-lg leading-relaxed">
-                        Our facility houses a 2,000 m² autonomous vertical farm on the top floor, divided into four specialized sectors.
-                        We use advanced hydroponics and climate control to cultivate modular grass grids. 
-                        When a court wears down, robots transport and swap the turf in under 60 minutes.
-                      </p>
-                      <ul className="space-y-3 text-gray-300">
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> Automated Hydroponics & Climate Control</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> Robotic Patch Transport System</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> 100% Sustainable Organic Surfaces</li>
-                      </ul>
-                    </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        {/* Updated Image to Vertical Farm Look */}
-                       <img src="/api/placeholder/800/600" data-placeholder-src="vertical-farm-robots.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Vertical Farming with Autonomous Robots" />
-                       <div className="absolute inset-0 flex items-center justify-center">
-                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-tennis-yellow">STATUS: CULTIVATING</span>
-                       </div>
-                    </div>
-                  </div>
-
-                  {/* 2. The Racquet Ecosystem */}
-                  <div className="flex flex-col md:flex-row-reverse items-center gap-12">
-                    <div className="flex-1 space-y-6">
-                       <div className="w-16 h-16 rounded-2xl bg-blue-900/30 flex items-center justify-center text-blue-400">
-                        <Layers className="w-8 h-8" />
-                      </div>
-                      <h3 className="text-3xl font-bold">Multi-Sport Ecosystem</h3>
-                      <p className="text-gray-400 text-lg leading-relaxed">
-                        Spanning the Ground, 1st, and 2nd floors, we offer a comprehensive racquet experience. 
-                        From the high-speed action of Badminton and Table Tennis on the Mezzanine to the social atmosphere of Pickleball and the historic elegance of Real Tennis on the upper deck.
-                      </p>
-                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                          <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                            <span className="block font-bold text-white mb-1">Ground Floor</span>
-                            <span className="text-gray-400 text-xs">24 Tennis Courts (Hard, Clay, Grass, Wood)</span>
-                          </div>
-                          <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                            <span className="block font-bold text-white mb-1">First Floor</span>
-                            <span className="text-gray-400 text-xs">16 Badminton, 4 Squash, 16 Table Tennis</span>
-                          </div>
-                          <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors md:col-span-2">
-                            <span className="block font-bold text-white mb-1">Second Floor</span>
-                            <span className="text-gray-400 text-xs">8 Pickleball Courts, 1 Real Tennis Court</span>
-                          </div>
-                       </div>
-                    </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="/api/placeholder/800/600" data-placeholder-src="tennis-court-biomechanics-hud.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Tennis Court with Real-time Biomechanics HUD" />
-                    </div>
-                  </div>
-
-                  {/* 3. Autonomous Operations */}
-                  <div className="flex flex-col md:flex-row items-center gap-12">
-                    <div className="flex-1 space-y-6">
-                       <div className="w-16 h-16 rounded-2xl bg-purple-900/30 flex items-center justify-center text-purple-400">
-                        <Cpu className="w-8 h-8" />
-                      </div>
-                      <h3 className="text-3xl font-bold">Autonomous Operations</h3>
-                      <p className="text-gray-400 text-lg leading-relaxed">
-                        The facility runs itself. A centralized Building Management System (BMS) optimizes HVAC and lighting using solar power.
-                        Robotic mowers maintain the courts while overhead drones constantly analyze surface quality. 
-                        Entry is seamless with biometric scanning, removing the need for keys or cards.
-                      </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
-                            <Wind className="w-5 h-5 text-purple-400" />
-                            <div>
-                                <h4 className="font-bold text-white">Smart HVAC</h4>
-                                <p className="text-xs text-gray-400">AI Climate Control</p>
-                            </div>
-                        </div>
-                         <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
-                            <ShieldCheck className="w-5 h-5 text-purple-400" />
-                            <div>
-                                <h4 className="font-bold text-white">Biometric Entry</h4>
-                                <p className="text-xs text-gray-400">Secure & Seamless</p>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=2006&auto=format&fit=crop" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" alt="Autonomous Tech" />
-                    </div>
-                  </div>
-
-                   {/* 4. Member Experience */}
-                  <div className="flex flex-col md:flex-row-reverse items-center gap-12">
-                    <div className="flex-1 space-y-6">
-                       <div className="w-16 h-16 rounded-2xl bg-orange-900/30 flex items-center justify-center text-orange-400">
-                        <ShoppingBag className="w-8 h-8" />
-                      </div>
-                      <h3 className="text-3xl font-bold">Member Experience</h3>
-                      <p className="text-gray-400 text-lg leading-relaxed">
-                        We prioritize comfort and recovery. Our Pro Shop is stocked with the latest gear. 
-                        Locker rooms and waiting areas are managed by smart sensors to ensure cleanliness and supply availability.
-                        Automated emergency systems monitor the entire facility to instantly alert services if an incident occurs.
-                      </p>
-                       <ul className="space-y-3 text-gray-300">
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Smart Bathroom Sanitation Monitoring</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Automated Emergency Response</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Mobile App Booking & Payments</li>
-                      </ul>
-                    </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="https://images.unsplash.com/photo-1591123720164-de1348028a82?q=80&w=1974&auto=format&fit=crop" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" alt="Locker Room" />
-                    </div>
-                  </div>
-
-                </div>
-              </div>
+              <Amenities />
             </motion.div>
           )}
 

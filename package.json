@@ -6,7 +6,27 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docs:generate": "typedoc",
+    "docs:watch": "typedoc --watch",
+    "docs:serve": "npx http-server docs/api -p 8080 -o",
+    "docs:clean": "rm -rf docs/api",
+    "docs:rebuild": "npm run docs:clean && npm run docs:generate",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report tests/e2e/reports/html",
+    "test:e2e:chromium": "playwright test --project=chromium",
+    "test:e2e:firefox": "playwright test --project=firefox",
+    "test:e2e:webkit": "playwright test --project=webkit",
+    "test:e2e:visual": "playwright test tests/e2e/visual --project=visual-regression",
+    "test:e2e:visual:update": "playwright test tests/e2e/visual --project=visual-regression --update-snapshots",
+    "test:e2e:visual:headed": "playwright test tests/e2e/visual --project=visual-regression --headed",
+    "test:e2e:performance": "playwright test tests/e2e/performance --project=chromium",
+    "test:e2e:performance:headed": "playwright test tests/e2e/performance --project=chromium --headed",
+    "test:perf:report": "npx tsx scripts/generate-performance-report.ts",
+    "monitor:errors": "node scripts/monitor-console-errors.js"
   },
   "dependencies": {
     "framer-motion": "^12.23.24",
@@ -19,8 +39,16 @@
     "three": "^0.181.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@playwright/test": "^1.56.1",
     "@types/node": "^22.14.0",
+    "@types/pngjs": "^6.0.5",
     "@vitejs/plugin-react": "^5.0.0",
+    "playwright": "^1.56.1",
+    "pngjs": "^7.0.0",
+    "puppeteer": "^24.31.0",
+    "typedoc": "^0.28.14",
+    "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }
