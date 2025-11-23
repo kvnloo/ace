@@ -1,0 +1,546 @@
+{
+  "pageLoad": {
+    "max": 3000,
+    "target": 2000,
+    "unit": "ms",
+    "description": "Time from navigation start to load complete",
+    "breakpoints": {
+      "excellent": 1500,
+      "good": 2000,
+      "acceptable": 3000,
+      "poor": 4000
+    }
+  },
+  "fps": {
+    "min": 55,
+    "target": 60,
+    "unit": "fps",
+    "description": "Frames per second during animations and interactions",
+    "breakpoints": {
+      "excellent": 60,
+      "good": 55,
+      "acceptable": 50,
+      "poor": 45
+    }
+  },
+  "memory": {
+    "max": 300,
+    "target": 250,
+    "unit": "MB",
+    "description": "JavaScript heap memory usage",
+    "breakpoints": {
+      "excellent": 200,
+      "good": 250,
+      "acceptable": 300,
+      "poor": 400
+    }
+  },
+  "lighthouse": {
+    "performance": {
+      "min": 90,
+      "target": 95,
+      "description": "Lighthouse performance score"
+    },
+    "accessibility": {
+      "min": 100,
+      "target": 100,
+      "description": "Lighthouse accessibility score"
+    },
+    "bestPractices": {
+      "min": 90,
+      "target": 95,
+      "description": "Lighthouse best practices score"
+    },
+    "seo": {
+      "min": 90,
+      "target": 95,
+      "description": "Lighthouse SEO score"
+    },
+    "pwa": {
+      "min": 80,
+      "target": 90,
+      "description": "Lighthouse PWA score (optional)"
+    }
+  },
+  "coreWebVitals": {
+    "lcp": {
+      "max": 2500,
+      "target": 2000,
+      "unit": "ms",
+      "description": "Largest Contentful Paint - time to render largest visible content",
+      "breakpoints": {
+        "good": 2500,
+        "needsImprovement": 4000,
+        "poor": 4001
+      }
+    },
+    "fid": {
+      "max": 100,
+      "target": 50,
+      "unit": "ms",
+      "description": "First Input Delay - time from user interaction to browser response",
+      "breakpoints": {
+        "good": 100,
+        "needsImprovement": 300,
+        "poor": 301
+      }
+    },
+    "cls": {
+      "max": 0.1,
+      "target": 0.05,
+      "unit": "score",
+      "description": "Cumulative Layout Shift - visual stability during page load",
+      "breakpoints": {
+        "good": 0.1,
+        "needsImprovement": 0.25,
+        "poor": 0.26
+      }
+    },
+    "fcp": {
+      "max": 1800,
+      "target": 1500,
+      "unit": "ms",
+      "description": "First Contentful Paint - time to render first content",
+      "breakpoints": {
+        "good": 1800,
+        "needsImprovement": 3000,
+        "poor": 3001
+      }
+    },
+    "ttfb": {
+      "max": 800,
+      "target": 600,
+      "unit": "ms",
+      "description": "Time to First Byte - server response time",
+      "breakpoints": {
+        "good": 800,
+        "needsImprovement": 1800,
+        "poor": 1801
+      }
+    },
+    "tti": {
+      "max": 3800,
+      "target": 3000,
+      "unit": "ms",
+      "description": "Time to Interactive - when page becomes fully interactive",
+      "breakpoints": {
+        "good": 3800,
+        "needsImprovement": 7300,
+        "poor": 7301
+      }
+    },
+    "tbt": {
+      "max": 200,
+      "target": 150,
+      "unit": "ms",
+      "description": "Total Blocking Time - sum of blocking time between FCP and TTI",
+      "breakpoints": {
+        "good": 200,
+        "needsImprovement": 600,
+        "poor": 601
+      }
+    },
+    "si": {
+      "max": 3400,
+      "target": 3000,
+      "unit": "ms",
+      "description": "Speed Index - how quickly content is visually displayed",
+      "breakpoints": {
+        "good": 3400,
+        "needsImprovement": 5800,
+        "poor": 5801
+      }
+    }
+  },
+  "pageSpecific": {
+    "dashboard": {
+      "pageLoad": {
+        "max": 2500,
+        "target": 2000,
+        "description": "Dashboard is critical - stricter budget"
+      },
+      "lcp": {
+        "max": 2000,
+        "target": 1500
+      },
+      "chartRender": {
+        "max": 1000,
+        "target": 500,
+        "unit": "ms",
+        "description": "Time to render BMS charts"
+      }
+    },
+    "courts": {
+      "pageLoad": {
+        "max": 2000,
+        "target": 1500,
+        "description": "Courts page should be fast for frequent access"
+      },
+      "websocketConnect": {
+        "max": 1000,
+        "target": 500,
+        "unit": "ms",
+        "description": "Real-time connection establishment"
+      },
+      "updateLatency": {
+        "max": 500,
+        "target": 200,
+        "unit": "ms",
+        "description": "UI update after WebSocket message"
+      }
+    },
+    "chat": {
+      "messageRender": {
+        "max": 200,
+        "target": 100,
+        "unit": "ms",
+        "description": "Time to render new chat message"
+      },
+      "aiResponseTime": {
+        "max": 5000,
+        "target": 3000,
+        "unit": "ms",
+        "description": "AI chat response latency"
+      },
+      "typingIndicatorDelay": {
+        "max": 300,
+        "target": 150,
+        "unit": "ms",
+        "description": "Delay before showing typing indicator"
+      }
+    },
+    "weather": {
+      "apiResponseTime": {
+        "max": 3000,
+        "target": 2000,
+        "unit": "ms",
+        "description": "Weather API fetch time"
+      },
+      "widgetRender": {
+        "max": 500,
+        "target": 300,
+        "unit": "ms",
+        "description": "Weather widget render time"
+      }
+    },
+    "bms": {
+      "sensorGridRender": {
+        "max": 2000,
+        "target": 1500,
+        "unit": "ms",
+        "description": "BMS sensor grid initial render"
+      },
+      "chartRender": {
+        "max": 1000,
+        "target": 500,
+        "unit": "ms",
+        "description": "Historical data chart render"
+      },
+      "alertNotification": {
+        "max": 1000,
+        "target": 500,
+        "unit": "ms",
+        "description": "Time to display sensor alert"
+      }
+    }
+  },
+  "resourceBudgets": {
+    "javascript": {
+      "max": 500,
+      "target": 350,
+      "unit": "KB",
+      "description": "Total JavaScript bundle size (gzipped)",
+      "breakpoints": {
+        "excellent": 300,
+        "good": 350,
+        "acceptable": 500,
+        "poor": 700
+      }
+    },
+    "css": {
+      "max": 100,
+      "target": 75,
+      "unit": "KB",
+      "description": "Total CSS size (gzipped)",
+      "breakpoints": {
+        "excellent": 50,
+        "good": 75,
+        "acceptable": 100,
+        "poor": 150
+      }
+    },
+    "images": {
+      "max": 1000,
+      "target": 750,
+      "unit": "KB",
+      "description": "Total image size per page",
+      "breakpoints": {
+        "excellent": 500,
+        "good": 750,
+        "acceptable": 1000,
+        "poor": 1500
+      }
+    },
+    "fonts": {
+      "max": 150,
+      "target": 100,
+      "unit": "KB",
+      "description": "Total font files size",
+      "breakpoints": {
+        "excellent": 75,
+        "good": 100,
+        "acceptable": 150,
+        "poor": 200
+      }
+    },
+    "totalPageWeight": {
+      "max": 2000,
+      "target": 1500,
+      "unit": "KB",
+      "description": "Total page weight including all resources",
+      "breakpoints": {
+        "excellent": 1000,
+        "good": 1500,
+        "acceptable": 2000,
+        "poor": 3000
+      }
+    },
+    "httpRequests": {
+      "max": 50,
+      "target": 30,
+      "unit": "count",
+      "description": "Total number of HTTP requests",
+      "breakpoints": {
+        "excellent": 20,
+        "good": 30,
+        "acceptable": 50,
+        "poor": 75
+      }
+    }
+  },
+  "networkConditions": {
+    "4g": {
+      "description": "Fast 4G network simulation",
+      "downloadThroughput": 4096,
+      "uploadThroughput": 1024,
+      "latency": 20,
+      "budgets": {
+        "pageLoad": 3000,
+        "lcp": 2500
+      }
+    },
+    "3g": {
+      "description": "Slow 3G network simulation",
+      "downloadThroughput": 750,
+      "uploadThroughput": 250,
+      "latency": 100,
+      "budgets": {
+        "pageLoad": 6000,
+        "lcp": 5000
+      }
+    },
+    "slow-3g": {
+      "description": "Very slow 3G network simulation",
+      "downloadThroughput": 400,
+      "uploadThroughput": 200,
+      "latency": 400,
+      "budgets": {
+        "pageLoad": 10000,
+        "lcp": 8000
+      }
+    },
+    "offline": {
+      "description": "Offline mode - test cached resources",
+      "downloadThroughput": 0,
+      "uploadThroughput": 0,
+      "latency": 0,
+      "budgets": {
+        "pageLoad": 1000,
+        "lcp": 800
+      }
+    }
+  },
+  "deviceEmulation": {
+    "desktop": {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "deviceScaleFactor": 1,
+      "budgets": {
+        "pageLoad": 2000,
+        "fps": 60
+      }
+    },
+    "laptop": {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "deviceScaleFactor": 1,
+      "budgets": {
+        "pageLoad": 2500,
+        "fps": 60
+      }
+    },
+    "tablet": {
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "deviceScaleFactor": 2,
+      "budgets": {
+        "pageLoad": 3000,
+        "fps": 55
+      }
+    },
+    "mobile": {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "deviceScaleFactor": 2,
+      "budgets": {
+        "pageLoad": 3500,
+        "fps": 50,
+        "memory": 200
+      }
+    },
+    "mobile-low-end": {
+      "viewport": {
+        "width": 360,
+        "height": 640
+      },
+      "deviceScaleFactor": 2,
+      "cpuSlowdown": 4,
+      "budgets": {
+        "pageLoad": 5000,
+        "fps": 45,
+        "memory": 150
+      }
+    }
+  },
+  "interactionBudgets": {
+    "buttonClick": {
+      "max": 100,
+      "target": 50,
+      "unit": "ms",
+      "description": "Response time for button clicks"
+    },
+    "formSubmit": {
+      "max": 200,
+      "target": 100,
+      "unit": "ms",
+      "description": "Form submission processing time"
+    },
+    "modalOpen": {
+      "max": 300,
+      "target": 200,
+      "unit": "ms",
+      "description": "Time to open and render modal"
+    },
+    "tabSwitch": {
+      "max": 150,
+      "target": 100,
+      "unit": "ms",
+      "description": "Time to switch between tabs"
+    },
+    "search": {
+      "max": 300,
+      "target": 200,
+      "unit": "ms",
+      "description": "Search results display time"
+    },
+    "filter": {
+      "max": 200,
+      "target": 150,
+      "unit": "ms",
+      "description": "Filter application and UI update"
+    }
+  },
+  "longRunningSessionBudgets": {
+    "memoryLeak": {
+      "max": 50,
+      "target": 30,
+      "unit": "MB/hour",
+      "description": "Memory growth rate over time"
+    },
+    "websocketStability": {
+      "max": 3,
+      "target": 0,
+      "unit": "reconnects/hour",
+      "description": "WebSocket reconnection frequency"
+    },
+    "cpuUsage": {
+      "max": 30,
+      "target": 20,
+      "unit": "percent",
+      "description": "Average CPU usage during session"
+    },
+    "eventListeners": {
+      "max": 100,
+      "target": 50,
+      "unit": "count/component",
+      "description": "Event listeners per component (leak detection)"
+    }
+  },
+  "thirdPartyBudgets": {
+    "weatherAPI": {
+      "max": 3000,
+      "target": 2000,
+      "unit": "ms",
+      "description": "Weather API response time"
+    },
+    "analyticsScript": {
+      "max": 50,
+      "target": 30,
+      "unit": "KB",
+      "description": "Analytics script size"
+    },
+    "chatbotAPI": {
+      "max": 5000,
+      "target": 3000,
+      "unit": "ms",
+      "description": "AI chatbot response time"
+    }
+  },
+  "monitoring": {
+    "reportingInterval": 60,
+    "alertThresholds": {
+      "critical": 0.9,
+      "warning": 0.8,
+      "info": 0.7
+    },
+    "sampleRate": 0.1,
+    "retentionDays": 30
+  },
+  "budgetEnforcement": {
+    "failBuild": {
+      "enabled": true,
+      "budgets": [
+        "lighthouse.performance",
+        "lighthouse.accessibility",
+        "coreWebVitals.lcp",
+        "coreWebVitals.cls",
+        "resourceBudgets.javascript"
+      ]
+    },
+    "warnOnly": {
+      "enabled": true,
+      "budgets": [
+        "pageLoad",
+        "fps",
+        "memory",
+        "coreWebVitals.fid"
+      ]
+    },
+    "track": {
+      "enabled": true,
+      "budgets": [
+        "interactionBudgets",
+        "longRunningSessionBudgets",
+        "thirdPartyBudgets"
+      ]
+    }
+  }
+}
