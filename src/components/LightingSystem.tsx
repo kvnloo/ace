@@ -18,14 +18,23 @@
  * - LOD-based light quality
  * - Selective shadow casting
  * - Efficient fog implementation
+ *
+ * Debug Integration:
+ * - Asset performance tracking for each lighting component
+ * - Conditional rendering based on debug flags
+ * - Performance cost monitoring (1-7 scale)
+ * - Dependency tracking between lighting systems
  */
 
-import React, { useRef, useMemo, useState } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Html } from '@react-three/drei';
 import { EffectComposer, Bloom, ToneMapping } from '@react-three/postprocessing';
 import { Sun, Moon, Zap, Eye } from 'lucide-react';
+
+// TODO: Import debug context when ready
+// import { useDebug } from '../contexts/DebugContext';
 
 // === TYPE DEFINITIONS ===
 
@@ -919,6 +928,57 @@ export const LightingSystem: React.FC<{
     ...initialConfig,
   });
 
+  // TODO: Uncomment when DebugContext is ready
+  // const { registerAsset, isAssetEnabled } = useDebug();
+
+  // Debug asset registration
+  useEffect(() => {
+    // TODO: Uncomment when DebugContext is ready
+    /*
+    registerAsset({
+      id: 'ambient-light',
+      name: 'Ambient Light',
+      type: 'lighting',
+      enabled: true,
+      performanceCost: 1 // Low cost
+    });
+
+    registerAsset({
+      id: 'directional-light',
+      name: 'Directional Light (Sun)',
+      type: 'lighting',
+      enabled: true,
+      performanceCost: 2
+    });
+
+    registerAsset({
+      id: 'spot-lights',
+      name: 'Stadium Spot Lights',
+      type: 'lighting',
+      enabled: true,
+      performanceCost: 5, // Multiple lights
+      dependencies: []
+    });
+
+    registerAsset({
+      id: 'dynamic-shadows',
+      name: 'Dynamic Shadow Mapping',
+      type: 'lighting',
+      enabled: true,
+      performanceCost: 7, // Very expensive
+      dependencies: ['directional-light', 'spot-lights']
+    });
+
+    registerAsset({
+      id: 'hdr-environment',
+      name: 'HDR Environment Map',
+      type: 'lighting',
+      enabled: true,
+      performanceCost: 4
+    });
+    */
+  }, [/* registerAsset */]);
+
   const updateConfig = (partial: Partial<LightingConfig>) => {
     setConfig(prev => ({ ...prev, ...partial }));
   };
@@ -939,6 +999,16 @@ export const LightingSystem: React.FC<{
     };
   }, [config]);
 
+  // TODO: Uncomment when DebugContext is ready
+  // Debug flags for conditional rendering
+  const debugFlags = {
+    ambientLight: true, // isAssetEnabled('ambient-light')
+    directionalLight: true, // isAssetEnabled('directional-light')
+    spotLights: true, // isAssetEnabled('spot-lights')
+    dynamicShadows: true, // isAssetEnabled('dynamic-shadows')
+    hdrEnvironment: true, // isAssetEnabled('hdr-environment')
+  };
+
   return (
     <>
       {/* Control Panel */}
@@ -946,11 +1016,13 @@ export const LightingSystem: React.FC<{
         <LightingControlPanel config={config} onConfigChange={updateConfig} />
       )}
 
-      {/* Celestial Lighting */}
-      <CelestialLight timeOfDay={config.timeOfDay} quality={config.quality} />
+      {/* Celestial Lighting - conditionally rendered based on debug flags */}
+      {debugFlags.directionalLight && debugFlags.ambientLight && (
+        <CelestialLight timeOfDay={config.timeOfDay} quality={config.quality} />
+      )}
 
-      {/* Stadium Floodlights */}
-      {floodlights.map((fixture, idx) => (
+      {/* Stadium Floodlights - conditionally rendered based on debug flags */}
+      {debugFlags.spotLights && floodlights.map((fixture, idx) => (
         <FloodlightFixture
           key={`flood-${idx}`}
           position={fixture.position}
@@ -960,12 +1032,12 @@ export const LightingSystem: React.FC<{
           angle={fixture.angle!}
           penumbra={fixture.penumbra!}
           enabled={lightingState.floodlights}
-          quality={config.quality}
+          quality={debugFlags.dynamicShadows ? config.quality : 'low'}
         />
       ))}
 
-      {/* Court Spotlights */}
-      {courtLights.map((fixture, idx) => (
+      {/* Court Spotlights - conditionally rendered based on debug flags */}
+      {debugFlags.spotLights && courtLights.map((fixture, idx) => (
         <CourtSpotlight
           key={`court-${idx}`}
           position={fixture.position}
@@ -978,11 +1050,13 @@ export const LightingSystem: React.FC<{
         />
       ))}
 
-      {/* Ambient Facility Lighting */}
-      <AmbientLightGrid
-        positions={ambientLights}
-        enabled={lightingState.ambient}
-      />
+      {/* Ambient Facility Lighting - conditionally rendered based on debug flags */}
+      {debugFlags.ambientLight && (
+        <AmbientLightGrid
+          positions={ambientLights}
+          enabled={lightingState.ambient}
+        />
+      )}
 
       {/* Volumetric Fog */}
       <VolumetricFog
@@ -990,23 +1064,25 @@ export const LightingSystem: React.FC<{
         density={config.fogDensity}
       />
 
-      {/* Post-processing Effects */}
-      <EffectComposer>
-        <Bloom
-          intensity={config.bloomStrength}
-          luminanceThreshold={0.6}
-          luminanceSmoothing={0.9}
-          mipmapBlur
-        />
-        <ToneMapping
-          adaptive
-          resolution={256}
-          middleGrey={0.6}
-          maxLuminance={16.0}
-          averageLuminance={1.0}
-          adaptationRate={2.0}
-        />
-      </EffectComposer>
+      {/* Post-processing Effects - HDR conditionally rendered based on debug flags */}
+      {debugFlags.hdrEnvironment && (
+        <EffectComposer>
+          <Bloom
+            intensity={config.bloomStrength}
+            luminanceThreshold={0.6}
+            luminanceSmoothing={0.9}
+            mipmapBlur
+          />
+          <ToneMapping
+            adaptive
+            resolution={256}
+            middleGrey={0.6}
+            maxLuminance={16.0}
+            averageLuminance={1.0}
+            adaptationRate={2.0}
+          />
+        </EffectComposer>
+      )}
     </>
   );
 };
