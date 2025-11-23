@@ -1,0 +1,68 @@
+{
+  "entryPoints": [
+    "src/components/**/*.tsx",
+    "src/components/**/*.ts",
+    "src/services/**/*.ts",
+    "src/utils/**/*.ts",
+    "src/types/**/*.ts"
+  ],
+  "entryPointStrategy": "expand",
+  "out": "docs/api",
+  "exclude": [
+    "node_modules/**/*",
+    "dist/**/*",
+    "tests/**/*",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "claudedocs/**/*",
+    "docs/**/*"
+  ],
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": false,
+  "includeVersion": true,
+  "readme": "README.md",
+  "tsconfig": "./tsconfig.doc.json",
+  "name": "ACE Tennis Facility - API Reference",
+  "categorizeByGroup": true,
+  "defaultCategory": "Components",
+  "categoryOrder": [
+    "Main Components",
+    "System Components",
+    "Visualization Components",
+    "UI Components",
+    "Services",
+    "Utils",
+    "Types"
+  ],
+  "sort": ["source-order", "alphabetical"],
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  },
+  "theme": "default",
+  "lightHighlightTheme": "light-plus",
+  "darkHighlightTheme": "dark-plus",
+  "searchInComments": true,
+  "searchInDocuments": true,
+  "includeHierarchySummary": true,
+  "visibilityFilters": {
+    "protected": true,
+    "private": false,
+    "inherited": true,
+    "external": false
+  },
+  "sourceLinkTemplate": "https://github.com/yourusername/ace-tennis/blob/{gitRevision}/{path}#L{line}",
+  "githubPages": true,
+  "hideGenerator": false,
+  "disableSources": false,
+  "treatWarningsAsErrors": false,
+  "validation": {
+    "notExported": true,
+    "invalidLink": true,
+    "notDocumented": false
+  },
+  "skipErrorChecking": true
+}
