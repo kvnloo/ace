@@ -1,0 +1,217 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - heading "Loading 3D Environment" [level=2] [ref=e11]
+          - paragraph [ref=e12]: Preparing your experience...
+        - generic [ref=e13]:
+          - generic [ref=e14]: 0%
+          - generic [ref=e15]: 0 / 33 assets
+          - generic [ref=e16]: Essential
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - img [ref=e22]
+          - generic [ref=e24]:
+            - generic [ref=e25]: Performance
+            - generic [ref=e26]: Poor
+        - generic [ref=e27]:
+          - generic [ref=e28]: "0"
+          - generic [ref=e29]: FPS
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - generic [ref=e36]: Tennis Court 1
+          - generic [ref=e39]: 0%
+        - generic [ref=e40]:
+          - generic [ref=e42]: Tennis Court 2
+          - generic [ref=e45]: 0%
+        - generic [ref=e46]:
+          - generic [ref=e48]: Tennis Court 3
+          - generic [ref=e51]: 0%
+        - generic [ref=e52]:
+          - generic [ref=e54]: Tennis Court 4
+          - generic [ref=e57]: 0%
+        - generic [ref=e58]:
+          - generic [ref=e60]: Court Line Markings
+          - generic [ref=e63]: 0%
+        - generic [ref=e64]:
+          - generic [ref=e66]: Tennis Net
+          - generic [ref=e69]: 0%
+        - generic [ref=e70]:
+          - generic [ref=e72]: Court Surface Material
+          - generic [ref=e75]: 0%
+        - generic [ref=e76]:
+          - generic [ref=e78]: Grass Blade Geometry
+          - generic [ref=e81]: 0%
+        - generic [ref=e82]:
+          - generic [ref=e84]: Grass Physics Simulation
+          - generic [ref=e87]: 0%
+        - generic [ref=e88]:
+          - generic [ref=e90]: Robotic Lawn Mowers
+          - generic [ref=e93]: 0%
+        - generic [ref=e94]:
+          - generic [ref=e96]: Grass Growth Visualization
+          - generic [ref=e99]: 0%
+        - generic [ref=e100]:
+          - generic [ref=e102]: Ambient Light
+          - generic [ref=e105]: 0%
+        - generic [ref=e106]:
+          - generic [ref=e108]: Directional Sun Light
+          - generic [ref=e111]: 0%
+        - generic [ref=e112]:
+          - generic [ref=e114]: Court Spot Lights
+          - generic [ref=e117]: 0%
+        - generic [ref=e118]:
+          - generic [ref=e120]: Dynamic Shadow System
+          - generic [ref=e123]: 0%
+        - generic [ref=e124]:
+          - generic [ref=e126]: HDR Environment Map
+          - generic [ref=e129]: 0%
+        - generic [ref=e130]:
+          - generic [ref=e132]: Weather Particle System
+          - generic [ref=e135]: 0%
+        - generic [ref=e136]:
+          - generic [ref=e138]: Volumetric Clouds
+          - generic [ref=e141]: 0%
+        - generic [ref=e142]:
+          - generic [ref=e144]: Atmospheric Fog
+          - generic [ref=e147]: 0%
+        - generic [ref=e148]:
+          - generic [ref=e150]: Wind System
+          - generic [ref=e153]: 0%
+        - generic [ref=e154]:
+          - generic [ref=e156]: General Particle Systems
+          - generic [ref=e159]: 0%
+        - generic [ref=e160]:
+          - generic [ref=e162]: Post-Processing Stack
+          - generic [ref=e165]: 0%
+        - generic [ref=e166]:
+          - generic [ref=e168]: Bloom Effect
+          - generic [ref=e171]: 0%
+        - generic [ref=e172]:
+          - generic [ref=e174]: Motion Blur
+          - generic [ref=e177]: 0%
+        - generic [ref=e178]:
+          - generic [ref=e180]: Performance HUD
+          - generic [ref=e183]: 0%
+        - generic [ref=e184]:
+          - generic [ref=e186]: Heat Map Overlay
+          - generic [ref=e189]: 0%
+        - generic [ref=e190]:
+          - generic [ref=e192]: Player Position Markers
+          - generic [ref=e195]: 0%
+        - generic [ref=e196]:
+          - generic [ref=e198]: Reception Area
+          - generic [ref=e201]: 0%
+        - generic [ref=e202]:
+          - generic [ref=e204]: Cognitive Enhancement Lab
+          - generic [ref=e207]: 0%
+        - generic [ref=e208]:
+          - generic [ref=e210]: BMS Control Room
+          - generic [ref=e213]: 0%
+        - generic [ref=e214]:
+          - generic [ref=e216]: Transport Pod System
+          - generic [ref=e219]: 0%
+        - generic [ref=e220]:
+          - generic [ref=e222]: Character Animation System
+          - generic [ref=e225]: 0%
+        - generic [ref=e226]:
+          - generic [ref=e228]: Physics Simulation
+          - generic [ref=e231]: 0%
+    - generic [ref=e234]:
+      - img [ref=e236]
+      - generic [ref=e239]:
+        - heading "Performance Issues Detected" [level=3] [ref=e240]
+        - paragraph [ref=e241]: Consider switching to Low quality mode for better performance
+        - generic [ref=e242]:
+          - button "Switch to Low Quality" [ref=e243] [cursor=pointer]
+          - button "Continue Anyway" [ref=e244] [cursor=pointer]
+      - button "Dismiss recommendation" [ref=e245] [cursor=pointer]: ×
+  - link "Skip to main content" [ref=e247] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation "Main navigation" [ref=e248]:
+    - generic [ref=e249]:
+      - button "Navigate to homepage" [ref=e250] [cursor=pointer]:
+        - text: LAWNTECH
+        - generic [ref=e252]: DYNAMICS
+      - generic [ref=e253]:
+        - button "Navigate to Vision" [ref=e254] [cursor=pointer]: Vision
+        - button "Navigate to Specs" [ref=e255] [cursor=pointer]: Specs
+        - button "Navigate to Court View" [ref=e256] [cursor=pointer]: Court View
+        - button "Navigate to Amenities" [ref=e257] [cursor=pointer]: Amenities
+        - button "Navigate to Invest" [ref=e258] [cursor=pointer]: Invest
+        - button "Join waiting list for facility access" [ref=e259] [cursor=pointer]: JOIN WAITING LIST
+  - main [ref=e260]:
+    - generic [ref=e261]:
+      - region "Hero" [ref=e262]:
+        - generic [ref=e265]:
+          - generic [ref=e266]:
+            - img [ref=e267]
+            - generic [ref=e269]: The Future of Racket Sports & Human Performance
+          - heading "AUTONOMOUS. INTEGRATED. OPTIMIZED." [level=1] [ref=e270]:
+            - text: AUTONOMOUS.
+            - text: INTEGRATED.
+            - text: OPTIMIZED.
+          - paragraph [ref=e271]: The world's first autonomous racket sports and health optimization facility with integrated vertical farming, AI coaching, and performance tracking across 147 biomarkers.
+          - generic [ref=e272]:
+            - button "Navigate to 3D facility demo" [ref=e273] [cursor=pointer]:
+              - text: Explore 3D Demo
+              - img [ref=e274]
+            - button "View facility amenities and features" [ref=e276] [cursor=pointer]: View Amenities
+      - region "Features" [ref=e277]:
+        - generic [ref=e278]:
+          - heading "Integrated Platform" [level=2] [ref=e279]
+          - paragraph [ref=e280]: Four pillars of autonomous optimization working together
+        - generic [ref=e281]:
+          - generic [ref=e282]:
+            - img [ref=e283]
+            - heading "Multi-Sport Excellence" [level=3] [ref=e285]
+            - paragraph [ref=e286]: Tennis, Pickleball, Badminton, Squash with computer vision coaching and real-time biomechanics analysis
+            - list [ref=e287]:
+              - listitem [ref=e288]:
+                - generic [ref=e290]: RGB + depth cameras
+              - listitem [ref=e291]:
+                - generic [ref=e293]: Multi-surface courts
+              - listitem [ref=e294]:
+                - generic [ref=e296]: Indoor grass courts (first of its kind)
+              - listitem [ref=e297]:
+                - generic [ref=e299]: AI coaching feedback
+          - generic [ref=e300]:
+            - img [ref=e301]
+            - heading "APEX Performance" [level=3] [ref=e306]
+            - paragraph [ref=e307]: 147 biomarkers tracked daily with AI-driven protocols and Blueprint-style health optimization
+            - list [ref=e308]:
+              - listitem [ref=e309]:
+                - generic [ref=e311]: VO₂ Max +28% avg
+              - listitem [ref=e312]:
+                - generic [ref=e314]: Sleep efficiency 94%
+              - listitem [ref=e315]:
+                - generic [ref=e317]: 247+ studies/day
+          - generic [ref=e318]:
+            - img [ref=e319]
+            - heading "Vertical Farm" [level=3] [ref=e322]
+            - paragraph [ref=e323]: Personalized nutrition grown on-site with 95% water efficiency and zero pesticides
+            - list [ref=e324]:
+              - listitem [ref=e325]:
+                - generic [ref=e327]: 100% renewable energy
+              - listitem [ref=e328]:
+                - generic [ref=e330]: Genetic-optimized crops
+              - listitem [ref=e331]:
+                - generic [ref=e333]: Farm-to-table delivery
+          - generic [ref=e334]:
+            - img [ref=e335]
+            - heading "Autonomous Operations" [level=3] [ref=e338]
+            - paragraph [ref=e339]: Digital twin control with multi-agent scheduling, biometric access, and smart energy management
+            - list [ref=e340]:
+              - listitem [ref=e341]:
+                - generic [ref=e343]: 1000+ IoT sensors
+              - listitem [ref=e344]:
+                - generic [ref=e346]: Unity/Three.js twin
+              - listitem [ref=e347]:
+                - generic [ref=e349]: Robotic maintenance
+  - button "Open AI chat" [ref=e351] [cursor=pointer]:
+    - img [ref=e352]
+```

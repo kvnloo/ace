@@ -132,7 +132,7 @@ const Specifications: React.FC = () => {
     <div className="max-w-7xl mx-auto px-6 py-12">
       <div className="mb-16 text-center">
         <h2 className="text-4xl md:text-6xl font-bold mb-6">Technical <span className="text-tennis-yellow">Specifications</span></h2>
-        <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+        <p className="text-xl text-gray-200 max-w-3xl mx-auto">
           Engineering specifications for building infrastructure, compute systems, and autonomous control architecture
         </p>
       </div>
@@ -159,8 +159,8 @@ const Specifications: React.FC = () => {
               <ul className="space-y-4">
                 {category.items.map((item, i) => (
                   <li key={i} className="grid grid-cols-[1.5fr_1fr] items-center border-b border-white/5 pb-2 last:border-0 gap-4">
-                    <span className="text-gray-400 flex items-center gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-white/20 shrink-0" />
+                    <span className="text-gray-200 flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-white/80 shrink-0" />
                       {item.label}
                     </span>
                     <span className="font-mono font-bold text-white text-sm text-right">{item.value}</span>
@@ -194,8 +194,8 @@ const Specifications: React.FC = () => {
               <ul className="space-y-4">
                 {category.items.map((item, i) => (
                   <li key={i} className="grid grid-cols-[1.5fr_1fr] items-center border-b border-white/5 pb-2 last:border-0 gap-4">
-                    <span className="text-gray-400 flex items-center gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-white/20 shrink-0" />
+                    <span className="text-gray-200 flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-white/80 shrink-0" />
                       {item.label}
                     </span>
                     <span className="font-mono font-bold text-white text-sm text-right">{item.value}</span>

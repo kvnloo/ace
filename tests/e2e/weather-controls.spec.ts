@@ -35,21 +35,51 @@ test.describe('Weather System Controls', () => {
     // Setup mock API routes
     await setupWeatherMockAPI(page);
 
-    // Setup localStorage
+    // Setup localStorage and skip loading screen for tests
     await page.addInitScript((storage) => {
       Object.entries(storage).forEach(([key, value]) => {
         localStorage.setItem(key, value as string);
       });
+      // Mark loading as complete for tests
+      localStorage.setItem('test-skip-loading', 'true');
     }, mockWeatherLocalStorage());
+
+    // Listen for console errors and failed requests
+    const consoleErrors: string[] = [];
+    const failedRequests: string[] = [];
+
+    page.on('console', msg => {
+      if (msg.type() === 'error') {
+        consoleErrors.push(msg.text());
+      }
+    });
+
+    page.on('pageerror', error => {
+      consoleErrors.push(`Page error: ${error.message}`);
+    });
+
+    page.on('response', response => {
+      if (response.status() >= 400) {
+        failedRequests.push(`${response.status()} ${response.url()}`);
+      }
+    });
 
     // Navigate to facility demo
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    // Navigate to 3D demo view
-    const demoButton = page.getByRole('button', { name: /explore 3d demo/i });
+    // Wait for React to render and framer-motion animations
+    await page.waitForTimeout(3000);
+
+    // Find the demo button by exact text match
+    const demoButton = page.locator('button', { hasText: 'Explore 3D Demo' });
+    await demoButton.waitFor({ state: 'visible', timeout: 15000 });
+
+    // Click and wait for navigation
     await demoButton.click();
-    await page.waitForTimeout(2000); // Wait for 3D scene to initialize
+
+    // Wait for 3D scene to fully initialize
+    await page.waitForTimeout(4000);
   });
 
   test('should display weather controls panel with all weather types', async ({ page }) => {

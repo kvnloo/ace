@@ -27,6 +27,11 @@ import TransportPods from './TransportPods';
 import HydroponicsSystem from './HydroponicsSystem';
 import MechanicalRooms from './MechanicalRooms';
 import LockerRoom from './LockerRoom';
+import { LoadingProvider } from './loading/LoadingProvider';
+import LoadingScreen from './loading/LoadingScreen';
+import { AssetRegistry } from '../utils/debug/assetRegistry';
+import WeatherSystem, { useWeather } from './WeatherSystem';
+import WeatherControls from './WeatherControls';
 
 // --- Types & Constants ---
 
@@ -185,7 +190,7 @@ const ControlsOverlay = ({
 
             {/* Floor Selector */}
             <div className="bg-slate-900/90 backdrop-blur-md p-1 rounded-xl border border-white/10 pointer-events-auto shadow-2xl flex flex-col gap-1">
-                <div className="px-3 py-2 text-xs font-bold text-white/50 uppercase tracking-wider flex items-center gap-2">
+                <div className="px-3 py-2 text-xs font-bold text-white/80 uppercase tracking-wider flex items-center gap-2">
                     <Layers className="w-3 h-3" /> Floor View
                 </div>
                 {[
@@ -210,24 +215,24 @@ const ControlsOverlay = ({
 
             {/* Annotation Toggles */}
             <div className="bg-slate-900/90 backdrop-blur-md p-1 rounded-xl border border-white/10 pointer-events-auto shadow-2xl flex flex-col gap-1">
-                <div className="px-3 py-2 text-xs font-bold text-white/50 uppercase tracking-wider flex items-center gap-2">
+                <div className="px-3 py-2 text-xs font-bold text-white/80 uppercase tracking-wider flex items-center gap-2">
                     <Eye className="w-3 h-3" /> Overlay
                 </div>
                 <button
                     onClick={() => setAnnotationMode('NONE')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all ${annotationMode === 'NONE' ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white'}`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all ${annotationMode === 'NONE' ? 'bg-white/20 text-white' : 'text-white/80 hover:text-white'}`}
                 >
                     <Box className="w-4 h-4" /> Clean
                 </button>
                 <button
                     onClick={() => setAnnotationMode('LABELS')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all ${annotationMode === 'LABELS' ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white'}`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all ${annotationMode === 'LABELS' ? 'bg-white/20 text-white' : 'text-white/80 hover:text-white'}`}
                 >
                     <Maximize2 className="w-4 h-4" /> Labels
                 </button>
                 <button
                     onClick={() => setAnnotationMode('MEASUREMENTS')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all ${annotationMode === 'MEASUREMENTS' ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white'}`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all ${annotationMode === 'MEASUREMENTS' ? 'bg-white/20 text-white' : 'text-white/80 hover:text-white'}`}
                 >
                     <Ruler className="w-4 h-4" /> Dimensions
                 </button>
@@ -235,7 +240,7 @@ const ControlsOverlay = ({
 
             {/* Performance Mode Selector */}
             <div className="bg-slate-900/90 backdrop-blur-md p-1 rounded-xl border border-white/10 pointer-events-auto shadow-2xl flex flex-col gap-1">
-                <div className="px-4 py-2 text-xs font-bold text-white/40 uppercase tracking-wider border-b border-white/5 mb-1">
+                <div className="px-4 py-2 text-xs font-bold text-white/80 uppercase tracking-wider border-b border-white/5 mb-1">
                     Performance
                 </div>
                 <div className="flex gap-1 p-1">
@@ -245,7 +250,7 @@ const ControlsOverlay = ({
                             onClick={() => setPerformanceMode(mode)}
                             className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition-all ${performanceMode === mode
                                 ? 'bg-tennis-yellow text-tennis-dark shadow-lg'
-                                : 'text-white/50 hover:text-white hover:bg-white/10'
+                                : 'text-white/80 hover:text-white hover:bg-white/10'
                                 }`}
                         >
                             {mode}
@@ -1578,8 +1583,12 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
     const [activeFloor, setActiveFloor] = useState<FloorLevel>('ALL');
     const [annotationMode, setAnnotationMode] = useState<AnnotationMode>('LABELS');
     const [performanceMode, setPerformanceMode] = useState<'high' | 'medium' | 'low'>('medium');
+    const [isLoadingComplete, setIsLoadingComplete] = useState(false);
     const controlsRef = useRef<any>(null);
     const isAnimatingRef = useRef(false);
+
+    // Weather system state
+    const { weather, intensity, setWeather, setIntensity } = useWeather();
 
     const handleSelect = (feature: FeatureData) => {
         setSelectedId(feature.id);
@@ -1591,21 +1600,43 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
         if (feature.id.includes('level3')) setActiveFloor(3);
     };
 
+    const handleLoadingComplete = () => {
+        console.log('✅ All assets loaded, scene ready!');
+        setIsLoadingComplete(true);
+    };
+
     const showLabels = annotationMode === 'LABELS';
     const showMeasurements = annotationMode === 'MEASUREMENTS';
 
     return (
-        <div className="w-full h-full absolute inset-0">
-            <ControlsOverlay
-                activeFloor={activeFloor}
-                setActiveFloor={setActiveFloor}
-                annotationMode={annotationMode}
-                setAnnotationMode={setAnnotationMode}
-                performanceMode={performanceMode}
-                setPerformanceMode={setPerformanceMode}
-            />
+        <LoadingProvider registry={AssetRegistry.getInstance()}>
+            <div className="w-full h-full absolute inset-0">
+                {!isLoadingComplete && (
+                    <LoadingScreen
+                        onComplete={handleLoadingComplete}
+                        minimumDisplayTime={2000}
+                        showFPSMonitor={true}
+                        qualityMode="auto"
+                    />
+                )}
 
-            <Canvas
+                <ControlsOverlay
+                    activeFloor={activeFloor}
+                    setActiveFloor={setActiveFloor}
+                    annotationMode={annotationMode}
+                    setAnnotationMode={setAnnotationMode}
+                    performanceMode={performanceMode}
+                    setPerformanceMode={setPerformanceMode}
+                />
+
+                <WeatherControls
+                    currentWeather={weather}
+                    onWeatherChange={setWeather}
+                    intensity={intensity}
+                    onIntensityChange={setIntensity}
+                />
+
+                <Canvas
                 shadows={performanceMode !== 'low'}
                 dpr={performanceMode === 'high' ? [1, 1.5] : 1}
                 camera={{ position: [180, 100, 180], fov: 35 }}
@@ -1623,6 +1654,15 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
                     <orthographicCamera attach="shadow-camera" args={[-150, 150, 150, -150]} />
                 </directionalLight>
                 <Environment preset="park" />
+
+                {/* Weather System */}
+                <WeatherSystem
+                    weather={weather}
+                    intensity={intensity}
+                    enableEffects={true}
+                    areaSize={[300, 300]}
+                    enableWetSurfaces={true}
+                />
 
                 <group>
                     <BuildingShell activeFloor={activeFloor} />
@@ -1671,11 +1711,12 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
                 />
             </Canvas>
 
-            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/50 text-xs pointer-events-none select-none font-mono text-center">
+            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/80 text-xs pointer-events-none select-none font-mono text-center">
                 ECO-FACILITY VIEWER v3.3 <br />
                 INTERACTIVE ARCHITECTURAL MODEL
             </div>
-        </div>
+            </div>
+        </LoadingProvider>
     );
 };
 

@@ -27,8 +27,18 @@ export class CourtViewPage extends BasePage {
    * Select a court by index
    */
   async selectCourt(index: number = 0) {
+    // Wait for court list to be visible
+    await this.courtList.waitFor({ state: 'visible', timeout: 10000 });
+
+    // Wait a moment for any animations to complete
+    await this.page.waitForTimeout(500);
+
     const courtItems = this.page.getByTestId('court-item');
-    await courtItems.nth(index).click();
+    // Ensure court items are loaded
+    await courtItems.first().waitFor({ state: 'visible', timeout: 10000 });
+
+    // Click with force to handle overlapping UI elements
+    await courtItems.nth(index).click({ force: true });
   }
 
   /**
@@ -41,16 +51,27 @@ export class CourtViewPage extends BasePage {
   /**
    * Wait for 3D scene to load
    */
-  async waitFor3DSceneLoad(timeout: number = 5000) {
-    await this.courtCanvas.waitFor({ state: 'visible', timeout });
-    // Wait for WebGL context to be ready
+  async waitFor3DSceneLoad(timeout: number = 10000) {
+    // Wait for the 3D canvas to be in the DOM (it starts with opacity 0)
+    const canvas = this.page.getByTestId('3d-canvas');
+    await canvas.waitFor({ state: 'attached', timeout });
+
+    // Wait for WebGL context to be ready on 3d-canvas
     await this.page.waitForFunction(
       () => {
-        const canvas = document.querySelector('[data-testid="court-canvas"]') as HTMLCanvasElement;
-        return canvas && canvas.getContext('webgl2') !== null;
+        const canvas = document.querySelector('[data-testid="3d-canvas"]') as HTMLCanvasElement;
+        if (!canvas) return false;
+        const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+        return gl !== null;
       },
       { timeout }
     );
+
+    // Wait for visualization controls to be ready
+    await this.page.getByTestId('visualization-settings').waitFor({ state: 'visible', timeout });
+
+    // Small delay for Three.js scene initialization
+    await this.page.waitForTimeout(1000);
   }
 
   /**

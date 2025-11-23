@@ -127,7 +127,7 @@ const HeatMapDemo: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-white text-xl font-bold">Heat Map Analytics</h1>
-                <p className="text-white/50 text-sm">Court Usage & Player Movement Visualization</p>
+                <p className="text-white/80 text-sm">Court Usage & Player Movement Visualization</p>
               </div>
             </div>
 
@@ -155,7 +155,7 @@ const HeatMapDemo: React.FC = () => {
 
           {/* Global Data Type Selector */}
           <div className="mb-4">
-            <label className="text-xs text-white/50 mb-2 block">Global Data Type</label>
+            <label className="text-xs text-white/80 mb-2 block">Global Data Type</label>
             <div className="grid grid-cols-2 gap-2">
               {[
                 { type: 'player_position' as HeatMapDataType, label: 'Player', icon: '👤' },
@@ -194,7 +194,7 @@ const HeatMapDemo: React.FC = () => {
 
           {/* Court Selection */}
           <div>
-            <label className="text-xs text-white/50 mb-2 block">Court Focus</label>
+            <label className="text-xs text-white/80 mb-2 block">Court Focus</label>
             <div className="space-y-2">
               {DEMO_COURTS.map((court) => (
                 <button
@@ -244,12 +244,12 @@ const HeatMapDemo: React.FC = () => {
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-green-400 text-xs font-bold">{pattern.name}</span>
-                    <span className="text-white/50 text-xs">
+                    <span className="text-white/80 text-xs">
                       {(pattern.confidence * 100).toFixed(0)}%
                     </span>
                   </div>
-                  <p className="text-white/70 text-xs">{pattern.description}</p>
-                  <div className="mt-2 text-xs text-white/50">
+                  <p className="text-white/90 text-xs">{pattern.description}</p>
+                  <div className="mt-2 text-xs text-white/80">
                     Court: {DEMO_COURTS.find(c => c.id === courtId)?.name}
                   </div>
                 </div>
@@ -329,7 +329,7 @@ const HeatMapDemo: React.FC = () => {
       </Canvas>
 
       {/* Footer Info */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white/50 text-xs font-mono text-center pointer-events-none select-none">
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white/80 text-xs font-mono text-center pointer-events-none select-none">
         HEAT MAP ANALYTICS v1.0 • REAL-TIME COURT INTELLIGENCE
       </div>
     </div>

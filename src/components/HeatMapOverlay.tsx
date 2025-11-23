@@ -719,7 +719,7 @@ const HeatMapOverlay: React.FC<HeatMapOverlayProps> = ({
           >
             <div className="px-2 py-1 bg-black/80 text-white text-xs rounded border border-red-500 whitespace-nowrap">
               {pattern.name}
-              <div className="text-xs text-gray-400">
+              <div className="text-xs text-gray-200">
                 {(pattern.confidence * 100).toFixed(0)}% confidence
               </div>
             </div>
@@ -741,14 +741,14 @@ const HeatMapOverlay: React.FC<HeatMapOverlayProps> = ({
                 <TrendingUp className="w-4 h-4 text-tennis-yellow" />
                 <h3 className="text-white font-bold text-sm">Heat Map Analytics</h3>
               </div>
-              <div className="text-xs text-white/50">
+              <div className="text-xs text-white/80">
                 {heatData.filter(p => p.timestamp <= currentTime).length} / {heatData.length} events
               </div>
             </div>
 
             {/* Data Type Selector */}
             <div className="mb-4">
-              <label className="text-xs text-white/50 mb-2 block">Data Type</label>
+              <label className="text-xs text-white/80 mb-2 block">Data Type</label>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { type: 'player_position' as HeatMapDataType, label: 'Player Position' },
@@ -775,7 +775,7 @@ const HeatMapOverlay: React.FC<HeatMapOverlayProps> = ({
             {mode === 'historical' && (
               <>
                 <div className="mb-4">
-                  <label className="text-xs text-white/50 mb-2 block">
+                  <label className="text-xs text-white/80 mb-2 block">
                     Timeline: {new Date(currentTime).toLocaleDateString()}
                   </label>
                   <input
@@ -829,7 +829,7 @@ const HeatMapOverlay: React.FC<HeatMapOverlayProps> = ({
 
             {/* Opacity Control */}
             <div className="mb-4">
-              <label className="text-xs text-white/50 mb-2 block">
+              <label className="text-xs text-white/80 mb-2 block">
                 Opacity: {(opacity * 100).toFixed(0)}%
               </label>
               <input
@@ -845,7 +845,7 @@ const HeatMapOverlay: React.FC<HeatMapOverlayProps> = ({
 
             {/* Pattern Toggle */}
             <div className="flex items-center justify-between">
-              <label className="text-xs text-white/50">Show Hot Zones</label>
+              <label className="text-xs text-white/80">Show Hot Zones</label>
               <button
                 onClick={() => setShowPatterns(!showPatterns)}
                 className={`px-4 py-2 rounded-lg text-xs font-medium transition-all ${
@@ -859,7 +859,7 @@ const HeatMapOverlay: React.FC<HeatMapOverlayProps> = ({
             {/* Detected Patterns Summary */}
             {patterns.length > 0 && (
               <div className="mt-4 pt-4 border-t border-white/10">
-                <div className="text-xs text-white/50 mb-2">
+                <div className="text-xs text-white/80 mb-2">
                   Detected Patterns ({patterns.length})
                 </div>
                 <div className="space-y-2 max-h-[120px] overflow-y-auto">
@@ -874,7 +874,7 @@ const HeatMapOverlay: React.FC<HeatMapOverlayProps> = ({
                       }`}
                     >
                       <div className="text-white text-xs font-medium">{pattern.name}</div>
-                      <div className="text-white/50 text-xs truncate">{pattern.description}</div>
+                      <div className="text-white/80 text-xs truncate">{pattern.description}</div>
                     </div>
                   ))}
                 </div>
@@ -890,14 +890,14 @@ const HeatMapOverlay: React.FC<HeatMapOverlayProps> = ({
         distanceFactor={40}
       >
         <div className="bg-slate-900/95 backdrop-blur-md p-3 rounded-lg border border-white/10 shadow-xl">
-          <div className="text-xs text-white/50 mb-2">Intensity</div>
+          <div className="text-xs text-white/80 mb-2">Intensity</div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-20 rounded" style={{
               background: 'linear-gradient(to top, rgb(0, 0, 255), rgb(0, 255, 255), rgb(0, 255, 0), rgb(255, 255, 0), rgb(255, 0, 0))'
             }} />
             <div className="text-xs text-white space-y-2">
               <div>High</div>
-              <div className="text-white/50">Med</div>
+              <div className="text-white/80">Med</div>
               <div>Low</div>
             </div>
           </div>

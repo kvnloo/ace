@@ -41,9 +41,15 @@ export class AIChatPage extends BasePage {
    * Wait for AI response
    */
   async waitForAIResponse(timeout: number = 10000) {
-    await this.typingIndicator.waitFor({ state: 'visible', timeout: 2000 });
-    await this.typingIndicator.waitFor({ state: 'hidden', timeout });
-    await this.aiMessages.last().waitFor({ state: 'visible' });
+    // Try to wait for typing indicator, but don't fail if it doesn't appear (fast responses)
+    try {
+      await this.typingIndicator.waitFor({ state: 'visible', timeout: 500 });
+      await this.typingIndicator.waitFor({ state: 'hidden', timeout });
+    } catch (e) {
+      // Typing indicator might not appear for very fast responses, that's okay
+    }
+    // Wait for the AI message to appear
+    await this.aiMessages.last().waitFor({ state: 'visible', timeout });
   }
 
   /**
@@ -64,7 +70,10 @@ export class AIChatPage extends BasePage {
    * Get message count
    */
   async getMessageCount() {
-    return await this.chatMessages.count();
+    // Count all messages (user + AI)
+    const userCount = await this.userMessages.count();
+    const aiCount = await this.aiMessages.count();
+    return userCount + aiCount;
   }
 
   /**

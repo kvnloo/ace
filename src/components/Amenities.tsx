@@ -10,7 +10,7 @@ const Amenities: React.FC = () => {
         <h2 className="text-4xl md:text-6xl font-bold mb-6">
           Facility <span className="text-tennis-yellow">Amenities</span>
         </h2>
-        <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+        <p className="text-xl text-gray-200 max-w-3xl mx-auto">
           Comprehensive member experience from racket sports to performance optimization, recovery, and personalized nutrition
         </p>
       </div>
@@ -29,23 +29,23 @@ const Amenities: React.FC = () => {
             <h4 className="text-xl font-bold mb-6 text-tennis-yellow">Tennis Courts</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Surface Types</span>
+                <span className="text-gray-200">Surface Types</span>
                 <span className="text-white font-mono font-bold">Grass, Clay, Hard, Wood</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Court Dimensions</span>
+                <span className="text-gray-200">Court Dimensions</span>
                 <span className="text-white font-mono font-bold">23.77m × 10.97m</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Modular Grass System</span>
+                <span className="text-gray-200">Modular Grass System</span>
                 <span className="text-white font-mono font-bold">60-min swap</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Computer Vision</span>
+                <span className="text-gray-200">Computer Vision</span>
                 <span className="text-white font-mono font-bold">RGB + Depth cameras</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-gray-400">Analytics</span>
+                <span className="text-gray-200">Analytics</span>
                 <span className="text-white font-mono font-bold">Real-time biomechanics</span>
               </li>
             </ul>
@@ -55,23 +55,23 @@ const Amenities: React.FC = () => {
             <h4 className="text-xl font-bold mb-6 text-blue-400">Pickleball Courts</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Total Courts</span>
+                <span className="text-gray-200">Total Courts</span>
                 <span className="text-white font-mono font-bold">8 dedicated</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Court Dimensions</span>
+                <span className="text-gray-200">Court Dimensions</span>
                 <span className="text-white font-mono font-bold">13.41m × 6.10m</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Surface Type</span>
+                <span className="text-gray-200">Surface Type</span>
                 <span className="text-white font-mono font-bold">Shock-absorbent synthetic</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Lighting</span>
+                <span className="text-gray-200">Lighting</span>
                 <span className="text-white font-mono font-bold">LED high-bay</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-gray-400">Location</span>
+                <span className="text-gray-200">Location</span>
                 <span className="text-white font-mono font-bold">Level 2</span>
               </li>
             </ul>
@@ -81,23 +81,23 @@ const Amenities: React.FC = () => {
             <h4 className="text-xl font-bold mb-6 text-purple-400">Badminton Courts</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Total Courts</span>
+                <span className="text-gray-200">Total Courts</span>
                 <span className="text-white font-mono font-bold">16 courts</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Court Dimensions</span>
+                <span className="text-gray-200">Court Dimensions</span>
                 <span className="text-white font-mono font-bold">13.40m × 6.10m</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Net Height</span>
+                <span className="text-gray-200">Net Height</span>
                 <span className="text-white font-mono font-bold">1.55m</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Surface Type</span>
+                <span className="text-gray-200">Surface Type</span>
                 <span className="text-white font-mono font-bold">Shock-absorbent</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-gray-400">Location</span>
+                <span className="text-gray-200">Location</span>
                 <span className="text-white font-mono font-bold">Level 1</span>
               </li>
             </ul>
@@ -107,23 +107,23 @@ const Amenities: React.FC = () => {
             <h4 className="text-xl font-bold mb-6 text-orange-400">Squash Courts (Optional)</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Total Courts</span>
+                <span className="text-gray-200">Total Courts</span>
                 <span className="text-white font-mono font-bold">4 courts</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Court Dimensions</span>
+                <span className="text-gray-200">Court Dimensions</span>
                 <span className="text-white font-mono font-bold">9.75m × 6.40m</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Wall Material</span>
+                <span className="text-gray-200">Wall Material</span>
                 <span className="text-white font-mono font-bold">Hardwood panels</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Glass Back Wall</span>
+                <span className="text-gray-200">Glass Back Wall</span>
                 <span className="text-white font-mono font-bold">Spectator viewing</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-gray-400">Location</span>
+                <span className="text-gray-200">Location</span>
                 <span className="text-white font-mono font-bold">Level 1</span>
               </li>
             </ul>
@@ -138,7 +138,7 @@ const Amenities: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <h5 className="font-bold text-white mb-3 text-sm">Computer Vision Tracking</h5>
-              <ul className="space-y-2 text-sm text-gray-400">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li className="flex items-start gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
                   <span>Ball trajectory analysis</span>
@@ -155,7 +155,7 @@ const Amenities: React.FC = () => {
             </div>
             <div>
               <h5 className="font-bold text-white mb-3 text-sm">Biomechanics Analysis</h5>
-              <ul className="space-y-2 text-sm text-gray-400">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li className="flex items-start gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
                   <span>Serve motion capture</span>
@@ -172,7 +172,7 @@ const Amenities: React.FC = () => {
             </div>
             <div>
               <h5 className="font-bold text-white mb-3 text-sm">Performance Reports</h5>
-              <ul className="space-y-2 text-sm text-gray-400">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li className="flex items-start gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
                   <span>Post-session summaries</span>
@@ -209,23 +209,23 @@ const Amenities: React.FC = () => {
             </div>
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Biomarkers Tracked</span>
+                <span className="text-gray-200">Biomarkers Tracked</span>
                 <span className="text-white font-mono font-bold">147 daily</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">HRV Analysis</span>
+                <span className="text-gray-200">HRV Analysis</span>
                 <span className="text-white font-mono font-bold">Real-time</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Glucose Monitoring</span>
+                <span className="text-gray-200">Glucose Monitoring</span>
                 <span className="text-white font-mono font-bold">Continuous CGM</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Sleep Analysis</span>
+                <span className="text-gray-200">Sleep Analysis</span>
                 <span className="text-white font-mono font-bold">Architecture tracking</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-gray-400">Methylation Pathways</span>
+                <span className="text-gray-200">Methylation Pathways</span>
                 <span className="text-white font-mono font-bold">Active monitoring</span>
               </li>
             </ul>
@@ -239,23 +239,23 @@ const Amenities: React.FC = () => {
             </div>
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">VO₂ Max Increase</span>
+                <span className="text-gray-200">VO₂ Max Increase</span>
                 <span className="text-white font-mono font-bold">+28% avg</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">HRV Improvement</span>
+                <span className="text-gray-200">HRV Improvement</span>
                 <span className="text-white font-mono font-bold">+12% avg</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Recovery Time</span>
+                <span className="text-gray-200">Recovery Time</span>
                 <span className="text-white font-mono font-bold">-34% reduction</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Strength Gains</span>
+                <span className="text-gray-200">Strength Gains</span>
                 <span className="text-white font-mono font-bold">+15-25%</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-gray-400">AI Protocols</span>
+                <span className="text-gray-200">AI Protocols</span>
                 <span className="text-white font-mono font-bold">Adaptive training</span>
               </li>
             </ul>
@@ -269,23 +269,23 @@ const Amenities: React.FC = () => {
             </div>
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Glucose Variability</span>
+                <span className="text-gray-200">Glucose Variability</span>
                 <span className="text-white font-mono font-bold">-47% reduction</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Insulin Sensitivity</span>
+                <span className="text-gray-200">Insulin Sensitivity</span>
                 <span className="text-white font-mono font-bold">+38% improvement</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Nutraceuticals</span>
+                <span className="text-gray-200">Nutraceuticals</span>
                 <span className="text-white font-mono font-bold">47+ targeted</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Meal Timing</span>
+                <span className="text-gray-200">Meal Timing</span>
                 <span className="text-white font-mono font-bold">CGM-optimized</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-gray-400">Microbiome Support</span>
+                <span className="text-gray-200">Microbiome Support</span>
                 <span className="text-white font-mono font-bold">Personalized</span>
               </li>
             </ul>
@@ -299,23 +299,23 @@ const Amenities: React.FC = () => {
             </div>
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Focus Duration</span>
+                <span className="text-gray-200">Focus Duration</span>
                 <span className="text-white font-mono font-bold">+41%</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Reaction Time</span>
+                <span className="text-gray-200">Reaction Time</span>
                 <span className="text-white font-mono font-bold">-23%</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Memory Consolidation</span>
+                <span className="text-gray-200">Memory Consolidation</span>
                 <span className="text-white font-mono font-bold">+35%</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">EEG Training</span>
+                <span className="text-gray-200">EEG Training</span>
                 <span className="text-white font-mono font-bold">Flow state</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-gray-400">Nootropic Stack</span>
+                <span className="text-gray-200">Nootropic Stack</span>
                 <span className="text-white font-mono font-bold">Personalized</span>
               </li>
             </ul>
@@ -329,23 +329,23 @@ const Amenities: React.FC = () => {
             </div>
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Sleep Efficiency</span>
+                <span className="text-gray-200">Sleep Efficiency</span>
                 <span className="text-white font-mono font-bold">94% avg</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">REM Sleep</span>
+                <span className="text-gray-200">REM Sleep</span>
                 <span className="text-white font-mono font-bold">+22%</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Deep Sleep</span>
+                <span className="text-gray-200">Deep Sleep</span>
                 <span className="text-white font-mono font-bold">+31%</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Hyperbaric Oxygen</span>
+                <span className="text-gray-200">Hyperbaric Oxygen</span>
                 <span className="text-white font-mono font-bold">Available</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-gray-400">Cryotherapy</span>
+                <span className="text-gray-200">Cryotherapy</span>
                 <span className="text-white font-mono font-bold">-110°C chamber</span>
               </li>
             </ul>
@@ -359,23 +359,23 @@ const Amenities: React.FC = () => {
             </div>
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Studies Analyzed</span>
+                <span className="text-gray-200">Studies Analyzed</span>
                 <span className="text-white font-mono font-bold">247+ daily</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Meta-Analysis</span>
+                <span className="text-gray-200">Meta-Analysis</span>
                 <span className="text-white font-mono font-bold">Automated</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Protocol Updates</span>
+                <span className="text-gray-200">Protocol Updates</span>
                 <span className="text-white font-mono font-bold">Real-time</span>
               </li>
               <li className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Evidence Quality</span>
+                <span className="text-gray-200">Evidence Quality</span>
                 <span className="text-white font-mono font-bold">AI scoring</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-gray-400">Safety Evaluation</span>
+                <span className="text-gray-200">Safety Evaluation</span>
                 <span className="text-white font-mono font-bold">Continuous</span>
               </li>
             </ul>
@@ -400,7 +400,7 @@ const Amenities: React.FC = () => {
                 <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
                 <div className="flex-1">
                   <div className="flex justify-between mb-1">
-                    <span className="text-gray-400">Water Efficiency</span>
+                    <span className="text-gray-200">Water Efficiency</span>
                     <span className="text-white font-mono font-bold">95% reduction</span>
                   </div>
                 </div>
@@ -409,7 +409,7 @@ const Amenities: React.FC = () => {
                 <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
                 <div className="flex-1">
                   <div className="flex justify-between mb-1">
-                    <span className="text-gray-400">Energy Source</span>
+                    <span className="text-gray-200">Energy Source</span>
                     <span className="text-white font-mono font-bold">100% renewable</span>
                   </div>
                 </div>
@@ -418,7 +418,7 @@ const Amenities: React.FC = () => {
                 <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
                 <div className="flex-1">
                   <div className="flex justify-between mb-1">
-                    <span className="text-gray-400">Pesticide Use</span>
+                    <span className="text-gray-200">Pesticide Use</span>
                     <span className="text-white font-mono font-bold">Zero tolerance</span>
                   </div>
                 </div>
@@ -427,7 +427,7 @@ const Amenities: React.FC = () => {
                 <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
                 <div className="flex-1">
                   <div className="flex justify-between mb-1">
-                    <span className="text-gray-400">LED Spectrum</span>
+                    <span className="text-gray-200">LED Spectrum</span>
                     <span className="text-white font-mono font-bold">Phytonutrient optimized</span>
                   </div>
                 </div>
@@ -436,7 +436,7 @@ const Amenities: React.FC = () => {
                 <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
                 <div className="flex-1">
                   <div className="flex justify-between mb-1">
-                    <span className="text-gray-400">Carbon Impact</span>
+                    <span className="text-gray-200">Carbon Impact</span>
                     <span className="text-white font-mono font-bold">Negative operations</span>
                   </div>
                 </div>
@@ -449,23 +449,23 @@ const Amenities: React.FC = () => {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
-                <span className="text-gray-400">Genetic variant accommodation (MTHFR, APOE)</span>
+                <span className="text-gray-200">Genetic variant accommodation (MTHFR, APOE)</span>
               </li>
               <li className="flex items-start gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
-                <span className="text-gray-400">Microbiome support cultivation</span>
+                <span className="text-gray-200">Microbiome support cultivation</span>
               </li>
               <li className="flex items-start gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
-                <span className="text-gray-400">Anti-inflammatory compound emphasis</span>
+                <span className="text-gray-200">Anti-inflammatory compound emphasis</span>
               </li>
               <li className="flex items-start gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
-                <span className="text-gray-400">Methylation support crops (folate-rich greens)</span>
+                <span className="text-gray-200">Methylation support crops (folate-rich greens)</span>
               </li>
               <li className="flex items-start gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-tennis-yellow mt-1.5 flex-shrink-0" />
-                <span className="text-gray-400">Just-in-time delivery scheduling</span>
+                <span className="text-gray-200">Just-in-time delivery scheduling</span>
               </li>
             </ul>
           </div>
@@ -485,22 +485,22 @@ const Amenities: React.FC = () => {
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
             <Wind className="w-8 h-8 text-purple-400 mb-4" />
             <h4 className="font-bold text-white mb-2">Smart HVAC</h4>
-            <p className="text-sm text-gray-400">AI climate control with occupancy sensing and energy optimization</p>
+            <p className="text-sm text-gray-200">AI climate control with occupancy sensing and energy optimization</p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
             <Users className="w-8 h-8 text-blue-400 mb-4" />
             <h4 className="font-bold text-white mb-2">Biometric Entry</h4>
-            <p className="text-sm text-gray-400">Seamless access with fingerprint + NFC badge authentication</p>
+            <p className="text-sm text-gray-200">Seamless access with fingerprint + NFC badge authentication</p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
             <Activity className="w-8 h-8 text-green-400 mb-4" />
             <h4 className="font-bold text-white mb-2">Smart Scheduling</h4>
-            <p className="text-sm text-gray-400">AI allocation of courts and facilities based on preferences</p>
+            <p className="text-sm text-gray-200">AI allocation of courts and facilities based on preferences</p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
             <Leaf className="w-8 h-8 text-emerald-400 mb-4" />
             <h4 className="font-bold text-white mb-2">Robotic Maintenance</h4>
-            <p className="text-sm text-gray-400">Automated grass swaps in 60 minutes, court cleaning robots</p>
+            <p className="text-sm text-gray-200">Automated grass swaps in 60 minutes, court cleaning robots</p>
           </div>
         </div>
       </div>
@@ -511,7 +511,7 @@ const Amenities: React.FC = () => {
           <h2 className="text-4xl md:text-6xl font-bold mb-6">
             Membership <span className="text-tennis-yellow">Tiers</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-200 max-w-3xl mx-auto">
             Choose your level of performance optimization
           </p>
         </div>
@@ -541,7 +541,7 @@ const Amenities: React.FC = () => {
                   <div className="w-5 h-5 rounded-full bg-tennis-yellow/10 border border-tennis-yellow/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <div className="w-2 h-2 rounded-full bg-tennis-yellow" />
                   </div>
-                  <span className="text-gray-400">{feature}</span>
+                  <span className="text-gray-200">{feature}</span>
                 </li>
               ))}
             </ul>
@@ -580,7 +580,7 @@ const Amenities: React.FC = () => {
                   <div className="w-5 h-5 rounded-full bg-tennis-yellow/10 border border-tennis-yellow/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <div className="w-2 h-2 rounded-full bg-tennis-yellow" />
                   </div>
-                  <span className="text-gray-400">{feature}</span>
+                  <span className="text-gray-200">{feature}</span>
                 </li>
               ))}
             </ul>
@@ -615,7 +615,7 @@ const Amenities: React.FC = () => {
                   <div className="w-5 h-5 rounded-full bg-tennis-yellow/10 border border-tennis-yellow/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <div className="w-2 h-2 rounded-full bg-tennis-yellow" />
                   </div>
-                  <span className="text-gray-400">{feature}</span>
+                  <span className="text-gray-200">{feature}</span>
                 </li>
               ))}
             </ul>

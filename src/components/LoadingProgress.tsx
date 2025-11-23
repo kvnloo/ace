@@ -69,7 +69,7 @@ const LoadingProgress: React.FC<LoadingProgressProps> = ({
                 <div className="text-3xl font-bold text-tennis-yellow">
                   {Math.round(overallProgress)}%
                 </div>
-                <div className="text-xs text-gray-400 mt-1">
+                <div className="text-xs text-gray-200 mt-1">
                   {loadedCount} / {totalCount} assets
                 </div>
               </div>
@@ -103,14 +103,14 @@ const LoadingProgress: React.FC<LoadingProgressProps> = ({
                       {asset.error ? (
                         <XCircle className="w-4 h-4 text-red-400" />
                       ) : asset.loaded ? (
-                        <CheckCircle className="w-4 h-4 text-white/20" />
+                        <CheckCircle className="w-4 h-4 text-white/80" />
                       ) : (
                         <Loader2 className="w-4 h-4 text-tennis-yellow animate-spin" />
                       )}
                     </div>
 
                     {/* Asset Name */}
-                    <span className="text-gray-400 text-sm truncate">
+                    <span className="text-gray-200 text-sm truncate">
                       {asset.name}
                     </span>
                   </div>

@@ -302,7 +302,7 @@ const MowingRobot: React.FC<{
                 {robot.id}
               </span>
             </div>
-            <div className="text-white/70 text-[10px] space-y-0.5">
+            <div className="text-white/90 text-[10px] space-y-0.5">
               <div className="flex justify-between">
                 <span>Status:</span>
                 <span className="text-white font-medium">{robot.status}</span>
@@ -743,37 +743,37 @@ const RoboticGrassSystem: React.FC<RoboticGrassSystemProps> = ({
               <span className="text-white text-sm font-bold">GRASS MANAGEMENT SYSTEM</span>
             </div>
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between text-white/70">
+              <div className="flex justify-between text-white/90">
                 <span>Active Robots:</span>
                 <span className="text-green-400 font-bold">
                   {robots.filter(r => r.status === 'mowing').length}/{robotCount}
                 </span>
               </div>
-              <div className="flex justify-between text-white/70">
+              <div className="flex justify-between text-white/90">
                 <span>Charging:</span>
                 <span className="text-yellow-400 font-bold">
                   {robots.filter(r => r.status === 'charging').length}
                 </span>
               </div>
-              <div className="flex justify-between text-white/70">
+              <div className="flex justify-between text-white/90">
                 <span>Avg Battery:</span>
                 <span className="text-white font-bold">
                   {Math.round(robots.reduce((sum, r) => sum + r.battery, 0) / robotCount)}%
                 </span>
               </div>
-              <div className="flex justify-between text-white/70">
+              <div className="flex justify-between text-white/90">
                 <span>System Status:</span>
                 <span className="text-green-400 font-bold">OPERATIONAL</span>
               </div>
               {/* Debug info - Show which features are enabled */}
               {showGrassPhysics && (
-                <div className="flex justify-between text-white/70 pt-1 border-t border-white/10">
+                <div className="flex justify-between text-white/90 pt-1 border-t border-white/10">
                   <span>Physics:</span>
                   <span className="text-blue-400 font-bold">ACTIVE</span>
                 </div>
               )}
               {showGrowthVisualization && (
-                <div className="flex justify-between text-white/70">
+                <div className="flex justify-between text-white/90">
                   <span>Growth Viz:</span>
                   <span className="text-purple-400 font-bold">ACTIVE</span>
                 </div>

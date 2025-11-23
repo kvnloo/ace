@@ -226,7 +226,7 @@ const HeatMapToggleButton: React.FC<HeatMapToggleButtonProps> = ({
         {/* Expanded Options */}
         {expanded && showHeatMap && (
           <div className="absolute top-full mt-2 left-0 bg-slate-900/95 backdrop-blur-md rounded-lg border border-white/10 shadow-2xl p-3 min-w-[200px] z-50">
-            <div className="text-xs text-white/50 mb-2">Data Type</div>
+            <div className="text-xs text-white/80 mb-2">Data Type</div>
             <div className="space-y-1">
               {[
                 { type: 'player_position' as HeatMapDataType, label: 'Player Movement', icon: '👤' },

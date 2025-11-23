@@ -45,8 +45,11 @@ export async function waitFor3DRender(page: Page, canvasSelector: string, timeou
 /**
  * Mock API endpoint with response
  */
-export async function mockAPI(page: Page, endpoint: string | RegExp, response: any, status: number = 200) {
+export async function mockAPI(page: Page, endpoint: string | RegExp, response: any, status: number = 200, delay: number = 0) {
   await page.route(endpoint, async (route) => {
+    if (delay > 0) {
+      await page.waitForTimeout(delay);
+    }
     await route.fulfill({
       status,
       contentType: 'application/json',

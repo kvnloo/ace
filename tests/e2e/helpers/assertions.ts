@@ -8,13 +8,18 @@ import { Page, expect } from '@playwright/test';
  * Assert that Three.js canvas is rendered
  */
 export async function expectCanvasRendered(page: Page): Promise<void> {
-  const canvas = page.locator('canvas');
+  // Check for at least one canvas element
+  const canvas = page.locator('canvas').first();
   await expect(canvas).toBeVisible();
 
-  // Check WebGL context exists
+  // Check WebGL context exists on any canvas
   const hasWebGL = await page.evaluate(() => {
-    const canvas = document.querySelector('canvas');
-    return canvas && (canvas as HTMLCanvasElement).getContext('webgl2') !== null;
+    const canvases = document.querySelectorAll('canvas');
+    for (const canvas of canvases) {
+      const gl = (canvas as HTMLCanvasElement).getContext('webgl2');
+      if (gl !== null) return true;
+    }
+    return false;
   });
 
   expect(hasWebGL).toBeTruthy();

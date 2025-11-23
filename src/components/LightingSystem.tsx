@@ -752,13 +752,13 @@ const LightingControlPanel: React.FC<{
   return (
     <div className="absolute top-40 right-6 z-10 flex flex-col gap-4 pointer-events-none">
       <div className="bg-slate-900/90 backdrop-blur-md p-4 rounded-xl border border-white/10 pointer-events-auto shadow-2xl">
-        <div className="px-2 py-2 text-xs font-bold text-white/50 uppercase tracking-wider flex items-center gap-2 mb-3">
+        <div className="px-2 py-2 text-xs font-bold text-white/80 uppercase tracking-wider flex items-center gap-2 mb-3">
           <Zap className="w-4 h-4" /> Lighting System
         </div>
 
         {/* Time of Day */}
         <div className="mb-4">
-          <label className="text-xs text-white/60 block mb-2">Time of Day</label>
+          <label className="text-xs text-white/85 block mb-2">Time of Day</label>
           <div className="grid grid-cols-2 gap-2">
             {(['dawn', 'day', 'dusk', 'night'] as TimeOfDay[]).map((time) => (
               <button
@@ -779,7 +779,7 @@ const LightingControlPanel: React.FC<{
 
         {/* Lighting Mode */}
         <div className="mb-4">
-          <label className="text-xs text-white/60 block mb-2">Mode</label>
+          <label className="text-xs text-white/85 block mb-2">Mode</label>
           <div className="grid grid-cols-2 gap-2">
             {(['natural', 'sports', 'event', 'maintenance'] as LightingMode[]).map((mode) => (
               <button
@@ -822,7 +822,7 @@ const LightingControlPanel: React.FC<{
         {/* Sliders */}
         <div className="mt-4 space-y-3">
           <div>
-            <label className="text-xs text-white/60 block mb-1">Fog Density</label>
+            <label className="text-xs text-white/85 block mb-1">Fog Density</label>
             <input
               type="range"
               min="0"
@@ -834,7 +834,7 @@ const LightingControlPanel: React.FC<{
             />
           </div>
           <div>
-            <label className="text-xs text-white/60 block mb-1">Bloom Strength</label>
+            <label className="text-xs text-white/85 block mb-1">Bloom Strength</label>
             <input
               type="range"
               min="0"

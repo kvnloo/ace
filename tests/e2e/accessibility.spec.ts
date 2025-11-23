@@ -119,8 +119,9 @@ test.describe('Accessibility Compliance (WCAG 2.1 AA)', () => {
 
     if (!contrastResults.passed) {
       console.log(`⚠️  Found ${contrastResults.violations.length} color contrast issues`);
-      contrastResults.violations.slice(0, 3).forEach(v => {
-        console.log(`  - ${v.element}: ${v.ratio}:1 (required: ${v.required}:1)`);
+      console.log('\nAll violations:');
+      contrastResults.violations.forEach((v, i) => {
+        console.log(`  ${i + 1}. ${v.element}: ${v.ratio}:1 (required: ${v.required}:1)`);
       });
     } else {
       console.log('✅ All text meets WCAG AA contrast requirements');
@@ -272,7 +273,7 @@ test.describe('Accessibility Compliance (WCAG 2.1 AA)', () => {
   });
 
   test('should pass accessibility audit on all major pages', async ({ page }) => {
-    const pages = ['/', 'text=Specs', 'text=3D Map', 'text=Amenities', 'text=Invest'];
+    const pages = ['/', 'text=Specs', 'text=Court View', 'text=Amenities', 'text=Invest'];
 
     for (const pagePath of pages) {
       if (pagePath === '/') {

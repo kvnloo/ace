@@ -102,7 +102,7 @@ const ThreeSceneDiagnostic: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed top-20 left-4 z-[9999] bg-black/90 text-white p-4 rounded-lg max-w-md border border-yellow-400 font-mono text-xs">
+    <div className="fixed top-20 left-4 z-[9999] bg-black/90 text-white p-4 rounded-lg max-w-md border border-yellow-400 font-mono text-xs pointer-events-none">
       <h3 className="text-yellow-400 font-bold mb-2">🔍 3D SCENE DIAGNOSTIC</h3>
 
       <div className="space-y-1">
@@ -145,7 +145,7 @@ const ThreeSceneDiagnostic: React.FC = () => {
         </div>
       )}
 
-      <div className="mt-2 text-xs text-gray-400">
+      <div className="mt-2 text-xs text-gray-200">
         Check browser console for full errors
       </div>
     </div>

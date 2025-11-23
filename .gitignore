@@ -32,3 +32,10 @@ pnpm-debug.log*
 
 # OS
 Thumbs.db
+
+# Playwright Test Results
+test-results/
+playwright-report/
+.playwright/
+*.trace
+.last-run.json

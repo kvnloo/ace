@@ -16,14 +16,18 @@ export async function goToHome(page: Page): Promise<void> {
  * Wait for Three.js scene to be rendered
  */
 export async function waitForScene(page: Page): Promise<void> {
-  // Wait for canvas element
+  // Wait for canvas element (any canvas)
   await page.waitForSelector('canvas', { timeout: 10000 });
 
-  // Wait for WebGL context
+  // Wait for WebGL context on any canvas
   await page.waitForFunction(() => {
-    const canvas = document.querySelector('canvas');
-    return canvas && (canvas as HTMLCanvasElement).getContext('webgl2') !== null;
-  });
+    const canvases = document.querySelectorAll('canvas');
+    for (const canvas of canvases) {
+      const gl = (canvas as HTMLCanvasElement).getContext('webgl2');
+      if (gl !== null) return true;
+    }
+    return false;
+  }, { timeout: 10000 });
 
   // Give some time for initial render
   await page.waitForTimeout(1000);

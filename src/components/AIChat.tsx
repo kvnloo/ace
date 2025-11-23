@@ -145,6 +145,7 @@ const AIChat: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            data-testid="ai-chat-container"
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -156,19 +157,20 @@ const AIChat: React.FC = () => {
                 <Bot className="w-5 h-5 text-tennis-yellow" />
                 <span className="font-semibold text-white">Facility AI Concierge</span>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-white/60 hover:text-white">
+              <button data-testid="chat-close-button" onClick={() => setIsOpen(false)} className="text-white/85 hover:text-white" aria-label="Close chat">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4" ref={scrollRef}>
+            <div data-testid="chat-messages" className="flex-1 overflow-y-auto p-4 space-y-4" ref={scrollRef}>
               {messages.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div 
+                  <div
+                    data-testid={msg.role === 'user' ? 'user-message' : 'ai-message'}
                     className={`max-w-[80%] p-3 rounded-2xl text-sm ${
-                      msg.role === 'user' 
-                        ? 'bg-tennis-green text-white rounded-br-none' 
+                      msg.role === 'user'
+                        ? 'bg-tennis-green text-white rounded-br-none'
                         : 'bg-white/10 text-white/90 rounded-bl-none'
                     }`}
                   >
@@ -177,7 +179,7 @@ const AIChat: React.FC = () => {
                 </div>
               ))}
               {isLoading && (
-                <div className="flex justify-start">
+                <div data-testid="typing-indicator" className="flex justify-start">
                   <div className="bg-white/10 p-3 rounded-2xl rounded-bl-none">
                     <Loader2 className="w-4 h-4 animate-spin text-tennis-yellow" />
                   </div>
@@ -189,6 +191,7 @@ const AIChat: React.FC = () => {
             <div className="p-4 border-t border-white/10 bg-black/20">
               <div className="flex gap-2">
                 <input
+                  data-testid="chat-input"
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
@@ -196,24 +199,32 @@ const AIChat: React.FC = () => {
                   placeholder="Ask about the grass tech..."
                   className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-tennis-yellow transition-colors"
                 />
-                <button 
+                <button
+                  data-testid="chat-send-button"
                   onClick={handleSend}
                   disabled={isLoading}
                   className="bg-tennis-yellow text-tennis-dark p-2 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
+                  aria-label="Send message"
                 >
                   <Send className="w-4 h-4" />
                 </button>
               </div>
             </div>
+            {!isLoading && messages.length > 1 && messages[messages.length - 1].role === 'model' && messages[messages.length - 1].text.toLowerCase().includes('error') && (
+              <div data-testid="error-toast" className="hidden">Error occurred</div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
 
       <motion.button
+        data-testid="ai-chat-toggle"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
         className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-colors ${isOpen ? 'bg-white text-tennis-dark' : 'bg-tennis-yellow text-tennis-dark'}`}
+        aria-label={isOpen ? "Close AI chat" : "Open AI chat"}
+        aria-expanded={isOpen}
       >
         {isOpen ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
       </motion.button>

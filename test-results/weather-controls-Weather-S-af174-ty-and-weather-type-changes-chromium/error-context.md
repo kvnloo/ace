@@ -2,73 +2,147 @@
 
 ```yaml
 - generic [ref=e3]:
-  - navigation [ref=e4]:
-    - generic [ref=e5]:
-      - generic [ref=e6] [cursor=pointer]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation "Main navigation" [ref=e5]:
+    - generic [ref=e6]:
+      - button "Navigate to homepage" [ref=e7] [cursor=pointer]:
         - text: LAWNTECH
-        - generic [ref=e8]: DYNAMICS
-      - generic [ref=e9]:
-        - button "Vision" [ref=e10] [cursor=pointer]
-        - button "Specs" [ref=e11] [cursor=pointer]
-        - button "3D Map" [ref=e12] [cursor=pointer]
-        - button "Amenities" [ref=e13] [cursor=pointer]
-        - button "Invest" [ref=e14] [cursor=pointer]
-        - button "JOIN WAITING LIST" [ref=e15] [cursor=pointer]
-  - main [ref=e16]:
-    - generic [ref=e17]:
-      - generic [ref=e18]:
-        - heading "🔍 3D SCENE DIAGNOSTIC" [level=3] [ref=e19]
+        - generic [ref=e9]: DYNAMICS
+      - generic [ref=e10]:
+        - button "Navigate to Vision" [ref=e11] [cursor=pointer]: Vision
+        - button "Navigate to Specs" [ref=e12] [cursor=pointer]: Specs
+        - button "Navigate to Court View" [ref=e13] [cursor=pointer]: Court View
+        - button "Navigate to Amenities" [ref=e14] [cursor=pointer]: Amenities
+        - button "Navigate to Invest" [ref=e15] [cursor=pointer]: Invest
+        - button "Join waiting list for facility access" [ref=e16] [cursor=pointer]: JOIN WAITING LIST
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - generic:
+        - heading "🔍 3D SCENE DIAGNOSTIC" [level=3]
+        - generic:
+          - generic: "✅ WebGL: Supported"
+          - generic: "⚠️ WebGL2: Not supported"
+          - generic: "✅ Three.js: Loaded (r181)"
+          - generic: "✅ Canvas: Found"
+        - generic:
+          - generic: "Errors:"
+          - generic: • React Three Fiber canvas not found - Canvas component may not be rendering...
+        - generic:
+          - generic: "Warnings:"
+          - generic: • Found 3 canvas element(s)
+        - generic: Check browser console for full errors
+      - generic [ref=e19]:
         - generic [ref=e20]:
-          - generic [ref=e21]: "✅ WebGL: Supported"
-          - generic [ref=e22]: "⚠️ WebGL2: Not supported"
-          - generic [ref=e23]: "✅ Three.js: Loaded (r181)"
-          - generic [ref=e24]: "✅ Canvas: Found"
-        - generic [ref=e25]:
-          - generic [ref=e26]: "Errors:"
-          - generic [ref=e27]: • React Three Fiber canvas not found - Canvas component may not be rendering...
-        - generic [ref=e28]:
-          - generic [ref=e29]: "Warnings:"
-          - generic [ref=e30]: • Found 1 canvas element(s)
-        - generic [ref=e31]: Check browser console for full errors
-      - generic [ref=e33]:
+          - generic:
+            - generic [ref=e21]:
+              - generic [ref=e22]:
+                - img [ref=e23]
+                - text: Floor View
+              - 'button "L3: Farm" [ref=e27] [cursor=pointer]'
+              - 'button "L2: Social" [ref=e28] [cursor=pointer]'
+              - 'button "L1: Racquet" [ref=e29] [cursor=pointer]'
+              - 'button "G: Tennis" [ref=e30] [cursor=pointer]'
+              - button "Full Facility" [ref=e31] [cursor=pointer]
+            - generic [ref=e32]:
+              - generic [ref=e33]:
+                - img [ref=e34]
+                - text: Overlay
+              - button "Clean" [ref=e37] [cursor=pointer]:
+                - img [ref=e38]
+                - text: Clean
+              - button "Labels" [ref=e41] [cursor=pointer]:
+                - img [ref=e42]
+                - text: Labels
+              - button "Dimensions" [ref=e47] [cursor=pointer]:
+                - img [ref=e48]
+                - text: Dimensions
+            - generic [ref=e54]:
+              - generic [ref=e55]: Performance
+              - generic [ref=e56]:
+                - button "low" [ref=e57] [cursor=pointer]
+                - button "medium" [ref=e58] [cursor=pointer]
+                - button "high" [ref=e59] [cursor=pointer]
+          - generic:
+            - generic [ref=e60]:
+              - generic [ref=e61]:
+                - img [ref=e62]
+                - generic [ref=e64]: Weather System
+              - generic [ref=e65]:
+                - button "Clear" [ref=e66] [cursor=pointer]:
+                  - img [ref=e67]
+                  - generic [ref=e73]: Clear
+                - button "Rain" [ref=e75] [cursor=pointer]:
+                  - img [ref=e76]
+                  - generic [ref=e78]: Rain
+                - button "Snow" [ref=e79] [cursor=pointer]:
+                  - img [ref=e80]
+                  - generic [ref=e82]: Snow
+                - button "Windy" [ref=e83] [cursor=pointer]:
+                  - img [ref=e84]
+                  - generic [ref=e88]: Windy
+                - button "Storm" [active] [ref=e89] [cursor=pointer]:
+                  - img [ref=e90]
+                  - generic [ref=e92]: Storm
+              - generic [ref=e93]:
+                - generic [ref=e94]:
+                  - generic [ref=e95]: Intensity
+                  - generic [ref=e96]: 70%
+                - slider [ref=e97] [cursor=pointer]: "70"
+              - generic [ref=e98]:
+                - generic [ref=e99]: Gameplay Impact
+                - generic [ref=e101]: Optimal playing conditions
+            - generic [ref=e106]: Weather effects include dynamic particles, lighting changes, and surface interactions. Adjust intensity for performance tuning.
+          - generic:
+            - text: ECO-FACILITY VIEWER v3.3
+            - text: INTERACTIVE ARCHITECTURAL MODEL
         - generic:
-          - generic [ref=e34]:
-            - generic [ref=e35]:
-              - img [ref=e36]
-              - text: Floor View
-            - 'button "L3: Farm" [ref=e40] [cursor=pointer]'
-            - 'button "L2: Social" [ref=e41] [cursor=pointer]'
-            - 'button "L1: Racquet" [ref=e42] [cursor=pointer]'
-            - 'button "G: Tennis" [ref=e43] [cursor=pointer]'
-            - button "Full Facility" [ref=e44] [cursor=pointer]
-          - generic [ref=e45]:
-            - generic [ref=e46]:
-              - img [ref=e47]
-              - text: Overlay
-            - button "Clean" [ref=e50] [cursor=pointer]:
-              - img [ref=e51]
-              - text: Clean
-            - button "Labels" [ref=e54] [cursor=pointer]:
-              - img [ref=e55]
-              - text: Labels
-            - button "Dimensions" [ref=e60] [cursor=pointer]:
-              - img [ref=e61]
-              - text: Dimensions
-          - generic [ref=e67]:
-            - generic [ref=e68]: Performance
-            - generic [ref=e69]:
-              - button "low" [ref=e70] [cursor=pointer]
-              - button "medium" [ref=e71] [cursor=pointer]
-              - button "high" [ref=e72] [cursor=pointer]
-        - generic:
-          - text: ECO-FACILITY VIEWER v3.3
-          - text: INTERACTIVE ARCHITECTURAL MODEL
+          - generic [ref=e111]:
+            - heading "Available Courts" [level=3] [ref=e112]
+            - generic [ref=e113]:
+              - button "Tennis Court 1 hard • available" [ref=e114] [cursor=pointer]:
+                - generic [ref=e115]: Tennis Court 1
+                - generic [ref=e116]: hard • available
+              - button "Tennis Court 2 clay • available" [ref=e117] [cursor=pointer]:
+                - generic [ref=e118]: Tennis Court 2
+                - generic [ref=e119]: clay • available
+              - button "Tennis Court 3 grass • maintenance" [ref=e120] [cursor=pointer]:
+                - generic [ref=e121]: Tennis Court 3
+                - generic [ref=e122]: grass • maintenance
+          - generic [ref=e124]:
+            - heading "Visualization Controls" [level=3] [ref=e125]
+            - button "Heat Map" [ref=e127] [cursor=pointer]:
+              - generic [ref=e128]:
+                - img [ref=e129]
+                - generic [ref=e131]: Heat Map
+            - button "Weather Effects" [ref=e134] [cursor=pointer]:
+              - generic [ref=e135]:
+                - img [ref=e136]
+                - generic [ref=e142]: Weather Effects
+            - generic [ref=e144]:
+              - generic [ref=e145]: Camera Angle
+              - generic [ref=e146]:
+                - button "top" [ref=e147] [cursor=pointer]
+                - button "side" [ref=e148] [cursor=pointer]
+                - button "perspective" [pressed] [ref=e149] [cursor=pointer]
+            - generic [ref=e150]:
+              - generic [ref=e151]: Zoom
+              - generic [ref=e152]:
+                - button "In" [ref=e153] [cursor=pointer]:
+                  - img [ref=e154]
+                  - generic [ref=e157]: In
+                - button "Out" [ref=e158] [cursor=pointer]:
+                  - img [ref=e159]
+                  - generic [ref=e162]: Out
+            - button "Reset View" [ref=e163] [cursor=pointer]:
+              - img [ref=e164]
+              - generic [ref=e167]: Reset View
       - generic:
         - generic:
           - heading "Facility Interactive Map" [level=2]
           - paragraph:
             - text: 24 Courts • Vertical Farm • Performance Gym
             - text: Rotate the view to explore the entire complex.
-  - button [ref=e77] [cursor=pointer]:
-    - img [ref=e78]
+  - button "Open AI chat" [ref=e169] [cursor=pointer]:
+    - img [ref=e170]
 ```

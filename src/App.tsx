@@ -10,6 +10,9 @@ import Amenities from './components/Amenities';
 import ErrorBoundary from './components/ErrorBoundary';
 import ThreeSceneDiagnostic from './components/ThreeSceneDiagnostic';
 import DebugLogger from './components/DebugLogger';
+import CourtNavigationUI from './components/CourtNavigationUI';
+import LoadingScreen from './components/loading/LoadingScreen';
+import { useLoading } from './components/loading/LoadingProvider';
 import {
   Zap,
   Activity,
@@ -28,6 +31,46 @@ import {
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
   const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);
+  const [loadingComplete, setLoadingComplete] = useState(false);
+  const { isLoading } = useLoading();
+
+  // Synchronize view with URL
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path.includes('/court')) {
+      setCurrentView(View.FACILITY_DEMO);
+    } else if (path.includes('/specs')) {
+      setCurrentView(View.SPECIFICATIONS);
+    } else if (path.includes('/amenities')) {
+      setCurrentView(View.AMENITIES);
+    } else if (path.includes('/invest')) {
+      setCurrentView(View.INVEST);
+    }
+  }, []);
+
+  // Update URL when view changes
+  useEffect(() => {
+    let path = '/';
+    switch (currentView) {
+      case View.FACILITY_DEMO:
+        path = '/court';
+        break;
+      case View.SPECIFICATIONS:
+        path = '/specs';
+        break;
+      case View.AMENITIES:
+        path = '/amenities';
+        break;
+      case View.INVEST:
+        path = '/invest';
+        break;
+      default:
+        path = '/';
+    }
+    if (window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
+    }
+  }, [currentView]);
 
   // Reset selected feature when leaving demo view
   useEffect(() => {
@@ -44,9 +87,23 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
+      {/* Loading Screen */}
+      <AnimatePresence>
+        {!loadingComplete && (
+          <LoadingScreen
+            onComplete={() => setLoadingComplete(true)}
+            minimumDisplayTime={2000}
+            showFPSMonitor={true}
+          />
+        )}
+      </AnimatePresence>
+
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-tennis-yellow focus:text-tennis-dark focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold">
+        Skip to main content
+      </a>
       <NavBar currentView={currentView} onChangeView={setCurrentView} />
 
-      <main className="relative w-full h-screen pt-20 overflow-hidden">
+      <main id="main-content" className="relative w-full h-screen pt-20 overflow-hidden">
         <AnimatePresence mode="wait">
 
           {/* HOME VIEW */}
@@ -60,7 +117,7 @@ const App: React.FC = () => {
               className="h-full overflow-y-auto custom-scrollbar pb-20"
             >
               {/* Hero Section */}
-              <div className="relative h-[90vh] flex items-center justify-center px-6 overflow-hidden">
+              <section aria-label="Hero" className="relative h-[90vh] flex items-center justify-center px-6 overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1622163642998-1ea36b1dde3b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
 
@@ -90,7 +147,7 @@ const App: React.FC = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed"
+                    className="text-xl text-gray-100 mb-10 max-w-2xl mx-auto leading-relaxed"
                   >
                     The world's first autonomous racket sports and health optimization facility with integrated vertical farming,
                     AI coaching, and performance tracking across 147 biomarkers.
@@ -105,6 +162,7 @@ const App: React.FC = () => {
                     <button
                       onClick={() => setCurrentView(View.FACILITY_DEMO)}
                       className="px-8 py-4 bg-tennis-yellow text-tennis-dark font-bold rounded-full hover:bg-white transition-all flex items-center gap-2 group"
+                      aria-label="Navigate to 3D facility demo"
                     >
                       Explore 3D Demo
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -112,18 +170,19 @@ const App: React.FC = () => {
                     <button
                       onClick={() => setCurrentView(View.AMENITIES)}
                       className="px-8 py-4 bg-white/10 text-white font-bold rounded-full hover:bg-white/20 transition-all backdrop-blur-sm"
+                      aria-label="View facility amenities and features"
                     >
                       View Amenities
                     </button>
                   </motion.div>
                 </div>
-              </div>
+              </section>
 
               {/* 4-Pillar Feature Showcase */}
-              <div className="max-w-7xl mx-auto px-6 py-20 border-t border-white/10">
+              <section aria-label="Features" className="max-w-7xl mx-auto px-6 py-20 border-t border-white/10">
                 <div className="mb-16 text-center">
                   <h2 className="text-3xl md:text-5xl font-bold mb-4">Integrated <span className="text-tennis-yellow">Platform</span></h2>
-                  <p className="text-xl text-gray-400 max-w-2xl mx-auto">Four pillars of autonomous optimization working together</p>
+                  <p className="text-xl text-gray-200 max-w-2xl mx-auto">Four pillars of autonomous optimization working together</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -131,8 +190,8 @@ const App: React.FC = () => {
                   <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
                     <Activity className="w-10 h-10 text-green-400 mb-4" />
                     <h3 className="text-2xl font-bold mb-2">Multi-Sport Excellence</h3>
-                    <p className="text-gray-400 mb-4">Tennis, Pickleball, Badminton, Squash with computer vision coaching and real-time biomechanics analysis</p>
-                    <ul className="space-y-2 text-sm text-gray-500">
+                    <p className="text-gray-200 mb-4">Tennis, Pickleball, Badminton, Squash with computer vision coaching and real-time biomechanics analysis</p>
+                    <ul className="space-y-2 text-sm text-gray-100">
                       <li className="flex items-center gap-2">
                         <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
                         <span>RGB + depth cameras</span>
@@ -156,8 +215,8 @@ const App: React.FC = () => {
                   <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
                     <Users className="w-10 h-10 text-red-400 mb-4" />
                     <h3 className="text-2xl font-bold mb-2">APEX Performance</h3>
-                    <p className="text-gray-400 mb-4">147 biomarkers tracked daily with AI-driven protocols and Blueprint-style health optimization</p>
-                    <ul className="space-y-2 text-sm text-gray-500">
+                    <p className="text-gray-200 mb-4">147 biomarkers tracked daily with AI-driven protocols and Blueprint-style health optimization</p>
+                    <ul className="space-y-2 text-sm text-gray-100">
                       <li className="flex items-center gap-2">
                         <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
                         <span>VO₂ Max +28% avg</span>
@@ -177,8 +236,8 @@ const App: React.FC = () => {
                   <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
                     <Sprout className="w-10 h-10 text-emerald-400 mb-4" />
                     <h3 className="text-2xl font-bold mb-2">Vertical Farm</h3>
-                    <p className="text-gray-400 mb-4">Personalized nutrition grown on-site with 95% water efficiency and zero pesticides</p>
-                    <ul className="space-y-2 text-sm text-gray-500">
+                    <p className="text-gray-200 mb-4">Personalized nutrition grown on-site with 95% water efficiency and zero pesticides</p>
+                    <ul className="space-y-2 text-sm text-gray-100">
                       <li className="flex items-center gap-2">
                         <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
                         <span>100% renewable energy</span>
@@ -198,8 +257,8 @@ const App: React.FC = () => {
                   <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
                     <Cpu className="w-10 h-10 text-indigo-400 mb-4" />
                     <h3 className="text-2xl font-bold mb-2">Autonomous Operations</h3>
-                    <p className="text-gray-400 mb-4">Digital twin control with multi-agent scheduling, biometric access, and smart energy management</p>
-                    <ul className="space-y-2 text-sm text-gray-500">
+                    <p className="text-gray-200 mb-4">Digital twin control with multi-agent scheduling, biometric access, and smart energy management</p>
+                    <ul className="space-y-2 text-sm text-gray-100">
                       <li className="flex items-center gap-2">
                         <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
                         <span>1000+ IoT sensors</span>
@@ -215,7 +274,7 @@ const App: React.FC = () => {
                     </ul>
                   </div>
                 </div>
-              </div>
+              </section>
             </motion.div>
           )}
 
@@ -248,13 +307,16 @@ const App: React.FC = () => {
                 <ErrorBoundary>
                   <ThreeScene onFeatureSelect={setSelectedFeature} />
                 </ErrorBoundary>
+              {/* Court Navigation and Visualization Controls */}
+              <CourtNavigationUI />
+
               </div>
 
               {/* HUD Layer */}
               <div className="absolute inset-0 z-10 pointer-events-none p-6 flex flex-col justify-between">
                 <div className="mt-12">
                   <h2 className="text-3xl font-bold text-white drop-shadow-lg">Facility Interactive Map</h2>
-                  <p className="text-white/70 text-sm max-w-md drop-shadow-md mt-2">
+                  <p className="text-white/90 text-sm max-w-md drop-shadow-md mt-2">
                     24 Courts • Vertical Farm • Performance Gym <br />
                     Rotate the view to explore the entire complex.
                   </p>
@@ -275,13 +337,13 @@ const App: React.FC = () => {
                         </div>
                         <button
                           onClick={() => setSelectedFeature(null)}
-                          className="text-white/50 hover:text-white text-sm uppercase tracking-wider font-bold"
+                          className="text-white/80 hover:text-white text-sm uppercase tracking-wider font-bold"
                         >
                           Close
                         </button>
                       </div>
                       <h3 className="text-2xl font-bold text-white mb-2">{selectedFeature.title}</h3>
-                      <p className="text-gray-300 leading-relaxed mb-4">{selectedFeature.description}</p>
+                      <p className="text-gray-100 leading-relaxed mb-4">{selectedFeature.description}</p>
                       <button
                         onClick={() => setCurrentView(View.SPECIFICATIONS)}
                         className="w-full py-3 bg-tennis-yellow text-tennis-dark font-bold rounded-lg hover:bg-white transition-colors"
@@ -322,30 +384,30 @@ const App: React.FC = () => {
               <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 p-8 md:p-12 rounded-3xl backdrop-blur-xl">
                 <div className="text-center mb-10">
                   <h2 className="text-3xl md:text-5xl font-bold mb-4">Join the Revolution</h2>
-                  <p className="text-gray-400">We are raising Series A funding to build the pilot facility in Austin, Texas.</p>
+                  <p className="text-gray-200">We are raising Series A funding to build the pilot facility in Austin, Texas.</p>
                 </div>
 
                 <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-sm font-bold text-gray-300">Full Name</label>
+                      <label className="text-sm font-bold text-gray-100">Full Name</label>
                       <input type="text" className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors" placeholder="Jane Doe" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-bold text-gray-300">Email Address</label>
+                      <label className="text-sm font-bold text-gray-100">Email Address</label>
                       <input type="email" className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors" placeholder="jane@example.com" />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-gray-300">Interest Level</label>
-                    <select className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors text-gray-300">
+                    <label className="text-sm font-bold text-gray-100">Interest Level</label>
+                    <select className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors text-gray-100">
                       <option>Potential Investor</option>
                       <option>Founding Member</option>
                       <option>Technology Partner</option>
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-gray-300">Message</label>
+                    <label className="text-sm font-bold text-gray-100">Message</label>
                     <textarea className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors h-32" placeholder="Tell us about yourself..."></textarea>
                   </div>
 

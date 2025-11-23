@@ -131,7 +131,7 @@ export const LightingDemo: React.FC = () => {
       </Canvas>
 
       {/* Info overlay */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/70 text-xs pointer-events-none select-none font-mono text-center">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/90 text-xs pointer-events-none select-none font-mono text-center">
         LIGHTING SYSTEM DEMONSTRATION
         <br />
         Use controls to adjust time of day, lighting modes, and atmosphere

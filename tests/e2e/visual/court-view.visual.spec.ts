@@ -9,15 +9,15 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Court View Visual Regression', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to court view
-    await page.goto('/');
+    // Navigate to court view - the actual 3D demo page
+    await page.goto('/court');
     await page.waitForLoadState('networkidle');
 
     // Wait for 3D scene to initialize
-    await page.waitForSelector('canvas', { state: 'visible' });
+    await page.waitForSelector('canvas', { state: 'visible', timeout: 30000 });
 
     // Wait for WebGL context and initial render
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
   });
 
   test('court overview matches baseline', async ({ page }) => {

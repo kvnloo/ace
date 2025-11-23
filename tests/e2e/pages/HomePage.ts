@@ -33,7 +33,25 @@ export class HomePage extends BasePage {
    * Navigate to court view
    */
   async goToCourtView() {
-    await this.courtViewButton.click();
+    // Check if we're on mobile (Court View button hidden in hamburger menu)
+    const viewport = this.page.viewportSize();
+    const isMobile = viewport ? viewport.width < 768 : false;
+
+    if (isMobile) {
+      // Open mobile menu first
+      const menuButton = this.page.getByRole('button', { name: /menu/i });
+      await menuButton.click({ timeout: 5000, noWaitAfter: true });
+      await this.page.waitForTimeout(300); // Wait for menu animation
+    }
+
+    // Click Court View button (SPA - no page navigation event)
+    await Promise.all([
+      this.page.waitForURL(/.*court/, { timeout: 10000 }),
+      this.courtViewButton.click({ timeout: 5000, noWaitAfter: true })
+    ]);
+
+    // Wait for court list to appear (component mount + animation)
+    await this.page.getByTestId('court-list').waitFor({ state: 'visible', timeout: 15000 });
   }
 
   /**

@@ -214,7 +214,7 @@ const PodVehicle: React.FC<PodVehicleProps> = ({ pod, onClick }) => {
       <Html distanceFactor={20} position={[0, 2, 0]} style={{ pointerEvents: 'none' }}>
         <div className="bg-slate-900/90 backdrop-blur-md px-3 py-1 rounded-lg border border-white/20 text-xs font-bold text-white whitespace-nowrap">
           Pod {pod.id.slice(-2)} • {pod.passengers}/{pod.capacity}
-          <div className={`text-[10px] mt-0.5 ${pod.status === 'idle' ? 'text-gray-400' :
+          <div className={`text-[10px] mt-0.5 ${pod.status === 'idle' ? 'text-gray-200' :
               pod.status === 'boarding' ? 'text-yellow-400' :
                 pod.status === 'traveling' ? 'text-green-400' :
                   'text-blue-400'
@@ -326,7 +326,7 @@ const PodStation: React.FC<StationProps> = ({ station, activePods, onBooking }) 
               TRANSPORT BOOKING
             </div>
 
-            <div className="text-xs text-white/70 mb-3">
+            <div className="text-xs text-white/90 mb-3">
               From: <span className="text-white font-bold">{station.name}</span>
             </div>
 
@@ -618,13 +618,13 @@ const TransportPods: React.FC<TransportPodsProps> = ({
                 return (
                   <div key={pod.id} className="space-y-2 text-sm text-white">
                     <div className="flex justify-between">
-                      <span className="text-white/60">Pod ID:</span>
+                      <span className="text-white/85">Pod ID:</span>
                       <span className="font-bold">{pod.id}</span>
                     </div>
 
                     <div className="flex justify-between">
-                      <span className="text-white/60">Status:</span>
-                      <span className={`font-bold ${pod.status === 'idle' ? 'text-gray-400' :
+                      <span className="text-white/85">Status:</span>
+                      <span className={`font-bold ${pod.status === 'idle' ? 'text-gray-200' :
                           pod.status === 'boarding' ? 'text-yellow-400' :
                             pod.status === 'traveling' ? 'text-green-400' :
                               'text-blue-400'
@@ -634,13 +634,13 @@ const TransportPods: React.FC<TransportPodsProps> = ({
                     </div>
 
                     <div className="flex justify-between">
-                      <span className="text-white/60">Passengers:</span>
+                      <span className="text-white/85">Passengers:</span>
                       <span className="font-bold">{pod.passengers}/{pod.capacity}</span>
                     </div>
 
                     {currentStn && (
                       <div className="flex justify-between">
-                        <span className="text-white/60">Current:</span>
+                        <span className="text-white/85">Current:</span>
                         <span className="font-bold">{currentStn.name}</span>
                       </div>
                     )}
@@ -648,7 +648,7 @@ const TransportPods: React.FC<TransportPodsProps> = ({
                     {targetStn && (
                       <>
                         <div className="flex justify-between">
-                          <span className="text-white/60">Destination:</span>
+                          <span className="text-white/85">Destination:</span>
                           <span className="font-bold">{targetStn.name}</span>
                         </div>
 
@@ -659,7 +659,7 @@ const TransportPods: React.FC<TransportPodsProps> = ({
                           />
                         </div>
 
-                        <div className="text-xs text-white/60 text-center">
+                        <div className="text-xs text-white/85 text-center">
                           {Math.round(pod.progress * 100)}% Complete
                         </div>
                       </>

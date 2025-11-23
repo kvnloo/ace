@@ -184,12 +184,12 @@ const PerformanceMetrics: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       className="bg-black/30 backdrop-blur-md border border-[#00ff88]/30 rounded-lg p-4"
     >
-      <div className="text-gray-400 text-xs uppercase tracking-wider mb-2">{metric.label}</div>
+      <div className="text-gray-200 text-xs uppercase tracking-wider mb-2">{metric.label}</div>
       <div className="flex items-baseline gap-2">
         <span className="text-2xl font-bold text-[#00ff88]">{metric.value}</span>
-        {metric.unit && <span className="text-sm text-gray-400">{metric.unit}</span>}
+        {metric.unit && <span className="text-sm text-gray-200">{metric.unit}</span>}
         {metric.trend && (
-          <span className={`text-sm ${metric.trend === 'up' ? 'text-green-400' : metric.trend === 'down' ? 'text-red-400' : 'text-gray-400'}`}>
+          <span className={`text-sm ${metric.trend === 'up' ? 'text-green-400' : metric.trend === 'down' ? 'text-red-400' : 'text-gray-200'}`}>
             {getTrendIcon(metric.trend)} {metric.change}%
           </span>
         )}
@@ -229,7 +229,7 @@ const PerformanceMetrics: React.FC = () => {
                   className={`flex-1 px-4 py-3 text-sm uppercase tracking-wider transition-all ${
                     activeTab === tab
                       ? 'bg-[#00ff88]/20 text-[#00ff88] border-b-2 border-[#00ff88]'
-                      : 'text-gray-400 hover:bg-white/5'
+                      : 'text-gray-200 hover:bg-white/5'
                   }`}
                 >
                   {tab}
@@ -276,13 +276,13 @@ const PerformanceMetrics: React.FC = () => {
 
                         {court.status === 'active' && (
                           <div className="flex justify-between text-sm">
-                            <span className="text-gray-400">Players: {court.currentPlayers}</span>
-                            <span className="text-gray-400">Duration: {Math.floor(court.duration / 60)}h {court.duration % 60}m</span>
+                            <span className="text-gray-200">Players: {court.currentPlayers}</span>
+                            <span className="text-gray-200">Duration: {Math.floor(court.duration / 60)}h {court.duration % 60}m</span>
                           </div>
                         )}
 
                         {court.status === 'reserved' && court.nextReservation && (
-                          <div className="text-sm text-gray-400">Next: {court.nextReservation}</div>
+                          <div className="text-sm text-gray-200">Next: {court.nextReservation}</div>
                         )}
 
                         {/* Progress bar for active courts */}
@@ -310,12 +310,12 @@ const PerformanceMetrics: React.FC = () => {
                   </div>
 
                   <div className="bg-black/30 backdrop-blur-sm border border-[#00ff88]/20 rounded-lg p-4">
-                    <div className="text-gray-400 text-xs uppercase tracking-wider mb-3">Peak Hours</div>
+                    <div className="text-gray-200 text-xs uppercase tracking-wider mb-3">Peak Hours</div>
                     <div className="text-xl font-bold text-[#00ff88]">{playerStats.peakHour}</div>
                   </div>
 
                   <div className="bg-black/30 backdrop-blur-sm border border-[#00ff88]/20 rounded-lg p-4">
-                    <div className="text-gray-400 text-xs uppercase tracking-wider mb-3">Member vs Guest</div>
+                    <div className="text-gray-200 text-xs uppercase tracking-wider mb-3">Member vs Guest</div>
                     <div className="space-y-2">
                       <div>
                         <div className="flex justify-between text-sm mb-1">
@@ -334,7 +334,7 @@ const PerformanceMetrics: React.FC = () => {
                       <div>
                         <div className="flex justify-between text-sm mb-1">
                           <span className="text-white">Guests</span>
-                          <span className="text-gray-400">{playerStats.memberVsGuest.guests}%</span>
+                          <span className="text-gray-200">{playerStats.memberVsGuest.guests}%</span>
                         </div>
                         <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
                           <motion.div
@@ -350,7 +350,7 @@ const PerformanceMetrics: React.FC = () => {
 
                   {/* Live Activity Stream */}
                   <div className="bg-black/30 backdrop-blur-sm border border-[#00ff88]/20 rounded-lg p-4">
-                    <div className="text-gray-400 text-xs uppercase tracking-wider mb-3">Live Activity</div>
+                    <div className="text-gray-200 text-xs uppercase tracking-wider mb-3">Live Activity</div>
                     <canvas ref={canvasRef} width={320} height={100} className="w-full h-24" />
                   </div>
                 </div>
@@ -365,7 +365,7 @@ const PerformanceMetrics: React.FC = () => {
                   </div>
 
                   <div className="bg-black/30 backdrop-blur-sm border border-[#00ff88]/20 rounded-lg p-4">
-                    <div className="text-gray-400 text-xs uppercase tracking-wider mb-3">Usage vs Peak</div>
+                    <div className="text-gray-200 text-xs uppercase tracking-wider mb-3">Usage vs Peak</div>
                     <div className="relative h-32">
                       <div className="absolute inset-0 flex items-end">
                         <motion.div
@@ -375,7 +375,7 @@ const PerformanceMetrics: React.FC = () => {
                         />
                         <div className="w-1/2 bg-gray-800 rounded-t-lg opacity-30" style={{ height: '100%' }} />
                       </div>
-                      <div className="absolute inset-0 flex items-end justify-between text-xs text-gray-400 px-2 pb-2">
+                      <div className="absolute inset-0 flex items-end justify-between text-xs text-gray-200 px-2 pb-2">
                         <span>Current<br/>{energyMetrics.currentUsage.toFixed(1)} kWh</span>
                         <span className="text-right">Peak<br/>{energyMetrics.peakUsage} kWh</span>
                       </div>
@@ -384,11 +384,11 @@ const PerformanceMetrics: React.FC = () => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-black/30 backdrop-blur-sm border border-[#00ff88]/20 rounded-lg p-4">
-                      <div className="text-gray-400 text-xs uppercase tracking-wider mb-2">Cost/Hour</div>
+                      <div className="text-gray-200 text-xs uppercase tracking-wider mb-2">Cost/Hour</div>
                       <div className="text-2xl font-bold text-[#00ff88]">${energyMetrics.costPerHour.toFixed(2)}</div>
                     </div>
                     <div className="bg-black/30 backdrop-blur-sm border border-[#00ff88]/20 rounded-lg p-4">
-                      <div className="text-gray-400 text-xs uppercase tracking-wider mb-2">Daily Est.</div>
+                      <div className="text-gray-200 text-xs uppercase tracking-wider mb-2">Daily Est.</div>
                       <div className="text-2xl font-bold text-white">${(energyMetrics.costPerHour * 12).toFixed(2)}</div>
                     </div>
                   </div>
@@ -399,9 +399,9 @@ const PerformanceMetrics: React.FC = () => {
               {activeTab === 'analytics' && (
                 <div className="space-y-4">
                   <div className="bg-black/30 backdrop-blur-sm border border-[#00ff88]/20 rounded-lg p-4">
-                    <div className="text-gray-400 text-xs uppercase tracking-wider mb-2">Next Peak Time</div>
+                    <div className="text-gray-200 text-xs uppercase tracking-wider mb-2">Next Peak Time</div>
                     <div className="text-2xl font-bold text-[#00ff88]">{analytics.nextPeakTime}</div>
-                    <div className="text-sm text-gray-400 mt-1">Expected occupancy: {analytics.expectedOccupancy}%</div>
+                    <div className="text-sm text-gray-200 mt-1">Expected occupancy: {analytics.expectedOccupancy}%</div>
                     <div className="mt-3 h-2 bg-gray-800 rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
@@ -446,7 +446,7 @@ const PerformanceMetrics: React.FC = () => {
                   )}
 
                   <div className="bg-black/30 backdrop-blur-sm border border-[#00ff88]/20 rounded-lg p-4">
-                    <div className="text-gray-400 text-xs uppercase tracking-wider mb-3">Predictive Trends</div>
+                    <div className="text-gray-200 text-xs uppercase tracking-wider mb-3">Predictive Trends</div>
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-white">Weekend Booking</span>
@@ -458,7 +458,7 @@ const PerformanceMetrics: React.FC = () => {
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-white">Avg Court Time</span>
-                        <span className="text-gray-400">→ Stable</span>
+                        <span className="text-gray-200">→ Stable</span>
                       </div>
                     </div>
                   </div>
@@ -480,7 +480,7 @@ const PerformanceMetrics: React.FC = () => {
                   <span className="text-[#00ff88] text-xl">⚡</span>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-400">System Status</div>
+                  <div className="text-xs text-gray-200">System Status</div>
                   <div className="text-sm text-[#00ff88] font-semibold">All Systems Operational</div>
                 </div>
               </div>
@@ -489,15 +489,15 @@ const PerformanceMetrics: React.FC = () => {
 
               <div className="flex gap-4 text-xs">
                 <div>
-                  <div className="text-gray-400">Uptime</div>
+                  <div className="text-gray-200">Uptime</div>
                   <div className="text-white font-semibold">99.8%</div>
                 </div>
                 <div>
-                  <div className="text-gray-400">Response</div>
+                  <div className="text-gray-200">Response</div>
                   <div className="text-white font-semibold">12ms</div>
                 </div>
                 <div>
-                  <div className="text-gray-400">Load</div>
+                  <div className="text-gray-200">Load</div>
                   <div className="text-white font-semibold">42%</div>
                 </div>
               </div>

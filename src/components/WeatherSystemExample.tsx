@@ -63,10 +63,10 @@ const WeatherSystemExample: React.FC = () => {
       {/* Info Panel */}
       <div className="absolute top-6 left-6 z-10 bg-slate-900/90 backdrop-blur-md p-4 rounded-xl border border-white/10 shadow-2xl max-w-md">
         <h2 className="text-lg font-bold text-white mb-2">Weather System Demo</h2>
-        <p className="text-sm text-white/70 mb-3">
+        <p className="text-sm text-white/90 mb-3">
           Dynamic weather effects with particle systems, lighting transitions, and surface interactions.
         </p>
-        <div className="space-y-2 text-xs text-white/60">
+        <div className="space-y-2 text-xs text-white/85">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-400" />
             <span>Real-time particle systems (rain, snow, wind)</span>
@@ -91,7 +91,7 @@ const WeatherSystemExample: React.FC = () => {
       </div>
 
       {/* Status Indicator */}
-      <div className="absolute bottom-6 left-6 z-10 bg-slate-900/80 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10 text-xs text-white/70 font-mono">
+      <div className="absolute bottom-6 left-6 z-10 bg-slate-900/80 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10 text-xs text-white/90 font-mono">
         Current: <span className="text-tennis-yellow font-bold">{weather.toUpperCase()}</span>
         {' | '}
         Intensity: <span className="text-tennis-yellow font-bold">{Math.round(intensity * 100)}%</span>
