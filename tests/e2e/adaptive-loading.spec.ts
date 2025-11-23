@@ -5,6 +5,7 @@
  */
 
 import { test, expect, Page } from '@playwright/test';
+import { ConsoleMonitor } from './helpers/consoleMonitor';
 
 test.describe('Adaptive Loading System', () => {
   test.beforeEach(async ({ page }) => {
@@ -13,6 +14,8 @@ test.describe('Adaptive Loading System', () => {
 
   test.describe('High-Performance Device', () => {
     test('should show loading screen on first load', async ({ page }) => {
+      const monitor = new ConsoleMonitor(page);
+
       // Wait for loading screen to appear
       await expect(page.locator('[data-testid="loading-screen"]')).toBeVisible();
 
@@ -21,9 +24,13 @@ test.describe('Adaptive Loading System', () => {
 
       // Should show phase information
       await expect(page.locator('[data-testid="loading-phase"]')).toContainText('Essential');
+
+      // Assert no console errors
+      monitor.assertNoErrors();
     });
 
     test('should progress through all phases', async ({ page }) => {
+      const monitor = new ConsoleMonitor(page);
       const phases = ['Essential', 'Core', 'Visual', 'Enhanced'];
 
       for (const phase of phases) {
@@ -34,6 +41,9 @@ test.describe('Adaptive Loading System', () => {
       // Loading should complete
       await expect(page.locator('[data-testid="loading-screen"]'))
         .not.toBeVisible({ timeout: 30000 });
+
+      // Assert no console errors
+      monitor.assertNoErrors();
     });
 
     test('should not show FPS recommendation for good performance', async ({ page }) => {

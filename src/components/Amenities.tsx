@@ -529,7 +529,7 @@ const Amenities: React.FC = () => {
               <div className="text-3xl font-bold text-tennis-yellow">$299/month</div>
             </div>
 
-            <ul className="space-y-4">
+            <ul className="space-y-4 flex-1">
               {[
                 "Basic biometric tracking",
                 "Standard protocol generation",
@@ -546,9 +546,11 @@ const Amenities: React.FC = () => {
               ))}
             </ul>
 
-            <button className="mt-auto w-full py-3 px-6 rounded-xl font-bold transition-all bg-white/5 border border-white/10 text-white hover:bg-white/10 pt-8">
-              Get Started
-            </button>
+            <div className="mt-8">
+              <button className="w-full py-3 px-6 rounded-xl font-bold transition-all bg-white/5 border border-white/10 text-white hover:bg-white/10">
+                Get Started
+              </button>
+            </div>
           </motion.div>
 
           {/* Optimization */}
@@ -567,7 +569,7 @@ const Amenities: React.FC = () => {
               <div className="text-3xl font-bold text-tennis-yellow">$999/month</div>
             </div>
 
-            <ul className="space-y-4">
+            <ul className="space-y-4 flex-1">
               {[
                 "Advanced biomarker analysis (147 markers)",
                 "Personalized AI coaching",
@@ -585,9 +587,11 @@ const Amenities: React.FC = () => {
               ))}
             </ul>
 
-            <button className="mt-auto w-full py-3 px-6 rounded-xl font-bold transition-all bg-tennis-yellow text-slate-950 hover:bg-tennis-yellow/90 pt-8">
-              Get Started
-            </button>
+            <div className="mt-8">
+              <button className="w-full py-3 px-6 rounded-xl font-bold transition-all bg-tennis-yellow text-slate-950 hover:bg-tennis-yellow/90">
+                Get Started
+              </button>
+            </div>
           </motion.div>
 
           {/* Elite */}
@@ -602,7 +606,7 @@ const Amenities: React.FC = () => {
               <div className="text-3xl font-bold text-tennis-yellow">$2,999/month</div>
             </div>
 
-            <ul className="space-y-4">
+            <ul className="space-y-4 flex-1">
               {[
                 "Full facility simulation",
                 "Personalized nutrition delivery",
@@ -620,9 +624,11 @@ const Amenities: React.FC = () => {
               ))}
             </ul>
 
-            <button className="mt-auto w-full py-3 px-6 rounded-xl font-bold transition-all bg-white/5 border border-white/10 text-white hover:bg-white/10 pt-8">
-              Get Started
-            </button>
+            <div className="mt-8">
+              <button className="w-full py-3 px-6 rounded-xl font-bold transition-all bg-white/5 border border-white/10 text-white hover:bg-white/10">
+                Get Started
+              </button>
+            </div>
           </motion.div>
         </div>
       </div>

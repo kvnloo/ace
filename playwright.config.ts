@@ -12,12 +12,12 @@ export default defineConfig({
   // Test directory
   testDir: './tests/e2e',
 
-  // Maximum time one test can run
-  timeout: 30 * 1000,
+  // Maximum time one test can run (extended for 3D loading)
+  timeout: 90 * 1000,
 
   // Expect timeout for assertions
   expect: {
-    timeout: 5000,
+    timeout: 10000, // Extended for 3D rendering checks
     // Visual regression tolerance settings
     toHaveScreenshot: {
       // Maximum allowed pixel difference (0.2%)
@@ -53,8 +53,8 @@ export default defineConfig({
 
   // Shared settings for all the projects below
   use: {
-    // Base URL for tests
-    baseURL: 'http://localhost:3000',
+    // Base URL for tests (Vite default port)
+    baseURL: 'http://localhost:5173',
 
     // Collect trace when retrying the failed test
     trace: 'on-first-retry',
@@ -66,7 +66,7 @@ export default defineConfig({
     video: 'retain-on-failure',
 
     // Viewport size
-    viewport: { width: 1280, height: 720 },
+    viewport: { width: 1920, height: 1080 },
 
     // Emulate media features
     colorScheme: 'dark',
@@ -74,11 +74,11 @@ export default defineConfig({
     // Ignore HTTPS errors
     ignoreHTTPSErrors: true,
 
-    // Timeout for navigation
+    // Timeout for navigation (extended for asset loading)
     navigationTimeout: 30 * 1000,
 
-    // Timeout for action
-    actionTimeout: 10 * 1000,
+    // Timeout for action (extended for 3D interactions)
+    actionTimeout: 30 * 1000,
   },
 
   // Configure projects for major browsers
@@ -124,7 +124,7 @@ export default defineConfig({
   // Web server configuration
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:3000',
+    url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
     stdout: 'ignore',

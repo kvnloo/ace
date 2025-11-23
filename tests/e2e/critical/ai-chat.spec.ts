@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
 import { AIChatPage } from '../pages/AIChatPage';
+import { ConsoleMonitor } from '../helpers/consoleMonitor';
 
 /**
  * E2E Tests: AI Chat Interaction
@@ -25,6 +26,8 @@ test.describe('AI Chat Interaction', () => {
   });
 
   test('should open AI chat interface', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Open chat
     await homePage.openAIChat();
 
@@ -37,9 +40,14 @@ test.describe('AI Chat Interaction', () => {
     // Verify welcome message is present
     const messageCount = await chatPage.getMessageCount();
     expect(messageCount).toBeGreaterThan(0);
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should send message and receive response', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await homePage.openAIChat();
     await chatPage.verifyChatOpen();
 
@@ -66,9 +74,14 @@ test.describe('AI Chat Interaction', () => {
 
     // Verify typing indicator disappears
     await expect(chatPage.typingIndicator).not.toBeVisible();
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should persist chat history', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await homePage.openAIChat();
 
     // Send first message
@@ -91,6 +104,9 @@ test.describe('AI Chat Interaction', () => {
     // Verify history is restored
     const restoredCount = await chatPage.getMessageCount();
     expect(restoredCount).toBe(messageCount);
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should handle multiple rapid messages', async ({ page }) => {

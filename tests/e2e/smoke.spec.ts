@@ -1,6 +1,7 @@
 import { test, expect } from './fixtures';
 import { goToHome, waitForScene } from './helpers/navigation';
 import { expectCanvasRendered } from './helpers/assertions';
+import { ConsoleMonitor } from './helpers/consoleMonitor';
 
 /**
  * Smoke Tests for ACE Facility
@@ -9,6 +10,8 @@ import { expectCanvasRendered } from './helpers/assertions';
 
 test.describe('Application Smoke Tests', () => {
   test('should load homepage successfully', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await goToHome(page);
 
     // Check page title
@@ -17,9 +20,14 @@ test.describe('Application Smoke Tests', () => {
     // Verify page is loaded
     const isLoaded = await page.evaluate(() => document.readyState === 'complete');
     expect(isLoaded).toBeTruthy();
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should render Three.js canvas', async ({ canvasPage }) => {
+    const monitor = new ConsoleMonitor(canvasPage);
+
     // Canvas is already loaded by fixture
     await expectCanvasRendered(canvasPage);
 
@@ -40,6 +48,9 @@ test.describe('Application Smoke Tests', () => {
 
     expect(canvasSize.width).toBeGreaterThan(0);
     expect(canvasSize.height).toBeGreaterThan(0);
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should have no console errors on load', async ({ page }) => {
@@ -67,6 +78,8 @@ test.describe('Application Smoke Tests', () => {
   });
 
   test('should be responsive on mobile viewport', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     await goToHome(page);
@@ -76,9 +89,14 @@ test.describe('Application Smoke Tests', () => {
     const bodyBox = await body.boundingBox();
     expect(bodyBox).toBeTruthy();
     expect(bodyBox!.width).toBeLessThanOrEqual(375);
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should handle page reload without errors', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await goToHome(page);
     await page.waitForLoadState('networkidle');
 
@@ -88,9 +106,14 @@ test.describe('Application Smoke Tests', () => {
     // Verify page still loads
     const isLoaded = await page.evaluate(() => document.readyState === 'complete');
     expect(isLoaded).toBeTruthy();
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should have navigation elements', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await goToHome(page);
 
     // Check for common navigation elements (adjust selectors as needed)
@@ -99,6 +122,9 @@ test.describe('Application Smoke Tests', () => {
 
     // At least one navigation element should exist
     expect(navCount).toBeGreaterThan(0);
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should load without JavaScript errors in production build', async ({ page }) => {
@@ -116,6 +142,8 @@ test.describe('Application Smoke Tests', () => {
   });
 
   test('should have WebGL2 support', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await goToHome(page);
 
     const hasWebGL2 = await page.evaluate(() => {
@@ -125,9 +153,14 @@ test.describe('Application Smoke Tests', () => {
     });
 
     expect(hasWebGL2).toBeTruthy();
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should measure performance metrics', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await goToHome(page);
     await page.waitForLoadState('networkidle');
 
@@ -143,11 +176,16 @@ test.describe('Application Smoke Tests', () => {
     // Sanity checks (not strict performance requirements)
     expect(metrics.loadTime).toBeGreaterThanOrEqual(0);
     expect(metrics.domContentLoaded).toBeGreaterThanOrEqual(0);
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 });
 
 test.describe('3D Scene Interaction', () => {
   test('should initialize 3D scene', async ({ canvasPage }) => {
+    const monitor = new ConsoleMonitor(canvasPage);
+
     // Wait for scene to be ready
     await waitForScene(canvasPage);
 
@@ -169,9 +207,14 @@ test.describe('3D Scene Interaction', () => {
     });
 
     expect(hasActiveGL).toBeTruthy();
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should handle mouse interaction', async ({ canvasPage }) => {
+    const monitor = new ConsoleMonitor(canvasPage);
+
     await waitForScene(canvasPage);
 
     // Verify canvas is visible
@@ -188,5 +231,8 @@ test.describe('3D Scene Interaction', () => {
     // Verify no errors occurred and page is still functional
     await canvasPage.waitForTimeout(500);
     await expect(canvas).toBeVisible();
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 });

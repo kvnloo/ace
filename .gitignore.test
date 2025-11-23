@@ -1,0 +1,6 @@
+# Test outputs
+test-results/
+tests/e2e/reports/
+playwright-report/
+docs/test-failure-*.png
+docs/screenshots/*.png

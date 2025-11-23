@@ -3,6 +3,7 @@ import { HomePage } from '../pages/HomePage';
 import { CourtViewPage } from '../pages/CourtViewPage';
 import { mockCourtData, mockCourtDetails } from '../fixtures/courtData';
 import { mockAPI, measurePerformance, waitForWebGL } from '../helpers/testHelpers';
+import { ConsoleMonitor } from '../helpers/consoleMonitor';
 
 /**
  * E2E Tests: Court Navigation Flow
@@ -28,6 +29,8 @@ test.describe('Court Navigation Flow', () => {
   });
 
   test('should navigate from home to court view', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Verify home page is loaded
     await homePage.verifyPageLoaded();
     await expect(homePage.logo).toBeVisible();
@@ -41,9 +44,14 @@ test.describe('Court Navigation Flow', () => {
 
     // Take snapshot for visual regression
     await expect(page).toHaveScreenshot('court-view-page.png');
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should select tennis court and view details', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Navigate to court view
     await homePage.goToCourtView();
     await courtViewPage.courtList.waitFor({ state: 'visible' });
@@ -59,9 +67,14 @@ test.describe('Court Navigation Flow', () => {
     const detailsText = await courtViewPage.getCourtDetailsText();
     expect(detailsText).toContain('hard'); // surface type
     expect(detailsText).toContain('available'); // status
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should load 3D visualization within 5 seconds', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Navigate to court view and select court
     await homePage.goToCourtView();
     await courtViewPage.selectCourt(0);
@@ -85,9 +98,14 @@ test.describe('Court Navigation Flow', () => {
 
     // Verify WebGL context is initialized
     await waitForWebGL(page, '[data-testid="court-canvas"]');
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should display court information accurately', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await homePage.goToCourtView();
 
     // Select court by name
@@ -101,9 +119,14 @@ test.describe('Court Navigation Flow', () => {
     const details = await courtViewPage.getCourtDetailsText();
     expect(details).toContain('Professional grade surface');
     expect(details).toContain('LED lighting system');
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should handle court selection transitions smoothly', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     await homePage.goToCourtView();
 
     // Select first court
@@ -123,6 +146,9 @@ test.describe('Court Navigation Flow', () => {
 
     // 3D canvas should still be visible
     await expect(courtViewPage.courtCanvas).toBeVisible();
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should show loading state during data fetch', async ({ page }) => {

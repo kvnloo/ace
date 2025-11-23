@@ -25,7 +25,8 @@
     "test:e2e:visual:headed": "playwright test tests/e2e/visual --project=visual-regression --headed",
     "test:e2e:performance": "playwright test tests/e2e/performance --project=chromium",
     "test:e2e:performance:headed": "playwright test tests/e2e/performance --project=chromium --headed",
-    "test:perf:report": "npx tsx scripts/generate-performance-report.ts"
+    "test:perf:report": "npx tsx scripts/generate-performance-report.ts",
+    "monitor:errors": "node scripts/monitor-console-errors.js"
   },
   "dependencies": {
     "@google/genai": "^1.30.0",
@@ -41,8 +42,10 @@
     "@axe-core/playwright": "^4.11.0",
     "@playwright/test": "^1.56.1",
     "@types/node": "^22.14.0",
+    "@types/pngjs": "^6.0.5",
     "@vitejs/plugin-react": "^5.0.0",
     "playwright": "^1.56.1",
+    "pngjs": "^7.0.0",
     "typedoc": "^0.28.14",
     "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "~5.8.2",

@@ -51,6 +51,8 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
   const { assets, overallProgress, loadedCount, totalCount, isLoading, currentPhase } = useLoading();
   const [displayStartTime] = useState(Date.now());
   const [canDismiss, setCanDismiss] = useState(false);
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
+  const [showErrorUI, setShowErrorUI] = useState(false);
 
   // Skip loading screen for E2E tests
   const [isTestMode] = useState(() => {
@@ -168,6 +170,21 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
     return () => clearTimeout(timer);
   }, [minimumDisplayTime]);
 
+  // CRITICAL FIX: Loading timeout fallback (max 10 seconds)
+  useEffect(() => {
+    console.log('[LoadingScreen] Starting timeout timer (10s)');
+    const timeoutTimer = setTimeout(() => {
+      console.warn('[LoadingScreen] Loading timeout reached - forcing completion');
+      setLoadingTimeout(true);
+      if (onComplete) {
+        console.log('[LoadingScreen] Calling onComplete() due to timeout');
+        onComplete();
+      }
+    }, 10000); // 10 second maximum wait
+
+    return () => clearTimeout(timeoutTimer);
+  }, [onComplete]);
+
   // Complete handler
   useEffect(() => {
     // Complete when loading finishes and all assets are loaded (or total is 0)
@@ -226,6 +243,13 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
 
   // Don't render in test mode
   if (isTestMode) {
+    console.log('[LoadingScreen] Test mode - skipping render');
+    return null;
+  }
+
+  // CRITICAL FIX: Hide loading screen on timeout
+  if (loadingTimeout) {
+    console.log('[LoadingScreen] Timeout reached - hiding loading screen');
     return null;
   }
 
@@ -235,8 +259,11 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
   // 3. Not all assets loaded yet (loadedCount < totalCount)
   // Hide only when loading is complete (all assets loaded or no assets)
   if (!isLoading && (totalCount === 0 || loadedCount === totalCount)) {
+    console.log('[LoadingScreen] Loading complete - hiding loading screen');
     return null;
   }
+
+  console.log(`[LoadingScreen] Rendering: ${loadedCount}/${totalCount} assets, ${Math.round(overallProgress)}% progress`);
 
   const recommendation = getRecommendation();
 

@@ -3,11 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { View, FeatureData } from './types';
 import NavBar from './components/NavBar';
-import ThreeScene from './components/ThreeScene';
+import ThreeSceneWrapper from './components/ThreeSceneWrapper';
 import AIChat from './components/AIChat';
 import Specifications from './components/Specifications';
 import Amenities from './components/Amenities';
-import ErrorBoundary from './components/ErrorBoundary';
 import ThreeSceneDiagnostic from './components/ThreeSceneDiagnostic';
 import DebugLogger from './components/DebugLogger';
 import CourtNavigationUI from './components/CourtNavigationUI';
@@ -314,9 +313,7 @@ const App: React.FC = () => {
             >
               <ThreeSceneDiagnostic />
               <div className="absolute inset-0 z-0">
-                <ErrorBoundary>
-                  <ThreeScene onFeatureSelect={setSelectedFeature} />
-                </ErrorBoundary>
+                <ThreeSceneWrapper onFeatureSelect={setSelectedFeature} />
               {/* Court Navigation and Visualization Controls */}
               <CourtNavigationUI />
 

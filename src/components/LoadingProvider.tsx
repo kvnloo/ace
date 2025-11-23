@@ -24,6 +24,10 @@ interface LoadingContextValue {
   totalCount: number;
   startLoading: () => void;
   finishLoading: () => void;
+  error: Error | null;
+  fallbackMode: boolean;
+  handleLoadingError: (error: Error) => void;
+  clearError: () => void;
 }
 
 const LoadingContext = createContext<LoadingContextValue | null>(null);
@@ -39,6 +43,8 @@ export const useLoading = () => {
 export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [assets, setAssets] = useState<AssetItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [fallbackMode, setFallbackMode] = useState(false);
   const registrationLocked = useRef(false);
 
   const registerAsset = useCallback((asset: Omit<AssetItem, 'loaded' | 'progress'>) => {
@@ -110,6 +116,18 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setIsLoading(false);
   }, []);
 
+  const handleLoadingError = useCallback((error: Error) => {
+    console.error('❌ Loading failed, activating fallback mode:', error);
+    setError(error);
+    setFallbackMode(true);
+    setIsLoading(false);
+  }, []);
+
+  const clearError = useCallback(() => {
+    setError(null);
+    setFallbackMode(false);
+  }, []);
+
   // Calculate overall progress
   const overallProgress = assets.length > 0
     ? assets.reduce((sum, asset) => sum + asset.progress, 0) / assets.length
@@ -130,6 +148,10 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     totalCount,
     startLoading,
     finishLoading,
+    error,
+    fallbackMode,
+    handleLoadingError,
+    clearError,
   };
 
   return <LoadingContext.Provider value={value}>{children}</LoadingContext.Provider>;

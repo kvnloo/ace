@@ -5,6 +5,7 @@ import { VisualizationPage } from '../pages/VisualizationPage';
 import { mockCourtData, mockCourtDetails } from '../fixtures/courtData';
 import { mockHeatMapData, mockWeatherEffects, mockCameraPresets } from '../fixtures/visualizationData';
 import { mockAPI, waitForWebGL } from '../helpers/testHelpers';
+import { ConsoleMonitor } from '../helpers/consoleMonitor';
 
 /**
  * E2E Tests: Visualization Controls
@@ -37,6 +38,8 @@ test.describe('Visualization Controls', () => {
   });
 
   test('should access 3D visualization', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Verify 3D canvas is visible
     await expect(vizPage.canvas3D).toBeVisible();
 
@@ -50,9 +53,14 @@ test.describe('Visualization Controls', () => {
 
     // Take snapshot
     await expect(page).toHaveScreenshot('visualization-initial.png');
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should toggle heat map overlay', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
+
     // Verify heat map toggle button exists and is clickable
     await expect(vizPage.heatMapToggle).toBeVisible();
     await expect(vizPage.heatMapToggle).toBeEnabled();
@@ -63,6 +71,9 @@ test.describe('Visualization Controls', () => {
 
     // Verify button is still responsive after click
     await expect(vizPage.heatMapToggle).toBeEnabled();
+
+    // Assert no console errors
+    monitor.assertNoErrors();
 
     // Note: Actual 3D heatmap rendering requires Three.js integration
     // This test verifies UI controls are functional
@@ -180,6 +191,7 @@ test.describe('Visualization Controls', () => {
   });
 
   test('should maintain 3D rendering performance', async ({ page }) => {
+    const monitor = new ConsoleMonitor(page);
     const startTime = Date.now();
 
     // Perform multiple operations
@@ -198,6 +210,9 @@ test.describe('Visualization Controls', () => {
     await expect(vizPage.canvas3D).toBeVisible();
 
     console.log(`Visualization operations completed in ${operationTime}ms`);
+
+    // Assert no console errors
+    monitor.assertNoErrors();
   });
 
   test('should handle rapid control changes', async ({ page }) => {
