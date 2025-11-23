@@ -1,7 +1,8 @@
-import React, { useRef, useMemo, useState } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html, Line } from '@react-three/drei';
 import * as THREE from 'three';
+import { useDebug } from '../contexts/DebugContext';
 
 /**
  * Autonomous Robotic Grass Management System
@@ -512,6 +513,46 @@ const RoboticGrassSystem: React.FC<RoboticGrassSystemProps> = ({
   showStatus = true
 }) => {
   const timeRef = useRef(0);
+  const { registerAsset, isAssetEnabled } = useDebug();
+
+  // Register debug assets for conditional rendering
+  useEffect(() => {
+    registerAsset({
+      id: 'grass-blades',
+      name: 'Grass Blade Rendering',
+      type: 'grass',
+      enabled: true,
+      performanceCost: 8, // Very high (instanced geometry)
+      dependencies: []
+    });
+
+    registerAsset({
+      id: 'grass-physics',
+      name: 'Grass Physics Simulation',
+      type: 'grass',
+      enabled: true,
+      performanceCost: 6,
+      dependencies: ['grass-blades']
+    });
+
+    registerAsset({
+      id: 'robotic-mowers',
+      name: 'Robotic Mowers',
+      type: 'grass',
+      enabled: true,
+      performanceCost: 4,
+      dependencies: ['grass-blades']
+    });
+
+    registerAsset({
+      id: 'growth-visualization',
+      name: 'Growth Stages Visualization',
+      type: 'grass',
+      enabled: true,
+      performanceCost: 3,
+      dependencies: ['grass-blades']
+    });
+  }, [registerAsset]);
 
   // Initialize docking stations (one per grass court area)
   const dockingStations = useMemo<DockingStation[]>(() => {
@@ -652,10 +693,15 @@ const RoboticGrassSystem: React.FC<RoboticGrassSystemProps> = ({
     });
   });
 
+  // Check which assets are enabled for conditional rendering
+  const showRoboticMowers = isAssetEnabled('robotic-mowers');
+  const showGrowthVisualization = isAssetEnabled('growth-visualization');
+  const showGrassPhysics = isAssetEnabled('grass-physics');
+
   return (
     <group position={position}>
-      {/* Render Charging Stations */}
-      {dockingStations.map((station) => (
+      {/* Render Charging Stations - Only if robotic mowers are enabled */}
+      {showRoboticMowers && dockingStations.map((station) => (
         <ChargingStation
           key={station.id}
           station={station}
@@ -663,8 +709,8 @@ const RoboticGrassSystem: React.FC<RoboticGrassSystemProps> = ({
         />
       ))}
 
-      {/* Render Robots */}
-      {robots.map((robot) => (
+      {/* Render Robots - Only if robotic mowers are enabled */}
+      {showRoboticMowers && robots.map((robot) => (
         <MowingRobot
           key={robot.id}
           robot={robot}
@@ -672,8 +718,8 @@ const RoboticGrassSystem: React.FC<RoboticGrassSystemProps> = ({
         />
       ))}
 
-      {/* Render Patrol Paths */}
-      {showPaths && robots.map((robot) => (
+      {/* Render Patrol Paths - Only if robotic mowers and physics are enabled */}
+      {showPaths && showRoboticMowers && showGrassPhysics && robots.map((robot) => (
         <Line
           key={`path-${robot.id}`}
           points={robot.path.map(p => p.toArray())}
@@ -688,8 +734,8 @@ const RoboticGrassSystem: React.FC<RoboticGrassSystemProps> = ({
         />
       ))}
 
-      {/* System Status Panel */}
-      {showStatus && (
+      {/* System Status Panel - Only if robotic mowers are enabled */}
+      {showStatus && showRoboticMowers && (
         <Html position={[0, 10, -50]} center distanceFactor={80} zIndexRange={[200, 0]}>
           <div className="bg-slate-900/95 backdrop-blur-md p-4 rounded-xl border border-white/20 shadow-2xl pointer-events-none min-w-[280px]">
             <div className="flex items-center gap-2 mb-3 border-b border-white/10 pb-2">
@@ -719,6 +765,19 @@ const RoboticGrassSystem: React.FC<RoboticGrassSystemProps> = ({
                 <span>System Status:</span>
                 <span className="text-green-400 font-bold">OPERATIONAL</span>
               </div>
+              {/* Debug info - Show which features are enabled */}
+              {showGrassPhysics && (
+                <div className="flex justify-between text-white/70 pt-1 border-t border-white/10">
+                  <span>Physics:</span>
+                  <span className="text-blue-400 font-bold">ACTIVE</span>
+                </div>
+              )}
+              {showGrowthVisualization && (
+                <div className="flex justify-between text-white/70">
+                  <span>Growth Viz:</span>
+                  <span className="text-purple-400 font-bold">ACTIVE</span>
+                </div>
+              )}
             </div>
           </div>
         </Html>
