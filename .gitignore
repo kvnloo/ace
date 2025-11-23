@@ -33,9 +33,23 @@ pnpm-debug.log*
 # OS
 Thumbs.db
 
+# git worktrees
+worktrees/
+
 # Playwright Test Results
 test-results/
 playwright-report/
 .playwright/
 *.trace
 .last-run.json
+
+# E2E Test Artifacts
+tests/e2e/**/*.png
+tests/e2e/**/*.jpg
+tests/e2e/**/*.jpeg
+tests/e2e/**/*.webm
+test-results/**/*.png
+test-results/**/*.jpg
+test-results/**/*.jpeg
+test-results/**/*.webm
+
