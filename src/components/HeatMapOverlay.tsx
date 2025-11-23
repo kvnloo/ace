@@ -7,67 +7,225 @@ import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight, Filter, TrendingUp }
 /**
  * Heat Map Overlay for Court Usage and Player Movement Visualization
  *
- * Features:
- * - Color-coded intensity maps for ball impacts, player positions, and tactical patterns
+ * @remarks
+ * Advanced analytics visualization system that overlays color-coded heat maps on
+ * tennis court surfaces to show player positions, ball impacts, serve placements,
+ * and tactical patterns. Features real-time and historical playback modes with
+ * AI-powered pattern recognition.
+ *
+ * Core capabilities:
+ * - Multi-type data visualization (ball impacts, player positions, serves, tactics)
  * - Time-based filtering with date range selection
- * - Historical data playback with timeline scrubbing
- * - Pattern recognition displays for hot zones and strategic insights
- * - Real-time heat map rendering on court surfaces
- * - Performance optimized with WebGL shaders
+ * - Historical data playback with timeline scrubbing and speed control
+ * - AI pattern recognition for hot zone detection
+ * - WebGL shader-based rendering for smooth performance
+ * - Gaussian blur heat map generation
+ * - Interactive controls with opacity adjustment
+ *
+ * Technical implementation:
+ * - Custom GLSL shaders for heat map rendering
+ * - Canvas-based texture generation with gaussian blur
+ * - 256×256 resolution heat texture
+ * - 5-color gradient (blue → cyan → green → yellow → red)
+ * - Additive blending for realistic heat visualization
+ * - Real-time pattern detection with confidence scoring
+ *
+ * @packageDocumentation
  */
 
 // --- Types & Interfaces ---
 
+/**
+ * Type of heat map data being visualized
+ *
+ * @remarks
+ * Different data types highlight different aspects of court activity:
+ * - `ball_impact`: Where the ball bounces on court surface
+ * - `player_position`: Where players stand during points
+ * - `tactical_pattern`: Strategic shot placement patterns
+ * - `serve_placement`: Service box target zones
+ */
 export type HeatMapDataType = 'ball_impact' | 'player_position' | 'tactical_pattern' | 'serve_placement';
+
+/**
+ * Operating mode for heat map visualization
+ *
+ * @remarks
+ * - `realtime`: Live data as it happens
+ * - `historical`: Time-based playback of past data
+ * - `comparison`: Side-by-side comparison mode (future feature)
+ */
 export type HeatMapMode = 'realtime' | 'historical' | 'comparison';
 
+/**
+ * Individual heat map data point
+ *
+ * @remarks
+ * Represents a single event or observation on the court with position,
+ * intensity, timestamp, and optional metadata for detailed analysis.
+ *
+ * Coordinate system:
+ * - x: 0-10m (court width, singles court)
+ * - z: 0-22m (court length, baseline to baseline)
+ * - Origin at court corner
+ */
 export interface HeatPoint {
-  x: number;           // Court x position (0-10m for singles)
-  z: number;           // Court z position (0-22m)
-  intensity: number;   // 0-1 normalized intensity
-  timestamp: number;   // Unix timestamp in milliseconds
+  /** X coordinate on court (0-10m for singles court) */
+  x: number;
+
+  /** Z coordinate on court (0-22m length) */
+  z: number;
+
+  /** Heat intensity (0.0 = no activity, 1.0 = maximum activity) */
+  intensity: number;
+
+  /** Event timestamp (Unix time in milliseconds) */
+  timestamp: number;
+
+  /** Type of heat map data this point represents */
   type: HeatMapDataType;
+
+  /** Optional metadata for detailed event information */
   metadata?: {
+    /** Player name associated with this event */
     playerName?: string;
+
+    /** Type of shot (forehand, backhand, serve, volley) */
     shotType?: string;
+
+    /** Ball speed in km/h */
     speed?: number;
+
+    /** Spin rate in RPM */
     spin?: number;
   };
 }
 
+/**
+ * Complete heat map dataset for a specific court
+ *
+ * @remarks
+ * Aggregated collection of heat points for a single court over a time period.
+ */
 export interface CourtHeatData {
+  /** Unique court identifier */
   courtId: string;
+
+  /** Court surface type affecting play characteristics */
   courtType: 'hard' | 'clay' | 'grass' | 'wood';
+
+  /** Array of all heat points in this dataset */
   points: HeatPoint[];
+
+  /** Time range covered by this data */
   timeRange: {
+    /** Start timestamp (Unix milliseconds) */
     start: number;
+
+    /** End timestamp (Unix milliseconds) */
     end: number;
   };
 }
 
+/**
+ * Detected tactical pattern or hot zone
+ *
+ * @remarks
+ * AI-detected patterns in player behavior, shot placement, or court usage.
+ * Uses clustering algorithm to identify significant activity zones.
+ *
+ * Confidence calculation:
+ * - Based on local heat intensity vs global threshold
+ * - Higher values indicate stronger pattern
+ * - Threshold: 60% of maximum heat value
+ */
 export interface HeatMapPattern {
+  /** Unique pattern identifier */
   id: string;
+
+  /** Human-readable pattern name (e.g., "Hot Zone 1") */
   name: string;
+
+  /** Detailed description of pattern location and significance */
   description: string;
-  zones: Array<{ x: number; z: number; radius: number }>;
+
+  /** Circular zones defining the pattern area */
+  zones: Array<{
+    /** Zone center X coordinate */
+    x: number;
+
+    /** Zone center Z coordinate */
+    z: number;
+
+    /** Zone radius in meters */
+    radius: number;
+  }>;
+
+  /** Activity frequency at this zone */
   frequency: number;
-  confidence: number; // 0-1
+
+  /** Pattern confidence score (0.0-1.0) */
+  confidence: number;
 }
 
+/**
+ * Heat map overlay component configuration
+ *
+ * @remarks
+ * Props for configuring the heat map visualization system including position,
+ * dimensions, data source, and visualization options.
+ */
 interface HeatMapOverlayProps {
+  /** Court position in world space [x, y, z] */
   position: [number, number, number];
+
+  /** Court width in meters (typically 10m for singles) */
   courtWidth: number;
+
+  /** Court length in meters (typically 22m) */
   courtLength: number;
+
+  /** Unique court identifier for data lookup (default: "court_1") */
   courtId?: string;
+
+  /** Court surface type (default: "hard") */
   courtType?: 'hard' | 'clay' | 'grass' | 'wood';
+
+  /** Initial visualization mode (default: "historical") */
   initialMode?: HeatMapMode;
+
+  /** Initial data type to display (default: "player_position") */
   initialDataType?: HeatMapDataType;
+
+  /** Show interactive control panel UI (default: true) */
   showControls?: boolean;
+
+  /** Callback when AI detects a new pattern */
   onPatternDetected?: (pattern: HeatMapPattern) => void;
 }
 
 // --- Mock Data Generator (Replace with real data source) ---
 
+/**
+ * Generates realistic mock heat map data for demonstration
+ *
+ * @remarks
+ * Creates synthetic heat points with realistic distribution patterns based on
+ * data type. Used for demonstration until real sensor data is available.
+ *
+ * Data patterns:
+ * - Ball impacts: Cluster in service boxes and baseline
+ * - Player positions: Center baseline bias with occasional net approaches
+ * - Serve placement: Target service box corners
+ * - Tactical patterns: Cross-court, down-line, and net approach zones
+ *
+ * @param courtId - Court identifier for data association
+ * @param dataType - Type of heat map data to generate
+ * @param timeRange - Time period to generate data for
+ * @returns Array of 500-1000 synthetic heat points
+ *
+ * @internal
+ */
 const generateMockHeatData = (courtId: string, dataType: HeatMapDataType, timeRange: { start: number; end: number }): HeatPoint[] => {
   const points: HeatPoint[] = [];
   const numPoints = 500 + Math.floor(Math.random() * 500);
@@ -152,6 +310,31 @@ const generateMockHeatData = (courtId: string, dataType: HeatMapDataType, timeRa
 
 // --- Pattern Recognition Engine ---
 
+/**
+ * AI-powered hot zone detection algorithm
+ *
+ * @remarks
+ * Analyzes heat point distribution to identify significant activity zones using
+ * a grid-based local maxima detection algorithm with confidence scoring.
+ *
+ * Algorithm steps:
+ * 1. Build 20×20 heat grid from point data
+ * 2. Calculate global threshold (60% of maximum)
+ * 3. Find local maxima above threshold
+ * 4. Check 8-neighbor connectivity
+ * 5. Generate pattern objects with confidence scores
+ * 6. Return top 5 patterns
+ *
+ * Confidence calculation:
+ * - confidence = min(heat_value / threshold, 1.0)
+ * - Higher values indicate stronger activity patterns
+ *
+ * @param points - Array of heat points to analyze
+ * @param gridSize - Grid resolution for pattern detection (default: 20×20)
+ * @returns Array of up to 5 detected patterns sorted by confidence
+ *
+ * @internal
+ */
 const detectHotZones = (points: HeatPoint[], gridSize: number = 20): HeatMapPattern[] => {
   const patterns: HeatMapPattern[] = [];
   const grid: number[][] = Array(gridSize).fill(0).map(() => Array(gridSize).fill(0));
@@ -200,6 +383,13 @@ const detectHotZones = (points: HeatPoint[], gridSize: number = 20): HeatMapPatt
 
 // --- Heat Map Shader ---
 
+/**
+ * GLSL vertex shader for heat map rendering
+ *
+ * @remarks
+ * Simple pass-through vertex shader that forwards UV coordinates to
+ * the fragment shader for texture sampling.
+ */
 const heatMapVertexShader = `
   varying vec2 vUv;
 
@@ -209,6 +399,28 @@ const heatMapVertexShader = `
   }
 `;
 
+/**
+ * GLSL fragment shader for heat map color gradient
+ *
+ * @remarks
+ * Custom fragment shader that converts heat intensity values to a 5-color
+ * gradient (blue → cyan → green → yellow → red) for visual heat representation.
+ *
+ * Color gradient mapping:
+ * - 0.00-0.25: Blue to Cyan (cold)
+ * - 0.25-0.50: Cyan to Green (moderate)
+ * - 0.50-0.75: Green to Yellow (warm)
+ * - 0.75-1.00: Yellow to Red (hot)
+ *
+ * Alpha channel:
+ * - Discards fragments below 0.01 intensity for transparency
+ * - Multiplies heat value by opacity uniform for user control
+ *
+ * Performance:
+ * - Efficient linear interpolation (mix function)
+ * - Early discard for transparent areas
+ * - No expensive operations in fragment shader
+ */
 const heatMapFragmentShader = `
   uniform sampler2D heatTexture;
   uniform float opacity;
@@ -245,6 +457,75 @@ const heatMapFragmentShader = `
 
 // --- Main Component ---
 
+/**
+ * Main heat map overlay component with analytics and playback controls
+ *
+ * @remarks
+ * Complete heat map visualization system with historical playback, pattern
+ * detection, and interactive controls. Renders as a transparent overlay on
+ * court surfaces using custom GLSL shaders for optimal performance.
+ *
+ * Rendering pipeline:
+ * 1. Load heat point data based on court ID and data type
+ * 2. Filter points by current time (historical mode)
+ * 3. Generate 256×256 heat texture with gaussian blur
+ * 4. Apply texture to court plane mesh with custom shader
+ * 5. Render pattern markers and labels
+ * 6. Display control panel and legend
+ *
+ * Heat texture generation algorithm:
+ * - Create canvas at 256×256 resolution
+ * - For each heat point:
+ *   - Apply gaussian blur (15px radius, σ = radius/3)
+ *   - Accumulate intensity values
+ * - Convert to Three.js CanvasTexture
+ * - Update every frame in historical mode
+ *
+ * Pattern detection:
+ * - Runs on data load
+ * - Identifies up to 5 hot zones
+ * - Triggers onPatternDetected callback
+ * - Renders circular markers on detected zones
+ *
+ * Playback controls:
+ * - Play/pause timeline
+ * - Scrub to specific timestamp
+ * - Adjust playback speed (0.25x - 4x)
+ * - Reset to start
+ * - Default speed: 60x real-time
+ *
+ * Performance optimizations:
+ * - Memoized texture generation
+ * - Additive blending for transparency
+ * - Depth write disabled
+ * - Efficient shader operations
+ *
+ * @param props - Heat map configuration
+ *
+ * @example
+ * ```tsx
+ * // Basic player position heat map
+ * <HeatMapOverlay
+ *   position={[0, 0.1, 0]}
+ *   courtWidth={10}
+ *   courtLength={22}
+ *   courtId="court_1"
+ *   initialDataType="player_position"
+ * />
+ *
+ * // Ball impact heat map with pattern callback
+ * <HeatMapOverlay
+ *   position={[0, 0.1, 0]}
+ *   courtWidth={10}
+ *   courtLength={22}
+ *   initialDataType="ball_impact"
+ *   showControls={true}
+ *   onPatternDetected={(pattern) => {
+ *     console.log('Detected pattern:', pattern);
+ *   }}
+ * />
+ * ```
+ */
 const HeatMapOverlay: React.FC<HeatMapOverlayProps> = ({
   position,
   courtWidth,

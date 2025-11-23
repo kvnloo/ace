@@ -29,27 +29,114 @@ import { Sun, Moon, Zap, Eye } from 'lucide-react';
 
 // === TYPE DEFINITIONS ===
 
+/**
+ * Time of day setting for lighting presets
+ *
+ * @remarks
+ * Each time period has associated lighting characteristics:
+ * - `dawn`: Warm orange/pink tones, moderate intensity
+ * - `day`: Bright white sunlight, maximum visibility
+ * - `dusk`: Red/orange sunset colors, moderate intensity
+ * - `night`: Cool blue moonlight, minimal natural light
+ */
 export type TimeOfDay = 'dawn' | 'day' | 'dusk' | 'night';
+
+/**
+ * Operating mode that determines which lighting systems are active
+ *
+ * @remarks
+ * Lighting modes control the activation of different light fixtures:
+ * - `natural`: Only celestial lighting (sun/moon), no artificial lights
+ * - `sports`: Standard court operations with floodlights and court lights
+ * - `event`: Enhanced lighting for special events with maximum intensity
+ * - `maintenance`: Minimal lighting for facility maintenance periods
+ */
 export type LightingMode = 'natural' | 'sports' | 'event' | 'maintenance';
+
+/**
+ * Rendering quality level for atmospheric effects and shadows
+ *
+ * @remarks
+ * Quality levels affect performance vs visual fidelity:
+ * - `low`: Shadow map 256px, minimal fog, basic effects
+ * - `medium`: Shadow map 512px, standard fog and shadows
+ * - `high`: Shadow map 1024px, enhanced atmospheric effects
+ * - `ultra`: Shadow map 2048-4096px, maximum visual quality
+ *
+ * Performance impact scales exponentially with quality level.
+ */
 export type AtmosphereQuality = 'low' | 'medium' | 'high' | 'ultra';
 
+/**
+ * Complete lighting system configuration
+ *
+ * @remarks
+ * This interface controls all aspects of the lighting system including
+ * time of day presets, operational modes, and visual quality settings.
+ *
+ * @example
+ * ```tsx
+ * const config: LightingConfig = {
+ *   timeOfDay: 'night',
+ *   mode: 'sports',
+ *   quality: 'high',
+ *   floodlightsEnabled: true,
+ *   courtLightsEnabled: true,
+ *   ambientIntensity: 0.5,
+ *   fogDensity: 0.001,
+ *   bloomStrength: 0.7
+ * };
+ * ```
+ */
 export interface LightingConfig {
+  /** Current time of day setting affecting celestial light color and intensity */
   timeOfDay: TimeOfDay;
+
+  /** Operating mode determining which light fixtures are active */
   mode: LightingMode;
+
+  /** Rendering quality level for shadows and atmospheric effects */
   quality: AtmosphereQuality;
+
+  /** Enable/disable stadium perimeter floodlights (16 fixtures) */
   floodlightsEnabled: boolean;
+
+  /** Enable/disable individual court spotlights (96 fixtures, 4 per court) */
   courtLightsEnabled: boolean;
+
+  /** Ambient light intensity multiplier (0.0 - 1.0) */
   ambientIntensity: number;
+
+  /** Volumetric fog density (0.0 - 0.005), higher values reduce visibility */
   fogDensity: number;
+
+  /** HDR bloom effect strength (0.0 - 2.0), enhances light glow */
   bloomStrength: number;
 }
 
+/**
+ * Individual light fixture specification
+ *
+ * @internal
+ * Used internally for positioning and configuring light sources
+ */
 interface LightFixture {
+  /** 3D world position [x, y, z] in meters */
   position: [number, number, number];
+
+  /** Light intensity value (typical range: 1-20) */
   intensity: number;
+
+  /** Light color in hex format (e.g., '#ffffff') */
   color: string;
+
+  /** Maximum effective distance of light in meters */
   distance: number;
+
+  /** Spotlight cone angle in radians (optional, for spotlights) */
   angle?: number;
+
+  /** Spotlight edge softness (0.0 - 1.0, optional) */
   penumbra?: number;
 }
 
@@ -109,7 +196,24 @@ const TIME_PRESETS: Record<TimeOfDay, {
 
 // === COURT LIGHTING POSITIONS ===
 
-// Generate positions for 24 tennis courts (6x4 grid)
+/**
+ * Generates spotlight positions for all tennis courts
+ *
+ * @remarks
+ * Creates a 4-corner spotlight configuration for each of the 24 tennis courts
+ * arranged in a 6-column by 4-row grid layout. Each court receives 4 spotlights
+ * mounted at the corners, angled inward for optimal court coverage.
+ *
+ * Algorithm:
+ * - Court grid: 6 columns × 4 rows = 24 courts
+ * - Spacing: 14m horizontal, 26m vertical between court centers
+ * - Light height: 12m above ground for optimal angle
+ * - Coverage: 18m effective distance per spotlight
+ *
+ * @returns Array of 96 light fixtures (4 per court × 24 courts)
+ *
+ * @internal
+ */
 const generateCourtLightPositions = (): LightFixture[] => {
   const fixtures: LightFixture[] = [];
 
@@ -142,6 +246,31 @@ const generateCourtLightPositions = (): LightFixture[] => {
 
 // === STADIUM FLOODLIGHT POSITIONS ===
 
+/**
+ * Generates stadium perimeter floodlight positions
+ *
+ * @remarks
+ * Creates high-intensity floodlights around the building perimeter for
+ * wide-area illumination during night sports events. Lights are positioned
+ * at 25m height to minimize glare and maximize coverage.
+ *
+ * Distribution:
+ * - North side: 5 floodlights
+ * - South side: 5 floodlights
+ * - East side: 3 floodlights
+ * - West side: 3 floodlights
+ * - Total: 16 fixtures
+ *
+ * Performance characteristics:
+ * - Intensity: 15 units (high power)
+ * - Distance: 80m effective range
+ * - Color: Warm white (#ffffee) to reduce eye strain
+ * - Angle: π/3 radians (60°) for wide spread
+ *
+ * @returns Array of 16 floodlight fixtures
+ *
+ * @internal
+ */
 const generateFloodlightPositions = (): LightFixture[] => {
   const fixtures: LightFixture[] = [];
   const buildingPerimeter = [
@@ -186,6 +315,28 @@ const generateFloodlightPositions = (): LightFixture[] => {
 
 // === AMBIENT FACILITY LIGHTING ===
 
+/**
+ * Generates ambient facility lighting for indoor spaces
+ *
+ * @remarks
+ * Creates general illumination for reception areas, corridors, and circulation
+ * spaces across three building levels. Provides warm, welcoming lighting for
+ * non-court areas.
+ *
+ * Coverage areas:
+ * - Reception area: Central entrance lighting
+ * - Level 1-3 corridors: Distributed along major circulation paths
+ * - North/South circulation: Strategic placement at key points
+ *
+ * Light characteristics:
+ * - Color: Warm white (#fff8dc, #f0f8ff) for comfort
+ * - Intensity: 3-4 units for ambient coverage
+ * - Distance: 15-20m for overlapping zones
+ *
+ * @returns Array of 25+ ambient light fixtures
+ *
+ * @internal
+ */
 const generateAmbientLightPositions = (): LightFixture[] => {
   const fixtures: LightFixture[] = [];
 
@@ -222,7 +373,46 @@ const generateAmbientLightPositions = (): LightFixture[] => {
 // === COMPONENTS ===
 
 /**
- * Floodlight Fixture - Stadium-style high-intensity lighting
+ * Stadium-style high-intensity floodlight fixture with dynamic effects
+ *
+ * @remarks
+ * Renders a physically-modeled floodlight with housing, mounting bracket,
+ * and support pole. Includes realistic flickering animation and quality-based
+ * shadow map sizing for performance optimization.
+ *
+ * Visual components:
+ * - Spotlight with shadow casting
+ * - Cylindrical housing with emissive material when active
+ * - Support pole and mounting bracket
+ *
+ * Performance optimization:
+ * - Shadow quality scales with `quality` prop (256px to 2048px)
+ * - Shadows disabled on 'low' quality setting
+ * - Subtle flicker effect using sine wave animation
+ *
+ * @param props - Floodlight configuration properties
+ * @param props.position - 3D world position [x, y, z] in meters
+ * @param props.intensity - Light intensity (typical: 15 units)
+ * @param props.color - Light color in hex format
+ * @param props.distance - Maximum effective range in meters
+ * @param props.angle - Spotlight cone angle in radians
+ * @param props.penumbra - Edge softness (0.0 = hard edge, 1.0 = soft edge)
+ * @param props.enabled - Whether the light is currently active
+ * @param props.quality - Rendering quality affecting shadow resolution
+ *
+ * @example
+ * ```tsx
+ * <FloodlightFixture
+ *   position={[60, 25, 55]}
+ *   intensity={15}
+ *   color="#ffffee"
+ *   distance={80}
+ *   angle={Math.PI / 3}
+ *   penumbra={0.3}
+ *   enabled={true}
+ *   quality="high"
+ * />
+ * ```
  */
 const FloodlightFixture: React.FC<{
   position: [number, number, number];
@@ -300,7 +490,26 @@ const FloodlightFixture: React.FC<{
 };
 
 /**
- * Court Spotlight - Individual court lighting
+ * Individual court spotlight for focused playing surface illumination
+ *
+ * @remarks
+ * Simplified spotlight fixture optimized for high instance counts (96 total).
+ * Shadows are disabled for performance as these lights provide supplementary
+ * illumination rather than primary lighting.
+ *
+ * Optimization techniques:
+ * - No shadow casting (performance)
+ * - Simplified geometry for reduced draw calls
+ * - Basic material instead of standard for faster rendering
+ *
+ * @param props - Court spotlight configuration
+ * @param props.position - 3D position at court corner, 12m height
+ * @param props.intensity - Light intensity (typical: 8 units)
+ * @param props.color - Light color, usually white (#ffffff)
+ * @param props.distance - Effective range (typical: 18m)
+ * @param props.angle - Spotlight cone angle (typical: π/4)
+ * @param props.penumbra - Edge softness for smooth falloff
+ * @param props.enabled - Active state based on lighting mode
  */
 const CourtSpotlight: React.FC<{
   position: [number, number, number];
@@ -335,7 +544,33 @@ const CourtSpotlight: React.FC<{
 };
 
 /**
- * Directional Sun/Moon Light - Primary natural lighting
+ * Primary celestial light source (sun/moon) with hemisphere ambient
+ *
+ * @remarks
+ * Provides main directional lighting that simulates sunlight or moonlight
+ * based on time of day. Includes subtle animation for natural movement and
+ * hemisphere light for realistic sky/ground color gradients.
+ *
+ * Light positioning algorithm:
+ * - Dawn: Low angle from east (-100, 50, 80)
+ * - Day: High overhead angle (-80, 150, 100)
+ * - Dusk: Low angle from west (100, 40, 80)
+ * - Night: Moon position (50, 200, 50)
+ *
+ * Animation:
+ * - Slow sinusoidal movement (0.05 speed)
+ * - ±10m horizontal sway, ±5m vertical variation
+ * - Creates realistic celestial movement feel
+ *
+ * Shadow optimization:
+ * - Ultra: 4096px shadow map
+ * - High: 2048px shadow map
+ * - Medium/Low: 1024px shadow map
+ * - Large shadow camera frustum (-150 to 150m) for facility coverage
+ *
+ * @param props - Celestial light configuration
+ * @param props.timeOfDay - Current time period affecting color and position
+ * @param props.quality - Shadow map resolution quality
  */
 const CelestialLight: React.FC<{
   timeOfDay: TimeOfDay;
@@ -395,7 +630,27 @@ const CelestialLight: React.FC<{
 };
 
 /**
- * Volumetric Fog - Atmospheric depth and mood
+ * Exponential volumetric fog for atmospheric depth and mood
+ *
+ * @remarks
+ * Applies Three.js FogExp2 to the scene for distance-based atmospheric effects.
+ * Fog color matches the time of day preset for visual coherence. This component
+ * directly modifies the scene fog property and cleans up on unmount.
+ *
+ * Fog density guidelines:
+ * - 0.0000: No fog (crystal clear)
+ * - 0.0008: Light haze (day default)
+ * - 0.0015: Moderate fog (dusk/dawn)
+ * - 0.005: Dense fog (reduced visibility)
+ *
+ * Performance impact:
+ * - Minimal CPU overhead
+ * - Fragment shader cost increases with density
+ * - Exponential falloff (FogExp2) more realistic than linear
+ *
+ * @param props - Fog configuration
+ * @param props.timeOfDay - Time period determining fog color
+ * @param props.density - Fog density value (0.0 - 0.005)
  */
 const VolumetricFog: React.FC<{
   timeOfDay: TimeOfDay;
@@ -420,7 +675,22 @@ const VolumetricFog: React.FC<{
 };
 
 /**
- * Ambient Point Lights - General facility illumination
+ * Grid of ambient point lights for general facility illumination
+ *
+ * @remarks
+ * Renders multiple point lights for reception, corridor, and circulation
+ * lighting. Uses physics-based decay (inverse square law) for realistic
+ * light falloff. All lights toggled together based on enabled state.
+ *
+ * Light characteristics:
+ * - Point lights with omnidirectional emission
+ * - Decay value of 2 (physically accurate inverse square)
+ * - Warm color temperatures for welcoming atmosphere
+ * - Overlapping coverage zones for even illumination
+ *
+ * @param props - Ambient lighting configuration
+ * @param props.positions - Array of light fixture specifications
+ * @param props.enabled - Master switch for all ambient lights
  */
 const AmbientLightGrid: React.FC<{
   positions: LightFixture[];
@@ -443,7 +713,30 @@ const AmbientLightGrid: React.FC<{
 };
 
 /**
- * Control Panel UI - Interactive lighting controls
+ * Interactive UI control panel for lighting system configuration
+ *
+ * @remarks
+ * Provides real-time controls for all lighting system parameters through
+ * an intuitive interface. Positioned in the top-right corner of the viewport
+ * with glassmorphic styling for modern aesthetics.
+ *
+ * Control categories:
+ * - Time of day selection (4 buttons)
+ * - Lighting mode selection (4 buttons)
+ * - Floodlights toggle (checkbox)
+ * - Court lights toggle (checkbox)
+ * - Fog density slider (0.0 - 0.005)
+ * - Bloom strength slider (0.0 - 2.0)
+ *
+ * UI features:
+ * - Backdrop blur for depth separation
+ * - Active state highlighting with brand colors
+ * - Icon indicators for visual clarity
+ * - Responsive hover states
+ *
+ * @param props - Control panel configuration
+ * @param props.config - Current lighting configuration state
+ * @param props.onConfigChange - Callback for configuration updates
  */
 const LightingControlPanel: React.FC<{
   config: LightingConfig;
@@ -552,10 +845,66 @@ const LightingControlPanel: React.FC<{
 };
 
 /**
- * Main Lighting System Component
+ * Complete lighting system with dynamic time-of-day, artificial lighting, and atmospheric effects
+ *
+ * @remarks
+ * This is the main component that orchestrates all lighting elements for the tennis
+ * facility visualization. It manages 112+ individual light sources, volumetric fog,
+ * and HDR post-processing effects with intelligent performance optimization.
+ *
+ * System architecture:
+ * - 1 celestial light (sun/moon) + hemisphere ambient
+ * - 16 stadium floodlights (perimeter mounted)
+ * - 96 court spotlights (4 per court × 24 courts)
+ * - 25+ ambient facility lights (corridors, reception)
+ * - Volumetric fog system
+ * - HDR bloom and tone mapping post-processing
+ *
+ * Performance optimization strategies:
+ * - Memoized light position generation
+ * - Quality-based shadow map resolution
+ * - Selective shadow casting (only primary lights)
+ * - Instanced light fixtures where possible
+ * - Conditional rendering based on lighting mode
+ *
+ * State management:
+ * - Time-of-day presets with smooth transitions
+ * - Mode-based light activation logic
+ * - Real-time configuration updates
+ * - Persistent user preferences support
+ *
+ * @param props - Lighting system configuration
+ * @param props.showControls - Show/hide interactive control panel (default: true)
+ * @param props.initialConfig - Initial configuration overrides (optional)
+ *
+ * @example
+ * ```tsx
+ * // Basic usage with defaults
+ * <LightingSystem />
+ *
+ * // Custom night sports configuration
+ * <LightingSystem
+ *   showControls={false}
+ *   initialConfig={{
+ *     timeOfDay: 'night',
+ *     mode: 'sports',
+ *     quality: 'high',
+ *     floodlightsEnabled: true,
+ *     fogDensity: 0.001,
+ *     bloomStrength: 0.8
+ *   }}
+ * />
+ * ```
+ *
+ * @see {@link LightingConfig} for configuration options
+ * @see {@link TimeOfDay} for time period presets
+ * @see {@link LightingMode} for operational modes
  */
 export const LightingSystem: React.FC<{
+  /** Enable interactive control panel UI (default: true) */
   showControls?: boolean;
+
+  /** Initial configuration overrides merged with defaults */
   initialConfig?: Partial<LightingConfig>;
 }> = ({ showControls = true, initialConfig = {} }) => {
   const [config, setConfig] = useState<LightingConfig>({

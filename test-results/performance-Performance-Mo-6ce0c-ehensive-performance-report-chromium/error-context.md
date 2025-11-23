@@ -1,0 +1,74 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6] [cursor=pointer]:
+        - text: LAWNTECH
+        - generic [ref=e8]: DYNAMICS
+      - generic [ref=e9]:
+        - button "Vision" [ref=e10] [cursor=pointer]
+        - button "Specs" [ref=e11] [cursor=pointer]
+        - button "3D Map" [ref=e12] [cursor=pointer]
+        - button "Amenities" [ref=e13] [cursor=pointer]
+        - button "Invest" [ref=e14] [cursor=pointer]
+        - button "JOIN WAITING LIST" [ref=e15] [cursor=pointer]
+  - main [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - heading "🔍 3D SCENE DIAGNOSTIC" [level=3] [ref=e19]
+        - generic [ref=e20]:
+          - generic [ref=e21]: "✅ WebGL: Supported"
+          - generic [ref=e22]: "⚠️ WebGL2: Not supported"
+          - generic [ref=e23]: "✅ Three.js: Loaded (r181)"
+          - generic [ref=e24]: "✅ Canvas: Found"
+        - generic [ref=e25]:
+          - generic [ref=e26]: "Errors:"
+          - generic [ref=e27]: • React Three Fiber canvas not found - Canvas component may not be rendering...
+        - generic [ref=e28]:
+          - generic [ref=e29]: "Warnings:"
+          - generic [ref=e30]: • Found 1 canvas element(s)
+        - generic [ref=e31]: Check browser console for full errors
+      - generic [ref=e33]:
+        - generic:
+          - generic [ref=e34]:
+            - generic [ref=e35]:
+              - img [ref=e36]
+              - text: Floor View
+            - 'button "L3: Farm" [ref=e40] [cursor=pointer]'
+            - 'button "L2: Social" [ref=e41] [cursor=pointer]'
+            - 'button "L1: Racquet" [ref=e42] [cursor=pointer]'
+            - 'button "G: Tennis" [ref=e43] [cursor=pointer]'
+            - button "Full Facility" [ref=e44] [cursor=pointer]
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - img [ref=e47]
+              - text: Overlay
+            - button "Clean" [ref=e50] [cursor=pointer]:
+              - img [ref=e51]
+              - text: Clean
+            - button "Labels" [ref=e54] [cursor=pointer]:
+              - img [ref=e55]
+              - text: Labels
+            - button "Dimensions" [ref=e60] [cursor=pointer]:
+              - img [ref=e61]
+              - text: Dimensions
+          - generic [ref=e67]:
+            - generic [ref=e68]: Performance
+            - generic [ref=e69]:
+              - button "low" [ref=e70] [cursor=pointer]
+              - button "medium" [ref=e71] [cursor=pointer]
+              - button "high" [ref=e72] [cursor=pointer]
+        - generic:
+          - text: ECO-FACILITY VIEWER v3.3
+          - text: INTERACTIVE ARCHITECTURAL MODEL
+      - generic:
+        - generic:
+          - heading "Facility Interactive Map" [level=2]
+          - paragraph:
+            - text: 24 Courts • Vertical Farm • Performance Gym
+            - text: Rotate the view to explore the entire complex.
+  - button [ref=e77] [cursor=pointer]:
+    - img [ref=e78]
+```

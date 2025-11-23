@@ -1,2 +1,2 @@
-# Visual regression snapshots directory
-# Snapshots will be automatically generated during test execution
+# Visual regression test snapshots
+# This directory contains baseline images for visual regression testing

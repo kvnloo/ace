@@ -1,9 +1,67 @@
 import React from 'react';
 import * as THREE from 'three';
 
-// --- BMS Control Room Components ---
+/**
+ * Building Management System (BMS) Control Room Components
+ *
+ * @remarks
+ * Complete 3D visualization of a modern building management system control room
+ * including operator workstations, wall-mounted display screens, server infrastructure,
+ * and monitoring equipment for facility-wide sensor data visualization.
+ *
+ * Features:
+ * - Multi-monitor operator workstations (4 stations)
+ * - Large wall display screens with real-time data visualization
+ * - Server room with rack-mounted equipment
+ * - Raised floor panels for cable management
+ * - Overhead lighting and cable trays
+ * - Security camera and emergency signage
+ * - Glass partition walls
+ * - Atmospheric lighting effects
+ *
+ * @packageDocumentation
+ */
 
-export const OperatorWorkstation: React.FC<{ position: [number, number, number], rotation?: number }> = ({ position, rotation = 0 }) => (
+/**
+ * Operator workstation with triple monitor setup
+ *
+ * @remarks
+ * Professional monitoring workstation featuring three active displays,
+ * keyboard, mouse, and ergonomic office chair. Monitors show emissive
+ * screens simulating active BMS dashboards with different data streams.
+ *
+ * Visual elements:
+ * - Desk surface (2.5m × 1.2m × 0.8m height)
+ * - 3 monitors with individual stands
+ * - Central monitor (blue) for primary display
+ * - Side monitors (cyan) for auxiliary data
+ * - Each screen has glowing effect (point light)
+ * - Keyboard and mouse peripherals
+ * - Office chair with adjustable height
+ *
+ * Monitor specifications:
+ * - Screen size: 0.55m × 0.31m
+ * - Frame color: Dark slate (#0f172a)
+ * - Active colors: Blue (#3b82f6) and cyan (#0ea5e9)
+ * - Emissive intensity: 0.8 (HDR rendering)
+ *
+ * @param props - Workstation configuration
+ * @param props.position - 3D position in room space [x, y, z]
+ * @param props.rotation - Y-axis rotation in radians (default: 0)
+ *
+ * @example
+ * ```tsx
+ * <OperatorWorkstation position={[-3, 0, 0]} rotation={0} />
+ * <OperatorWorkstation position={[3, 0, -2.5]} rotation={Math.PI} />
+ * ```
+ */
+export const OperatorWorkstation: React.FC<{
+  /** 3D world position [x, y, z] in meters */
+  position: [number, number, number];
+
+  /** Rotation angle around Y-axis in radians (default: 0) */
+  rotation?: number;
+}> = ({ position, rotation = 0 }) => (
     <group position={position} rotation={[0, rotation, 0]}>
         {/* Desk */}
         <mesh position={[0, 0.4, 0]} castShadow>
@@ -73,7 +131,74 @@ export const OperatorWorkstation: React.FC<{ position: [number, number, number],
     </group>
 );
 
-export const WallDisplayScreen: React.FC<{ position: [number, number, number], width: number, height: number, rotation?: [number, number, number], color?: string }> = ({
+/**
+ * Large wall-mounted display screen for facility data visualization
+ *
+ * @remarks
+ * Professional-grade display panel for real-time building management data.
+ * Features emissive screen surface with wireframe grid overlay simulating
+ * active data visualization dashboards.
+ *
+ * Visual design:
+ * - Dark bezel frame (#0f172a) with metallic finish
+ * - Active display area with configurable color
+ * - Wireframe grid overlay for data visualization effect
+ * - Point light creating screen glow ambiance
+ * - Configurable size and orientation
+ *
+ * Common configurations:
+ * - Central overview: 6m × 3.5m, green (#059669)
+ * - Environmental data: 3m × 2.5m, cyan (#0ea5e9)
+ * - Security feeds: 3m × 2.5m, purple (#8b5cf6)
+ * - Status bars: 2.5m × 0.8m, various colors
+ *
+ * Performance:
+ * - Emissive materials with tone mapping disabled
+ * - Efficient wireframe geometry
+ * - Single point light per screen
+ *
+ * @param props - Screen configuration
+ * @param props.position - 3D world position [x, y, z]
+ * @param props.width - Screen width in meters
+ * @param props.height - Screen height in meters
+ * @param props.rotation - 3D rotation [x, y, z] in radians (default: [0,0,0])
+ * @param props.color - Display color in hex format (default: "#059669")
+ *
+ * @example
+ * ```tsx
+ * // Large central facility overview screen
+ * <WallDisplayScreen
+ *   position={[0, 2.8, -4.8]}
+ *   width={6}
+ *   height={3.5}
+ *   color="#059669"
+ * />
+ *
+ * // Small status bar screen
+ * <WallDisplayScreen
+ *   position={[3, 1, -4.8]}
+ *   width={2.5}
+ *   height={0.8}
+ *   color="#22c55e"
+ * />
+ * ```
+ */
+export const WallDisplayScreen: React.FC<{
+  /** 3D world position [x, y, z] in meters */
+  position: [number, number, number];
+
+  /** Screen width in meters */
+  width: number;
+
+  /** Screen height in meters */
+  height: number;
+
+  /** 3D rotation [x, y, z] in radians (default: [0, 0, 0]) */
+  rotation?: [number, number, number];
+
+  /** Display color in hex format (default: "#059669" green) */
+  color?: string;
+}> = ({
     position,
     width,
     height,
@@ -114,7 +239,47 @@ export const WallDisplayScreen: React.FC<{ position: [number, number, number], w
     </group>
 );
 
-export const ServerRack: React.FC<{ position: [number, number, number] }> = ({ position }) => (
+/**
+ * 19-inch server rack with multiple rack-mounted units
+ *
+ * @remarks
+ * Standard IT equipment rack housing multiple server units with status LEDs,
+ * ventilation, and cooling systems. Visualizes active data center infrastructure
+ * for the building management system.
+ *
+ * Rack specifications:
+ * - Dimensions: 1.0m width × 4.0m height × 1.2m depth
+ * - 8 server units stacked vertically
+ * - Each unit: 0.9m × 0.4m × 1.1m
+ * - Status LED per unit (green/blue/yellow)
+ * - Front panel ventilation grilles
+ * - Cooling fan glow effect (blue light)
+ *
+ * Status LED patterns:
+ * - Green (#22c55e): Normal operation (units 0, 3, 6)
+ * - Blue (#3b82f6): Data transfer (units 1, 4, 7)
+ * - Yellow (#eab308): Warning/maintenance (units 2, 5)
+ *
+ * Visual effects:
+ * - Metallic rack frame with reflective materials
+ * - Individual server unit emissive panels
+ * - Status LEDs with high emissive intensity
+ * - Blue cooling fan point light
+ *
+ * @param props - Rack configuration
+ * @param props.position - 3D world position [x, y, z]
+ *
+ * @example
+ * ```tsx
+ * // Server room with dual rack configuration
+ * <ServerRack position={[2.5, 2, 1.5]} />
+ * <ServerRack position={[2.5, 2, -1.5]} />
+ * ```
+ */
+export const ServerRack: React.FC<{
+  /** 3D world position [x, y, z] in meters */
+  position: [number, number, number];
+}> = ({ position }) => (
     <group position={position}>
         {/* Rack Frame */}
         <mesh castShadow>
@@ -155,7 +320,77 @@ export const ServerRack: React.FC<{ position: [number, number, number] }> = ({ p
     </group>
 );
 
-export const BMSControlRoom: React.FC<{ position: [number, number, number] }> = ({ position }) => {
+/**
+ * Complete Building Management System control room with full infrastructure
+ *
+ * @remarks
+ * Comprehensive 3D visualization of a professional BMS control center including
+ * operator workstations, display walls, server infrastructure, and environmental
+ * systems. Designed for real-time facility monitoring and system control.
+ *
+ * Room layout:
+ * - Dimensions: 15m width × 10m depth × 5m height
+ * - Front: Glass partition wall for visibility
+ * - Back: Main display wall with multiple screens
+ * - Sides: Solid walls with structural elements
+ * - Floor: Raised technical floor with cable management
+ *
+ * Major components:
+ * - 4 operator workstations (2 front, 2 back rows)
+ * - 1 large central display (6m × 3.5m)
+ * - 2 side displays (3m × 2.5m each)
+ * - 3 status bar screens (2.5m × 0.8m each)
+ * - Server room section (right side)
+ * - 2 server racks with 8 units each
+ * - 6 overhead lights (2 rows of 3)
+ * - Cable management trays
+ * - Security camera
+ * - Emergency exit signage
+ *
+ * Display wall configuration:
+ * - Central: Green (#059669) - Facility overview
+ * - Left: Cyan (#0ea5e9) - Environmental data
+ * - Right: Purple (#8b5cf6) - Security camera feeds
+ * - Bottom left: Yellow (#eab308) - Alerts/warnings
+ * - Bottom center: Green (#22c55e) - System status
+ * - Bottom right: Red (#ef4444) - Critical events
+ *
+ * Server room features:
+ * - Glass partition separating from control room
+ * - Dual server racks with status LEDs
+ * - Access door (1m wide)
+ * - Cooling unit at rear
+ * - Red warning light for server area
+ *
+ * Lighting system:
+ * - 6 overhead point lights (1.5 intensity, 8m distance)
+ * - Warm white color (#f1f5f9)
+ * - Ceiling-mounted fixtures
+ * - Even distribution across room
+ *
+ * Safety features:
+ * - Emergency exit sign (green, emissive)
+ * - Security camera with PTZ mount
+ * - Glass walls for visibility
+ * - Proper egress marking
+ *
+ * @param props - Control room configuration
+ * @param props.position - Room origin position [x, y, z]
+ *
+ * @example
+ * ```tsx
+ * // Standard control room at facility Level 2
+ * <BMSControlRoom position={[0, 40, 0]} />
+ *
+ * // Multiple control rooms at different levels
+ * <BMSControlRoom position={[50, 0, 50]} />
+ * <BMSControlRoom position={[-50, 20, -50]} />
+ * ```
+ */
+export const BMSControlRoom: React.FC<{
+  /** Control room origin position [x, y, z] in meters */
+  position: [number, number, number];
+}> = ({ position }) => {
     const roomWidth = 15;
     const roomDepth = 10;
 

@@ -1,0 +1,42 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6] [cursor=pointer]:
+        - text: LAWNTECH
+        - generic [ref=e8]: DYNAMICS
+      - generic [ref=e9]:
+        - button "Vision" [ref=e10] [cursor=pointer]
+        - button "Specs" [ref=e11] [cursor=pointer]
+        - button "3D Map" [ref=e12] [cursor=pointer]
+        - button "Amenities" [ref=e13] [cursor=pointer]
+        - button "Invest" [ref=e14] [cursor=pointer]
+        - button "JOIN WAITING LIST" [ref=e15] [cursor=pointer]
+  - main [ref=e16]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - heading "Join the Revolution" [level=2] [ref=e20]
+        - paragraph [ref=e21]: We are raising Series A funding to build the pilot facility in Austin, Texas.
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - generic [ref=e24]:
+            - text: Full Name
+            - textbox "Jane Doe" [ref=e25]
+          - generic [ref=e26]:
+            - text: Email Address
+            - textbox "jane@example.com" [ref=e27]
+        - generic [ref=e28]:
+          - text: Interest Level
+          - combobox [ref=e29]:
+            - option "Potential Investor" [selected]
+            - option "Founding Member"
+            - option "Technology Partner"
+        - generic [ref=e30]:
+          - text: Message
+          - textbox "Tell us about yourself..." [ref=e31]
+        - button "Request Pitch Deck" [ref=e32] [cursor=pointer]
+  - button [ref=e34] [cursor=pointer]:
+    - img [ref=e35]
+```

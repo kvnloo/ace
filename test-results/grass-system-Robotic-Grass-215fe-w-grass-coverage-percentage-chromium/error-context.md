@@ -1,0 +1,350 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6] [cursor=pointer]:
+        - text: LAWNTECH
+        - generic [ref=e8]: DYNAMICS
+      - generic [ref=e9]:
+        - button "Vision" [ref=e10] [cursor=pointer]
+        - button "Specs" [ref=e11] [cursor=pointer]
+        - button "3D Map" [ref=e12] [cursor=pointer]
+        - button "Amenities" [ref=e13] [cursor=pointer]
+        - button "Invest" [ref=e14] [cursor=pointer]
+        - button "JOIN WAITING LIST" [ref=e15] [cursor=pointer]
+  - main [ref=e16]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - heading "Technical Specifications" [level=2] [ref=e20]
+        - paragraph [ref=e21]: Engineering specifications for building infrastructure, compute systems, and autonomous control architecture
+      - generic [ref=e22]:
+        - heading "Facility Sections" [level=3] [ref=e23]
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e26]:
+              - img [ref=e28]
+              - 'heading "Section A: Primary Entrance" [level=3] [ref=e32]'
+            - list [ref=e33]:
+              - listitem [ref=e34]:
+                - generic [ref=e35]:
+                  - img [ref=e36]
+                  - text: Floor Area
+                - generic [ref=e39]: 12.0m × 8.0m
+              - listitem [ref=e40]:
+                - generic [ref=e41]:
+                  - img [ref=e42]
+                  - text: Ceiling Height
+                - generic [ref=e45]: 4.5m
+              - listitem [ref=e46]:
+                - generic [ref=e47]:
+                  - img [ref=e48]
+                  - text: Capacity
+                - generic [ref=e51]: 150 persons
+              - listitem [ref=e52]:
+                - generic [ref=e53]:
+                  - img [ref=e54]
+                  - text: Access Control
+                - generic [ref=e57]: Biometric + NFC
+              - listitem [ref=e58]:
+                - generic [ref=e59]:
+                  - img [ref=e60]
+                  - text: Reception Desk
+                - generic [ref=e63]: 5.0m × 1.2m
+          - generic [ref=e64]:
+            - generic [ref=e65]:
+              - img [ref=e67]
+              - 'heading "Section B: Locker Facilities" [level=3] [ref=e72]'
+            - list [ref=e73]:
+              - listitem [ref=e74]:
+                - generic [ref=e75]:
+                  - img [ref=e76]
+                  - text: Floor Area
+                - generic [ref=e79]: 10.0m × 15.0m
+              - listitem [ref=e80]:
+                - generic [ref=e81]:
+                  - img [ref=e82]
+                  - text: Ceiling Height
+                - generic [ref=e85]: 3.6m
+              - listitem [ref=e86]:
+                - generic [ref=e87]:
+                  - img [ref=e88]
+                  - text: Total Lockers
+                - generic [ref=e91]: 210 units
+              - listitem [ref=e92]:
+                - generic [ref=e93]:
+                  - img [ref=e94]
+                  - text: Changing Rooms
+                - generic [ref=e97]: 8 private stalls
+              - listitem [ref=e98]:
+                - generic [ref=e99]:
+                  - img [ref=e100]
+                  - text: Showers
+                - generic [ref=e103]: 16 stalls total
+          - generic [ref=e104]:
+            - generic [ref=e105]:
+              - img [ref=e107]
+              - 'heading "Section C: Spectator Seating" [level=3] [ref=e112]'
+            - list [ref=e113]:
+              - listitem [ref=e114]:
+                - generic [ref=e115]:
+                  - img [ref=e116]
+                  - text: Ground Floor Seats
+                - generic [ref=e119]: 480 seats
+              - listitem [ref=e120]:
+                - generic [ref=e121]:
+                  - img [ref=e122]
+                  - text: Accessible Seating
+                - generic [ref=e125]: 24 positions
+              - listitem [ref=e126]:
+                - generic [ref=e127]:
+                  - img [ref=e128]
+                  - text: VIP Boxes
+                - generic [ref=e131]: 4 suites
+              - listitem [ref=e132]:
+                - generic [ref=e133]:
+                  - img [ref=e134]
+                  - text: Concessions
+                - generic [ref=e137]: 2 counters
+              - listitem [ref=e138]:
+                - generic [ref=e139]:
+                  - img [ref=e140]
+                  - text: Restrooms
+                - generic [ref=e143]: 16 total stalls
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - img [ref=e147]
+              - 'heading "Section E: Control Room" [level=3] [ref=e150]'
+            - list [ref=e151]:
+              - listitem [ref=e152]:
+                - generic [ref=e153]:
+                  - img [ref=e154]
+                  - text: Control Room Area
+                - generic [ref=e157]: 120 m²
+              - listitem [ref=e158]:
+                - generic [ref=e159]:
+                  - img [ref=e160]
+                  - text: Display Wall
+                - generic [ref=e163]: 4× 65" 4K
+              - listitem [ref=e164]:
+                - generic [ref=e165]:
+                  - img [ref=e166]
+                  - text: Operator Stations
+                - generic [ref=e169]: 3 workstations
+              - listitem [ref=e170]:
+                - generic [ref=e171]:
+                  - img [ref=e172]
+                  - text: Server Room
+                - generic [ref=e175]: 40 m²
+              - listitem [ref=e176]:
+                - generic [ref=e177]:
+                  - img [ref=e178]
+                  - text: UPS Capacity
+                - generic [ref=e181]: 60 kVA N+1
+          - generic [ref=e182]:
+            - generic [ref=e183]:
+              - img [ref=e185]
+              - 'heading "Section F: Parking Structure" [level=3] [ref=e189]'
+            - list [ref=e190]:
+              - listitem [ref=e191]:
+                - generic [ref=e192]:
+                  - img [ref=e193]
+                  - text: Total Spaces
+                - generic [ref=e196]: 334 vehicular
+              - listitem [ref=e197]:
+                - generic [ref=e198]:
+                  - img [ref=e199]
+                  - text: EV Charging (L2)
+                - generic [ref=e202]: 36 stalls @ 7.4kW
+              - listitem [ref=e203]:
+                - generic [ref=e204]:
+                  - img [ref=e205]
+                  - text: DC Fast Chargers
+                - generic [ref=e208]: 4 stalls @ 150kW
+              - listitem [ref=e209]:
+                - generic [ref=e210]:
+                  - img [ref=e211]
+                  - text: Accessible Spaces
+                - generic [ref=e214]: 12 ADA compliant
+              - listitem [ref=e215]:
+                - generic [ref=e216]:
+                  - img [ref=e217]
+                  - text: Bicycle Parking
+                - generic [ref=e220]: 60 secure spaces
+      - generic [ref=e221]:
+        - heading "Infrastructure" [level=3] [ref=e222]
+        - generic [ref=e223]:
+          - generic [ref=e224]:
+            - generic [ref=e225]:
+              - img [ref=e227]
+              - heading "Compute Infrastructure" [level=3] [ref=e231]
+            - list [ref=e232]:
+              - listitem [ref=e233]:
+                - generic [ref=e234]:
+                  - img [ref=e235]
+                  - text: Edge Cluster
+                - generic [ref=e238]: 3-node hyperconverged
+              - listitem [ref=e239]:
+                - generic [ref=e240]:
+                  - img [ref=e241]
+                  - text: RAM per Node
+                - generic [ref=e244]: 512GB DDR5
+              - listitem [ref=e245]:
+                - generic [ref=e246]:
+                  - img [ref=e247]
+                  - text: GPU
+                - generic [ref=e250]: 2× NVIDIA A40/node
+              - listitem [ref=e251]:
+                - generic [ref=e252]:
+                  - img [ref=e253]
+                  - text: Storage Pool
+                - generic [ref=e256]: Ceph distributed
+              - listitem [ref=e257]:
+                - generic [ref=e258]:
+                  - img [ref=e259]
+                  - text: IOPS
+                - generic [ref=e262]: 1M random reads
+          - generic [ref=e263]:
+            - generic [ref=e264]:
+              - img [ref=e266]
+              - heading "Network Infrastructure" [level=3] [ref=e270]
+            - list [ref=e271]:
+              - listitem [ref=e272]:
+                - generic [ref=e273]:
+                  - img [ref=e274]
+                  - text: Backbone
+                - generic [ref=e277]: 10GbE fiber
+              - listitem [ref=e278]:
+                - generic [ref=e279]:
+                  - img [ref=e280]
+                  - text: Uplinks
+                - generic [ref=e283]: Dual redundant
+              - listitem [ref=e284]:
+                - generic [ref=e285]:
+                  - img [ref=e286]
+                  - text: IoT Sensors
+                - generic [ref=e289]: 1000+ devices
+              - listitem [ref=e290]:
+                - generic [ref=e291]:
+                  - img [ref=e292]
+                  - text: WiFi
+                - generic [ref=e295]: Wi-Fi 6E APs
+              - listitem [ref=e296]:
+                - generic [ref=e297]:
+                  - img [ref=e298]
+                  - text: Segmentation
+                - generic [ref=e301]: VLAN isolation
+          - generic [ref=e302]:
+            - generic [ref=e303]:
+              - img [ref=e305]
+              - heading "Power & Cooling" [level=3] [ref=e307]
+            - list [ref=e308]:
+              - listitem [ref=e309]:
+                - generic [ref=e310]:
+                  - img [ref=e311]
+                  - text: Main Service
+                - generic [ref=e314]: 400A dedicated
+              - listitem [ref=e315]:
+                - generic [ref=e316]:
+                  - img [ref=e317]
+                  - text: UPS System
+                - generic [ref=e320]: 60kVA N+1
+              - listitem [ref=e321]:
+                - generic [ref=e322]:
+                  - img [ref=e323]
+                  - text: Battery Runtime
+                - generic [ref=e326]: 30min full load
+              - listitem [ref=e327]:
+                - generic [ref=e328]:
+                  - img [ref=e329]
+                  - text: Total Load
+                - generic [ref=e332]: 50kW design
+              - listitem [ref=e333]:
+                - generic [ref=e334]:
+                  - img [ref=e335]
+                  - text: Cooling
+                - generic [ref=e338]: 25kW server room
+          - generic [ref=e339]:
+            - generic [ref=e340]:
+              - img [ref=e342]
+              - heading "Digital Twin & Autonomy" [level=3] [ref=e345]
+            - list [ref=e346]:
+              - listitem [ref=e347]:
+                - generic [ref=e348]:
+                  - img [ref=e349]
+                  - text: Visualization
+                - generic [ref=e352]: Unity + Three.js
+              - listitem [ref=e353]:
+                - generic [ref=e354]:
+                  - img [ref=e355]
+                  - text: Multi-Agent System
+                - generic [ref=e358]: Autonomous scheduling
+              - listitem [ref=e359]:
+                - generic [ref=e360]:
+                  - img [ref=e361]
+                  - text: Control Modes
+                - generic [ref=e364]: Normal/Active/Emergency
+              - listitem [ref=e365]:
+                - generic [ref=e366]:
+                  - img [ref=e367]
+                  - text: VM Platform
+                - generic [ref=e370]: Proxmox VE cluster
+              - listitem [ref=e371]:
+                - generic [ref=e372]:
+                  - img [ref=e373]
+                  - text: Integration
+                - generic [ref=e376]: MCP server architecture
+          - generic [ref=e377]:
+            - generic [ref=e378]:
+              - img [ref=e380]
+              - heading "Security & Compliance" [level=3] [ref=e383]
+            - list [ref=e384]:
+              - listitem [ref=e385]:
+                - generic [ref=e386]:
+                  - img [ref=e387]
+                  - text: Access Control
+                - generic [ref=e390]: Biometric + NFC
+              - listitem [ref=e391]:
+                - generic [ref=e392]:
+                  - img [ref=e393]
+                  - text: Surveillance
+                - generic [ref=e396]: 32× 4K (30-day)
+              - listitem [ref=e397]:
+                - generic [ref=e398]:
+                  - img [ref=e399]
+                  - text: Network Security
+                - generic [ref=e402]: Firewall + EDR
+              - listitem [ref=e403]:
+                - generic [ref=e404]:
+                  - img [ref=e405]
+                  - text: Compliance
+                - generic [ref=e408]: ADA / IBC 2021
+          - generic [ref=e409]:
+            - generic [ref=e410]:
+              - img [ref=e412]
+              - heading "Autonomous Systems" [level=3] [ref=e415]
+            - list [ref=e416]:
+              - listitem [ref=e417]:
+                - generic [ref=e418]:
+                  - img [ref=e419]
+                  - text: Orchestration
+                - generic [ref=e422]: Multi-agent system
+              - listitem [ref=e423]:
+                - generic [ref=e424]:
+                  - img [ref=e425]
+                  - text: Sensor Integration
+                - generic [ref=e428]: 1000+ devices
+              - listitem [ref=e429]:
+                - generic [ref=e430]:
+                  - img [ref=e431]
+                  - text: Digital Twin
+                - generic [ref=e434]: Unity + Three.js
+              - listitem [ref=e435]:
+                - generic [ref=e436]:
+                  - img [ref=e437]
+                  - text: Thermal Mgmt
+                - generic [ref=e440]: Hot/cold aisle
+  - button [ref=e442] [cursor=pointer]:
+    - img [ref=e443]
+```

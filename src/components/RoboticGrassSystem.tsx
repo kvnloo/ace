@@ -6,45 +6,167 @@ import * as THREE from 'three';
 /**
  * Autonomous Robotic Grass Management System
  *
+ * @remarks
+ * A complete autonomous lawn maintenance system for grass tennis courts featuring
+ * intelligent robots with battery management, pathfinding, and coordinated operation.
+ *
  * Features:
- * - Autonomous mowing robots with pathfinding
- * - Battery management and charging stations
- * - Real-time position tracking
- * - Collision avoidance
- * - Visual indicators for status
+ * - Autonomous mowing robots with lawn-mower pattern pathfinding
+ * - Battery management with automatic charging cycle
+ * - Real-time position tracking and status visualization
+ * - Collision avoidance through path planning
+ * - Visual status indicators for each robot
+ * - Coordinated multi-robot operation
+ *
+ * System architecture:
+ * - 6 autonomous robots (1 per grass court)
+ * - 6 charging/docking stations
+ * - Efficient stripe-pattern mowing algorithm
+ * - State machine-based robot control
+ * - Real-time battery monitoring
+ *
+ * @example
+ * ```tsx
+ * <RoboticGrassSystem
+ *   position={[0, 0, 0]}
+ *   robotCount={6}
+ *   showPaths={true}
+ *   showStatus={true}
+ * />
+ * ```
  */
 
+/**
+ * Charging/docking station specification
+ *
+ * @remarks
+ * Each grass court has one dedicated docking station positioned at the
+ * court edge for robot charging and storage.
+ */
 interface DockingStation {
+  /** Unique station identifier (e.g., "01", "02") */
   id: string;
+
+  /** 3D world position [x, y, z] in meters */
   position: [number, number, number];
+
+  /** Whether a robot is currently docked and charging */
   occupied: boolean;
 }
 
+/**
+ * Autonomous mowing robot state
+ *
+ * @remarks
+ * Complete state representation for a single autonomous mowing robot including
+ * position, battery level, operational status, and pathfinding data.
+ *
+ * State machine transitions:
+ * - `idle` → `mowing`: Start operation after initialization delay
+ * - `mowing` → `returning`: Battery drops below 15%
+ * - `returning` → `charging`: Robot reaches docking station
+ * - `charging` → `mowing`: Battery reaches 100%
+ */
 interface Robot {
+  /** Unique robot identifier (e.g., "MOWER-01") */
   id: string;
+
+  /** Current 3D position in world space */
   position: THREE.Vector3;
+
+  /** Target waypoint position for pathfinding */
   targetPosition: THREE.Vector3;
-  battery: number; // 0-100
+
+  /** Battery charge level (0-100 percent) */
+  battery: number;
+
+  /** Current operational status */
   status: 'mowing' | 'charging' | 'returning' | 'idle';
+
+  /** Movement speed in meters per second */
   speed: number;
+
+  /** Complete mowing path as array of waypoints */
   path: THREE.Vector3[];
+
+  /** Current waypoint index in path array */
   currentPathIndex: number;
+
+  /** Assigned grass court number (1-6) */
   assignedCourt: number;
 }
 
+/**
+ * Robotic grass management system component props
+ *
+ * @remarks
+ * Configuration options for the autonomous grass maintenance system.
+ */
 interface RoboticGrassSystemProps {
-  /** Position of the grass system [x, y, z] */
+  /** System position in world space [x, y, z] (default: [0, 0, 0]) */
   position?: [number, number, number];
-  /** Number of autonomous robots (default: 6, one per grass court) */
+
+  /**
+   * Number of autonomous robots to deploy
+   *
+   * @remarks
+   * Default is 6 robots (one per grass court). System generates one docking
+   * station per robot. Maximum recommended: 6 (one per grass court).
+   *
+   * @defaultValue 6
+   */
   robotCount?: number;
-  /** Enable pathfinding visualization (default: false) */
+
+  /**
+   * Visualize robot mowing paths with dashed lines
+   *
+   * @remarks
+   * Shows the complete stripe-pattern path for each robot. Useful for
+   * debugging and demonstration but may impact performance with many robots.
+   *
+   * @defaultValue false
+   */
   showPaths?: boolean;
-  /** Enable robot status HUD (default: true) */
+
+  /**
+   * Display robot status HUD and system overview panel
+   *
+   * @remarks
+   * Shows individual robot status cards and system-wide statistics panel.
+   * Includes battery levels, operational status, and system health.
+   *
+   * @defaultValue true
+   */
   showStatus?: boolean;
 }
 
 /**
- * Individual Autonomous Mowing Robot
+ * Individual autonomous mowing robot with visual representation and status display
+ *
+ * @remarks
+ * Renders a detailed 3D model of an autonomous lawn mowing robot including:
+ * - Main robot body with color-coded status
+ * - Animated mower blade housing
+ * - Sensor array visualization
+ * - Four-wheel drive system
+ * - Battery indicator light
+ * - Status HUD card
+ * - Active indicator ring
+ *
+ * Animation features:
+ * - Automatic rotation to face movement direction
+ * - Spinning mower blades when active (0.3 rad/frame)
+ * - Pulsing status indicator
+ *
+ * Status color coding:
+ * - Green (#22c55e): Actively mowing
+ * - Yellow (#eab308): Charging at station
+ * - Orange (#f59e0b): Returning to charge
+ * - Slate (#94a3b8): Idle/inactive
+ *
+ * @param props - Robot configuration
+ * @param props.robot - Complete robot state object
+ * @param props.showStatus - Display floating status HUD card
  */
 const MowingRobot: React.FC<{
   robot: Robot;
@@ -216,7 +338,30 @@ const MowingRobot: React.FC<{
 };
 
 /**
- * Docking/Charging Station
+ * Charging and docking station for robot battery management
+ *
+ * @remarks
+ * Provides power and storage for autonomous mowing robots. Visual design
+ * includes platform, charging pads, rear panel with connectors, and status
+ * indicator lights.
+ *
+ * Visual elements:
+ * - Base platform (1.5m × 1.8m)
+ * - Charging pad with emissive material
+ * - Rear panel with connector housing
+ * - 3 indicator lights (show charging status)
+ * - Top light bar for high-visibility status
+ * - Ground connection ring visualization
+ * - Station label with ID
+ *
+ * Status indication:
+ * - Green (#22c55e): Available/ready
+ * - Yellow (#eab308): Occupied/charging
+ * - Lights animate when robot is docked
+ *
+ * @param props - Station configuration
+ * @param props.station - Station specification with position and status
+ * @param props.showLabel - Display station ID label above platform
  */
 const ChargingStation: React.FC<{
   station: DockingStation;
@@ -302,7 +447,63 @@ const ChargingStation: React.FC<{
 };
 
 /**
- * Main Robotic Grass Management System Component
+ * Main robotic grass management system with autonomous fleet coordination
+ *
+ * @remarks
+ * Complete autonomous lawn maintenance system managing a fleet of mowing robots
+ * across grass tennis courts. Handles robot initialization, pathfinding, battery
+ * management, charging cycles, and coordinated multi-robot operation.
+ *
+ * Mowing path algorithm:
+ * - Stripe pattern (parallel strips across court width)
+ * - 1.0m strip width for efficient coverage
+ * - Alternating forward/backward passes for efficiency
+ * - Continuous cyclic operation
+ *
+ * Battery management:
+ * - Drain rate: 0.5% per second during mowing
+ * - Charge rate: 5% per second at docking station
+ * - Low battery threshold: 15% (triggers return to dock)
+ * - Full charge target: 100% (resumes mowing)
+ *
+ * Movement control:
+ * - Variable speed: 0.8-1.2 m/s per robot
+ * - Smooth direction transitions
+ * - Waypoint-based pathfinding
+ * - Position accuracy: 0.1m threshold
+ *
+ * Initialization sequence:
+ * - Generate docking stations (1 per robot)
+ * - Create robots with assigned courts
+ * - Generate stripe-pattern mowing paths
+ * - Stagger start times (2s intervals)
+ * - Begin autonomous operation
+ *
+ * Performance characteristics:
+ * - Real-time state updates (60 FPS)
+ * - Efficient collision-free operation
+ * - Coordinated multi-robot scheduling
+ * - Minimal CPU overhead per robot
+ *
+ * @param props - System configuration options
+ *
+ * @example
+ * ```tsx
+ * // Standard configuration for 6 grass courts
+ * <RoboticGrassSystem
+ *   position={[0, 0, 0]}
+ *   robotCount={6}
+ *   showPaths={false}
+ *   showStatus={true}
+ * />
+ *
+ * // Debug mode with path visualization
+ * <RoboticGrassSystem
+ *   robotCount={3}
+ *   showPaths={true}
+ *   showStatus={true}
+ * />
+ * ```
  */
 const RoboticGrassSystem: React.FC<RoboticGrassSystemProps> = ({
   position = [0, 0, 0],

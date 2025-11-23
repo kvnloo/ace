@@ -19,7 +19,13 @@
     "test:e2e:report": "playwright show-report tests/e2e/reports/html",
     "test:e2e:chromium": "playwright test --project=chromium",
     "test:e2e:firefox": "playwright test --project=firefox",
-    "test:e2e:webkit": "playwright test --project=webkit"
+    "test:e2e:webkit": "playwright test --project=webkit",
+    "test:e2e:visual": "playwright test tests/e2e/visual --project=visual-regression",
+    "test:e2e:visual:update": "playwright test tests/e2e/visual --project=visual-regression --update-snapshots",
+    "test:e2e:visual:headed": "playwright test tests/e2e/visual --project=visual-regression --headed",
+    "test:e2e:performance": "playwright test tests/e2e/performance --project=chromium",
+    "test:e2e:performance:headed": "playwright test tests/e2e/performance --project=chromium --headed",
+    "test:perf:report": "npx tsx scripts/generate-performance-report.ts"
   },
   "dependencies": {
     "@google/genai": "^1.30.0",
