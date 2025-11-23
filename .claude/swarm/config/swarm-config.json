@@ -1,0 +1,38 @@
+{
+  "swarm_id": "ace-facility-audit",
+  "topology": "adaptive",
+  "max_agents": 20,
+  "current_agents": 12,
+  "coordination_mode": "hybrid",
+  "memory_sharing": true,
+  "mission": "Comprehensive facility inventory, implementation mapping, and industrial architect-style construction planning",
+  "phases": {
+    "phase_1": "Infrastructure Setup",
+    "phase_2": "Parallel Inventory Analysis (12 agents)",
+    "phase_3": "Industrial Architect Prioritization",
+    "phase_4": "Tracking Workflow System",
+    "phase_5": "Master Deliverables"
+  },
+  "agents": {
+    "documentation_swarm": [
+      "facility-doc-analyst",
+      "dev-doc-analyst",
+      "story-analyst",
+      "spec-reconciler"
+    ],
+    "code_swarm": [
+      "component-inventory",
+      "feature-mapper",
+      "dependency-analyzer",
+      "completion-validator"
+    ],
+    "planning_swarm": [
+      "architect-coordinator",
+      "priority-strategist",
+      "gap-analyzer",
+      "workflow-designer"
+    ]
+  },
+  "status": "initializing",
+  "started_at": "2025-11-22T00:00:00Z"
+}
