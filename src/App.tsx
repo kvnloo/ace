@@ -257,7 +257,7 @@ const App: React.FC = () => {
                   {show3DLoading && (
                     <LoadingScreen
                       onComplete={() => setShow3DLoading(false)}
-                      minimumDisplayTime={2000}
+                      minimumDisplayTime={3000}
                       showFPSMonitor={true}
                     />
                   )}

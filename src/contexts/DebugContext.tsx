@@ -11,7 +11,7 @@ export interface DebugAsset {
   name: string;
 
   /** Asset category for grouping */
-  type: 'court' | 'grass' | 'lighting' | 'weather' | 'effects' | 'ui' | 'building' | 'character' | 'physics';
+  type: 'grass' | 'lighting' | 'characters' | 'buildings' | 'environment' | 'effects' | 'other';
 
   /** Whether asset is enabled (rendered) */
   enabled: boolean;
@@ -49,16 +49,13 @@ interface DebugContextValue {
   setAssetsByType: (type: DebugAsset['type'], enabled: boolean) => void;
 }
 
-// Export the context type for use in other components
-export type DebugContext = DebugContextValue;
-
-const DebugContextInternal = createContext<DebugContextValue | null>(null);
+const DebugContext = createContext<DebugContextValue | null>(null);
 
 /**
  * Hook to access debug context
  */
 export const useDebug = () => {
-  const context = useContext(DebugContextInternal);
+  const context = useContext(DebugContext);
   if (!context) {
     throw new Error('useDebug must be used within DebugProvider');
   }
@@ -167,8 +164,8 @@ export const DebugProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   return (
-    <DebugContextInternal.Provider value={value}>
+    <DebugContext.Provider value={value}>
       {children}
-    </DebugContextInternal.Provider>
+    </DebugContext.Provider>
   );
 };

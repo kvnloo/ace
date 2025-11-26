@@ -1,10 +1,15 @@
 
-import React, { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import React, { useState, useEffect, useRef, useMemo, lazy, Suspense, useCallback } from 'react';
+import { Canvas, useFrame, useThree, invalidate } from '@react-three/fiber';
 import { useLoading } from './loading/LoadingProvider';
 
-// Lazy load heavy components
-const TennisCourt = lazy(() => import('./TennisCourt'));
+// Lazy load heavy components for better initial bundle size and performance
+const InstancedTennisCourts = lazy(() => import('./InstancedTennisCourts'));
+const InstancedTennisCourtsFull = lazy(() => import('./InstancedTennisCourtsFull'));
+const InstancedBadmintonCourts = lazy(() => import('./InstancedBadmintonCourts'));
+const InstancedPickleballCourts = lazy(() => import('./InstancedPickleballCourts'));
+const InstancedFarmRacks = lazy(() => import('./InstancedFarmRacks'));
+const InstancedTrees = lazy(() => import('./InstancedTrees'));
 import {
     PerformanceMonitor,
     OrbitControls,
@@ -15,7 +20,6 @@ import {
     Text,
     useCursor,
     ContactShadows,
-    Float,
     Line
 } from '@react-three/drei';
 import * as THREE from 'three';
@@ -175,33 +179,47 @@ interface MarkerProps {
     visible: boolean;
 }
 
+// Shared marker geometry and materials - created once, reused
+const markerSphereGeometry = new THREE.SphereGeometry(1.5, 16, 16); // Reduced segments
+const markerRingGeometry = new THREE.RingGeometry(1.6, 2, 16); // Reduced segments
+
 const Marker: React.FC<MarkerProps> = ({ position, title, onClick, isSelected, visible }) => {
     const [hovered, setHover] = useState(false);
     useCursor(hovered);
+
+    // Memoize material to prevent recreation
+    const sphereMaterial = useMemo(() => new THREE.MeshStandardMaterial({
+        color: isSelected || hovered ? BRAND_YELLOW : "#ffffff",
+        emissive: isSelected ? BRAND_YELLOW : "#000",
+        emissiveIntensity: 0.8,
+        toneMapped: false
+    }), [isSelected, hovered]);
+
+    const ringMaterial = useMemo(() => new THREE.MeshBasicMaterial({
+        color: isSelected ? BRAND_YELLOW : "#FFF",
+        transparent: true,
+        opacity: 0.3,
+        side: THREE.DoubleSide
+    }), [isSelected]);
 
     if (!visible) return null;
 
     return (
         <group position={position}>
-            <Float speed={2} rotationIntensity={0} floatIntensity={1}>
-                <mesh
-                    onClick={(e) => { e.stopPropagation(); onClick(); }}
-                    onPointerOver={() => setHover(true)}
-                    onPointerOut={() => setHover(false)}
-                >
-                    <sphereGeometry args={[1.5, 32, 32]} />
-                    <meshStandardMaterial
-                        color={isSelected || hovered ? BRAND_YELLOW : "#ffffff"}
-                        emissive={isSelected ? BRAND_YELLOW : "#000"}
-                        emissiveIntensity={0.8}
-                        toneMapped={false}
-                    />
-                </mesh>
-            </Float>
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]}>
-                <ringGeometry args={[1.6, 2, 32]} />
-                <meshBasicMaterial color={isSelected ? BRAND_YELLOW : "#FFF"} transparent opacity={0.3} side={THREE.DoubleSide} />
-            </mesh>
+            {/* Removed Float wrapper - saves animation overhead */}
+            <mesh
+                onClick={(e) => { e.stopPropagation(); onClick(); }}
+                onPointerOver={() => setHover(true)}
+                onPointerOut={() => setHover(false)}
+                geometry={markerSphereGeometry}
+                material={sphereMaterial}
+            />
+            <mesh
+                rotation={[-Math.PI / 2, 0, 0]}
+                position={[0, -2, 0]}
+                geometry={markerRingGeometry}
+                material={ringMaterial}
+            />
             <Html distanceFactor={80} zIndexRange={[100, 0]} style={{ pointerEvents: 'none' }}>
                 <div
                     className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-300 flex items-center gap-2 ${isSelected ? 'bg-tennis-yellow text-black scale-110 shadow-[0_0_20px_rgba(223,255,79,0.6)]' : 'bg-slate-900/80 text-white backdrop-blur-md border border-white/20'}`}
@@ -432,34 +450,7 @@ const RealTennisCourt: React.FC<{ position: [number, number, number] }> = ({ pos
     </group>
 );
 
-const FarmRack: React.FC<{ position: [number, number, number] }> = ({ position }) => (
-    <group position={position}>
-        <mesh position={[0, 2, 0]}>
-            <boxGeometry args={[30, 4, 10]} />
-            <meshStandardMaterial color="#334155" wireframe />
-        </mesh>
-        {[0.5, 1.5, 2.5, 3.5].map((y, i) => (
-            <mesh key={i} position={[0, y, 0]}>
-                <boxGeometry args={[29, 0.2, 9]} />
-                <meshStandardMaterial color="#22c55e" />
-            </mesh>
-        ))}
-        <pointLight position={[0, 4, 0]} color="#a855f7" intensity={2} distance={15} />
-    </group>
-)
-
-const Tree: React.FC<{ position: [number, number, number] }> = ({ position }) => (
-    <group position={position}>
-        <mesh position={[0, 2, 0]}>
-            <cylinderGeometry args={[0.2, 0.5, 4]} />
-            <meshStandardMaterial color="#78350f" />
-        </mesh>
-        <mesh position={[0, 4, 0]}>
-            <dodecahedronGeometry args={[2]} />
-            <meshStandardMaterial color="#15803d" roughness={0.8} />
-        </mesh>
-    </group>
-)
+// Removed individual FarmRack and Tree components - now using instanced versions
 
 // --- Decorative Architecture ---
 
@@ -550,23 +541,23 @@ const GreenWallBlock: React.FC<{ position: [number, number, number], args: [numb
 // --- Floor Layouts ---
 
 const GroundFloor = ({ active, showMeasurements, showLabels }: { active: boolean, showMeasurements: boolean, showLabels: boolean }) => {
-    const courts = [];
-    for (let i = 0; i < 24; i++) {
-        let type: 'hard' | 'clay' | 'grass' | 'wood' = 'hard';
-        if (i >= 6 && i < 12) type = 'clay';
-        if (i >= 12 && i < 18) type = 'grass';
-        if (i >= 18) type = 'wood';
-        const row = Math.floor(i / 6);
-        const col = i % 6;
-        courts.push(
-            <Suspense key={i} fallback={null}>
-                <TennisCourt
-                    type={type}
-                    position={[-35 + col * 14, 0.1, -40 + row * 26]}
-                />
-            </Suspense>
-        );
-    }
+    // Pre-compute court configurations for instanced rendering
+    const courtConfigs = useMemo(() => {
+        const configs: Array<{ position: [number, number, number]; type: 'hard' | 'clay' | 'grass' | 'wood' }> = [];
+        for (let i = 0; i < 24; i++) {
+            let type: 'hard' | 'clay' | 'grass' | 'wood' = 'hard';
+            if (i >= 6 && i < 12) type = 'clay';
+            if (i >= 12 && i < 18) type = 'grass';
+            if (i >= 18) type = 'wood';
+            const row = Math.floor(i / 6);
+            const col = i % 6;
+            configs.push({
+                type,
+                position: [-35 + col * 14, 0.1, -40 + row * 26]
+            });
+        }
+        return configs;
+    }, []);
 
     // Row Configuration for Dimensions
     const rowConfigs = [
@@ -585,7 +576,10 @@ const GroundFloor = ({ active, showMeasurements, showLabels }: { active: boolean
                 isActiveFloor={active}
                 showMeasurements={showMeasurements}
             />
-            {courts}
+            {/* Use instanced tennis courts for massive performance gain */}
+            <Suspense fallback={null}>
+                <InstancedTennisCourtsFull courts={courtConfigs} enableEffects={true} />
+            </Suspense>
             {/* Pro Shop Area */}
             <mesh position={[0, 3, 55]} castShadow>
                 <boxGeometry args={[20, 6, 8]} />
@@ -639,6 +633,19 @@ const GroundFloor = ({ active, showMeasurements, showLabels }: { active: boolean
     )
 }
 
+// Pre-compute badminton court positions for instancing
+const badmintonCourtConfigs: Array<{ position: [number, number, number] }> = Array.from({ length: 16 }).map((_, i) => ({
+    position: [-40 + (i % 4) * 8, 0.1, -30 + Math.floor(i / 4) * 16]
+}));
+
+// Shared geometry for table tennis tables
+const tableTennisGeometry = new THREE.PlaneGeometry(1.5, 2.7);
+const tableTennisMaterial = new THREE.MeshStandardMaterial({ color: '#1e3a8a' });
+
+// Shared geometry for squash courts
+const squashGeometry = new THREE.BoxGeometry(6, 4, 9);
+const squashMaterial = new THREE.MeshPhysicalMaterial({ transmission: 0.6, roughness: 0.1, thickness: 0.5, color: '#fff' });
+
 const LevelOne = ({ active, showMeasurements }: { active: boolean, showMeasurements: boolean }) => {
     return (
         <group position={[0, FLOOR_HEIGHT, 0]}>
@@ -649,22 +656,34 @@ const LevelOne = ({ active, showMeasurements }: { active: boolean, showMeasureme
                 isActiveFloor={active}
                 showMeasurements={showMeasurements}
             />
-            {Array.from({ length: 16 }).map((_, i) => (
-                <BadmintonCourt key={`b${i}`} position={[-40 + (i % 4) * 8, 0.1, -30 + Math.floor(i / 4) * 16]} />
-            ))}
+            {/* Instanced badminton courts - 16 courts in 4 draw calls */}
+            <Suspense fallback={null}>
+                <InstancedBadmintonCourts courts={badmintonCourtConfigs} />
+            </Suspense>
+            {/* Squash courts - using shared geometry/material */}
             {Array.from({ length: 4 }).map((_, i) => (
                 <group key={`s${i}`} position={[0, 2, -20 + i * 12]}>
-                    <mesh><boxGeometry args={[6, 4, 9]} /><meshPhysicalMaterial transmission={0.6} roughness={0.1} thickness={0.5} color="#fff" /></mesh>
+                    <mesh geometry={squashGeometry} material={squashMaterial} />
                 </group>
             ))}
+            {/* Table tennis tables - using shared geometry/material */}
             {Array.from({ length: 16 }).map((_, i) => (
-                <group key={`tt${i}`} position={[35 + (i % 4) * 5, 0.8, -30 + Math.floor(i / 4) * 10]}>
-                    <mesh rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[1.5, 2.7]} /><meshStandardMaterial color="#1e3a8a" /></mesh>
-                </group>
+                <mesh
+                    key={`tt${i}`}
+                    position={[35 + (i % 4) * 5, 0.8, -30 + Math.floor(i / 4) * 10]}
+                    rotation={[-Math.PI / 2, 0, 0]}
+                    geometry={tableTennisGeometry}
+                    material={tableTennisMaterial}
+                />
             ))}
         </group>
     )
 }
+
+// Pre-compute pickleball court configurations for instancing
+const pickleballCourtConfigs: Array<{ position: [number, number, number] }> = Array.from({ length: 8 }).map((_, i) => ({
+    position: [-25 + (i % 4) * 10, 0.1, -15 + Math.floor(i / 4) * 16]
+}));
 
 const LevelTwo = ({ active, showMeasurements }: { active: boolean, showMeasurements: boolean }) => {
     return (
@@ -676,16 +695,19 @@ const LevelTwo = ({ active, showMeasurements }: { active: boolean, showMeasureme
                 isActiveFloor={active}
                 showMeasurements={showMeasurements}
             />
-            {Array.from({ length: 8 }).map((_, i) => (
-                <group key={`p${i}`} position={[-25 + (i % 4) * 10, 0.1, -15 + Math.floor(i / 4) * 16]}>
-                    <mesh rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[6, 12]} /><meshStandardMaterial color="#8b5cf6" /></mesh>
-                    <Net width={6} />
-                </group>
-            ))}
+            {/* Use instanced pickleball courts for performance */}
+            <Suspense fallback={null}>
+                <InstancedPickleballCourts courts={pickleballCourtConfigs} />
+            </Suspense>
             <RealTennisCourt position={[30, 0.1, 0]} />
         </group>
     )
 }
+
+// Pre-compute farm rack configurations for instancing
+const farmRackConfigs: Array<{ position: [number, number, number] }> = Array.from({ length: 4 }).map((_, i) => ({
+    position: [-30 + (i % 2) * 60, 0, -20 + Math.floor(i / 2) * 40]
+}));
 
 const LevelThree = ({ active, showMeasurements }: { active: boolean, showMeasurements: boolean }) => {
     return (
@@ -697,9 +719,10 @@ const LevelThree = ({ active, showMeasurements }: { active: boolean, showMeasure
                 isActiveFloor={active}
                 showMeasurements={showMeasurements}
             />
-            {Array.from({ length: 4 }).map((_, i) => (
-                <FarmRack key={`f${i}`} position={[-30 + (i % 2) * 60, 0, -20 + Math.floor(i / 2) * 40]} />
-            ))}
+            {/* Use instanced farm racks for performance */}
+            <Suspense fallback={null}>
+                <InstancedFarmRacks racks={farmRackConfigs} />
+            </Suspense>
             {/* External Green Facades attached to this level */}
             <GreenWallBlock position={[-60, 10, 0]} args={[2, 18, 80]} />
             <GreenWallBlock position={[60, 10, 0]} args={[2, 18, 80]} />
@@ -749,34 +772,39 @@ const BuildingShell = ({ activeFloor }: { activeFloor: FloorLevel }) => {
 
 // --- Outdoor Environment ---
 
+// Pre-compute outdoor court configs and tree positions once
+const outdoorCourtConfigs: Array<{ position: [number, number, number]; type: 'hard' | 'clay' | 'grass' | 'wood' }> = [
+    { position: [90, 0.2, 50], type: 'clay' },
+    { position: [105, 0.2, 50], type: 'hard' },
+    { position: [120, 0.2, 50], type: 'grass' }
+];
+
+// Pre-compute tree positions (avoid Math.random in render)
+const treePositions: [number, number, number][] = Array.from({ length: 15 }).map((_, i) => {
+    const angle = (i / 15) * Math.PI * 2;
+    const r = 110 + (i * 1.3) % 20; // Deterministic pseudo-random
+    return [Math.cos(angle) * r, 0, Math.sin(angle) * r];
+});
+
+// Shared geometry for plaza
+const plazaGeometry = new THREE.PlaneGeometry(300, 300);
+const plazaMaterial = new THREE.MeshStandardMaterial({ color: '#e2e8f0', roughness: 0.8 });
+
 const CampusGrounds = () => {
     return (
         <group position={[0, -0.1, 0]}>
-            {/* Main Plaza Pavement */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-                <planeGeometry args={[300, 300]} />
-                <meshStandardMaterial color="#e2e8f0" roughness={0.8} />
-            </mesh>
+            {/* Main Plaza Pavement - use shared geometry/material */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow geometry={plazaGeometry} material={plazaMaterial} />
 
-            {/* Outdoor Courts Feature (from image reference) */}
-            <group position={[90, 0.2, 50]}>
-                <Suspense fallback={null}>
-                    <TennisCourt position={[0, 0, 0]} type="clay" id="court-clay-1" />
-                </Suspense>
-                <Suspense fallback={null}>
-                    <TennisCourt position={[15, 0, 0]} type="hard" id="court-hard-1" />
-                </Suspense>
-                <Suspense fallback={null}>
-                    <TennisCourt position={[30, 0, 0]} type="grass" id="court-grass-1" />
-                </Suspense>
-            </group>
+            {/* Outdoor Courts - use instanced rendering */}
+            <Suspense fallback={null}>
+                <InstancedTennisCourts courts={outdoorCourtConfigs} />
+            </Suspense>
 
-            {/* Trees & Landscaping */}
-            {Array.from({ length: 15 }).map((_, i) => {
-                const angle = (i / 15) * Math.PI * 2;
-                const r = 110 + Math.random() * 20;
-                return <Tree key={i} position={[Math.cos(angle) * r, 0, Math.sin(angle) * r]} />
-            })}
+            {/* Trees & Landscaping - use instanced rendering */}
+            <Suspense fallback={null}>
+                <InstancedTrees trees={treePositions.map(pos => ({ position: pos }))} />
+            </Suspense>
         </group>
     )
 }
@@ -878,15 +906,31 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect, shadowQuality:
             >
                 <PerformanceMonitor
                     onIncline={() => {
-                        console.log('Performance improving');
-                        setPerformanceMode('high');
+                        console.log('Performance improving - upgrading quality');
+                        setPerformanceMode(prev => {
+                            if (prev === 'low') return 'medium';
+                            if (prev === 'medium') return 'high';
+                            return prev;
+                        });
                     }}
                     onDecline={() => {
-                        console.log('Performance declining');
-                        setPerformanceMode(prev => prev === 'high' ? 'medium' : 'low');
+                        console.log('Performance declining - reducing quality');
+                        setPerformanceMode(prev => {
+                            if (prev === 'high') {
+                                setShadowQuality('medium');
+                                return 'medium';
+                            }
+                            if (prev === 'medium') {
+                                setShadowQuality('low');
+                                return 'low';
+                            }
+                            return prev;
+                        });
                     }}
                     flipflops={3}
-                    factor={1}
+                    factor={0.9}
+                    fps={45}
+                    ms={22}
                 >
                 <CameraRig activeFloor={activeFloor} controlsRef={controlsRef} isAnimatingRef={isAnimatingRef} />
                 <PerspectiveCamera makeDefault fov={40} />
@@ -897,12 +941,14 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect, shadowQuality:
                     intensity={2}
                     castShadow={shadowQuality !== 'low'}
                     shadow-mapSize={
-                        shadowQuality === 'high' ? [2048, 2048] :
-                            shadowQuality === 'medium' ? [1024, 1024] :
-                                [512, 512]
+                        shadowQuality === 'high' ? [512, 512] :
+                            shadowQuality === 'medium' ? [256, 256] :
+                                [256, 256]
                     }
+                    shadow-camera-near={50}
+                    shadow-camera-far={300}
                 >
-                    <orthographicCamera attach="shadow-camera" args={[-150, 150, 150, -150]} />
+                    <orthographicCamera attach="shadow-camera" args={[-100, 100, 100, -100, 50, 300]} />
                 </directionalLight>
                 <Environment preset="park" />
 

@@ -1,7 +1,19 @@
 import React, { useRef, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { useDebug } from '../contexts/DebugContext';
+
+// Safe debug hook - works without DebugContext
+const useSafeDebug = () => {
+  try {
+    const { useDebug } = require('../contexts/DebugContext');
+    return useDebug();
+  } catch {
+    return {
+      registerAsset: () => {},
+      isAssetEnabled: () => true
+    };
+  }
+};
 
 interface ClayCourtEffectProps {
   position: [number, number, number];
@@ -23,7 +35,7 @@ const ClayCourtEffect: React.FC<ClayCourtEffectProps> = ({
   width = 10,
   length = 22
 }) => {
-  const { registerAsset, isAssetEnabled } = useDebug();
+  const { registerAsset, isAssetEnabled } = useSafeDebug();
   const particlesRef = useRef<THREE.Points>(null);
   const textureRef = useRef<THREE.CanvasTexture | null>(null);
   const normalMapRef = useRef<THREE.CanvasTexture | null>(null);
