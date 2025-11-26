@@ -1,6 +1,6 @@
 # ACE Tennis Facility Documentation
 
-Welcome to the ACE (Advanced Tennis Facility) documentation. This documentation covers the 3D visualization system for a state-of-the-art tennis facility.
+Welcome to the ACE (Advanced Tennis Facility) documentation. This documentation covers the 3D visualization system for a state-of-the-art tennis facility, with a vision toward APEX health optimization.
 
 ## Quick Start
 
@@ -8,6 +8,10 @@ Welcome to the ACE (Advanced Tennis Facility) documentation. This documentation 
 1. Start with [Architecture Overview](architecture/CORE_ARCHITECTURE.md)
 2. Review [Implemented Features](features/IMPLEMENTED_FEATURES.md)
 3. Follow [Implementation Guide](implementation/GRASS_AND_TERRAIN.md)
+
+**For strategic vision:**
+- [APEX Vision](concepts/APEX_VISION.md) - Health optimization facility concept
+- [Strategic Roadmap](planning/STRATEGIC_ROADMAP.md) - 26-week development plan
 
 **For testing and quality:**
 - [Testing Guide](testing/TESTING_GUIDE.md)
@@ -22,6 +26,16 @@ Welcome to the ACE (Advanced Tennis Facility) documentation. This documentation 
 Core system architecture and design decisions:
 - `architecture/CORE_ARCHITECTURE.md` - System architecture, coordinate systems, rendering pipeline
 
+### 💡 Concepts
+Strategic vision and future direction:
+- `concepts/APEX_VISION.md` - APEX health optimization facility vision (ACE → APEX transformation)
+
+### 📋 Planning
+Development roadmap and feature planning:
+- `planning/STRATEGIC_ROADMAP.md` - 26-week, 5-phase development plan
+- `planning/FEATURE_INVENTORY.md` - Complete component inventory (45+ components, 300+ 3D objects)
+- `planning/PLANNED_FEATURES.md` - Feature backlog with prioritization
+
 ### ⚙️ Implementation
 How-to guides for implementing features:
 - `implementation/GRASS_AND_TERRAIN.md` - Grass rendering, clay courts, texture systems
@@ -29,7 +43,17 @@ How-to guides for implementing features:
 ### 🎨 Features
 Feature documentation and roadmaps:
 - `features/IMPLEMENTED_FEATURES.md` - Complete list of implemented features
-- Feature-specific documentation in subdirectories
+- `features/cea-facility/` - CEA (Controlled Environment Agriculture) facility
+  - `CEA_IMPROVEMENT_PLAN.md` - Level 3 vertical farming improvements
+  - `HYDROPONICS_SYSTEM.md` - Technical specs for 16-tower hydroponics system
+- `features/lighting-system/` - Dynamic lighting implementation
+- `features/heatmap-system/` - Court usage visualization
+- `features/weather-system/` - Environmental effects
+- `features/character-system/` - Player animations
+
+### 📖 Stories
+User stories and acceptance criteria:
+- `stories/USER_STORIES.md` - 20 user stories across 2 epics (Infrastructure, Autonomous Systems)
 
 ### 🧪 Testing
 Testing strategies and test documentation:
@@ -42,6 +66,11 @@ Performance monitoring and optimization:
 ### 🚀 Workflows
 Deployment and operational procedures:
 - `workflows/DEPLOYMENT_GUIDE.md` - Build, deploy, and rollback procedures
+- `workflows/MERGE_PLAN_*.md` - Branch merge documentation
+
+### 🔬 Research
+External research and specifications:
+- `research/sports-facilities/` - HVAC, lighting, accessibility standards
 
 ### 📦 Archive
 Historical documentation and deprecated features (preserved for reference)
@@ -154,6 +183,15 @@ For questions or issues:
 - Contact development team
 
 ## Recent Updates
+
+**2025-11-26**: Documentation consolidation from claudedocs-old
+- Added APEX Vision document (`concepts/APEX_VISION.md`)
+- Added Strategic Roadmap (`planning/STRATEGIC_ROADMAP.md`)
+- Added Feature Inventory (`planning/FEATURE_INVENTORY.md`)
+- Added Planned Features backlog (`planning/PLANNED_FEATURES.md`)
+- Added Hydroponics System specs (`features/cea-facility/HYDROPONICS_SYSTEM.md`)
+- Added User Stories (`stories/USER_STORIES.md`) - 20 stories across 2 epics
+- Updated README with new structure
 
 **2025-11-26**: Major documentation reorganization
 - Consolidated 107 files into streamlined structure
