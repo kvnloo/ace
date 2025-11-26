@@ -29,6 +29,7 @@ interface LoadingContextValue {
   currentPhase: string;
   startLoading: () => Promise<void>;
   cancelLoading: () => void;
+  reportProgress: (loaded: number, total: number, currentAsset?: string) => void;
 }
 
 const LoadingContext = createContext<LoadingContextValue | null>(null);
@@ -181,6 +182,31 @@ export const LoadingProvider: React.FC<LoadingProviderProps> = ({
     }
   };
 
+  const reportProgress = useCallback((loaded: number, total: number, currentAsset?: string) => {
+    // Update overall progress based on loaded/total ratio
+    const progress = total > 0 ? Math.round((loaded / total) * 100) : 0;
+    setOverallProgress(progress);
+    setLoadedCount(loaded);
+    setTotalCount(total);
+
+    // If currentAsset is provided, mark matching assets as loaded
+    if (currentAsset) {
+      setAssets(prevAssets => {
+        return prevAssets.map(asset => {
+          // Check if asset URL/path matches the current asset being loaded
+          if (asset.id === currentAsset || asset.name === currentAsset) {
+            return {
+              ...asset,
+              loaded: true,
+              progress: 100,
+            };
+          }
+          return asset;
+        });
+      });
+    }
+  }, []);
+
   const value: LoadingContextValue = {
     assets,
     overallProgress,
@@ -191,6 +217,7 @@ export const LoadingProvider: React.FC<LoadingProviderProps> = ({
     currentPhase,
     startLoading: () => startLoading(),
     cancelLoading,
+    reportProgress,
   };
 
   return (

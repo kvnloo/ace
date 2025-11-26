@@ -27,14 +27,20 @@ interface FPSMonitorProps {
   onTransitionComplete?: () => void;
   onFpsLevelChange?: (level: FPSLevel) => void;
   className?: string;
+  /** When true, throttles updates to reduce main thread pressure during asset loading */
+  isLoading?: boolean;
 }
+
+// Throttle interval during loading (ms) - reduces main thread pressure
+const LOADING_THROTTLE_INTERVAL = 500;
 
 const FPSMonitor: React.FC<FPSMonitorProps> = ({
   showFPSMonitor = true,
   mode = 'embedded',
   onTransitionComplete,
   onFpsLevelChange,
-  className = ''
+  className = '',
+  isLoading = false
 }) => {
   // State copied from LoadingScreen
   const [fpsData, setFpsData] = useState<FPSData>({
@@ -57,13 +63,16 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
   };
 
   // FPS Monitoring using global PerformanceTracker
+  // When isLoading=true, throttle updates to reduce main thread pressure
   useEffect(() => {
     if (!showFPSMonitor) return;
 
     const tracker = getPerformanceTracker();
     let animationFrameId: number;
+    let intervalId: NodeJS.Timeout | null = null;
+    let lastUpdateTime = 0;
 
-    const updateFPS = () => {
+    const performUpdate = () => {
       const fps = tracker.trackFPS();
       const avgFPS = tracker.getAverageFPS(5); // 5 second average
 
@@ -92,16 +101,31 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
 
       // Update FPS level state
       setFpsLevel(level);
-
-      animationFrameId = requestAnimationFrame(updateFPS);
     };
 
-    animationFrameId = requestAnimationFrame(updateFPS);
+    if (isLoading) {
+      // During loading: use setInterval to reduce main thread pressure
+      // This prevents the FPS monitor from competing with THREE.js for CPU time
+      performUpdate(); // Initial update
+      intervalId = setInterval(performUpdate, LOADING_THROTTLE_INTERVAL);
+    } else {
+      // Normal mode: use requestAnimationFrame for smooth updates
+      const updateFPS = () => {
+        performUpdate();
+        animationFrameId = requestAnimationFrame(updateFPS);
+      };
+      animationFrameId = requestAnimationFrame(updateFPS);
+    }
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
     };
-  }, [showFPSMonitor]);
+  }, [showFPSMonitor, isLoading]);
 
   // Notify parent of FPS level changes (in separate effect to avoid setState during render)
   const prevFpsLevelRef = useRef<FPSLevel | null>(null);

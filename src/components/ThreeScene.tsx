@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { useLoading } from './loading/LoadingProvider';
 
 // Lazy load heavy components
 const TennisCourt = lazy(() => import('./TennisCourt'));
@@ -796,6 +797,42 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect, shadowQuality:
     const [annotationMode, setAnnotationMode] = useState<AnnotationMode>('LABELS');
     const controlsRef = useRef<any>(null);
     const isAnimatingRef = useRef(false);
+    const { reportProgress } = useLoading();
+
+    // Configure THREE.DefaultLoadingManager to report progress
+    useEffect(() => {
+        let totalItems = 0;
+        let loadedItems = 0;
+
+        THREE.DefaultLoadingManager.onStart = (url, itemsLoaded, itemsTotal) => {
+            totalItems = itemsTotal;
+            loadedItems = itemsLoaded;
+        };
+
+        THREE.DefaultLoadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+            loadedItems = itemsLoaded;
+            totalItems = itemsTotal;
+            // Report progress with correct signature: (loaded, total, currentAsset?)
+            reportProgress(itemsLoaded, itemsTotal, url);
+        };
+
+        THREE.DefaultLoadingManager.onLoad = () => {
+            // Report 100% complete with correct signature
+            reportProgress(totalItems, totalItems);
+        };
+
+        THREE.DefaultLoadingManager.onError = (url) => {
+            console.error('Error loading:', url);
+        };
+
+        return () => {
+            // Reset handlers on unmount
+            THREE.DefaultLoadingManager.onStart = () => {};
+            THREE.DefaultLoadingManager.onProgress = () => {};
+            THREE.DefaultLoadingManager.onLoad = () => {};
+            THREE.DefaultLoadingManager.onError = () => {};
+        };
+    }, [reportProgress]);
 
     const handleSelect = (feature: FeatureData) => {
         setSelectedId(feature.id);

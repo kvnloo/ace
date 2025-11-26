@@ -263,11 +263,13 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
           </div>
 
           {/* FPS Monitor - hidden when transitioning (GlobalFPSMonitor takes over) */}
+          {/* isLoading=true throttles updates to reduce main thread pressure during asset loading */}
           {showFPSMonitor && !fpsMonitorTransitioning && (
             <FPSMonitor
               mode="embedded"
               className="mb-4 pb-4 border-b border-white/10"
               onFpsLevelChange={handleFpsLevelChange}
+              isLoading={true}
             />
           )}
 

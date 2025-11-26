@@ -158,7 +158,7 @@
       "specs": [
         {
           "title": "FPS monitor positioned bottom-right above AI chat",
-          "ok": false,
+          "ok": true,
           "tags": [],
           "tests": [
             {
@@ -171,53 +171,28 @@
                 {
                   "workerIndex": 0,
                   "parallelIndex": 0,
-                  "status": "failed",
-                  "duration": 197,
-                  "error": {
-                    "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/\", waiting until \"load\"\u001b[22m\n",
-                    "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/\", waiting until \"load\"\u001b[22m\n\n    at /home/kvn/workspace/evolve/repos/ace/worktrees/ace-3Dmerge/tests/e2e/fps-bottom-right-verify.spec.ts:4:14",
-                    "location": {
-                      "file": "/home/kvn/workspace/evolve/repos/ace/worktrees/ace-3Dmerge/tests/e2e/fps-bottom-right-verify.spec.ts",
-                      "column": 14,
-                      "line": 4
-                    },
-                    "snippet": "  2 |\n  3 | test('FPS monitor positioned bottom-right above AI chat', async ({ page }) => {\n> 4 |   await page.goto('http://localhost:5173/');\n    |              ^\n  5 |\n  6 |   // Wait for app to fully load\n  7 |   await page.waitForLoadState('networkidle');"
-                  },
-                  "errors": [
+                  "status": "passed",
+                  "duration": 9564,
+                  "errors": [],
+                  "stdout": [
                     {
-                      "location": {
-                        "file": "/home/kvn/workspace/evolve/repos/ace/worktrees/ace-3Dmerge/tests/e2e/fps-bottom-right-verify.spec.ts",
-                        "column": 14,
-                        "line": 4
-                      },
-                      "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/\", waiting until \"load\"\u001b[22m\n\n\n  2 |\n  3 | test('FPS monitor positioned bottom-right above AI chat', async ({ page }) => {\n> 4 |   await page.goto('http://localhost:5173/');\n    |              ^\n  5 |\n  6 |   // Wait for app to fully load\n  7 |   await page.waitForLoadState('networkidle');\n    at /home/kvn/workspace/evolve/repos/ace/worktrees/ace-3Dmerge/tests/e2e/fps-bottom-right-verify.spec.ts:4:14"
+                      "text": "Loading screen dismissed\n"
+                    },
+                    {
+                      "text": "FPS Meter found: NO\n"
+                    },
+                    {
+                      "text": "Taking full page screenshot for manual verification\n"
                     }
                   ],
-                  "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-11-26T02:49:28.717Z",
+                  "startTime": "2025-11-26T02:53:20.403Z",
                   "annotations": [],
-                  "attachments": [
-                    {
-                      "name": "screenshot",
-                      "contentType": "image/png",
-                      "path": "/home/kvn/workspace/evolve/repos/ace/worktrees/ace-3Dmerge/test-results/fps-bottom-right-verify-FP-2d13f--bottom-right-above-AI-chat-chromium/test-failed-1.png"
-                    },
-                    {
-                      "name": "video",
-                      "contentType": "video/webm",
-                      "path": "/home/kvn/workspace/evolve/repos/ace/worktrees/ace-3Dmerge/test-results/fps-bottom-right-verify-FP-2d13f--bottom-right-above-AI-chat-chromium/video.webm"
-                    }
-                  ],
-                  "errorLocation": {
-                    "file": "/home/kvn/workspace/evolve/repos/ace/worktrees/ace-3Dmerge/tests/e2e/fps-bottom-right-verify.spec.ts",
-                    "column": 14,
-                    "line": 4
-                  }
+                  "attachments": []
                 }
               ],
-              "status": "unexpected"
+              "status": "expected"
             }
           ],
           "id": "038cb9bbf58374794931-6f14319936a146e87e96",
@@ -230,11 +205,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-26T02:49:28.077Z",
-    "duration": 928.9739999999999,
-    "expected": 0,
+    "startTime": "2025-11-26T02:53:19.719Z",
+    "duration": 10343.609,
+    "expected": 1,
     "skipped": 0,
-    "unexpected": 1,
+    "unexpected": 0,
     "flaky": 0
   }
 }
