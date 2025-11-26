@@ -76,7 +76,6 @@ claudedocs/
 | `GETTING_STARTED.md` | Onboarding guide |
 | `STRUCTURE_SPECIFICATION.md` | Documentation taxonomy specification |
 | `QUICK_REFERENCE.md` | Quick reference card |
-| `README_OLD.md` | Legacy README (archived) |
 
 ---
 

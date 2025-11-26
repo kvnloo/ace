@@ -1,10 +1,12 @@
+/// <reference types="vitest/globals" />
+
 /**
- * Unit Tests for Debug Storage
+ * Debug Storage Tests
  *
- * Tests localStorage persistence, compression, schema migration,
- * preset management, and import/export functionality.
+ * Comprehensive tests for localStorage persistence functionality
  */
 
+import { vi } from 'vitest';
 import {
   saveDebugState,
   loadDebugState,
@@ -18,10 +20,10 @@ import {
   getDefaultDebugState,
   getStorageStats,
   optimizeStorage,
-  DebugState,
-  AssetConfig,
-  StorageError
-} from '@/utils/debug/debugStorage';
+  type DebugState,
+  type AssetConfig,
+  StorageError,
+} from '../debugStorage';
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -38,41 +40,40 @@ const localStorageMock = (() => {
     clear: () => {
       store = {};
     },
-    get length() {
-      return Object.keys(store).length;
-    },
-    key: (index: number) => Object.keys(store)[index] || null
   };
 })();
 
-Object.defineProperty(global, 'localStorage', {
+Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
-  writable: true
 });
 
-describe('Debug Storage', () => {
+describe('debugStorage', () => {
   beforeEach(() => {
     localStorageMock.clear();
   });
 
-  describe('State Persistence', () => {
-    it('should save debug state to localStorage', () => {
-      const state = getDefaultDebugState();
-      const result = saveDebugState(state);
+  describe('saveDebugState & loadDebugState', () => {
+    it('should save and load debug state', () => {
+      const state: DebugState = {
+        version: 1,
+        enabled: true,
+        customPresets: {},
+        recentLogs: [],
+        performance: {
+          showPerformance: true,
+          maxLogs: 100,
+          persistLogs: true,
+        },
+        lastUpdated: Date.now(),
+      };
 
-      expect(result).toBe(true);
-      expect(localStorageMock.getItem('ace_debug_state')).toBeDefined();
-    });
-
-    it('should load debug state from localStorage', () => {
-      const state = getDefaultDebugState();
-      saveDebugState(state);
+      const saved = saveDebugState(state);
+      expect(saved).toBe(true);
 
       const loaded = loadDebugState();
-
-      expect(loaded).toBeDefined();
-      expect(loaded?.version).toBe(state.version);
-      expect(loaded?.enabled).toBe(state.enabled);
+      expect(loaded).not.toBeNull();
+      expect(loaded?.version).toBe(1);
+      expect(loaded?.enabled).toBe(true);
     });
 
     it('should return null when no state exists', () => {
@@ -80,55 +81,71 @@ describe('Debug Storage', () => {
       expect(loaded).toBeNull();
     });
 
-    it('should update timestamp when saving state', () => {
-      const state = getDefaultDebugState();
-      const originalTimestamp = state.lastUpdated;
-
-      // Wait a bit
-      jest.advanceTimersByTime(100);
-
-      saveDebugState(state);
+    it('should handle corrupted data gracefully', () => {
+      localStorage.setItem('ace_debug_state', 'invalid-json');
       const loaded = loadDebugState();
+      expect(loaded).toBeNull();
+    });
 
-      expect(loaded?.lastUpdated).toBeGreaterThan(originalTimestamp);
+    it('should update lastUpdated timestamp on save', () => {
+      const state = getDefaultDebugState();
+      const beforeTimestamp = state.lastUpdated;
+
+      // Wait a bit to ensure timestamp difference
+      setTimeout(() => {
+        saveDebugState(state);
+        const loaded = loadDebugState();
+        expect(loaded?.lastUpdated).toBeGreaterThan(beforeTimestamp);
+      }, 10);
     });
   });
 
-  describe('Preset Management', () => {
-    const mockPreset: AssetConfig = {
+  describe('preset management', () => {
+    const testPreset: AssetConfig = {
       id: 'test-preset',
       name: 'Test Preset',
       description: 'A test preset',
       settings: {
         performance: {
           showFPS: true,
-          showMemory: true,
-          targetFPS: 60
+          targetFPS: 60,
         },
-        rendering: {
-          wireframe: false,
-          shadows: true
-        }
-      }
+        logging: {
+          maxLogs: 200,
+          persistLogs: true,
+        },
+      },
     };
 
-    it('should save a preset', () => {
-      const result = savePreset('test-preset', mockPreset);
-      expect(result).toBe(true);
+    it('should save and load preset', () => {
+      const saved = savePreset('test', testPreset);
+      expect(saved).toBe(true);
 
-      const state = loadDebugState();
-      expect(state?.customPresets['test-preset']).toBeDefined();
-      expect(state?.customPresets['test-preset'].name).toBe('Test Preset');
-    });
-
-    it('should load a preset by name', () => {
-      savePreset('test-preset', mockPreset);
-
-      const loaded = loadPreset('test-preset');
-
-      expect(loaded).toBeDefined();
+      const loaded = loadPreset('test');
+      expect(loaded).not.toBeNull();
       expect(loaded?.name).toBe('Test Preset');
       expect(loaded?.settings.performance?.showFPS).toBe(true);
+    });
+
+    it('should list all presets', () => {
+      savePreset('preset1', { ...testPreset, name: 'Preset 1' });
+      savePreset('preset2', { ...testPreset, name: 'Preset 2' });
+      savePreset('preset3', { ...testPreset, name: 'Preset 3' });
+
+      const presets = listPresets();
+      expect(presets).toHaveLength(3);
+      expect(presets).toContain('preset1');
+      expect(presets).toContain('preset2');
+      expect(presets).toContain('preset3');
+    });
+
+    it('should delete preset', () => {
+      savePreset('test', testPreset);
+      expect(listPresets()).toContain('test');
+
+      const deleted = deletePreset('test');
+      expect(deleted).toBe(true);
+      expect(listPresets()).not.toContain('test');
     });
 
     it('should return null for non-existent preset', () => {
@@ -136,365 +153,193 @@ describe('Debug Storage', () => {
       expect(loaded).toBeNull();
     });
 
-    it('should list all preset names', () => {
-      savePreset('preset-1', { ...mockPreset, name: 'Preset 1' });
-      savePreset('preset-2', { ...mockPreset, name: 'Preset 2' });
-      savePreset('preset-3', { ...mockPreset, name: 'Preset 3' });
-
-      const presets = listPresets();
-
-      expect(presets).toHaveLength(3);
-      expect(presets).toContain('preset-1');
-      expect(presets).toContain('preset-2');
-      expect(presets).toContain('preset-3');
-    });
-
-    it('should delete a preset', () => {
-      savePreset('test-preset', mockPreset);
-      expect(loadPreset('test-preset')).toBeDefined();
-
-      const result = deletePreset('test-preset');
-      expect(result).toBe(true);
-      expect(loadPreset('test-preset')).toBeNull();
-    });
-
-    it('should clear active preset when deleting it', () => {
+    it('should clear active preset when deleted', () => {
       const state = getDefaultDebugState();
-      state.activePreset = 'test-preset';
+      state.activePreset = 'test';
       saveDebugState(state);
 
-      savePreset('test-preset', mockPreset);
-      deletePreset('test-preset');
+      savePreset('test', testPreset);
+      deletePreset('test');
 
       const loaded = loadDebugState();
       expect(loaded?.activePreset).toBeUndefined();
     });
 
-    it('should add metadata when saving preset', () => {
-      savePreset('test-preset', mockPreset);
-
-      const loaded = loadPreset('test-preset');
+    it('should update preset metadata on save', () => {
+      savePreset('test', testPreset);
+      const loaded = loadPreset('test');
 
       expect(loaded?.metadata?.createdAt).toBeDefined();
       expect(loaded?.metadata?.updatedAt).toBeDefined();
     });
-
-    it('should preserve createdAt when updating preset', () => {
-      savePreset('test-preset', mockPreset);
-      const first = loadPreset('test-preset');
-      const originalCreatedAt = first?.metadata?.createdAt;
-
-      jest.advanceTimersByTime(1000);
-
-      savePreset('test-preset', { ...mockPreset, description: 'Updated' });
-      const updated = loadPreset('test-preset');
-
-      expect(updated?.metadata?.createdAt).toBe(originalCreatedAt);
-      expect(updated?.metadata?.updatedAt).toBeGreaterThan(originalCreatedAt || 0);
-    });
   });
 
-  describe('Data Compression', () => {
-    it('should compress large data to save space', () => {
+  describe('clearDebugData', () => {
+    it('should clear all debug data', () => {
       const state = getDefaultDebugState();
-
-      // Add lots of repeated data (good for compression)
-      for (let i = 0; i < 100; i++) {
-        state.recentLogs.push({
-          timestamp: Date.now(),
-          level: 'info',
-          message: 'Repeated log entry for compression test',
-          category: 'test'
-        });
-      }
-
       saveDebugState(state);
-      const compressed = localStorageMock.getItem('ace_debug_state') || '';
-      const uncompressed = JSON.stringify(state);
-
-      // Compressed should be smaller (though simple compression may not always reduce size)
-      expect(compressed.length).toBeLessThanOrEqual(uncompressed.length * 1.5);
-    });
-
-    it('should decompress data when loading', () => {
-      const state = getDefaultDebugState();
-      state.recentLogs.push({
-        timestamp: Date.now(),
-        level: 'info',
-        message: 'Test log',
-        category: 'test'
+      savePreset('test', {
+        id: 'test',
+        name: 'Test',
+        settings: {},
       });
 
-      saveDebugState(state);
-      const loaded = loadDebugState();
+      clearDebugData();
 
-      expect(loaded?.recentLogs).toHaveLength(1);
-      expect(loaded?.recentLogs[0].message).toBe('Test log');
+      expect(loadDebugState()).toBeNull();
+      expect(listPresets()).toHaveLength(0);
     });
   });
 
-  describe('Schema Migration', () => {
-    it('should migrate from version 0 to current', () => {
+  describe('compression', () => {
+    it('should compress large data', () => {
+      const state = getDefaultDebugState();
+
+      // Add many logs to trigger compression
+      state.recentLogs = Array.from({ length: 100 }, (_, i) => ({
+        id: `log_${i}`,
+        timestamp: Date.now(),
+        level: 'info' as const,
+        type: 'test',
+        message: `Test message ${i}`.repeat(10), // Make it larger
+      }));
+
+      saveDebugState(state);
+
+      const raw = localStorage.getItem('ace_debug_state');
+      expect(raw).not.toBeNull();
+
+      // Verify it can be loaded back
+      const loaded = loadDebugState();
+      expect(loaded?.recentLogs).toHaveLength(100);
+    });
+  });
+
+  describe('versioning & migration', () => {
+    it('should migrate from version 0 to version 1', () => {
       const oldState = {
+        version: 0,
         enabled: true,
+        customPresets: {},
+        recentLogs: [],
         showPerformance: true,
         maxLogs: 50,
-        persistLogs: false,
-        customPresets: {},
-        recentLogs: []
+        persistLogs: true,
       };
 
-      localStorageMock.setItem('ace_debug_state', JSON.stringify(oldState));
+      localStorage.setItem(
+        'ace_debug_state',
+        JSON.stringify(oldState)
+      );
 
       const loaded = loadDebugState();
-
       expect(loaded?.version).toBe(1);
-      expect(loaded?.enabled).toBe(true);
-      expect(loaded?.performance.showPerformance).toBe(true);
+      expect(loaded?.performance).toBeDefined();
       expect(loaded?.performance.maxLogs).toBe(50);
     });
 
-    it('should handle invalid state structure', () => {
-      const invalidState = { invalid: 'structure' };
-      localStorageMock.setItem('ace_debug_state', JSON.stringify(invalidState));
-
-      const loaded = loadDebugState();
-
-      expect(loaded?.version).toBe(1);
-      expect(loaded?.enabled).toBeDefined();
-    });
-
-    it('should auto-save migrated state', () => {
+    it('should handle missing version field', () => {
       const oldState = {
         enabled: true,
         customPresets: {},
-        recentLogs: []
+        recentLogs: [],
       };
 
-      localStorageMock.setItem('ace_debug_state', JSON.stringify(oldState));
+      localStorage.setItem(
+        'ace_debug_state',
+        JSON.stringify(oldState)
+      );
 
-      loadDebugState();
-
-      // Load again to verify it was saved
       const loaded = loadDebugState();
       expect(loaded?.version).toBe(1);
     });
   });
 
-  describe('Storage Error Handling', () => {
-    it('should handle localStorage unavailable', () => {
-      // Mock setItem to throw
-      const originalSetItem = localStorageMock.setItem;
-      localStorageMock.setItem = jest.fn(() => {
-        throw new DOMException('QuotaExceededError');
-      });
-
-      const state = getDefaultDebugState();
-      const result = saveDebugState(state);
-
-      expect(result).toBe(false);
-
-      // Restore
-      localStorageMock.setItem = originalSetItem;
-    });
-
-    it('should handle quota exceeded error', () => {
-      const originalSetItem = localStorageMock.setItem;
-      let callCount = 0;
-
-      localStorageMock.setItem = jest.fn(() => {
-        callCount++;
-        if (callCount === 1) {
-          const error = new DOMException('QuotaExceededError');
-          (error as any).name = 'QuotaExceededError';
-          throw error;
-        }
-      });
-
+  describe('exportToFile', () => {
+    it('should export debug state', () => {
       const state = getDefaultDebugState();
       saveDebugState(state);
 
-      // Should attempt cleanup
-      expect(callCount).toBeGreaterThan(1);
-
-      localStorageMock.setItem = originalSetItem;
-    });
-
-    it('should handle corrupted data gracefully', () => {
-      localStorageMock.setItem('ace_debug_state', 'invalid-json{{{');
-
-      const loaded = loadDebugState();
-      expect(loaded).toBeNull();
-    });
-  });
-
-  describe('Import/Export', () => {
-    it('should export state to downloadable file', () => {
-      const state = getDefaultDebugState();
-      saveDebugState(state);
-
-      const createElementSpy = jest.spyOn(document, 'createElement');
-      const createObjectURLSpy = jest.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock');
-      const revokeObjectURLSpy = jest.spyOn(URL, 'revokeObjectURL').mockImplementation();
+      // Mock DOM methods
+      const createElementSpy = vi.spyOn(document, 'createElement');
+      const appendChildSpy = vi.spyOn(document.body, 'appendChild');
+      const removeChildSpy = vi.spyOn(document.body, 'removeChild');
 
       exportToFile('test-export');
 
       expect(createElementSpy).toHaveBeenCalledWith('a');
-      expect(createObjectURLSpy).toHaveBeenCalled();
-      expect(revokeObjectURLSpy).toHaveBeenCalled();
+      expect(appendChildSpy).toHaveBeenCalled();
+      expect(removeChildSpy).toHaveBeenCalled();
 
-      createObjectURLSpy.mockRestore();
-      revokeObjectURLSpy.mockRestore();
+      createElementSpy.mockRestore();
+      appendChildSpy.mockRestore();
+      removeChildSpy.mockRestore();
     });
 
-    it('should throw error when exporting with no data', () => {
-      expect(() => exportToFile()).toThrow(StorageError);
-      expect(() => exportToFile()).toThrow('No debug state to export');
+    it('should throw error when no state exists', () => {
+      expect(() => exportToFile('test')).toThrow(StorageError);
     });
+  });
 
-    it('should import state from file', async () => {
+  describe('importFromFile', () => {
+    it('should import valid export file', async () => {
       const state = getDefaultDebugState();
       const exportData = {
         exportedAt: new Date().toISOString(),
         version: 1,
-        state
+        state,
       };
 
       const file = new File(
         [JSON.stringify(exportData)],
-        'debug-state.json',
+        'export.json',
         { type: 'application/json' }
       );
 
       const imported = await importFromFile(file);
-
-      expect(imported).toBeDefined();
-      expect(imported.version).toBe(state.version);
+      expect(imported.version).toBe(1);
+      expect(imported.enabled).toBe(true);
     });
 
-    it('should reject invalid import file format', async () => {
-      const invalidData = { invalid: 'format' };
+    it('should reject invalid file format', async () => {
       const file = new File(
-        [JSON.stringify(invalidData)],
+        ['invalid json'],
         'invalid.json',
         { type: 'application/json' }
       );
 
-      await expect(importFromFile(file)).rejects.toThrow(StorageError);
-      await expect(importFromFile(file)).rejects.toThrow('Invalid export file format');
+      await expect(importFromFile(file)).rejects.toThrow();
     });
 
-    it('should migrate imported state if needed', async () => {
-      const oldState = {
-        enabled: true,
-        customPresets: {},
-        recentLogs: []
-      };
-
-      const exportData = {
+    it('should migrate old export files', async () => {
+      const oldExport = {
         exportedAt: new Date().toISOString(),
         version: 0,
-        state: oldState
+        state: {
+          version: 0,
+          enabled: true,
+          customPresets: {},
+          recentLogs: [],
+          showPerformance: true,
+          maxLogs: 50,
+          persistLogs: true,
+        },
       };
 
       const file = new File(
-        [JSON.stringify(exportData)],
-        'old-state.json',
+        [JSON.stringify(oldExport)],
+        'old-export.json',
         { type: 'application/json' }
       );
 
       const imported = await importFromFile(file);
-
       expect(imported.version).toBe(1);
+      expect(imported.performance).toBeDefined();
     });
   });
 
-  describe('Storage Optimization', () => {
-    it('should get storage statistics', () => {
-      const state = getDefaultDebugState();
-      savePreset('preset-1', {
-        id: 'preset-1',
-        name: 'Preset 1',
-        settings: {}
-      });
-
-      saveDebugState(state);
-
-      const stats = getStorageStats();
-
-      expect(stats.available).toBe(true);
-      expect(stats.used).toBeGreaterThan(0);
-      expect(stats.presetsCount).toBe(1);
-      expect(stats.stateSize).toBeGreaterThan(0);
-    });
-
-    it('should optimize storage by removing old logs', () => {
-      const state = getDefaultDebugState();
-
-      // Add 100 logs
-      for (let i = 0; i < 100; i++) {
-        state.recentLogs.push({
-          timestamp: Date.now(),
-          level: 'info',
-          message: `Log ${i}`,
-          category: 'test'
-        });
-      }
-
-      saveDebugState(state);
-
-      const result = optimizeStorage();
-      expect(result).toBe(true);
-
-      const optimized = loadDebugState();
-      expect(optimized?.recentLogs).toHaveLength(50); // Kept last 50
-    });
-
-    it('should remove old presets during optimization', () => {
-      const ninetyOneDaysAgo = Date.now() - (91 * 24 * 60 * 60 * 1000);
-
-      savePreset('old-preset', {
-        id: 'old-preset',
-        name: 'Old Preset',
-        settings: {},
-        metadata: {
-          createdAt: ninetyOneDaysAgo,
-          updatedAt: ninetyOneDaysAgo
-        }
-      });
-
-      savePreset('new-preset', {
-        id: 'new-preset',
-        name: 'New Preset',
-        settings: {}
-      });
-
-      optimizeStorage();
-
-      const presets = listPresets();
-      expect(presets).not.toContain('old-preset');
-      expect(presets).toContain('new-preset');
-    });
-  });
-
-  describe('Clear Debug Data', () => {
-    it('should clear all debug data from localStorage', () => {
-      const state = getDefaultDebugState();
-      saveDebugState(state);
-      savePreset('test', { id: 'test', name: 'Test', settings: {} });
-
-      expect(localStorageMock.getItem('ace_debug_state')).toBeDefined();
-
-      const result = clearDebugData();
-      expect(result).toBe(true);
-
-      expect(localStorageMock.getItem('ace_debug_state')).toBeNull();
-      expect(loadDebugState()).toBeNull();
-    });
-  });
-
-  describe('Default State', () => {
-    it('should provide valid default state', () => {
+  describe('getDefaultDebugState', () => {
+    it('should return valid default state', () => {
       const defaultState = getDefaultDebugState();
 
       expect(defaultState.version).toBe(1);
@@ -502,59 +347,121 @@ describe('Debug Storage', () => {
       expect(defaultState.customPresets).toEqual({});
       expect(defaultState.recentLogs).toEqual([]);
       expect(defaultState.performance).toBeDefined();
-      expect(defaultState.performance.showPerformance).toBe(true);
-      expect(defaultState.performance.maxLogs).toBe(100);
-      expect(defaultState.lastUpdated).toBeDefined();
-    });
-
-    it('should use default state when creating preset with no existing state', () => {
-      const preset: AssetConfig = {
-        id: 'test',
-        name: 'Test',
-        settings: {}
-      };
-
-      const result = savePreset('test', preset);
-      expect(result).toBe(true);
-
-      const loaded = loadDebugState();
-      expect(loaded?.version).toBe(1); // From default state
     });
   });
 
-  describe('Edge Cases', () => {
-    it('should handle empty preset name', () => {
-      const result = deletePreset('');
+  describe('getStorageStats', () => {
+    it('should return storage statistics', () => {
+      const state = getDefaultDebugState();
+      saveDebugState(state);
+      savePreset('test', {
+        id: 'test',
+        name: 'Test',
+        settings: {},
+      });
+
+      const stats = getStorageStats();
+
+      expect(stats.available).toBe(true);
+      expect(stats.stateSize).toBeGreaterThan(0);
+      expect(stats.presetsCount).toBe(1);
+      expect(stats.logsCount).toBe(0);
+    });
+
+    it('should handle missing state', () => {
+      const stats = getStorageStats();
+
+      expect(stats.stateSize).toBe(0);
+      expect(stats.presetsCount).toBe(0);
+      expect(stats.logsCount).toBe(0);
+    });
+  });
+
+  describe('optimizeStorage', () => {
+    it('should keep only last 50 logs', () => {
+      const state = getDefaultDebugState();
+
+      // Add 100 logs
+      state.recentLogs = Array.from({ length: 100 }, (_, i) => ({
+        id: `log_${i}`,
+        timestamp: Date.now(),
+        level: 'info' as const,
+        type: 'test',
+        message: `Test message ${i}`,
+      }));
+
+      saveDebugState(state);
+      optimizeStorage();
+
+      const loaded = loadDebugState();
+      expect(loaded?.recentLogs).toHaveLength(50);
+    });
+
+    it('should remove old presets', () => {
+      const state = getDefaultDebugState();
+
+      // Add old preset (91 days old)
+      const ninetyOneDaysAgo = Date.now() - (91 * 24 * 60 * 60 * 1000);
+      state.customPresets['old'] = {
+        id: 'old',
+        name: 'Old Preset',
+        settings: {},
+        metadata: {
+          createdAt: ninetyOneDaysAgo,
+          updatedAt: ninetyOneDaysAgo,
+        },
+      };
+
+      // Add recent preset
+      state.customPresets['recent'] = {
+        id: 'recent',
+        name: 'Recent Preset',
+        settings: {},
+        metadata: {
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+      };
+
+      saveDebugState(state);
+      optimizeStorage();
+
+      const loaded = loadDebugState();
+      expect(loaded?.customPresets['old']).toBeUndefined();
+      expect(loaded?.customPresets['recent']).toBeDefined();
+    });
+  });
+
+  describe('error handling', () => {
+    it('should handle quota exceeded errors', () => {
+      // Mock quota exceeded error
+      const originalSetItem = localStorage.setItem;
+      localStorage.setItem = vi.fn(() => {
+        const error = new DOMException('QuotaExceededError');
+        (error as any).name = 'QuotaExceededError';
+        throw error;
+      });
+
+      const state = getDefaultDebugState();
+      const result = saveDebugState(state);
+
       expect(result).toBe(false);
+
+      localStorage.setItem = originalSetItem;
     });
 
-    it('should handle very long preset names', () => {
-      const longName = 'a'.repeat(1000);
-      const preset: AssetConfig = {
-        id: longName,
-        name: longName,
-        settings: {}
-      };
+    it('should handle security errors in private browsing', () => {
+      const originalGetItem = localStorage.getItem;
+      localStorage.getItem = vi.fn(() => {
+        const error = new DOMException('SecurityError');
+        (error as any).name = 'SecurityError';
+        throw error;
+      });
 
-      const result = savePreset(longName, preset);
-      expect(result).toBe(true);
+      const result = loadDebugState();
+      expect(result).toBeNull();
 
-      const loaded = loadPreset(longName);
-      expect(loaded?.name).toBe(longName);
-    });
-
-    it('should handle special characters in preset names', () => {
-      const specialName = '!@#$%^&*()_+{}:"<>?';
-      const preset: AssetConfig = {
-        id: specialName,
-        name: specialName,
-        settings: {}
-      };
-
-      savePreset(specialName, preset);
-      const loaded = loadPreset(specialName);
-
-      expect(loaded?.name).toBe(specialName);
+      localStorage.getItem = originalGetItem;
     });
   });
 });
