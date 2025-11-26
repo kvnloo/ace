@@ -3,11 +3,11 @@
  *
  * High-performance tennis court renderer using THREE.js InstancedMesh.
  * Reduces 144 draw calls to ~6 by batching all courts of the same type.
+ * Uses proper tennis court dimensions: 23.77m × 10.97m (doubles)
  */
 
 import React, { useMemo, useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import { useFrame } from '@react-three/fiber';
 
 // Court colors by type
 const COURT_COLORS = {
@@ -28,17 +28,51 @@ interface InstancedTennisCourtsProps {
     courts: CourtConfig[];
 }
 
-// Shared geometry - created once, reused for all instances
-const courtGeometry = new THREE.PlaneGeometry(10, 22);
-const innerCourtGeometry = new THREE.PlaneGeometry(8, 20);
-const netPoleGeometry = new THREE.CylinderGeometry(0.05, 0.05, 2, 8);
-const netMeshGeometry = new THREE.BoxGeometry(10, 1.8, 0.02);
+// Tennis court dimensions (official doubles court)
+const COURT_WIDTH = 10.97;   // meters (doubles width)
+const COURT_LENGTH = 23.77;  // meters
+const LINE_WIDTH = 0.05;     // 5cm - standard tennis line width
 
-// Shared materials - created once
-const whiteMaterial = new THREE.MeshBasicMaterial({
+// Shared geometry - created once, reused for all instances
+const courtGeometry = new THREE.PlaneGeometry(COURT_WIDTH, COURT_LENGTH);
+const netPoleGeometry = new THREE.CylinderGeometry(0.05, 0.05, 2, 8);
+const netMeshGeometry = new THREE.BoxGeometry(COURT_WIDTH, 1.8, 0.02);
+
+// Court line specifications (distances from center)
+const TENNIS_LINES = {
+  // Baselines (full width at each end)
+  baselines: [
+    { z: -11.885, width: COURT_WIDTH },
+    { z: 11.885, width: COURT_WIDTH }
+  ],
+  // Doubles sidelines (full length at edges)
+  doublesLines: [
+    { x: -5.485, length: COURT_LENGTH },
+    { x: 5.485, length: COURT_LENGTH }
+  ],
+  // Singles sidelines (full length, inner)
+  singlesLines: [
+    { x: -4.115, length: COURT_LENGTH },
+    { x: 4.115, length: COURT_LENGTH }
+  ],
+  // Service lines (singles width at 6.4m from net)
+  serviceLines: [
+    { z: -6.4, width: 8.23 },
+    { z: 6.4, width: 8.23 }
+  ],
+  // Center service line (from net to service line)
+  centerServiceLine: { x: 0, startZ: -6.4, endZ: 6.4 },
+  // Center marks (10cm at baselines)
+  centerMarks: [
+    { x: 0, z: -11.885, length: 0.1 },
+    { x: 0, z: 11.885, length: 0.1 }
+  ]
+};
+
+// Shared materials
+const lineMaterial = new THREE.MeshBasicMaterial({
     color: 'white',
-    transparent: true,
-    opacity: 0.8
+    side: THREE.DoubleSide
 });
 const netPoleMaterial = new THREE.MeshStandardMaterial({ color: '#333' });
 const netMeshMaterial = new THREE.MeshBasicMaterial({
@@ -47,6 +81,64 @@ const netMeshMaterial = new THREE.MeshBasicMaterial({
     opacity: 0.3,
     wireframe: true
 });
+
+/**
+ * Creates court line geometries for a single court
+ */
+const createCourtLines = (): THREE.BufferGeometry[] => {
+  const geometries: THREE.BufferGeometry[] = [];
+
+  // Helper to create horizontal line geometry
+  const createHorizontalLine = (z: number, width: number) => {
+    const geo = new THREE.PlaneGeometry(width, LINE_WIDTH);
+    geo.translate(0, z, 0);
+    return geo;
+  };
+
+  // Helper to create vertical line geometry
+  const createVerticalLine = (x: number, length: number, startZ: number = -length / 2) => {
+    const geo = new THREE.PlaneGeometry(LINE_WIDTH, length);
+    geo.translate(x, startZ + length / 2, 0);
+    return geo;
+  };
+
+  // Baselines
+  TENNIS_LINES.baselines.forEach(line => {
+    geometries.push(createHorizontalLine(line.z, line.width));
+  });
+
+  // Doubles sidelines
+  TENNIS_LINES.doublesLines.forEach(line => {
+    geometries.push(createVerticalLine(line.x, line.length));
+  });
+
+  // Singles sidelines
+  TENNIS_LINES.singlesLines.forEach(line => {
+    geometries.push(createVerticalLine(line.x, line.length));
+  });
+
+  // Service lines
+  TENNIS_LINES.serviceLines.forEach(line => {
+    geometries.push(createHorizontalLine(line.z, line.width));
+  });
+
+  // Center service line
+  const centerLine = TENNIS_LINES.centerServiceLine;
+  const centerGeo = new THREE.PlaneGeometry(LINE_WIDTH, centerLine.endZ - centerLine.startZ);
+  centerGeo.translate(centerLine.x, 0, 0);
+  geometries.push(centerGeo);
+
+  // Center marks at baselines
+  TENNIS_LINES.centerMarks.forEach(mark => {
+    const markGeo = new THREE.PlaneGeometry(LINE_WIDTH, mark.length);
+    // Position extending inward from baseline
+    const direction = mark.z > 0 ? -1 : 1;
+    markGeo.translate(mark.x, mark.z + direction * (mark.length / 2), 0);
+    geometries.push(markGeo);
+  });
+
+  return geometries;
+};
 
 /**
  * Instanced Tennis Courts - renders all courts in minimal draw calls
@@ -90,7 +182,6 @@ const InstancedTennisCourts: React.FC<InstancedTennisCourtsProps> = ({ courts })
                         key={type}
                         courts={typeCourts}
                         material={courtMaterials[type]}
-                        innerMaterial={courtMaterials[type].clone()}
                     />
                 );
             })}
@@ -110,14 +201,14 @@ const InstancedTennisCourts: React.FC<InstancedTennisCourtsProps> = ({ courts })
 const InstancedCourtType: React.FC<{
     courts: CourtConfig[];
     material: THREE.MeshStandardMaterial;
-    innerMaterial: THREE.MeshStandardMaterial;
-}> = ({ courts, material, innerMaterial }) => {
+}> = ({ courts, material }) => {
     const courtRef = useRef<THREE.InstancedMesh>(null);
-    const innerWhiteRef = useRef<THREE.InstancedMesh>(null);
-    const innerColorRef = useRef<THREE.InstancedMesh>(null);
+
+    // Pre-create court line geometries
+    const lineGeometries = useMemo(() => createCourtLines(), []);
 
     useEffect(() => {
-        if (!courtRef.current || !innerWhiteRef.current || !innerColorRef.current) return;
+        if (!courtRef.current) return;
 
         const tempMatrix = new THREE.Matrix4();
         const rotation = new THREE.Euler(-Math.PI / 2, 0, 0);
@@ -133,27 +224,9 @@ const InstancedCourtType: React.FC<{
                 new THREE.Vector3(1, 1, 1)
             );
             courtRef.current!.setMatrixAt(i, tempMatrix);
-
-            // Inner white border
-            tempMatrix.compose(
-                new THREE.Vector3(x, y + 0.02, z),
-                quaternion,
-                new THREE.Vector3(1, 1, 1)
-            );
-            innerWhiteRef.current!.setMatrixAt(i, tempMatrix);
-
-            // Inner colored surface
-            tempMatrix.compose(
-                new THREE.Vector3(x, y + 0.03, z),
-                quaternion,
-                new THREE.Vector3(0.975, 0.99, 1) // Slightly smaller
-            );
-            innerColorRef.current!.setMatrixAt(i, tempMatrix);
         });
 
         courtRef.current.instanceMatrix.needsUpdate = true;
-        innerWhiteRef.current.instanceMatrix.needsUpdate = true;
-        innerColorRef.current.instanceMatrix.needsUpdate = true;
     }, [courts]);
 
     const count = courts.length;
@@ -167,18 +240,26 @@ const InstancedCourtType: React.FC<{
                 receiveShadow
                 frustumCulled
             />
-            {/* Inner white border */}
-            <instancedMesh
-                ref={innerWhiteRef}
-                args={[innerCourtGeometry, whiteMaterial, count]}
-                frustumCulled
-            />
-            {/* Inner colored surface */}
-            <instancedMesh
-                ref={innerColorRef}
-                args={[innerCourtGeometry, innerMaterial, count]}
-                frustumCulled
-            />
+
+            {/* Court lines for each court */}
+            {courts.map((court, courtIndex) => {
+                const [x, y, z] = court.position;
+                return (
+                    <group
+                        key={`lines-${courtIndex}`}
+                        position={[x, y + 0.01, z]}
+                        rotation={[-Math.PI / 2, 0, 0]}
+                    >
+                        {lineGeometries.map((geometry, lineIndex) => (
+                            <mesh
+                                key={`line-${courtIndex}-${lineIndex}`}
+                                geometry={geometry}
+                                material={lineMaterial}
+                            />
+                        ))}
+                    </group>
+                );
+            })}
         </group>
     );
 };
@@ -199,17 +280,17 @@ const InstancedNetPoles: React.FC<{ courts: CourtConfig[] }> = ({ courts }) => {
         courts.forEach((court, i) => {
             const [x, y, z] = court.position;
 
-            // Left pole
+            // Left pole (at doubles sideline)
             tempMatrix.compose(
-                new THREE.Vector3(x - 5, y + 1, z),
+                new THREE.Vector3(x - COURT_WIDTH / 2, y + 1, z),
                 quaternion,
                 scale
             );
             ref.current!.setMatrixAt(i * 2, tempMatrix);
 
-            // Right pole
+            // Right pole (at doubles sideline)
             tempMatrix.compose(
-                new THREE.Vector3(x + 5, y + 1, z),
+                new THREE.Vector3(x + COURT_WIDTH / 2, y + 1, z),
                 quaternion,
                 scale
             );
@@ -244,8 +325,9 @@ const InstancedNets: React.FC<{ courts: CourtConfig[] }> = ({ courts }) => {
         courts.forEach((court, i) => {
             const [x, y, z] = court.position;
 
+            // Net height is 1.8m, position center at y + 0.9 so bottom sits on court surface
             tempMatrix.compose(
-                new THREE.Vector3(x, y + 1, z),
+                new THREE.Vector3(x, y + 0.9, z),
                 quaternion,
                 scale
             );

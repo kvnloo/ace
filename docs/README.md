@@ -63,5 +63,5 @@ MIT
 ## Learn More
 
 - Detailed documentation: `claudedocs/`
-- Architecture details: `claudedocs/architecture-detail/`
-- Test reports: `claudedocs/test-reports/`
+- Architecture details: `claudedocs/01-architecture/details/`
+- Test reports: `claudedocs/06-testing/reports/`

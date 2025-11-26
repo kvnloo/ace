@@ -12,7 +12,7 @@ const Footer: React.FC<FooterProps> = ({ onChangeView }) => {
   const quickLinks = [
     { label: 'Vision', view: View.HOME },
     { label: 'Amenities', view: View.AMENITIES },
-    { label: 'Technology', view: View.TECHNOLOGY },
+    { label: 'Specifications', view: View.SPECIFICATIONS },
     { label: 'Contact', view: View.CONTACT },
   ];
 

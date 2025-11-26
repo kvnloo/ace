@@ -41,8 +41,8 @@ The facility spans multiple floors:
 
 ## Related Documentation
 
-- **Implementation Guides:** [../02-implementation-guides/](../02-implementation-guides/)
-- **Quick Reference:** [../QUICK_REFERENCE.md](../QUICK_REFERENCE.md)
+- **Implementation Guides:** [../05-implementation/](../05-implementation/)
+- **Planning Hub:** [../04-planning/](../04-planning/)
 - **Main Documentation:** [../README.md](../README.md)
 
 ---

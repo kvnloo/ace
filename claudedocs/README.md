@@ -5,72 +5,76 @@ Welcome to the ACE (Advanced Tennis Facility) documentation. This documentation 
 ## Quick Start
 
 **For developers new to the project:**
-1. Start with [Architecture Overview](architecture/CORE_ARCHITECTURE.md)
-2. Review [Implemented Features](features/IMPLEMENTED_FEATURES.md)
-3. Follow [Implementation Guide](implementation/GRASS_AND_TERRAIN.md)
+1. Start with [Architecture Overview](01-architecture/CORE_ARCHITECTURE.md)
+2. Review [Implemented Features](04-planning/features/IMPLEMENTED_FEATURES.md)
+3. Follow [Implementation Guide](05-implementation/GRASS_AND_TERRAIN.md)
 
 **For strategic vision:**
-- [APEX Vision](concepts/APEX_VISION.md) - Health optimization facility concept
-- [Strategic Roadmap](planning/STRATEGIC_ROADMAP.md) - 26-week development plan
+- [APEX Vision](03-vision/APEX_VISION.md) - Health optimization facility concept
+- [Strategic Roadmap](04-planning/STRATEGIC_ROADMAP.md) - 26-week development plan
 
 **For testing and quality:**
-- [Testing Guide](testing/TESTING_GUIDE.md)
-- [Performance Monitoring](monitoring/PERFORMANCE_MONITORING.md)
+- [Testing Guide](06-testing/TESTING_GUIDE.md)
+- [Performance Monitoring](07-operations/PERFORMANCE_MONITORING.md)
 
 **For deployment:**
-- [Deployment Guide](workflows/DEPLOYMENT_GUIDE.md)
+- [Deployment Guide](08-workflows/DEPLOYMENT_GUIDE.md)
 
 ## Documentation Structure
 
 ### 📐 Architecture
 Core system architecture and design decisions:
-- `architecture/CORE_ARCHITECTURE.md` - System architecture, coordinate systems, rendering pipeline
+- `01-architecture/CORE_ARCHITECTURE.md` - System architecture, coordinate systems, rendering pipeline
 
-### 💡 Concepts
+### 💡 Vision
 Strategic vision and future direction:
-- `concepts/APEX_VISION.md` - APEX health optimization facility vision (ACE → APEX transformation)
+- `03-vision/APEX_VISION.md` - APEX health optimization facility vision (ACE → APEX transformation)
 
 ### 📋 Planning
 Development roadmap and feature planning:
-- `planning/STRATEGIC_ROADMAP.md` - 26-week, 5-phase development plan
-- `planning/FEATURE_INVENTORY.md` - Complete component inventory (45+ components, 300+ 3D objects)
-- `planning/PLANNED_FEATURES.md` - Feature backlog with prioritization
+- `04-planning/STRATEGIC_ROADMAP.md` - 26-week, 5-phase development plan
+- `04-planning/FEATURE_INVENTORY.md` - Complete component inventory (45+ components, 300+ 3D objects)
+- `04-planning/PLANNED_FEATURES.md` - Feature backlog with prioritization
+- `04-planning/sprints/` - Sprint planning and tracking
+- `04-planning/milestones/` - Project milestones
+- `04-planning/stories/` - User stories and requirements
+- `04-planning/defects/` - Bug tracking and root cause analysis
 
 ### ⚙️ Implementation
 How-to guides for implementing features:
-- `implementation/GRASS_AND_TERRAIN.md` - Grass rendering, clay courts, texture systems
+- `05-implementation/GRASS_AND_TERRAIN.md` - Grass rendering, clay courts, texture systems
 
 ### 🎨 Features
 Feature documentation and roadmaps:
-- `features/IMPLEMENTED_FEATURES.md` - Complete list of implemented features
-- `features/cea-facility/` - CEA (Controlled Environment Agriculture) facility
+- `04-planning/features/IMPLEMENTED_FEATURES.md` - Complete list of implemented features
+- `04-planning/features/cea-facility/` - CEA (Controlled Environment Agriculture) facility
   - `CEA_IMPROVEMENT_PLAN.md` - Level 3 vertical farming improvements
   - `HYDROPONICS_SYSTEM.md` - Technical specs for 16-tower hydroponics system
-- `features/lighting-system/` - Dynamic lighting implementation
-- `features/heatmap-system/` - Court usage visualization
-- `features/weather-system/` - Environmental effects
-- `features/character-system/` - Player animations
+- `04-planning/features/lighting-system/` - Dynamic lighting implementation
+- `04-planning/features/heatmap-system/` - Court usage visualization
+- `04-planning/features/weather-system/` - Environmental effects
+- `04-planning/features/character-system/` - Player animations
 
 ### 📖 Stories
 User stories and acceptance criteria:
-- `stories/USER_STORIES.md` - 20 user stories across 2 epics (Infrastructure, Autonomous Systems)
+- `04-planning/stories/USER_STORIES.md` - 20 user stories across 2 epics (Infrastructure, Autonomous Systems)
 
 ### 🧪 Testing
 Testing strategies and test documentation:
-- `testing/TESTING_GUIDE.md` - Unit, integration, and E2E testing guides
+- `06-testing/TESTING_GUIDE.md` - Unit, integration, and E2E testing guides
 
-### 📊 Monitoring
+### 📊 Operations
 Performance monitoring and optimization:
-- `monitoring/PERFORMANCE_MONITORING.md` - Performance metrics, profiling, optimization
+- `07-operations/PERFORMANCE_MONITORING.md` - Performance metrics, profiling, optimization
 
 ### 🚀 Workflows
 Deployment and operational procedures:
-- `workflows/DEPLOYMENT_GUIDE.md` - Build, deploy, and rollback procedures
-- `workflows/MERGE_PLAN_*.md` - Branch merge documentation
+- `08-workflows/DEPLOYMENT_GUIDE.md` - Build, deploy, and rollback procedures
+- `08-workflows/MERGE_PLAN_*.md` - Branch merge documentation
 
 ### 🔬 Research
 External research and specifications:
-- `research/sports-facilities/` - HVAC, lighting, accessibility standards
+- `02-research/sports-facilities/` - HVAC, lighting, accessibility standards
 
 ### 📦 Archive
 Historical documentation and deprecated features (preserved for reference)
@@ -185,13 +189,20 @@ For questions or issues:
 ## Recent Updates
 
 **2025-11-26**: Documentation consolidation from claudedocs-old
-- Added APEX Vision document (`concepts/APEX_VISION.md`)
-- Added Strategic Roadmap (`planning/STRATEGIC_ROADMAP.md`)
-- Added Feature Inventory (`planning/FEATURE_INVENTORY.md`)
-- Added Planned Features backlog (`planning/PLANNED_FEATURES.md`)
-- Added Hydroponics System specs (`features/cea-facility/HYDROPONICS_SYSTEM.md`)
-- Added User Stories (`stories/USER_STORIES.md`) - 20 stories across 2 epics
+- Added APEX Vision document (`03-vision/APEX_VISION.md`)
+- Added Strategic Roadmap (`04-planning/STRATEGIC_ROADMAP.md`)
+- Added Feature Inventory (`04-planning/FEATURE_INVENTORY.md`)
+- Added Planned Features backlog (`04-planning/PLANNED_FEATURES.md`)
+- Added Hydroponics System specs (`04-planning/features/cea-facility/HYDROPONICS_SYSTEM.md`)
+- Added User Stories (`04-planning/stories/USER_STORIES.md`) - 20 stories across 2 epics
 - Updated README with new structure
+
+**2025-11-26**: Major folder restructuring (v3.0)
+- Consolidated planning under `04-planning/` (features, stories, defects, roadmaps, sprints, milestones)
+- Renamed `12-vision/` → `03-vision/`
+- Renamed `04-implementation/` → `05-implementation/`
+- Created `02-research/synthesis/` for research synthesis documents
+- Sequential numbering: 00-08 + 99 (no gaps)
 
 **2025-11-26**: Major documentation reorganization
 - Consolidated 107 files into streamlined structure

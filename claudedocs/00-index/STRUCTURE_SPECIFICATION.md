@@ -1,6 +1,6 @@
 # Documentation Structure Specification
 
-**Version:** 2.0
+**Version:** 3.0
 **Date:** 2025-11-26
 **Status:** Active
 
@@ -8,7 +8,7 @@
 
 ## Overview
 
-This specification defines the organizational structure for LLM-optimized documentation in the `claudedocs/` directory. The structure follows a numbered folder convention for logical progression through the development lifecycle.
+This specification defines the organizational structure for LLM-optimized documentation in the `claudedocs/` directory. The structure follows a numbered folder convention for logical progression through the development lifecycle, with consolidated planning and streamlined navigation.
 
 ---
 
@@ -19,16 +19,20 @@ claudedocs/
 ├── 00-index/           # Navigation, getting started, specifications
 ├── 01-architecture/    # System architecture, ADRs, design decisions
 ├── 02-research/        # Research findings, studies, explorations
-├── 03-analysis/        # Code analysis, audits, reviews
-├── 04-implementation/  # Implementation guides, technical specs
-├── 05-features/        # Feature documentation organized by area
+│   └── synthesis/      # Synthesized research findings
+├── 03-vision/          # Strategic vision, concepts, future direction
+├── 04-planning/        # Consolidated planning hub
+│   ├── features/       # Feature documentation by domain
+│   ├── stories/        # User stories, epics, requirements
+│   ├── defects/        # Bug tracking, root cause analysis
+│   ├── roadmaps/       # Strategic roadmaps and feature plans
+│   ├── sprints/        # Sprint planning and tracking
+│   ├── milestones/     # Project milestones
+│   └── business/       # Business planning docs
+├── 05-implementation/  # Implementation guides, technical specs
 ├── 06-testing/         # Testing guides, strategies, coverage
 ├── 07-operations/      # Monitoring, performance, maintenance
 ├── 08-workflows/       # Deployment, CI/CD, processes
-├── 09-planning/        # Roadmaps, feature inventory, milestones
-├── 10-stories/         # User stories, epics, requirements
-├── 11-defects/         # Bug tracking, root cause analysis
-├── 12-vision/          # Strategic vision, concepts, future direction
 └── 99-archive/         # Historical documentation (date-organized)
 ```
 
@@ -37,219 +41,290 @@ claudedocs/
 ## Folder Purposes
 
 ### 00-index/
-**Purpose:** Entry point and navigation
+**Purpose:** Entry point and navigation hub
 **Contents:**
-- README.md - Main documentation index
-- STRUCTURE_SPECIFICATION.md - This file
-- GETTING_STARTED.md - Onboarding guide
-- NAVIGATION.md - Quick links to key documents
+- README.md - Main documentation index with quick links
+- STRUCTURE_SPECIFICATION.md - This specification document
+- GETTING_STARTED.md - Onboarding guide for new team members
+- NAVIGATION.md - Quick reference to key documents
+- Cross-references to major documentation areas
 
 ### 01-architecture/
 **Purpose:** System design and architectural decisions
 **Contents:**
-- CORE_ARCHITECTURE.md - System overview
-- ADRs/ - Architecture Decision Records
-- diagrams/ - System diagrams
-- patterns/ - Design patterns used
+- CORE_ARCHITECTURE.md - High-level system overview
+- ADRs/ - Architecture Decision Records (numbered, dated)
+- diagrams/ - System architecture diagrams
+- patterns/ - Design patterns and architectural patterns
+- integration/ - Third-party integration documentation
+- Component interaction specifications
 
 ### 02-research/
-**Purpose:** Research findings before implementation
+**Purpose:** Research findings and technology evaluations
 **Contents:**
 - Topic-specific research documents
-- Comparative analyses
-- Technology evaluations
-- External references
+- Comparative analyses (technology, library, approach comparisons)
+- Technology evaluations and proof-of-concepts
+- External references and benchmark studies
+- synthesis/ - Synthesized findings from multiple research efforts
+- Research-to-decision pathways
 
-### 03-analysis/
-**Purpose:** Code and system analysis outputs
+### 03-vision/
+**Purpose:** Strategic vision and future direction
 **Contents:**
-- Code quality audits
-- Performance analyses
-- Security reviews
-- Technical debt assessments
+- APEX_VISION.md - Platform vision and goals
+- Concept documents and innovation proposals
+- Long-term strategic roadmap
+- Future capability planning
+- Product evolution documents
+- Stakeholder value propositions
 
-### 04-implementation/
-**Purpose:** Technical implementation guides
-**Contents:**
-- Component specifications
-- API documentation
-- Integration guides
-- Technical specifications (e.g., GRASS_AND_TERRAIN.md)
-
-### 05-features/
-**Purpose:** Feature documentation by domain
-**Contents:**
-- Subdirectories by feature area:
+### 04-planning/
+**Purpose:** Consolidated planning hub for all planning artifacts
+**Structure:**
+- **features/** - Feature documentation organized by domain
   - 3d-visualization/
   - booking-system/
   - cea-facility/
   - robotic-systems/
   - sports-facilities/
+- **stories/** - User stories, epics, requirements
+  - USER_STORIES.md - Main stories collection
+  - epics/ - Large feature groupings
+  - narratives/ - User journey documentation
+  - templates/ - Story templates
+- **defects/** - Bug tracking and root cause analysis
+  - Active defect tracking
+  - Root cause analyses
+  - Resolution documentation
+  - Post-mortems
+- **roadmaps/** - Strategic roadmaps and feature plans
+  - STRATEGIC_ROADMAP.md
+  - FEATURE_INVENTORY.md
+  - PLANNED_FEATURES.md
+- **sprints/** - Sprint planning and tracking
+  - Sprint goals and backlogs
+  - Sprint retrospectives
+  - Velocity tracking
+- **milestones/** - Project milestone tracking
+  - Milestone definitions
+  - Deliverable tracking
+  - Completion criteria
+- **business/** - Business planning documentation
+  - Business requirements
+  - Stakeholder documentation
+  - Business case documents
+
+### 05-implementation/
+**Purpose:** Technical implementation guides and specifications
+**Contents:**
+- Component implementation specifications
+- API documentation and contracts
+- Integration guides and procedures
+- Technical specifications (e.g., GRASS_AND_TERRAIN.md)
+- Code patterns and best practices
+- Implementation checklists
 
 ### 06-testing/
-**Purpose:** Testing documentation
+**Purpose:** Testing strategies and documentation
 **Contents:**
-- TESTING_GUIDE.md
-- Test strategies
-- Coverage reports
+- TESTING_GUIDE.md - Comprehensive testing guide
+- Test strategies by component/feature
+- Coverage reports and requirements
 - E2E test documentation
+- Test data management
+- Quality assurance processes
 
 ### 07-operations/
-**Purpose:** Operational documentation
+**Purpose:** Operational procedures and monitoring
 **Contents:**
-- PERFORMANCE_MONITORING.md
-- Maintenance procedures
-- Incident response
-- Health checks
+- PERFORMANCE_MONITORING.md - Performance tracking guide
+- Maintenance procedures and schedules
+- Incident response playbooks
+- Health check definitions
+- Monitoring dashboards
+- Operational runbooks
 
 ### 08-workflows/
-**Purpose:** Process and deployment documentation
+**Purpose:** Development processes and deployment
 **Contents:**
-- DEPLOYMENT_GUIDE.md
-- CI/CD pipelines
-- Development workflows
-- Release processes
-
-### 09-planning/
-**Purpose:** Project planning and roadmaps
-**Contents:**
-- STRATEGIC_ROADMAP.md
-- FEATURE_INVENTORY.md
-- PLANNED_FEATURES.md
-- Milestone tracking
-
-### 10-stories/
-**Purpose:** User stories and requirements
-**Contents:**
-- USER_STORIES.md - Main stories document
-- epics/ - Large feature groupings
-- narratives/ - User journey documentation
-- templates/ - Story templates
-
-### 11-defects/
-**Purpose:** Bug tracking and analysis
-**Contents:**
-- Active defects
-- Root cause analyses
-- Resolution documentation
-- Post-mortems
-
-### 12-vision/
-**Purpose:** Strategic and conceptual documentation
-**Contents:**
-- APEX_VISION.md - Platform vision
-- Concept documents
-- Future roadmap
-- Innovation ideas
+- DEPLOYMENT_GUIDE.md - Deployment procedures
+- CI/CD pipeline documentation
+- Development workflows and standards
+- Release processes and checklists
+- Code review guidelines
+- Contribution workflows
 
 ### 99-archive/
-**Purpose:** Historical documentation
-**Organization:** By date (YYYY-MM-DD/)
+**Purpose:** Historical documentation and completed work
+**Organization:** By date (YYYY-MM-DD/) with descriptive README files
 **Contents:**
-- Superseded documents
+- Superseded documents with archival reasons
 - Completed milestone documentation
 - Historical troubleshooting records
-- Each archive folder has a README.md explaining contents
+- Deprecated feature documentation
+- Each archive folder contains README.md explaining contents and archival date
 
 ---
 
 ## Workflow Mapping
 
-The folder structure maps to the development lifecycle:
+The folder structure maps to the consolidated development lifecycle:
 
 ```
-Research (02) → Analysis (03) → Architecture (01) → Planning (09)
-     ↓              ↓                ↓                  ↓
-Stories (10) → Implementation (04) → Features (05) → Testing (06)
-     ↓              ↓                ↓                  ↓
-Defects (11) → Operations (07) → Workflows (08) → Archive (99)
+Vision (03) → Research (02) → Architecture (01)
+     ↓             ↓                 ↓
+Planning (04) ←─────────────────────┘
+     ↓
+     ├─→ Features (04/features/)
+     ├─→ Stories (04/stories/)
+     ├─→ Roadmaps (04/roadmaps/)
+     └─→ Milestones (04/milestones/)
+     ↓
+Implementation (05) → Testing (06)
+     ↓                      ↓
+Operations (07) ← Defects (04/defects/)
+     ↓
+Workflows (08) → Archive (99)
 ```
 
 **Lifecycle Stages:**
-1. **Discovery**: 02-research, 12-vision
-2. **Analysis**: 03-analysis
-3. **Design**: 01-architecture
-4. **Planning**: 09-planning, 10-stories
-5. **Implementation**: 04-implementation, 05-features
-6. **Validation**: 06-testing, 11-defects
-7. **Deployment**: 07-operations, 08-workflows
-8. **Archival**: 99-archive
+1. **Discovery**: 03-vision, 02-research
+2. **Design**: 01-architecture
+3. **Planning**: 04-planning (all planning artifacts consolidated)
+4. **Implementation**: 05-implementation, 04-planning/features
+5. **Validation**: 06-testing, 04-planning/defects
+6. **Deployment**: 07-operations, 08-workflows
+7. **Archival**: 99-archive
 
 ---
 
 ## Entity Tracking
 
 ### Products
-Tracked in: 12-vision/, 09-planning/
-Format: Product briefs with feature lists
+**Tracked in:** 03-vision/, 04-planning/business/
+**Format:** Product briefs with strategic goals and feature lists
+**Cross-references:** Architecture decisions, feature inventory
 
 ### Projects/Milestones
-Tracked in: 09-planning/
-Format: Milestone documents with deliverables
+**Tracked in:** 04-planning/milestones/
+**Format:** Milestone documents with deliverables, timelines, and success criteria
+**Cross-references:** Sprint plans, feature documentation
 
 ### Features
-Tracked in: 05-features/, 09-planning/FEATURE_INVENTORY.md
-Format: Feature documentation by domain
+**Tracked in:** 04-planning/features/, 04-planning/roadmaps/FEATURE_INVENTORY.md
+**Format:** Feature documentation organized by domain with specifications
+**Cross-references:** User stories, architecture decisions, implementation guides
 
 ### Stories
-Tracked in: 10-stories/
-Format: User stories with acceptance criteria
+**Tracked in:** 04-planning/stories/
+**Format:** User stories with acceptance criteria, priority, and effort estimates
+**Cross-references:** Features, epics, sprint backlogs
 
 ### Tasks
-Tracked in: GitHub Issues (external)
-Link: Reference issue numbers in documentation
+**Tracked in:** GitHub Issues (external)
+**Link:** Reference issue numbers in documentation with context
+**Integration:** Sprint planning links to GitHub Projects
 
 ### Defects
-Tracked in: 11-defects/
-Format: Bug reports with root cause analysis
+**Tracked in:** 04-planning/defects/
+**Format:** Bug reports with severity, root cause analysis, and resolution paths
+**Cross-references:** Test documentation, operations incidents
 
 ### Architecture Decisions
-Tracked in: 01-architecture/ADRs/
-Format: ADR template (Status, Context, Decision, Consequences)
+**Tracked in:** 01-architecture/ADRs/
+**Format:** ADR template (Title, Status, Context, Decision, Consequences, Alternatives)
+**Naming:** YYYYMMDD-NNN-title.md (date-sequence-title)
+
+### Sprints
+**Tracked in:** 04-planning/sprints/
+**Format:** Sprint goals, backlog, capacity, retrospectives
+**Cross-references:** Stories, milestones, velocity metrics
 
 ---
 
 ## File Naming Conventions
 
-- **UPPERCASE.md** - Major documents (README.md, CORE_ARCHITECTURE.md)
-- **Title_Case.md** - Feature/topic documents
-- **lowercase-hyphen.md** - Supporting documents
+- **UPPERCASE.md** - Major documents (README.md, CORE_ARCHITECTURE.md, TESTING_GUIDE.md)
+- **Title_Case.md** - Feature/topic documents (Grass_And_Terrain.md)
+- **lowercase-hyphen.md** - Supporting documents (sprint-template.md, defect-analysis.md)
 - **YYYY-MM-DD_topic.md** - Date-prefixed archive documents
+- **YYYYMMDD-NNN-title.md** - Architecture Decision Records (ADRs)
+
+**Directory Naming:**
+- Lowercase with hyphens for multi-word directories (e.g., `3d-visualization/`)
+- Short, descriptive names without version numbers
+- Consistent with folder purpose
 
 ---
 
-## Migration from claudedocs-old
+## Planning Hub Rationale
 
-### Source Mapping
-| claudedocs-old/ | claudedocs/ |
-|-----------------|-------------|
-| 01-architecture/ | 01-architecture/ |
-| 02-implementation-guides/ | 04-implementation/ |
-| 03-testing/ | 06-testing/ |
-| 04-monitoring/ | 07-operations/ |
-| 05-workflows/ | 08-workflows/ |
-| 06-research/ | 02-research/ |
-| 07-features/ | 05-features/ |
-| 08-stories/ | 10-stories/ |
-| 09-milestones/ | 09-planning/ |
-| systems-detail/ | 05-features/ (by domain) |
-| troubleshooting/ | 99-archive/ (resolved issues) |
+The consolidation of planning artifacts under `04-planning/` provides:
 
-### Preservation Rules
-- ALL files from claudedocs-old preserved
-- Root clutter consolidated into appropriate numbered folders
-- Enhanced documents (e.g., GRASS_AND_TERRAIN.md) kept in new location
-- Archive items organized by date with README explanations
+1. **Single Source of Truth**: All planning-related documentation in one location
+2. **Logical Grouping**: Related planning artifacts (features, stories, defects, roadmaps) are co-located
+3. **Simplified Navigation**: Clear hierarchy from high-level roadmaps down to individual stories
+4. **Workflow Clarity**: Planning phase clearly separated from implementation and operations
+5. **Reduced Cognitive Load**: Fewer top-level folders to navigate
+
+**Migration Benefits:**
+- Former 05-features → 04-planning/features (planning artifact)
+- Former 09-planning → 04-planning/roadmaps (consolidated)
+- Former 10-stories → 04-planning/stories (co-located with features)
+- Former 11-defects → 04-planning/defects (planning/tracking artifact)
+- Former 12-vision → 03-vision (strategic, pre-planning)
 
 ---
 
 ## Related Documentation
 
-- **docs/** - Human-developer documentation (separate from claudedocs)
-- **GitHub Issues** - Task and bug tracking
-- **GitHub Projects** - Sprint planning and boards
+- **docs/** - Human-developer documentation (user guides, API docs for external developers)
+- **GitHub Issues** - Active task tracking and bug reports
+- **GitHub Projects** - Sprint boards and kanban views
+- **claudedocs/** - LLM-optimized documentation (this structure)
+
+**Integration Points:**
+- GitHub Issues reference claudedocs for context
+- Sprint plans in 04-planning/sprints/ link to GitHub Projects
+- ADRs in 01-architecture/ inform implementation guides in 05-implementation/
+
+---
+
+## Document Lifecycle
+
+```
+Draft → Review → Active → Superseded → Archived
+  ↓       ↓        ↓          ↓           ↓
+(WIP)  (Review) (Current)  (Outdated)  (99-archive/)
+```
+
+**Status Indicators in Frontmatter:**
+```yaml
+---
+status: draft | review | active | superseded | archived
+version: X.Y
+last_updated: YYYY-MM-DD
+superseded_by: path/to/new/document.md (if applicable)
+---
+```
+
+---
+
+## Best Practices
+
+1. **One Source of Truth**: Each topic has a single canonical document
+2. **Cross-Reference Liberally**: Link related documents for context
+3. **Date Everything**: Include creation and update dates
+4. **Version Control**: Use semantic versioning for major documents
+5. **Archive Don't Delete**: Move outdated docs to 99-archive/ with explanation
+6. **Maintain README**: Each subdirectory should have a README explaining its contents
+7. **Use Consistent Formatting**: Follow markdown standards and heading hierarchy
+8. **Update Navigation**: Keep 00-index/README.md and NAVIGATION.md current
 
 ---
 
 **Last Updated:** 2025-11-26
+**Version:** 3.0
 **Owner:** Documentation Team
+**Change Summary:** Consolidated planning structure, eliminated legacy folders, streamlined navigation

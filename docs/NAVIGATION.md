@@ -8,11 +8,17 @@
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System architecture and design
 - **[API.md](./API.md)** - Component and hook API reference
 
-### For LLMs
+### For LLMs (Software Architecture)
 - **[claudedocs/](../claudedocs/)** - Detailed technical documentation
-- **[claudedocs/architecture/](../claudedocs/architecture/)** - Detailed architecture
-- **[claudedocs/testing/](../claudedocs/testing/)** - Test guides and reports
-- **[claudedocs/archive/](../claudedocs/archive/)** - Historical reports
+- **[claudedocs/01-architecture/](../claudedocs/01-architecture/)** - Detailed architecture
+- **[claudedocs/06-testing/](../claudedocs/06-testing/)** - Test guides and reports
+- **[claudedocs/99-archive/](../claudedocs/99-archive/)** - Historical reports
+
+### For Facility Design (Physical Architecture)
+- **[FACILITY_STATUS.md](../claudedocs/09-planning/FACILITY_STATUS.md)** - Overall facility completion (47%)
+- **[APEX_VISION.md](../claudedocs/12-vision/APEX_VISION.md)** - Strategic vision concept
+- **[cea-facility/](../claudedocs/05-features/cea-facility/)** - Vertical farming (L3 Floor)
+- **[sports-facilities/](../claudedocs/02-research/sports-facilities/)** - HVAC, lighting, accessibility research
 
 ## Documentation Philosophy
 
@@ -58,7 +64,7 @@
 → [claudedocs/](../claudedocs/)
 
 ### "I need test reports or debug history"
-→ [claudedocs/archive/](../claudedocs/archive/)
+→ [claudedocs/99-archive/](../claudedocs/99-archive/)
 
 ## Contributing to Documentation
 
@@ -69,18 +75,20 @@ Only add if it's:
 - General enough to stay relevant
 
 **Don't add:**
-- Test reports → claudedocs/test-reports/
-- Debug logs → claudedocs/debug-sessions/
-- One-off analyses → claudedocs/archive/
-- Screenshots → claudedocs/archive/
+- Test reports → claudedocs/06-testing/
+- Debug logs → claudedocs/99-archive/
+- One-off analyses → claudedocs/99-archive/
+- Screenshots → claudedocs/99-archive/
 
 ### Adding to claudedocs/
 Organize by category:
-- `architecture/` - Detailed system design
-- `testing/` - Test guides and setup
-- `archive/` - Historical reports and analyses
-- `debug-sessions/` - Debug logs and fixes
-- `test-reports/` - Test execution results
+- `01-architecture/` - Detailed system design
+- `02-research/` - Research and investigation
+- `05-features/` - Feature documentation
+- `06-testing/` - Test guides and setup
+- `09-planning/` - Planning and status tracking
+- `12-vision/` - Strategic vision documents
+- `99-archive/` - Historical reports and analyses
 
 ## Documentation Standards
 
@@ -120,10 +128,13 @@ docs/
 └── NAVIGATION.md      # This file
 
 claudedocs/
-├── architecture/      # Detailed architecture
-├── testing/          # Test documentation
-├── archive/          # Historical reports
-├── debug-sessions/   # Debug logs
+├── 01-architecture/   # Detailed architecture
+├── 02-research/       # Research and investigation
+├── 05-features/       # Feature documentation
+├── 06-testing/        # Test documentation
+├── 09-planning/       # Planning and status
+├── 12-vision/         # Strategic vision
+├── 99-archive/        # Historical reports
 └── [other categories]
 ```
 

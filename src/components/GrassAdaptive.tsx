@@ -23,7 +23,7 @@ interface GrassAdaptiveProps {
   targetFPS?: number;
   /** Starting blade count (default: 50000) */
   initialDensity?: number;
-  /** Maximum blade count (default: 500000) - much higher with smaller blades */
+  /** Maximum blade count (default: 750000) - higher for denser, more realistic grass */
   maxDensity?: number;
   /** Callback when density changes (density, fps, phase) */
   onDensityChange?: (density: number, fps: number, phase: 'init' | 'burst' | 'monitor') => void;
@@ -113,13 +113,35 @@ const grassFragmentShader = `
   varying float vWindFactor;
 
   void main() {
-    vec3 finalColor = mix(uBaseColor, uTipColor, vUv.y * 0.7);
-    finalColor *= (0.9 + vWindFactor * 0.1);
+    // Enhanced color gradient: much darker at base, brighter at tips
+    vec3 darkBase = uBaseColor * 0.6;   // Much darker base (shadowed/soil)
+    vec3 lightTip = uTipColor * 1.3;    // Brighter tips catching light
+    vec3 finalColor = mix(darkBase, lightTip, vUv.y);
+
+    // Per-blade color variation (wider range for natural look)
+    float colorVar = 0.85 + vWindFactor * 0.30;
+    finalColor *= colorVar;
+
+    // Sun-bleached yellow tint at tips (quadratic for tip emphasis)
+    float tipFactor = vUv.y * vUv.y;  // More concentrated at very tips
+    finalColor.r += tipFactor * 0.07;
+    finalColor.g += tipFactor * 0.04;
+
+    // Subtle ambient occlusion at base (darker near ground)
+    float ao = 0.65 + vUv.y * 0.35;
+    finalColor *= ao;
+
+    // Slight desaturation toward tips (natural weathering)
+    float desat = tipFactor * 0.08;
+    float gray = dot(finalColor, vec3(0.299, 0.587, 0.114));
+    finalColor = mix(finalColor, vec3(gray), desat);
+
     gl_FragColor = vec4(finalColor, 1.0);
   }
 `;
 
 // Generate grass blade positions using seeded random for consistency
+// Enhanced with natural clumping distribution for realistic lawn appearance
 const generateGrassPositions = (
   count: number,
   width: number,
@@ -133,14 +155,47 @@ const generateGrassPositions = (
     return s / 0x7fffffff;
   };
 
+  // Pre-generate clump centers (grass naturally grows in clusters)
+  const clumpCount = Math.max(20, Math.floor(count / 40));
+  const clumps: { x: number; z: number; radius: number; density: number }[] = [];
+
+  for (let c = 0; c < clumpCount; c++) {
+    clumps.push({
+      x: (random() - 0.5) * width * 0.95,
+      z: (random() - 0.5) * depth * 0.95,
+      radius: 0.08 + random() * 0.18,  // Clump radius
+      density: 0.6 + random() * 0.4,   // How tightly packed
+    });
+  }
+
   for (let i = 0; i < count; i++) {
+    let x: number, z: number;
+
+    // 75% of blades cluster near clump centers, 25% random fill
+    if (random() < 0.75 && clumps.length > 0) {
+      const clump = clumps[Math.floor(random() * clumps.length)];
+      const angle = random() * Math.PI * 2;
+      const dist = random() * clump.radius * clump.density;
+      x = clump.x + Math.cos(angle) * dist;
+      z = clump.z + Math.sin(angle) * dist;
+    } else {
+      // Random fill for coverage
+      x = (random() - 0.5) * width;
+      z = (random() - 0.5) * depth;
+    }
+
+    // Clamp to bounds
+    x = Math.max(-width / 2 + 0.01, Math.min(width / 2 - 0.01, x));
+    z = Math.max(-depth / 2 + 0.01, Math.min(depth / 2 - 0.01, z));
+
     instances.push({
-      x: (random() - 0.5) * width,
-      z: (random() - 0.5) * depth,
-      height: 0.8 + random() * 0.4,     // 80%-120% height variation (subtle)
+      x,
+      z,
+      height: 0.65 + random() * 0.7,     // 65%-135% height variation (more dramatic)
       rotation: random() * Math.PI * 2,
-      lean: (random() - 0.5) * 0.15,    // Less lean for neater grass
-      scale: 0.85 + random() * 0.3,     // 85%-115% width variation (subtle)
+      lean: (random() - 0.5) * 0.35,     // More lean for wind-swept look
+      scale: 0.65 + random() * 0.7,      // 65%-135% width variation
+      colorVariation: 0.82 + random() * 0.36,  // 82%-118% color brightness
     });
   }
 
@@ -154,7 +209,7 @@ const GrassAdaptive: React.FC<GrassAdaptiveProps> = ({
   animated = true,
   targetFPS = 60,
   initialDensity = 50000,
-  maxDensity = 500000,
+  maxDensity = 750000,  // Increased for denser, more realistic grass
   onDensityChange,
 }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null);
