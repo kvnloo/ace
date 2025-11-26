@@ -49,13 +49,16 @@ interface DebugContextValue {
   setAssetsByType: (type: DebugAsset['type'], enabled: boolean) => void;
 }
 
-const DebugContext = createContext<DebugContextValue | null>(null);
+// Export the context type for use in other components
+export type DebugContext = DebugContextValue;
+
+const DebugContextInternal = createContext<DebugContextValue | null>(null);
 
 /**
  * Hook to access debug context
  */
 export const useDebug = () => {
-  const context = useContext(DebugContext);
+  const context = useContext(DebugContextInternal);
   if (!context) {
     throw new Error('useDebug must be used within DebugProvider');
   }
@@ -164,8 +167,8 @@ export const DebugProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   return (
-    <DebugContext.Provider value={value}>
+    <DebugContextInternal.Provider value={value}>
       {children}
-    </DebugContext.Provider>
+    </DebugContextInternal.Provider>
   );
 };

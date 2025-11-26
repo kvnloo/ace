@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles,
   TrendingUp,
   AlertTriangle,
+  Minimize2,
+  Maximize2,
 } from 'lucide-react';
 import { getPerformanceTracker } from '../../utils/debug/performanceTracker';
 
@@ -23,6 +24,7 @@ interface FPSMonitorProps {
   showFPSMonitor?: boolean;
   mode?: 'embedded' | 'overlay' | 'transitioning';
   onTransitionComplete?: () => void;
+  onFpsLevelChange?: (level: FPSLevel) => void;
   className?: string;
 }
 
@@ -30,6 +32,7 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
   showFPSMonitor = true,
   mode = 'embedded',
   onTransitionComplete,
+  onFpsLevelChange,
   className = ''
 }) => {
   // State copied from LoadingScreen
@@ -42,10 +45,15 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
   });
   const [fpsLevel, setFpsLevel] = useState<FPSLevel>('excellent');
   const isPortalMode = mode === 'overlay' || mode === 'transitioning';
+  const [isMinimized, setIsMinimized] = useState(false);
 
-  // Portal container for overlay mode
-  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
   const elementRef = useRef<HTMLDivElement>(null);
+
+  // Toggle minimize state
+  const toggleMinimize = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsMinimized(!isMinimized);
+  };
 
   // FPS Monitoring using global PerformanceTracker
   useEffect(() => {
@@ -81,7 +89,12 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
               ? 'fair'
               : 'poor';
 
-      setFpsLevel(level);
+      setFpsLevel((prevLevel) => {
+        if (prevLevel !== level) {
+          onFpsLevelChange?.(level);
+        }
+        return level;
+      });
 
       animationFrameId = requestAnimationFrame(updateFPS);
     };
@@ -91,30 +104,7 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [showFPSMonitor]);
-
-  // Create portal container for overlay/transitioning modes
-  useEffect(() => {
-    if (isPortalMode) {
-      const container = document.createElement('div');
-      container.id = 'fps-monitor-portal';
-      container.style.position = 'fixed';
-      container.style.top = '0';
-      container.style.left = '0';
-      container.style.width = '100%';
-      container.style.height = '100%';
-      container.style.pointerEvents = 'none'; // Allow clicks to pass through
-      container.style.zIndex = '10000';
-
-      document.body.appendChild(container);
-      setPortalContainer(container);
-
-      return () => {
-        document.body.removeChild(container);
-        setPortalContainer(null);
-      };
-    }
-  }, [isPortalMode]);
+  }, [showFPSMonitor, onFpsLevelChange]);
 
   // Helper functions copied from LoadingScreen
   const getFPSColor = useCallback((level: FPSLevel) => {
@@ -141,11 +131,12 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
   if (!showFPSMonitor) return null;
 
   // Render FPS Monitor - with Portal support for overlay/transitioning
+  // Render FPS Monitor - with Portal support for overlay/transitioning
   const monitorContent = (
     <motion.div
       layoutId="fps-monitor-container"
       ref={elementRef}
-      className={`${className} ${isPortalMode ? 'fixed top-20 right-4 z-50' : ''}`}
+      className={`${className} ${isPortalMode ? 'fixed top-20 right-4 z-[100]' : ''}`}
       data-testid="fps-meter"
       layout
       transition={{
@@ -243,7 +234,7 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
       ) : (
         // Overlay mode - compact floating design
         <motion.div
-          className="glass-card rounded-2xl p-4 min-w-[200px]"
+          className={`glass-card rounded-2xl ${isMinimized ? 'p-2' : 'p-4'} min-w-[${isMinimized ? 'auto' : '200px'}] transition-all duration-300`}
           animate={
             mode === 'transitioning'
               ? {
@@ -262,10 +253,14 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
             }
           }}
         >
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
+          {isMinimized ? (
+            // Minimized View
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={toggleMinimize}
+            >
               <div
-                className="p-2 rounded-lg"
+                className="p-1.5 rounded-lg"
                 style={{
                   backgroundColor: getFPSColor(fpsLevel) + '20',
                   color: getFPSColor(fpsLevel)
@@ -273,57 +268,84 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
               >
                 {getFPSIcon(fpsLevel)}
               </div>
-            </div>
-
-            <div className="text-right">
               <div
-                className="text-3xl font-bold font-['JetBrains_Mono']"
+                className="text-lg font-bold font-['JetBrains_Mono']"
                 style={{ color: getFPSColor(fpsLevel) }}
               >
                 {fpsData.current}
               </div>
-              <div className="text-xs text-gray-300 font-['Inter']">
-                FPS
-              </div>
             </div>
-          </div>
+          ) : (
+            // Expanded View
+            <>
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="p-2 rounded-lg"
+                    style={{
+                      backgroundColor: getFPSColor(fpsLevel) + '20',
+                      color: getFPSColor(fpsLevel)
+                    }}
+                  >
+                    {getFPSIcon(fpsLevel)}
+                  </div>
 
-          {/* Compact graph for overlay */}
-          <div className="mt-3 h-10 flex items-end gap-0.5 justify-start">
-            {fpsData.history.slice(-20).map((fps, index) => {
-              const maxFps = Math.max(...fpsData.history, 1);
-              const heightPercentage = (fps / maxFps) * 100;
-              return (
-                <div
-                  key={index}
-                  className="rounded-t flex-1"
-                  style={{
-                    height: `${heightPercentage}%`,
-                    backgroundColor: getFPSColor(
-                      fps >= 55
-                        ? 'excellent'
-                        : fps >= 40
-                          ? 'good'
-                          : fps >= 25
-                            ? 'fair'
-                            : 'poor'
-                    ),
-                    opacity: 0.3 + (index / 20) * 0.7,
-                  }}
-                />
-              );
-            })}
-          </div>
+                  {/* Minimize Button */}
+                  <button
+                    onClick={toggleMinimize}
+                    className="p-1 hover:bg-white/10 rounded-full transition-colors"
+                  >
+                    <Minimize2 className="w-4 h-4 text-gray-400" />
+                  </button>
+                </div>
+
+                <div className="text-right">
+                  <div
+                    className="text-3xl font-bold font-['JetBrains_Mono']"
+                    style={{ color: getFPSColor(fpsLevel) }}
+                  >
+                    {fpsData.current}
+                  </div>
+                  <div className="text-xs text-gray-300 font-['Inter']">
+                    FPS
+                  </div>
+                </div>
+              </div>
+
+              {/* Compact graph for overlay */}
+              <div className="mt-3 h-10 flex items-end gap-0.5 justify-start">
+                {fpsData.history.slice(-20).map((fps, index) => {
+                  const maxFps = Math.max(...fpsData.history, 1);
+                  const heightPercentage = (fps / maxFps) * 100;
+                  return (
+                    <div
+                      key={index}
+                      className="rounded-t flex-1"
+                      style={{
+                        height: `${heightPercentage}%`,
+                        backgroundColor: getFPSColor(
+                          fps >= 55
+                            ? 'excellent'
+                            : fps >= 40
+                              ? 'good'
+                              : fps >= 25
+                                ? 'fair'
+                                : 'poor'
+                        ),
+                        opacity: 0.3 + (index / 20) * 0.7,
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </>
+          )}
         </motion.div>
       )}
     </motion.div>
   );
 
-  // Use portal for overlay/transitioning modes, normal render for embedded
-  if (isPortalMode && portalContainer) {
-    return createPortal(monitorContent, portalContainer);
-  }
-
+  // Render FPS Monitor
   return monitorContent;
 };
 

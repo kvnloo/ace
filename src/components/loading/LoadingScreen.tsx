@@ -11,6 +11,7 @@ import {
   AlertTriangle,
   Settings,
 } from 'lucide-react';
+type FPSLevel = 'excellent' | 'good' | 'fair' | 'poor';
 import {
   containerVariants,
   cardVariants,
@@ -45,6 +46,41 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
   const [canDismiss, setCanDismiss] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
   const [showErrorUI, setShowErrorUI] = useState(false);
+  const [fpsMonitorTransitioning, setFpsMonitorTransitioning] = useState(false);
+  const [fpsLevel, setFpsLevel] = useState<FPSLevel>('excellent');
+  const [showRecommendation, setShowRecommendation] = useState(false);
+
+  // Handle FPS level changes from FPSMonitor
+  const handleFpsLevelChange = (level: FPSLevel) => {
+    setFpsLevel(level);
+    // Show recommendation if performance is poor or fair
+    if (level === 'poor' || level === 'fair') {
+      setShowRecommendation(true);
+    } else {
+      setShowRecommendation(false);
+    }
+  };
+
+  // Simple recommendation generator based on current fpsLevel
+  const getRecommendation = () => {
+    if (fpsLevel === 'poor') {
+      return {
+        title: 'Low Performance Detected',
+        description: 'Your device is struggling. Consider lowering graphics quality.',
+        action: 'Adjust Settings',
+        icon: Settings,
+      };
+    }
+    if (fpsLevel === 'fair') {
+      return {
+        title: 'Performance Could Improve',
+        description: 'You may experience occasional lag. Try medium quality.',
+        action: 'Adjust Settings',
+        icon: Settings,
+      };
+    }
+    return null;
+  };
 
   // Set initial FPS mode
   useEffect(() => {
@@ -125,16 +161,18 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       const remaining = Math.max(0, minimumDisplayTime - elapsed);
 
       setTimeout(() => {
-        // Trigger FPS monitor transition before unmounting
+        // Trigger FPS monitor transition
         if (showFPSMonitor) {
+          setFpsMonitorTransitioning(true);
           startTransition();
         }
 
-        // Small delay to allow GlobalFPSMonitor to mount and grab layoutId
-        // before we unmount the embedded one
+        // Don't unmount immediately - let the FPS monitor animate first
+        // We'll rely on the loading screen's exit animation to hide it
+        // and call onComplete after the FPS transition is done
         setTimeout(() => {
           onComplete();
-        }, 100);
+        }, 1200); // Match FPS monitor transition duration
       }, remaining);
     }
   }, [isLoading, loadedCount, totalCount, canDismiss, onComplete, displayStartTime, minimumDisplayTime, showFPSMonitor, startTransition]);
@@ -172,6 +210,10 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       animate="visible"
       exit="exit"
       data-testid="loading-screen"
+      style={{
+        opacity: fpsMonitorTransitioning ? 0 : 1,
+        transition: 'opacity 0.3s ease-out'
+      }}
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-black opacity-90" />
@@ -214,7 +256,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
             {/* Overall Progress Bar */}
             <div className="relative w-full h-3 bg-white/5 rounded-full overflow-hidden" data-testid="loading-progress-bar">
               <motion.div
-                className="absolute inset-y-0 left-0 rounded-full progress-shimmer progress-gradient-excellent"
+                className={`absolute inset-y-0 left-0 rounded-full progress-shimmer progress-gradient-${fpsLevel}`}
                 custom={overallProgress}
                 variants={progressBarVariants}
                 initial="initial"
@@ -228,6 +270,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
             <FPSMonitor
               mode="embedded"
               className="mb-8 pb-6 border-b border-white/10"
+              onFpsLevelChange={handleFpsLevelChange}
             />
           )}
 
@@ -312,6 +355,41 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
           </AnimatePresence>
         </div>
 
+        {/* Recommendation Card */}
+        {showRecommendation && (
+          <motion.div
+            className="absolute bottom-8 left-8 right-8 max-w-md mx-auto glass-card rounded-2xl p-6 border border-yellow-500/30"
+            variants={recommendationCardVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            {(() => {
+              const rec = getRecommendation();
+              if (!rec) return null;
+              const Icon = rec.icon;
+              return (
+                <>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Icon className="w-5 h-5 text-yellow-400" />
+                    <h3 className="text-lg font-bold text-white">{rec.title}</h3>
+                  </div>
+                  <p className="text-sm text-gray-200 mb-4">{rec.description}</p>
+                  <button
+                    className="px-4 py-2 bg-yellow-500 text-slate-900 font-bold rounded hover:bg-yellow-400 transition"
+                    onClick={() => {
+                      // Placeholder action – could dispatch a setting change
+                      console.log('[LoadingScreen] Recommendation action:', rec.action);
+                    }}
+                  >
+                    {rec.action}
+                  </button>
+                </>
+              );
+            })()}
+          </motion.div>
+        )}
+
         {/* Loading Spinner (decorative) */}
         <div className="absolute top-8 left-8 loading-spinner" />
       </motion.div>
@@ -320,3 +398,4 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
 };
 
 export default LoadingScreen;
+

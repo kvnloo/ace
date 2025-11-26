@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { View, FeatureData } from './types';
 import NavBar from './components/NavBar';
 import ThreeScene from './components/ThreeScene';
@@ -38,9 +38,9 @@ const App: React.FC = () => {
     }
   }, [currentView]);
 
-  const pageVariants = {
+  const pageVariants: Variants = {
     initial: { opacity: 0, y: 20 },
-    enter: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+    enter: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
     exit: { opacity: 0, y: -20, transition: { duration: 0.4 } }
   };
 

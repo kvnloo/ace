@@ -18,3 +18,5 @@ export interface ChatMessage {
   role: 'user' | 'model';
   text: string;
 }
+
+export type ShadowQuality = 'low' | 'medium' | 'high';

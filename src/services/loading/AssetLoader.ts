@@ -275,7 +275,7 @@ export class AssetLoader {
 
       progress = {
         id: assetId,
-        category: asset.category as AssetCategory,
+        category: asset.type as AssetCategory,
         status: AssetLoadStatus.PENDING,
         retries: 0
       };
@@ -419,7 +419,7 @@ export class AssetLoader {
 
       tasks.push({
         assetId: asset.id,
-        category: asset.category as AssetCategory,
+        category: asset.type as AssetCategory,
         phase,
         priority: asset.priority || 0,
         dependencies: asset.dependencies || [],

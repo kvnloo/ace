@@ -108,7 +108,7 @@ export const LoadingProvider: React.FC<LoadingProviderProps> = ({
     const initialAssets: LoadingAsset[] = registryAssets.map(asset => ({
       id: asset.id,
       name: asset.name,
-      category: asset.category,
+      category: asset.type, // Use 'type' field from AssetDefinition
       loaded: false,
       error: false,
       progress: 0,
