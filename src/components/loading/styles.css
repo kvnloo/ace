@@ -1,0 +1,297 @@
+/**
+ * Premium Loading Screen Custom Animations
+ * CSS animations that complement Framer Motion
+ */
+
+/* Rotating gradient ring for spinner */
+@keyframes rotate-gradient {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.loading-spinner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(
+    45deg,
+    #10b981,
+    #3b82f6,
+    #f59e0b,
+    #10b981
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotate-gradient 2s linear infinite;
+}
+
+.loading-spinner::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.7);
+}
+
+/* Pulsing glow effect */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
+  }
+}
+
+.glow-excellent {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Shimmer effect for progress bars */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.progress-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+/* Color transition based on FPS */
+@keyframes fps-transition-excellent {
+  0%, 100% {
+    background-color: rgba(16, 185, 129, 0.2);
+  }
+  50% {
+    background-color: rgba(16, 185, 129, 0.3);
+  }
+}
+
+@keyframes fps-transition-good {
+  0%, 100% {
+    background-color: rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    background-color: rgba(59, 130, 246, 0.3);
+  }
+}
+
+@keyframes fps-transition-fair {
+  0%, 100% {
+    background-color: rgba(245, 158, 11, 0.2);
+  }
+  50% {
+    background-color: rgba(245, 158, 11, 0.3);
+  }
+}
+
+@keyframes fps-transition-poor {
+  0%, 100% {
+    background-color: rgba(239, 68, 68, 0.2);
+  }
+  50% {
+    background-color: rgba(239, 68, 68, 0.3);
+  }
+}
+
+.fps-excellent {
+  animation: fps-transition-excellent 2s ease-in-out infinite;
+}
+
+.fps-good {
+  animation: fps-transition-good 2s ease-in-out infinite;
+}
+
+.fps-fair {
+  animation: fps-transition-fair 2s ease-in-out infinite;
+}
+
+.fps-poor {
+  animation: fps-transition-poor 2s ease-in-out infinite;
+}
+
+/* Milestone celebration confetti */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #10b981;
+  animation: confetti-fall 3s linear;
+}
+
+/* Glassmorphism effects */
+.glass-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-card:hover {
+  background: rgba(15, 23, 42, 0.8);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+/* Button glow effect */
+.button-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.button-glow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.button-glow:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Gradient text effect */
+.gradient-text {
+  background: linear-gradient(135deg, #10b981, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Progress bar gradient */
+.progress-gradient-excellent {
+  background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.progress-gradient-good {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+}
+
+.progress-gradient-fair {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.progress-gradient-poor {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* Mini graph gradient fill */
+.graph-gradient {
+  fill: url(#fps-gradient);
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Reduced motion mode */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .glass-card {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .gradient-text {
+    -webkit-text-fill-color: #10b981;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .loading-spinner {
+    width: 60px;
+    height: 60px;
+  }
+
+  .glass-card {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .loading-spinner {
+    width: 48px;
+    height: 48px;
+  }
+
+  .glass-card {
+    padding: 16px;
+  }
+}

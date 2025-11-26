@@ -279,14 +279,71 @@ VITE_BASE_PATH=/dev/ npm run build
 
 ## 📖 Documentation
 
-- [Deployment Guide](.github/DEPLOYMENT.md) - GitHub Pages setup and troubleshooting
+The ACE project maintains **two parallel documentation systems**:
+
+### 📚 Facility Documentation
+Learn about the autonomous racket sports and health optimization facility concept:
+- **[Facility Documentation →](docs/README.md)** - Concepts, architecture, and operations
+  - [Facility Concepts](docs/concepts/) - Vision and business models
+  - [Facility Architecture](docs/architecture/) - Design specifications and systems
+  - [Technical Specifications](docs/specifications/) - Component requirements
+  - [Operations](docs/operations/) - Facility management procedures
+  - [Research](docs/research/) - Market research and feasibility studies
+  - [Business Planning](docs/business/) - Financial models and strategies
+
+### 💻 Developer Documentation
+Technical documentation for the 3D visualization web application:
+- **[Developer Documentation →](claudedocs/README.md)** - Code, testing, and deployment
+  - [Architecture & Design](claudedocs/01-architecture/) - System architecture and design specifications
+  - [Implementation Guides](claudedocs/02-implementation-guides/) - Step-by-step feature implementation guides
+  - [Testing & Quality](claudedocs/03-testing-quality/) - Testing strategies and quality assurance
+  - [Monitoring & Operations](claudedocs/04-monitoring-operations/) - Production monitoring and operations
+  - [Workflows & Procedures](claudedocs/05-workflows/) - Development workflows and deployment procedures
+  - [Research & Investigation](claudedocs/06-research/) - Research findings and technical investigations
+
+### Quick Links
+- **[Facility Blueprint](docs/architecture/facility-blueprint.md)** - Complete facility design
+- **[APEX Concept](docs/concepts/APEX-Facility-Summary.md)** - Health optimization facility vision
+- **[Quick Reference](claudedocs/QUICK_REFERENCE.md)** - Fast lookup for common tasks and patterns
+- **[Deployment Guide](claudedocs/05-workflows/DEPLOYMENT.md)** - GitHub Pages setup and troubleshooting
+
+### External Links
 - [AI Studio Link](https://ai.studio/apps/drive/1Fc7kvKrC_eN-FRp7CerebmQONPqJW6z2) - Original project workspace
 
 ---
 
 ## 📄 License
 
-This project is licensed under the terms specified in [LICENSE](LICENSE).
+This project uses a **multi-license approach** to balance open innovation with appropriate protections:
+
+| Asset Type | License | Use |
+|------------|---------|-----|
+| **Source Code** | [MIT](LICENSE) | Permissive for maximum adoption |
+| **Facility Designs** | [CC-BY-SA 4.0](LICENSE-DESIGNS) | Share-alike for design innovations |
+| **3D Models** | [CC-BY-SA 4.0](LICENSE-MODELS) | Share-alike for visual assets |
+| **Documentation** | [CC-BY-SA 4.0](LICENSE-DOCS) | Share-alike for knowledge |
+
+### Quick Summary
+
+✅ **You can freely**:
+- Use, modify, and distribute the code (MIT)
+- Build commercial facilities using the designs (CC-BY-SA 4.0)
+- Create derivative works and improvements
+- Use in research and education
+
+⚠️ **You must**:
+- Include copyright and attribution notices
+- Share design/model/documentation improvements under CC-BY-SA 4.0
+- Indicate changes made to original works
+
+❌ **You cannot**:
+- Remove attribution from any component
+- Create proprietary closed-source facility designs
+- Claim official endorsement without permission
+
+**For detailed licensing information, see [docs/LICENSE.md](docs/LICENSE.md)**
+
+**For licensing rationale and analysis, see [docs/LICENSE_RECOMMENDATIONS.md](docs/LICENSE_RECOMMENDATIONS.md)**
 
 ---
 

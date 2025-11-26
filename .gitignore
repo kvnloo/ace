@@ -5,6 +5,7 @@ node_modules/
 
 # Testing
 coverage/
+test-results/
 
 # Production
 dist/
@@ -32,3 +33,18 @@ pnpm-debug.log*
 
 # OS
 Thumbs.db
+
+# Debug artifacts
+*.screenshot.png
+grass-screenshot.png
+scene-port-3000.png
+
+# Backup files
+*.backup
+
+# E2E artifacts
+e2e/screenshots/
+
+# Coordination metadata (optional)
+.claude-flow/
+.swarm/

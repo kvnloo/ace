@@ -1,0 +1,197 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                      DEBUG PANEL COMPONENT STRUCTURE                      ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  DebugPanel.tsx (Main Component - 469 lines)                           │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │ 🎯 HEADER (Draggable)                                             │  │
+│  │  ┌─────────────────────────────────────────────────────────────┐  │  │
+│  │  │ 🐛 3D Performance Debugger    [5/8 assets]  [─] [×]          │  │  │
+│  │  └─────────────────────────────────────────────────────────────┘  │  │
+│  ├───────────────────────────────────────────────────────────────────┤  │
+│  │ 📊 PERFORMANCE METRICS (PerformanceChart.tsx)                     │  │
+│  │  ┌───────────┬───────────┬──────────────┐                         │  │
+│  │  │ FPS: 58   │ Memory:   │ Frame Time:  │                         │  │
+│  │  │ ↑ +2      │ 245 MB    │ 17.2 ms      │                         │  │
+│  │  │ vs base   │ +15 MB    │ +2.1 ms      │                         │  │
+│  │  └───────────┴───────────┴──────────────┘                         │  │
+│  │  ┌─────────────────────────────────────────────────────────────┐  │  │
+│  │  │ FPS History (Last 60 frames)                                │  │  │
+│  │  │ 120┤                                                         │  │  │
+│  │  │ 90 ┤                                                         │  │  │
+│  │  │ 60 ┤─────────────────────────────────────────────────────── │  │  │
+│  │  │ 30 ┤         /\/\/\                                         │  │  │
+│  │  │ 0  └────────────────────────────────────────────────────────│  │  │
+│  │  └─────────────────────────────────────────────────────────────┘  │  │
+│  ├───────────────────────────────────────────────────────────────────┤  │
+│  │ 🎚️ PRESET SELECTOR (PresetSelector.tsx)                          │  │
+│  │  ┌─────────────────────────────────────────────────────────────┐  │  │
+│  │  │ Preset: Production ▼                                        │  │  │
+│  │  │  • Baseline                                                 │  │  │
+│  │  │  • One-by-One                                               │  │  │
+│  │  │  ✓ Production                                               │  │  │
+│  │  │  • Performance Test                                         │  │  │
+│  │  │  • My Custom Preset 1 [🗑️]                                  │  │  │
+│  │  │  ─────────────────────────────────────                      │  │  │
+│  │  │  💾 Save Current as Preset                                  │  │  │
+│  │  └─────────────────────────────────────────────────────────────┘  │  │
+│  ├───────────────────────────────────────────────────────────────────┤  │
+│  │ 🎮 ASSET CONTROLS                    [⚡ All On] [⚠️ All Off]     │  │
+│  │  ┌─────────────────────────────────────────────────────────────┐  │  │
+│  │  │ AssetToggle.tsx (Individual Asset Control)                  │  │  │
+│  │  │  ┌──────────────────────────────────────────────────────┐   │  │  │
+│  │  │  │ [●─] ⚡ Scene Lighting              [LOW]            │   │  │  │
+│  │  │  │      └─ Dependencies: none                           │   │  │  │
+│  │  │  └──────────────────────────────────────────────────────┘   │  │  │
+│  │  │  ┌──────────────────────────────────────────────────────┐   │  │  │
+│  │  │  │ [─●] ⚡ Shadow Mapping              [HIGH] ⚠️         │   │  │  │
+│  │  │  │      └─ Depends on: Scene Lighting                   │   │  │  │
+│  │  │  │      Render: 8.5ms | Memory: 45.0MB                  │   │  │  │
+│  │  │  └──────────────────────────────────────────────────────┘   │  │  │
+│  │  │  ┌──────────────────────────────────────────────────────┐   │  │  │
+│  │  │  │ [─○] 🔇 Particle Effects            [HIGH]           │   │  │  │
+│  │  │  │      └─ Depends on: Scene Lighting                   │   │  │  │
+│  │  │  └──────────────────────────────────────────────────────┘   │  │  │
+│  │  └─────────────────────────────────────────────────────────────┘  │  │
+│  ├───────────────────────────────────────────────────────────────────┤  │
+│  │ 🎬 ACTIONS                                                        │  │
+│  │  ┌──────────────────────┬──────────────────────┐                 │  │
+│  │  │ 📥 Export Report     │ 🔄 Reset             │                 │  │
+│  │  └──────────────────────┴──────────────────────┘                 │  │
+│  ├───────────────────────────────────────────────────────────────────┤  │
+│  │ ⌨️ KEYBOARD SHORTCUTS                                             │  │
+│  │  Ctrl+Shift+D: Toggle Panel    Ctrl+Shift+A: Enable All          │  │
+│  │  Ctrl+Shift+N: Disable All     Ctrl+Shift+R: Reset               │  │
+│  └───────────────────────────────────────────────────────────────────┘  │
+│                                                           [◢] Resize    │
+└─────────────────────────────────────────────────────────────────────────┘
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                        COMPONENT DEPENDENCIES                             ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+DebugPanel.tsx
+├── imports AssetToggle.tsx
+│   └── renders for each asset in list
+├── imports PerformanceChart.tsx
+│   ├── displays FPS/Memory/Render metrics
+│   ├── renders SVG graph for FPS history
+│   └── shows performance delta vs baseline
+├── imports PresetSelector.tsx
+│   ├── manages preset dropdown
+│   ├── handles save/load/delete operations
+│   └── triggers preset application
+└── imports types.ts
+    ├── Asset3D interface
+    ├── PerformanceMetrics interface
+    ├── DebugPreset interface
+    └── PerformanceReport interface
+
+index.ts (Exports)
+├── DebugPanel (default)
+├── AssetToggle
+├── PerformanceChart
+├── PresetSelector
+└── All TypeScript types
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                           STATE MANAGEMENT                                ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+DebugPanel State:
+┌─────────────────────────────────────────────────────────────────────────┐
+│ UI State                    │ Performance State                         │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│ • isVisible: boolean        │ • metrics: PerformanceMetrics            │
+│ • isMinimized: boolean      │   - fps: number                          │
+│ • position: {x, y}          │   - memory: number                       │
+│ • size: {width, height}     │   - renderTime: number                   │
+│                             │   - frameHistory: number[]               │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│ Asset State                 │ Preset State                             │
+├─────────────────────────────┼───────────────────────────────────────────┤
+│ • internalAssets: Asset3D[] │ • presets: DebugPreset[]                 │
+│ • perAssetMetrics: {...}    │ • currentPreset: string                  │
+│                             │ • baselineMetrics: PerformanceMetrics    │
+└─────────────────────────────┴───────────────────────────────────────────┘
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                          EVENT FLOW DIAGRAM                               ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+User Interaction                    Component                    Callback
+─────────────────                   ─────────                    ────────
+
+[Toggle Asset]  ──────────────────> AssetToggle
+                                         │
+                                         ├─> Update internal state
+                                         │
+                                         └─> onAssetToggle(id, enabled)
+                                                     │
+                                                     └──> Parent Component
+                                                          │
+                                                          └─> Update 3D Scene
+
+[Select Preset] ──────────────────> PresetSelector
+                                         │
+                                         ├─> Apply preset asset states
+                                         │
+                                         └─> onPresetApply(presetId)
+                                                     │
+                                                     └──> Parent Component
+
+[Export Report] ──────────────────> DebugPanel
+                                         │
+                                         ├─> Collect metrics
+                                         │
+                                         ├─> Generate JSON
+                                         │
+                                         └─> Download file
+
+[Drag Panel]    ──────────────────> DebugPanel (header)
+                                         │
+                                         └─> Update position state
+
+[Resize Panel]  ──────────────────> DebugPanel (resize handle)
+                                         │
+                                         └─> Update size state
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                       PERFORMANCE MONITORING LOOP                         ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+requestAnimationFrame ─┐
+                       │
+                       ├─> Track Frame
+                       │    ├─> Calculate delta time
+                       │    ├─> Update frameCountRef
+                       │    └─> Update renderTime
+                       │
+                       └─> Loop continues
+
+setInterval (1000ms) ──┐
+                       │
+                       └─> Calculate FPS
+                            ├─> fps = frameCountRef.current
+                            ├─> Get memory usage
+                            ├─> Update metrics state
+                            └─> Add to frameHistory
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                            FILE STATISTICS                                ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+Component                      Lines    Features
+─────────────────────────────  ─────    ────────────────────────────────────
+DebugPanel.tsx                  469     Main panel, drag/resize, keyboard
+AssetToggle.tsx                 123     Asset controls, hover tooltips
+PerformanceChart.tsx            241     FPS graph, metrics display
+PresetSelector.tsx              199     Preset management, save/load
+types.ts                         67     TypeScript interfaces
+index.ts                         18     Clean exports
+DebugPanel.example.tsx          197     Usage examples, integrations
+README.md                       308     Complete documentation
+─────────────────────────────  ─────    ────────────────────────────────────
+TOTAL                         1,402     8 files, full-featured debug system
+
