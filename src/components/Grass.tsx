@@ -3,55 +3,42 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 interface GrassProps {
-  /** Position of the grass patch [x, y, z] */
   position: [number, number, number];
-  /** Size of the grass area [width, depth] */
   size: [number, number];
-  /** Number of grass blades (default: 500) */
   bladeCount?: number;
-  /** Base color of grass (default: #4d7c0f) */
   color?: string;
-  /** Enable subtle wind animation (default: false) */
   animated?: boolean;
 }
 
 /**
  * Grass component using instanced meshes for performance
- * Renders realistic grass blades with optional wind animation
+ * Original implementation from enhance/3D branch
+ * Uses simple inline geometry with per-instance color variation
  */
 const Grass: React.FC<GrassProps> = ({
   position,
   size,
-  bladeCount = 500,
+  bladeCount = 2000,
   color = '#4d7c0f',
-  animated = false
+  animated = true
 }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const timeRef = useRef(0);
-  const frameCount = useRef(0);
 
-  // Generate grass blade positions and variations
+  // Generate grass blade data with color variation
   const grassData = useMemo(() => {
     const instances = [];
     const [width, depth] = size;
-    const tempObject = new THREE.Object3D();
     const tempColor = new THREE.Color();
 
     for (let i = 0; i < bladeCount; i++) {
-      // Random position within the area
       const x = (Math.random() - 0.5) * width;
       const z = (Math.random() - 0.5) * depth;
-
-      // Random height variation (0.8 to 1.2)
       const height = 0.8 + Math.random() * 0.4;
-
-      // Random rotation
       const rotation = Math.random() * Math.PI * 2;
-
-      // Slight random scale for width variation
       const scale = 0.8 + Math.random() * 0.4;
 
-      // Color variation (darker to lighter green)
+      // Color variation for natural look
       const colorVariation = 0.85 + Math.random() * 0.15;
       tempColor.setStyle(color).multiplyScalar(colorVariation);
 
@@ -61,7 +48,6 @@ const Grass: React.FC<GrassProps> = ({
         height,
         scale,
         color: tempColor.clone(),
-        // Store phase offset for animation
         phase: Math.random() * Math.PI * 2
       });
     }
@@ -69,12 +55,11 @@ const Grass: React.FC<GrassProps> = ({
     return instances;
   }, [size, bladeCount, color]);
 
-  // Apply transforms to instanced mesh
+  // Apply initial transforms to instanced mesh
   useMemo(() => {
     if (!meshRef.current) return;
 
     const tempObject = new THREE.Object3D();
-    const tempColor = new THREE.Color();
 
     grassData.forEach((blade, i) => {
       const [x, y, z] = blade.position;
@@ -93,12 +78,9 @@ const Grass: React.FC<GrassProps> = ({
     }
   }, [grassData]);
 
-  // Animate grass with wind effect (only every 3rd frame for performance)
+  // Animate grass with wind effect
   useFrame((state, delta) => {
     if (!animated || !meshRef.current) return;
-
-    frameCount.current++;
-    if (frameCount.current % 3 !== 0) return;
 
     timeRef.current += delta * 0.5;
     const tempObject = new THREE.Object3D();
@@ -127,10 +109,9 @@ const Grass: React.FC<GrassProps> = ({
         args={[undefined, undefined, bladeCount]}
         castShadow
         receiveShadow
-        frustumCulled={true}
       >
-        {/* Grass blade geometry - thin elongated quad (smaller for performance) */}
-        <planeGeometry args={[0.1, 0.8]} />
+        {/* KEY: Grass blade geometry - thin elongated quad (0.15 wide, 1 tall) */}
+        <planeGeometry args={[0.15, 1]} />
         <meshStandardMaterial
           vertexColors
           side={THREE.DoubleSide}

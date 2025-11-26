@@ -13,14 +13,10 @@ interface GrassOptimizedProps {
 
 /**
  * Optimized Grass Component
+ * Based on original enhance/3D implementation with performance optimizations
  *
- * Performance improvements:
- * - Reduced blade count based on performance mode
- * - LOD system based on camera distance
- * - Throttled animations
- * - Frustum culling enabled
- * - Cached geometry and materials
- * - Conditional animation based on visibility
+ * Key: Uses inline <planeGeometry args={[0.15, 1]} /> like the original
+ * with per-instance color variation via setColorAt
  */
 const GrassOptimized: React.FC<GrassOptimizedProps> = ({
   position,
@@ -37,16 +33,14 @@ const GrassOptimized: React.FC<GrassOptimizedProps> = ({
   const visibleRef = useRef(true);
 
   // Adjust blade count based on performance mode
-  const getOptimizedBladeCount = () => {
+  const optimizedBladeCount = useMemo(() => {
     const modifiers = {
       high: 1.0,
       medium: 0.5,
       low: 0.25
     };
     return Math.floor(bladeCount * modifiers[performanceMode]);
-  };
-
-  const optimizedBladeCount = getOptimizedBladeCount();
+  }, [bladeCount, performanceMode]);
 
   // Update interval based on performance mode
   const updateInterval = useMemo(() => ({
@@ -55,19 +49,7 @@ const GrassOptimized: React.FC<GrassOptimizedProps> = ({
     low: 50      // ~20fps
   })[performanceMode], [performanceMode]);
 
-  // Cached geometry and material
-  const { geometry, material } = useMemo(() => {
-    const geo = new THREE.PlaneGeometry(0.15, 1, 1, performanceMode === 'low' ? 1 : 2);
-    const mat = new THREE.MeshStandardMaterial({
-      vertexColors: true,
-      side: THREE.DoubleSide,
-      roughness: 0.8,
-      metalness: 0
-    });
-    return { geometry: geo, material: mat };
-  }, [performanceMode]);
-
-  // Generate grass blade data with LOD
+  // Generate grass blade data with color variation (original approach)
   const grassData = useMemo(() => {
     const instances = [];
     const [width, depth] = size;
@@ -80,7 +62,7 @@ const GrassOptimized: React.FC<GrassOptimizedProps> = ({
       const rotation = Math.random() * Math.PI * 2;
       const scale = 0.8 + Math.random() * 0.4;
 
-      // Color variation (simpler calculation)
+      // Color variation for natural look (original approach)
       const colorVariation = 0.85 + Math.random() * 0.15;
       tempColor.setStyle(color).multiplyScalar(colorVariation);
 
@@ -90,8 +72,7 @@ const GrassOptimized: React.FC<GrassOptimizedProps> = ({
         height,
         scale,
         color: tempColor.clone(),
-        phase: Math.random() * Math.PI * 2,
-        lodDistance: 0 // Will be calculated based on camera distance
+        phase: Math.random() * Math.PI * 2
       });
     }
 
@@ -151,16 +132,16 @@ const GrassOptimized: React.FC<GrassOptimizedProps> = ({
 
     // Update only visible blades with LOD
     const bladesToUpdate = performanceMode === 'low'
-      ? Math.floor(grassData.length * 0.5)  // Update only half in low mode
+      ? Math.floor(grassData.length * 0.5)
       : grassData.length;
 
     for (let i = 0; i < bladesToUpdate; i++) {
       const blade = grassData[i];
 
-      // Simplified wind calculation
+      // Wind calculation (matches original)
       const windStrength = performanceMode === 'high'
         ? Math.sin(timeRef.current + blade.phase) * 0.08 * lodMultiplier
-        : Math.sin(timeRef.current * 0.5) * 0.04; // Simpler calculation for lower modes
+        : Math.sin(timeRef.current * 0.5) * 0.04;
 
       const windBend = performanceMode === 'high'
         ? Math.sin(timeRef.current * 2 + blade.phase * 1.5) * 0.05 * lodMultiplier
@@ -182,11 +163,20 @@ const GrassOptimized: React.FC<GrassOptimizedProps> = ({
     <group position={position}>
       <instancedMesh
         ref={meshRef}
-        args={[geometry, material, optimizedBladeCount]}
-        castShadow={performanceMode === 'high'} // Only cast shadows in high mode
+        args={[undefined, undefined, optimizedBladeCount]}
+        castShadow={performanceMode === 'high'}
         receiveShadow
-        frustumCulled={true} // Enable frustum culling
+        frustumCulled={true}
       >
+        {/* KEY: Same geometry as original - thin elongated quad (0.15 wide, 1 tall) */}
+        <planeGeometry args={[0.15, 1]} />
+        <meshStandardMaterial
+          vertexColors
+          side={THREE.DoubleSide}
+          roughness={0.8}
+          metalness={0}
+          flatShading={false}
+        />
       </instancedMesh>
     </group>
   );

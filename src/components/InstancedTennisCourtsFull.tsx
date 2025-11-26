@@ -8,7 +8,7 @@
 
 import React, { useMemo, useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import Grass from './Grass';
+import GrassOptimized from './GrassOptimized';
 import { getCourtTexture, type CourtSurfaceType } from '../utils/courtTextures';
 
 interface CourtConfig {
@@ -69,14 +69,15 @@ const InstancedTennisCourtsFull: React.FC<InstancedTennisCourtsFullProps> = ({
 
     (['grass', 'hard', 'clay', 'wood'] as CourtSurfaceType[]).forEach(type => {
       const textureConfig = getCourtTexture(type);
-      materials[type] = new THREE.MeshStandardMaterial({
+      const material = new THREE.MeshStandardMaterial({
         color: textureConfig.color,
         map: textureConfig.map,
         normalMap: textureConfig.normalMap,
-        roughnessMap: textureConfig.roughnessMap,
         roughness: textureConfig.roughness,
         metalness: textureConfig.metalness || 0
       });
+      material.needsUpdate = true;
+      materials[type] = material;
     });
 
     return materials;
@@ -203,7 +204,7 @@ const InstancedCourtType: React.FC<{
 };
 
 /**
- * Grass surface effects - optimized grass blade rendering
+ * Grass surface effects - optimized grass blade rendering with LOD support
  */
 const GrassEffects: React.FC<{ courts: CourtConfig[] }> = ({ courts }) => {
   return (
@@ -211,13 +212,14 @@ const GrassEffects: React.FC<{ courts: CourtConfig[] }> = ({ courts }) => {
       {courts.map((court, i) => {
         const [x, y, z] = court.position;
         return (
-          <Grass
+          <GrassOptimized
             key={`grass-${i}`}
             position={[x, y + 0.04, z]}
-            size={[9.5, 21.5]}
-            bladeCount={200} // Reduced from 400 to 200 for better FPS
-            color="#4d7c0f"
+            size={[10, 22]}
+            bladeCount={1500}
+            color="#4d7c0f" // Original grass green from enhance/3D
             animated={true}
+            performanceMode="high"
           />
         );
       })}

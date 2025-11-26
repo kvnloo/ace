@@ -580,11 +580,7 @@ const GroundFloor = ({ active, showMeasurements, showLabels }: { active: boolean
             <Suspense fallback={null}>
                 <InstancedTennisCourtsFull courts={courtConfigs} enableEffects={true} />
             </Suspense>
-            {/* Pro Shop Area */}
-            <mesh position={[0, 3, 55]} castShadow>
-                <boxGeometry args={[20, 6, 8]} />
-                <meshStandardMaterial color="#0f172a" />
-            </mesh>
+            {/* Pro Shop Area - Removed: was causing visual obstruction */}
 
             {/* Per-Cluster Dimensions */}
             {showMeasurements && rowConfigs.map((row, i) => (
@@ -613,22 +609,7 @@ const GroundFloor = ({ active, showMeasurements, showLabels }: { active: boolean
                 </group>
             ))}
 
-            {/* Explicit Labels */}
-            {showLabels && rowConfigs.map((row, i) => (
-                <Text
-                    key={`lbl-${i}`}
-                    position={[-55, 1, row.z]}
-                    rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-                    fontSize={4}
-                    color="white"
-                    anchorX="center"
-                    anchorY="middle"
-                    outlineWidth={0.1}
-                    outlineColor="#000"
-                >
-                    {row.label} COURTS
-                </Text>
-            ))}
+            {/* Court type labels removed - using floating Html labels instead (see FEATURES markers) */}
         </group>
     )
 }
@@ -727,7 +708,6 @@ const LevelThree = ({ active, showMeasurements }: { active: boolean, showMeasure
             <GreenWallBlock position={[-60, 10, 0]} args={[2, 18, 80]} />
             <GreenWallBlock position={[60, 10, 0]} args={[2, 18, 80]} />
             <GreenWallBlock position={[0, 10, -50]} args={[100, 18, 2]} />
-            <GreenWallBlock position={[0, 10, 50]} args={[100, 18, 2]} />
         </group>
     )
 }
