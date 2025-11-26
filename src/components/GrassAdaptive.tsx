@@ -10,7 +10,7 @@
  * - We scale this down but still aim for visually-dense appearance
  */
 
-import React, { useRef, useMemo, useEffect, useState } from 'react';
+import React, { useRef, useMemo, useEffect, useCallback } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -37,10 +37,10 @@ const REAL_BLADES_PER_COURT = 7_000_000;
 const createGrassBladeGeometry = (): THREE.BufferGeometry => {
   const geometry = new THREE.BufferGeometry();
 
-  // Much smaller, realistic grass blade dimensions
-  const bladeWidth = 0.008;   // ~8mm wide at base (was 0.05)
-  const bladeHeight = 0.12;   // ~12cm tall (was 1.0) - typical lawn grass
-  const midHeight = 0.06;     // midpoint
+  // Scaled grass blade dimensions for visibility at typical camera distances
+  const bladeWidth = 0.04;    // 4cm wide at base - visible at court scale
+  const bladeHeight = 0.6;    // 60cm tall - visible at court scale
+  const midHeight = 0.3;      // midpoint
   const midWidth = bladeWidth * 0.4;
 
   const vertices = new Float32Array([
@@ -214,7 +214,6 @@ const GrassAdaptive: React.FC<GrassAdaptiveProps> = ({
 }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const densityRef = useRef(initialDensity);
-  const [renderKey, setRenderKey] = useState(0);
 
   // FPS tracking refs
   const frameTimesRef = useRef<number[]>([]);
@@ -223,6 +222,7 @@ const GrassAdaptive: React.FC<GrassAdaptiveProps> = ({
   const hasReachedMaxRef = useRef(false);
   const initialDelayRef = useRef(true);
   const frameCountRef = useRef(0);
+  const initializedCountRef = useRef(0);
 
   // Phase tracking: 'burst' = aggressive initial scaling, 'monitor' = periodic checks
   const phaseRef = useRef<'init' | 'burst' | 'monitor'>('init');
@@ -250,32 +250,43 @@ const GrassAdaptive: React.FC<GrassAdaptiveProps> = ({
     });
   }, [color]);
 
-  // Generate grass positions based on current density
-  const grassData = useMemo(() => {
-    const count = densityRef.current;
-    console.log(`[GrassAdaptive] Generating ${count.toLocaleString()} grass blades (${((count / REAL_BLADES_PER_COURT) * 100).toFixed(3)}% of real grass)`);
-    return generateGrassPositions(count, size[0], size[1]);
-  }, [renderKey, size]);
+  // Pre-generate ALL positions once (maximum capacity)
+  const allGrassPositions = useMemo(() => {
+    console.log(`[GrassAdaptive] Pre-generating ${maxDensity.toLocaleString()} grass blade positions`);
+    return generateGrassPositions(maxDensity, size[0], size[1]);
+  }, [maxDensity, size]);
 
-  // Apply transforms to instances when grass data changes
-  useEffect(() => {
+  // Function to update visible instances (incremental)
+  const updateVisibleInstances = useCallback((newCount: number) => {
     if (!meshRef.current) return;
 
-    const tempObject = new THREE.Object3D();
-    const count = Math.min(grassData.length, densityRef.current);
+    const mesh = meshRef.current;
+    const startIndex = initializedCountRef.current;
 
-    for (let i = 0; i < count; i++) {
-      const blade = grassData[i];
-      tempObject.position.set(blade.x, 0, blade.z);
-      tempObject.rotation.set(blade.lean, blade.rotation, 0);
-      tempObject.scale.set(blade.scale, blade.height, blade.scale);
-      tempObject.updateMatrix();
-      meshRef.current.setMatrixAt(i, tempObject.matrix);
+    // Only set matrices for NEW instances
+    if (newCount > startIndex) {
+      const tempObject = new THREE.Object3D();
+
+      for (let i = startIndex; i < newCount; i++) {
+        const blade = allGrassPositions[i];
+        tempObject.position.set(blade.x, 0, blade.z);
+        tempObject.rotation.set(blade.lean, blade.rotation, 0);
+        tempObject.scale.set(blade.scale, blade.height, blade.scale);
+        tempObject.updateMatrix();
+        mesh.setMatrixAt(i, tempObject.matrix);
+      }
+
+      mesh.instanceMatrix.needsUpdate = true;
+      initializedCountRef.current = newCount;
     }
 
-    meshRef.current.instanceMatrix.needsUpdate = true;
-    meshRef.current.count = count;
-  }, [grassData]);
+    mesh.count = newCount;  // Works because newCount <= maxDensity allocation
+  }, [allGrassPositions]);
+
+  // Initialize visible instances on mount
+  useEffect(() => {
+    updateVisibleInstances(densityRef.current);
+  }, [updateVisibleInstances]);
 
   // Animation and adaptive density logic
   useFrame((state) => {
@@ -362,7 +373,7 @@ const GrassAdaptive: React.FC<GrassAdaptiveProps> = ({
         }
 
         onDensityChange?.(newDensity, currentFPS, phaseRef.current);
-        setRenderKey(prev => prev + 1);
+        updateVisibleInstances(newDensity);
         return true;
       }
       return false;
@@ -430,9 +441,8 @@ const GrassAdaptive: React.FC<GrassAdaptiveProps> = ({
   return (
     <group position={position}>
       <instancedMesh
-        key={renderKey}
         ref={meshRef}
-        args={[geometry, material, densityRef.current]}
+        args={[geometry, material, maxDensity]}
         receiveShadow
         frustumCulled={true}
       />
