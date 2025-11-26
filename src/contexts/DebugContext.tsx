@@ -26,7 +26,7 @@ export interface DebugAsset {
 /**
  * Debug context value interface
  */
-interface DebugContextValue {
+export interface DebugContextValue {
   /** All registered debug assets */
   assets: Map<string, DebugAsset>;
 
@@ -50,6 +50,9 @@ interface DebugContextValue {
 }
 
 const DebugContext = createContext<DebugContextValue | null>(null);
+
+// Export DebugContext for use in other modules
+export { DebugContext };
 
 /**
  * Hook to access debug context

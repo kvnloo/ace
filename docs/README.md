@@ -1,54 +1,67 @@
-# ACE Facility Documentation
+# ACE - Autonomous Court Environment
 
-Welcome to the facility documentation for the ACE project. This documentation focuses on the **facility concept, architecture, and operations** of the autonomous racket sports and health optimization facility.
+3D visualization web application for exploring advanced sports facility concepts.
 
-> **Looking for code documentation?** See [claudedocs/](../claudedocs/README.md) for developer documentation about the 3D visualization web application.
+## Quick Start
 
-## Quick Navigation
+```bash
+npm install
+npm run dev
+```
 
-### Understand the Vision
-- [APEX Facility Concept](concepts/APEX-Facility-Summary.md) - Health optimization facility vision
-- [Facility Blueprint](architecture/facility-blueprint.md) - Consolidated design
+Visit http://localhost:5173
 
-### Explore the Architecture
-- [Digital Twin Architecture](architecture/digital-twin-architecture.md) - Unity planning system
-- [Facility Architecture](architecture/facility-architecture.md) - Multi-agent systems
+## What is ACE?
 
-### Documentation by Role
+ACE is a web-based 3D visualization platform showcasing:
+- **Interactive 3D Courts**: Tennis, padel, and pickleball courts with realistic rendering
+- **Facility Concepts**: Autonomous sports facilities with robotic systems
+- **Advanced UI**: Loading screens, progress tracking, and debug panels
+- **Performance**: Optimized for smooth 60 FPS rendering with thousands of objects
 
-#### For Investors & Stakeholders
-- [Business Concepts](concepts/) - Vision and value proposition
-- [Business Planning](business/) - Revenue models and projections
+## Documentation
 
-#### For Architects & Planners
-- [Facility Architecture](architecture/) - Design specifications
-- [Technical Specifications](specifications/) - Detailed requirements
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System architecture and design decisions
+- **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Developer guide for contributing
+- **[API.md](./API.md)** - Component and service API reference
 
-#### For Facility Operators
-- [Operational Guides](operations/) - Day-to-day procedures
-- [Maintenance](operations/) - Upkeep and safety
+## Technology Stack
 
-#### For Researchers
-- [Research & Analysis](research/) - Market research and feasibility
+- **Frontend**: React + TypeScript + Vite
+- **3D Rendering**: Three.js + React Three Fiber
+- **Styling**: Tailwind CSS
+- **Testing**: Playwright (E2E) + Vitest (Unit)
 
-## Relationship to Code Documentation
+## Key Features
 
-The ACE project has **two parallel documentation systems**:
+### 3D Visualization
+- Multiple court types (tennis, padel, pickleball)
+- Realistic grass rendering with density monitoring
+- Dynamic lighting and shadows
+- Camera controls and navigation
 
-### 📚 `docs/` (This Directory)
-- **Focus:** The facility itself (concept, architecture, operations)
-- **Audience:** Non-technical stakeholders, facility planners
-- **Content:** What the facility IS and HOW IT OPERATES
+### Performance
+- Instanced rendering for thousands of objects
+- Batch loading with progress tracking
+- Lazy loading for off-screen components
+- FPS monitoring and optimization
 
-### 💻 `claudedocs/`
-- **Focus:** The 3D visualization web application
-- **Audience:** Software developers, technical contributors
-- **Content:** How the CODE works and is deployed
+### User Experience
+- Multi-phase loading screens
+- Interactive debug panels
+- Accessibility features (keyboard navigation, ARIA labels)
+- Responsive design for mobile and desktop
 
-**Example:**
-- `docs/architecture/facility-blueprint.md` describes the **physical facility layout**
-- `claudedocs/01-architecture/COURT_LAYOUT.md` describes the **code structure for rendering courts**
+## Project Status
 
----
+**Active Development** - Core 3D rendering complete, ongoing UI refinements
 
-**Last Updated:** 2025-11-22
+## License
+
+MIT
+
+## Learn More
+
+- Detailed documentation: `claudedocs/`
+- Architecture details: `claudedocs/architecture-detail/`
+- Test reports: `claudedocs/test-reports/`

@@ -352,7 +352,7 @@ const CelestialLight: React.FC<{
       />
 
       <hemisphereLight
-        skyColor={preset.skyColor}
+        color={preset.skyColor}
         groundColor={preset.groundColor}
         intensity={preset.ambientIntensity}
       />

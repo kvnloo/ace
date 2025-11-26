@@ -8,8 +8,7 @@ import AIChat from './components/AIChat';
 import Specifications from './components/Specifications';
 import Amenities from './components/Amenities';
 import LoadingScreen from './components/loading/LoadingScreen';
-import { LoadingProvider } from './components/loading/LoadingProvider';
-import { assetRegistry } from './utils/debug/assetRegistry';
+import { useLoading } from './components/loading/LoadingProvider';
 import { FPSMonitorProvider } from './components/performance/FPSMonitorContext';
 import GlobalFPSMonitor from './components/performance/GlobalFPSMonitor';
 import {
@@ -25,13 +24,16 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
   const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);
   const [show3DLoading, setShow3DLoading] = useState(false);
+  const { startLoading, isLoading } = useLoading();
 
-  // Show loading screen when entering 3D view
+  // Start loading when entering 3D view
   useEffect(() => {
     if (currentView === View.FACILITY_DEMO) {
       setShow3DLoading(true);
+      // Trigger asset loading
+      startLoading();
     }
-  }, [currentView]);
+  }, [currentView, startLoading]);
 
   // Reset selected feature when leaving demo view
   useEffect(() => {
@@ -251,21 +253,18 @@ const App: React.FC = () => {
                 variants={pageVariants}
                 className="w-full h-full relative bg-gradient-to-b from-slate-900 to-black"
               >
-                {/* LoadingProvider wraps BOTH LoadingScreen AND ThreeScene for proper progress tracking */}
-                <LoadingProvider registry={assetRegistry}>
-                  {/* Loading Screen for asset progress */}
-                  {show3DLoading && (
-                    <LoadingScreen
-                      onComplete={() => setShow3DLoading(false)}
-                      minimumDisplayTime={3000}
-                      showFPSMonitor={true}
-                    />
-                  )}
+                {/* Loading Screen for asset progress (uses LoadingProvider from main.tsx) */}
+                {show3DLoading && (
+                  <LoadingScreen
+                    onComplete={() => setShow3DLoading(false)}
+                    minimumDisplayTime={3000}
+                    showFPSMonitor={true}
+                  />
+                )}
 
-                  <div className="absolute inset-0 z-0">
-                    <ThreeScene onFeatureSelect={setSelectedFeature} />
-                  </div>
-                </LoadingProvider>
+                <div className="absolute inset-0 z-0">
+                  <ThreeScene onFeatureSelect={setSelectedFeature} />
+                </div>
 
                 {/* HUD Layer */}
                 <div className="absolute inset-0 z-10 pointer-events-none p-6 flex flex-col justify-between">

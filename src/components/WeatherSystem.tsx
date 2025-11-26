@@ -78,31 +78,34 @@ const WeatherSystem: React.FC<WeatherSystemProps> = ({
     registerAsset({
       id: 'weather-particles',
       name: 'Weather Particles (Rain/Snow)',
-      type: 'weather',
+      type: 'effects',
       enabled: true,
-      performanceCost: 6 // Many particles
+      performanceCost: 6, // Many particles
+      dependencies: []
     });
 
     registerAsset({
       id: 'clouds',
       name: 'Cloud System',
-      type: 'weather',
+      type: 'environment',
       enabled: true,
-      performanceCost: 4
+      performanceCost: 4,
+      dependencies: []
     });
 
     registerAsset({
       id: 'fog-system',
       name: 'Volumetric Fog',
-      type: 'weather',
+      type: 'effects',
       enabled: true,
-      performanceCost: 5
+      performanceCost: 5,
+      dependencies: []
     });
 
     registerAsset({
       id: 'wind-effects',
       name: 'Wind Animation Effects',
-      type: 'weather',
+      type: 'effects',
       enabled: true,
       performanceCost: 3,
       dependencies: ['grass-physics'] // affects grass

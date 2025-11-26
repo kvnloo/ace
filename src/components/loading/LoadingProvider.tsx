@@ -7,7 +7,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { AssetRegistry } from '../../utils/debug/assetRegistry';
 import { AssetLoader } from '../../services/loading/AssetLoader';
-import { DebugContext } from '../../contexts/DebugContext';
+import { DebugContextValue } from '../../contexts/DebugContext';
 import { LoadingState, LoadingProgress } from '../../services/loading/types';
 
 interface LoadingAsset {
@@ -45,7 +45,7 @@ export const useLoading = () => {
 interface LoadingProviderProps {
   children: ReactNode;
   registry: AssetRegistry;
-  debugContext?: DebugContext;
+  debugContext?: DebugContextValue;
   autoStart?: boolean;
 }
 

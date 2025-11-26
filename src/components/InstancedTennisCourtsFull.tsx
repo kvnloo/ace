@@ -6,8 +6,9 @@
  * Target: 540fps with visual enhancement
  */
 
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef, useEffect, useState, useCallback } from 'react';
 import * as THREE from 'three';
+import { Html } from '@react-three/drei';
 import GrassAdaptive from './GrassAdaptive';
 import { getCourtTexture, type CourtSurfaceType } from '../utils/courtTextures';
 
@@ -203,18 +204,53 @@ const InstancedCourtType: React.FC<{
   );
 };
 
+// Constants
+const REAL_BLADES_PER_COURT = 7_000_000;
+
+interface GrassDensityState {
+  courtIndex: number;
+  density: number;
+  fps: number;
+}
+
 /**
  * Grass surface effects - FPS-adaptive grass blade rendering
  *
  * Real-world reference:
  * - Tennis court: 78ft x 36ft = 2,808 sq ft
  * - Real grass: ~2,500 blades/sq ft = ~7 million blades per court
- * - Our adaptive system: 15k-80k blades (0.2%-1.1% of real density)
+ * - Our adaptive system: 50k-500k blades (0.7%-7% of real density)
  *
- * The adaptive algorithm starts at 15k blades and exponentially
+ * The adaptive algorithm starts at 50k blades and exponentially
  * increases density while FPS remains above target (60fps).
  */
 const GrassEffects: React.FC<{ courts: CourtConfig[] }> = ({ courts }) => {
+  const [densities, setDensities] = useState<GrassDensityState[]>([]);
+  const [phase, setPhase] = useState<'init' | 'burst' | 'monitor'>('init');
+
+  const handleDensityChange = useCallback((courtIndex: number, density: number, fps: number, newPhase: 'init' | 'burst' | 'monitor') => {
+    setDensities(prev => {
+      const existing = prev.findIndex(d => d.courtIndex === courtIndex);
+      if (existing >= 0) {
+        const updated = [...prev];
+        updated[existing] = { courtIndex, density, fps };
+        return updated;
+      }
+      return [...prev, { courtIndex, density, fps }];
+    });
+    setPhase(newPhase);
+  }, []);
+
+  const totalBlades = densities.reduce((sum, d) => sum + d.density, 0);
+  const avgFPS = densities.length > 0 ? densities.reduce((sum, d) => sum + d.fps, 0) / densities.length : 0;
+  const percentReal = densities.length > 0 ? (totalBlades / (REAL_BLADES_PER_COURT * densities.length)) * 100 : 0;
+
+  const phaseColors: Record<string, string> = {
+    init: '#fbbf24',
+    burst: '#22c55e',
+    monitor: '#3b82f6',
+  };
+
   return (
     <>
       {courts.map((court, i) => {
@@ -227,14 +263,111 @@ const GrassEffects: React.FC<{ courts: CourtConfig[] }> = ({ courts }) => {
             color="#4d7c0f"
             animated={true}
             targetFPS={60}
-            initialDensity={25000}
-            maxDensity={150000}
-            onDensityChange={(density, fps) => {
-              console.log(`Court ${i}: ${density.toLocaleString()} blades @ ${fps.toFixed(0)} FPS`);
+            initialDensity={50000}
+            maxDensity={500000}
+            onDensityChange={(density, fps, newPhase) => {
+              handleDensityChange(i, density, fps, newPhase);
             }}
           />
         );
       })}
+
+      {/* Grass Density Monitor - positioned in 3D space but renders as HTML overlay */}
+      <Html
+        position={[0, 15, 0]}
+        center
+        style={{
+          position: 'fixed',
+          top: '100px',
+          right: '20px',
+          left: 'auto',
+          transform: 'none',
+        }}
+        calculatePosition={() => [window.innerWidth - 240, 100, 0]}
+      >
+        <div
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '12px',
+            padding: '16px',
+            fontFamily: 'monospace',
+            fontSize: '12px',
+            color: '#fff',
+            minWidth: '200px',
+            backdropFilter: 'blur(8px)',
+            pointerEvents: 'none',
+          }}
+        >
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginBottom: '12px',
+            paddingBottom: '8px',
+            borderBottom: '1px solid rgba(255,255,255,0.1)'
+          }}>
+            <span style={{ fontSize: '16px' }}>🌿</span>
+            <span style={{ fontWeight: 'bold', fontSize: '14px' }}>GRASS DENSITY</span>
+            <span
+              style={{
+                marginLeft: 'auto',
+                padding: '2px 8px',
+                borderRadius: '4px',
+                fontSize: '10px',
+                fontWeight: 'bold',
+                backgroundColor: phaseColors[phase],
+                color: phase === 'init' ? '#000' : '#fff',
+                textTransform: 'uppercase',
+              }}
+            >
+              {phase}
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span style={{ color: '#9ca3af' }}>Total Blades:</span>
+              <span style={{ color: '#22c55e', fontWeight: 'bold' }}>
+                {totalBlades.toLocaleString()}
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span style={{ color: '#9ca3af' }}>Per Court:</span>
+              <span style={{ color: '#fbbf24' }}>
+                {densities.length > 0
+                  ? Math.round(totalBlades / densities.length).toLocaleString()
+                  : '50,000'}
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span style={{ color: '#9ca3af' }}>% of Real:</span>
+              <span style={{ color: '#60a5fa' }}>
+                {percentReal.toFixed(3)}%
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span style={{ color: '#9ca3af' }}>Avg FPS:</span>
+              <span style={{ color: avgFPS > 60 ? '#22c55e' : avgFPS > 30 ? '#fbbf24' : '#ef4444' }}>
+                {avgFPS > 0 ? avgFPS.toFixed(0) : '--'}
+              </span>
+            </div>
+
+            <div style={{
+              marginTop: '8px',
+              paddingTop: '8px',
+              borderTop: '1px solid rgba(255,255,255,0.1)',
+              fontSize: '10px',
+              color: '#6b7280'
+            }}>
+              Real grass: ~7M blades/court
+            </div>
+          </div>
+        </div>
+      </Html>
     </>
   );
 };

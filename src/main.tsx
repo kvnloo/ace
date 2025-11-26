@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <DebugProvider>
-      <LoadingProvider registry={assetRegistry} autoStart={true}>
+      <LoadingProvider registry={assetRegistry} autoStart={false}>
         <App />
       </LoadingProvider>
     </DebugProvider>

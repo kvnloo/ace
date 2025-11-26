@@ -1,176 +1,173 @@
-# ACE Project Documentation
+# ACE Tennis Facility Documentation
 
-Complete technical documentation for the LawnTech Dynamics autonomous indoor grass court facility visualization project.
+Welcome to the ACE (Advanced Tennis Facility) documentation. This documentation covers the 3D visualization system for a state-of-the-art tennis facility.
 
-## Quick Navigation
+## Quick Start
 
-### For Quick Reference
-- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Fast lookup for common tasks and commands
+**For developers new to the project:**
+1. Start with [Architecture Overview](architecture/CORE_ARCHITECTURE.md)
+2. Review [Implemented Features](features/IMPLEMENTED_FEATURES.md)
+3. Follow [Implementation Guide](implementation/GRASS_AND_TERRAIN.md)
 
-### By Category
+**For testing and quality:**
+- [Testing Guide](testing/TESTING_GUIDE.md)
+- [Performance Monitoring](monitoring/PERFORMANCE_MONITORING.md)
 
-#### 1. Architecture & Design
-**Location:** `/claudedocs/01-architecture/`
+**For deployment:**
+- [Deployment Guide](workflows/DEPLOYMENT_GUIDE.md)
 
-High-level system architecture, design specifications, and layout documentation.
+## Documentation Structure
 
-- Court Layout and Configuration
-- System Architecture Overview
-- 3D Scene Structure
-- Component Design Patterns
+### 📐 Architecture
+Core system architecture and design decisions:
+- `architecture/CORE_ARCHITECTURE.md` - System architecture, coordinate systems, rendering pipeline
 
-#### 2. Implementation Guides
-**Location:** `/claudedocs/02-implementation-guides/`
+### ⚙️ Implementation
+How-to guides for implementing features:
+- `implementation/GRASS_AND_TERRAIN.md` - Grass rendering, clay courts, texture systems
 
-Step-by-step guides for implementing features and components.
+### 🎨 Features
+Feature documentation and roadmaps:
+- `features/IMPLEMENTED_FEATURES.md` - Complete list of implemented features
+- Feature-specific documentation in subdirectories
 
-- Texture System Implementation
-- Grass Court Implementation
-- Clay Court Implementation
-- Court Labeling System
-- 3D Visual Elements
+### 🧪 Testing
+Testing strategies and test documentation:
+- `testing/TESTING_GUIDE.md` - Unit, integration, and E2E testing guides
 
-#### 3. Testing & Quality
-**Location:** `/claudedocs/03-testing-quality/`
+### 📊 Monitoring
+Performance monitoring and optimization:
+- `monitoring/PERFORMANCE_MONITORING.md` - Performance metrics, profiling, optimization
 
-Testing strategies, test suites, and quality assurance documentation.
+### 🚀 Workflows
+Deployment and operational procedures:
+- `workflows/DEPLOYMENT_GUIDE.md` - Build, deploy, and rollback procedures
 
-- Integration Testing
-- Visual Regression Testing
-- Performance Testing
-- TDD Implementation
-- Test-Driven Development Workflows
+### 📦 Archive
+Historical documentation and deprecated features (preserved for reference)
 
-#### 4. Monitoring & Operations
-**Location:** `/claudedocs/04-monitoring-operations/`
+## Project Overview
 
-Production monitoring, performance tracking, and operational procedures.
+ACE is a 3D visualization system for a tennis facility featuring:
+- **Multiple court types**: Grass, clay, and hard courts
+- **Real-time 3D rendering**: Using Three.js and React
+- **Interactive features**: Heat maps, character animations, weather effects
+- **Performance optimized**: 60 FPS on target hardware
+- **Responsive design**: Desktop and mobile support
 
-- Continuous Error Monitoring
-- Performance Testing & Benchmarks
-- Monitoring Architecture
-- Operations Dashboards
+## Technology Stack
 
-#### 5. Workflows & Procedures
-**Location:** `/claudedocs/05-workflows/`
+- **Frontend**: React, TypeScript, Vite
+- **3D Rendering**: Three.js
+- **Testing**: Jest, React Testing Library, Playwright
+- **Monitoring**: Sentry, Custom performance tracking
+- **Deployment**: GitHub Pages, CDN
 
-Development workflows, deployment procedures, and recovery systems.
+## Getting Started
 
-- Deployment Guide
-- Rollback & Recovery Procedures
-- Emergency Response Playbooks
-- Development Best Practices
+```bash
+# Install dependencies
+npm install
 
-#### 6. Research & Investigation
-**Location:** `/claudedocs/06-research/`
+# Start development server
+npm run dev
 
-Research findings, technical investigations, and exploratory work.
+# Run tests
+npm test
 
-- People Animation Research
-- Technical Feasibility Studies
-- Performance Optimization Research
+# Build for production
+npm run build
+```
 
-#### 7. User Stories
-**Location:** `/claudedocs/08-stories/`
+## Key Features
 
-Detailed user stories with acceptance criteria for feature development.
+### Implemented ✅
+- Multiple tennis court types with realistic rendering
+- Adaptive grass system with wind animation
+- Dynamic lighting (day/night cycle)
+- Heat map overlay for court usage
+- Character system with animations
+- Performance monitoring dashboard
+- Automated deployment pipeline
 
-- [Infrastructure Completion Stories](08-stories/INFRASTRUCTURE_COMPLETION.md) - 3D visualization, quality badges, performance
-- [Autonomous Systems Stories](08-stories/AUTONOMOUS_SYSTEMS.md) - Monitoring, self-healing, automation
+### In Progress 🔄
+- Robotic maintenance systems
+- Advanced analytics dashboard
 
-#### 8. Milestones
-**Location:** `/claudedocs/09-milestones/`
+### Planned 📋
+- Transport pod system
+- AI-powered court management
+- Virtual reality support
 
-Milestone definitions and completion criteria for major project phases.
+## Performance Standards
 
-- [Phase 1 Complete](09-milestones/PHASE_1_COMPLETE.md) - Foundation infrastructure and 3D visualization
-- [MVP Completion](09-milestones/MVP_COMPLETION.md) - Full platform ready for member acquisition
+**Rendering:**
+- Target: 60 FPS on desktop, 30 FPS on mobile
+- Initial load: < 3 seconds
+- Asset streaming: < 5 seconds
 
-## Documentation by Purpose
+**Memory:**
+- Initial: < 200MB
+- Peak: < 500MB
+- Stable operation with minimal GC
 
-### Getting Started
-1. Read the main [README.md](../README.md) in project root
-2. Review [QUICK_REFERENCE.md](QUICK_REFERENCE.md) for common commands
-3. Check [Deployment Guide](05-workflows/DEPLOYMENT.md) for deployment setup
+**Testing:**
+- Code coverage: > 80%
+- Test pass rate: > 95%
+- E2E coverage: Critical paths
 
-### Implementing Features
-1. Check relevant guide in [02-implementation-guides](02-implementation-guides/)
-2. Follow the step-by-step instructions
-3. Refer to [QUICK_REFERENCE.md](QUICK_REFERENCE.md) for code patterns
+## Contributing
 
-### Testing & Quality Assurance
-1. Review [Integration Testing](03-testing-quality/integration-tests/README.md)
-2. Run performance benchmarks using [Performance Testing](04-monitoring-operations/PERFORMANCE_TESTING_IMPLEMENTATION.md)
-3. Check visual regression with [Visual Testing Guide](03-testing-quality/integration-tests/README.md)
+When contributing to this documentation:
 
-### Troubleshooting & Recovery
-1. Use [Rollback Procedures](05-workflows/ROLLBACK_PROCEDURES.md) for emergency recovery
-2. Check [Monitoring Dashboard](04-monitoring-operations/monitoring_architecture.md) for runtime issues
-3. Review error logs and monitoring data
-
-### Production Operations
-1. Follow [Deployment Guide](05-workflows/DEPLOYMENT.md)
-2. Monitor with [Continuous Monitoring](04-monitoring-operations/IMPLEMENTATION_SUMMARY.md)
-3. Track performance with [Performance Benchmarks](04-monitoring-operations/performance_quick_reference.md)
-
-## Project Status Documents
-
-**Current System State:**
-- ✅ Rollback System Complete - See [ROLLBACK_SYSTEM_COMPLETE.md](05-workflows/ROLLBACK_SYSTEM_COMPLETE.md)
-- ✅ Monitoring Setup Complete - See [MONITORING_SETUP_COMPLETE.md](04-monitoring-operations/MONITORING_SETUP_COMPLETE.md)
-- ✅ Performance Testing Complete - See [PERFORMANCE_TESTING_SUMMARY.md](04-monitoring-operations/PERFORMANCE_TESTING_SUMMARY.md)
+1. **Keep it current**: Update docs when making changes
+2. **Be concise**: Clear, actionable content over verbose descriptions
+3. **Use examples**: Code examples and diagrams where helpful
+4. **Organize properly**: Place docs in appropriate directories
 
 ## Documentation Standards
 
-### File Naming Convention
-- Use descriptive, lowercase filenames with hyphens
-- Include category prefix for easy identification
-- Examples: `texture-implementation.md`, `performance-testing-guide.md`
+### File Naming
+- Use UPPERCASE for major documents: `CORE_ARCHITECTURE.md`
+- Use descriptive names: `GRASS_AND_TERRAIN.md` not `grass.md`
+- Group related docs in subdirectories
 
-### Document Structure
-All implementation guides should include:
-1. **Overview** - What the document covers
-2. **Prerequisites** - Required knowledge/setup
-3. **Step-by-Step Instructions** - Detailed implementation steps
-4. **Code Examples** - Working code snippets
-5. **Troubleshooting** - Common issues and solutions
-6. **References** - Related documentation links
+### Content Structure
+- Start with overview/summary
+- Use clear headings and sections
+- Include code examples where relevant
+- Add "Quick Reference" sections for common tasks
+- Link to related documentation
 
 ### Maintenance
-- Review and update documentation after each major feature
-- Archive outdated documents to `/claudedocs/archive/`
-- Keep QUICK_REFERENCE.md up-to-date with latest patterns
-- Maintain cross-references between related documents
+- Archive outdated docs (don't delete)
+- Update links when moving files
+- Keep changelog for major updates
+- Review quarterly for accuracy
 
-## Contributing to Documentation
+## Support
 
-When adding new documentation:
-1. Place in appropriate category directory
-2. Follow the documentation standards above
-3. Update this README with links to new documents
-4. Add entry to QUICK_REFERENCE.md if applicable
-5. Cross-reference from related documents
+For questions or issues:
+- Check relevant documentation section
+- Review troubleshooting guides
+- Check GitHub issues
+- Contact development team
 
-## Archive
+## Recent Updates
 
-**Location:** `/claudedocs/archive/`
+**2025-11-26**: Major documentation reorganization
+- Consolidated 107 files into streamlined structure
+- Created comprehensive guides for each domain
+- Improved navigation and discoverability
+- Archived historical documents for reference
 
-Outdated or superseded documentation is archived for historical reference. Do not rely on archived documents for current development.
+## License
 
-## Additional Resources
-
-### External Documentation
-- [Three.js Documentation](https://threejs.org/docs/)
-- [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/)
-- [Vite Documentation](https://vitejs.dev/)
-- [Playwright Testing](https://playwright.dev/)
-
-### Project Links
-- [Live Demo](https://kvnloo.github.io/ace/)
-- [Development Preview](https://kvnloo.github.io/ace/dev/)
-- [GitHub Repository](https://github.com/kvnloo/ace)
+[Add license information]
 
 ---
 
-**Last Updated:** 2025-11-22
-**Maintained By:** ACE Development Team
+**Navigation Tips:**
+- Use the directory structure above to find specific topics
+- Check the Quick Start section for your role
+- Review the Archive only if you need historical context

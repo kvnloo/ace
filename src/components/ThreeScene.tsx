@@ -910,7 +910,6 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect, shadowQuality:
                     }}
                     flipflops={3}
                     factor={0.9}
-                    fps={45}
                     ms={22}
                 >
                 <CameraRig activeFloor={activeFloor} controlsRef={controlsRef} isAnimatingRef={isAnimatingRef} />

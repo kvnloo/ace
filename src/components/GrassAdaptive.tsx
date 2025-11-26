@@ -21,25 +21,27 @@ interface GrassAdaptiveProps {
   animated?: boolean;
   /** Target FPS to maintain (default: 60) */
   targetFPS?: number;
-  /** Starting blade count (default: 20000) */
+  /** Starting blade count (default: 50000) */
   initialDensity?: number;
-  /** Maximum blade count (default: 150000) */
+  /** Maximum blade count (default: 500000) - much higher with smaller blades */
   maxDensity?: number;
-  /** Callback when density changes */
-  onDensityChange?: (density: number, fps: number) => void;
+  /** Callback when density changes (density, fps, phase) */
+  onDensityChange?: (density: number, fps: number, phase: 'init' | 'burst' | 'monitor') => void;
 }
 
 // Real-world constants for reference
 const REAL_BLADES_PER_COURT = 7_000_000;
 
 // Create grass blade geometry - cached and reused
+// Real grass is about 2-4 inches (0.05-0.1m) tall, very thin
 const createGrassBladeGeometry = (): THREE.BufferGeometry => {
   const geometry = new THREE.BufferGeometry();
 
-  const bladeWidth = 0.05;
-  const bladeHeight = 1.0;
-  const midHeight = 0.5;
-  const midWidth = bladeWidth * 0.5;
+  // Much smaller, realistic grass blade dimensions
+  const bladeWidth = 0.008;   // ~8mm wide at base (was 0.05)
+  const bladeHeight = 0.12;   // ~12cm tall (was 1.0) - typical lawn grass
+  const midHeight = 0.06;     // midpoint
+  const midWidth = bladeWidth * 0.4;
 
   const vertices = new Float32Array([
     -bladeWidth / 2, 0, 0,
@@ -135,10 +137,10 @@ const generateGrassPositions = (
     instances.push({
       x: (random() - 0.5) * width,
       z: (random() - 0.5) * depth,
-      height: 0.5 + random() * 0.6,
+      height: 0.8 + random() * 0.4,     // 80%-120% height variation (subtle)
       rotation: random() * Math.PI * 2,
-      lean: (random() - 0.5) * 0.25,
-      scale: 0.7 + random() * 0.5,
+      lean: (random() - 0.5) * 0.15,    // Less lean for neater grass
+      scale: 0.85 + random() * 0.3,     // 85%-115% width variation (subtle)
     });
   }
 
@@ -151,8 +153,8 @@ const GrassAdaptive: React.FC<GrassAdaptiveProps> = ({
   color = '#4d7c0f',
   animated = true,
   targetFPS = 60,
-  initialDensity = 20000,
-  maxDensity = 150000,
+  initialDensity = 50000,
+  maxDensity = 500000,
   onDensityChange,
 }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null);
@@ -304,7 +306,7 @@ const GrassAdaptive: React.FC<GrassAdaptiveProps> = ({
           console.log(`[GrassAdaptive] Reached maximum density: ${maxDensity.toLocaleString()} - switching to monitor phase`);
         }
 
-        onDensityChange?.(newDensity, currentFPS);
+        onDensityChange?.(newDensity, currentFPS, phaseRef.current);
         setRenderKey(prev => prev + 1);
         return true;
       }

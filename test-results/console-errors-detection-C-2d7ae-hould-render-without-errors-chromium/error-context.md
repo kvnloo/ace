@@ -1,0 +1,59 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6] [cursor=pointer]:
+        - text: LAWNTECH
+        - generic [ref=e8]: DYNAMICS
+      - generic [ref=e9]:
+        - button "Vision" [ref=e10] [cursor=pointer]
+        - button "Specs" [ref=e11] [cursor=pointer]
+        - button "Court View" [ref=e12] [cursor=pointer]
+        - button "Amenities" [ref=e13] [cursor=pointer]
+        - button "Invest" [ref=e14] [cursor=pointer]
+        - button "JOIN WAITING LIST" [ref=e15] [cursor=pointer]
+  - main [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e19]:
+        - generic:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - img [ref=e22]
+              - text: Floor View
+            - 'button "L3: Farm" [ref=e26] [cursor=pointer]'
+            - 'button "L2: Social" [ref=e27] [cursor=pointer]'
+            - 'button "L1: Racquet" [ref=e28] [cursor=pointer]'
+            - 'button "G: Tennis" [ref=e29] [cursor=pointer]'
+            - button "Full Facility" [ref=e30] [cursor=pointer]
+          - generic [ref=e31]:
+            - generic [ref=e32]:
+              - img [ref=e33]
+              - text: Overlay
+            - button "Clean" [ref=e36] [cursor=pointer]:
+              - img [ref=e37]
+              - text: Clean
+            - button "Labels" [ref=e40] [cursor=pointer]:
+              - img [ref=e41]
+              - text: Labels
+            - button "Dimensions" [ref=e46] [cursor=pointer]:
+              - img [ref=e47]
+              - text: Dimensions
+        - button "Performance" [ref=e54] [cursor=pointer]:
+          - generic [ref=e55]:
+            - img [ref=e56]
+            - generic [ref=e59]: Performance
+          - img [ref=e60]
+        - generic:
+          - text: ECO-FACILITY VIEWER v3.3
+          - text: INTERACTIVE ARCHITECTURAL MODEL
+      - generic:
+        - generic:
+          - heading "Facility Interactive Map" [level=2]
+          - paragraph:
+            - text: 24 Courts • Vertical Farm • Performance Gym
+            - text: Rotate the view to explore the entire complex.
+  - button [ref=e67] [cursor=pointer]:
+    - img [ref=e68]
+```

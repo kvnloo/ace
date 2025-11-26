@@ -5,7 +5,7 @@
  */
 
 import { AssetRegistry } from '../../utils/debug/assetRegistry';
-import { DebugContext } from '../../contexts/DebugContext';
+import { DebugContextValue } from '../../contexts/DebugContext';
 import { getPerformanceTracker } from '../../utils/debug/performanceTracker';
 import {
   LoadingPhase,
@@ -57,7 +57,7 @@ const DEFAULT_OPTIONS: Required<LoadingOptions> = {
  */
 export class AssetLoader {
   private registry: AssetRegistry;
-  private debugContext: DebugContext;
+  private debugContext: DebugContextValue;
   private options: Required<LoadingOptions>;
 
   private state: LoadingState = LoadingState.IDLE;
@@ -70,7 +70,7 @@ export class AssetLoader {
 
   constructor(
     registry: AssetRegistry,
-    debugContext: DebugContext,
+    debugContext: DebugContextValue,
     options: LoadingOptions = {}
   ) {
     this.registry = registry;
