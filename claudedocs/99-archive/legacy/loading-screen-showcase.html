@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Loading Screen - Design Showcase</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .header h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #10b981, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .header p {
+      font-size: 1.25rem;
+      color: #94a3b8;
+    }
+
+    .section {
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-title::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 2rem;
+      background: linear-gradient(135deg, #10b981, #3b82f6);
+      border-radius: 2px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      background: rgba(15, 23, 42, 0.8);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+      transform: translateY(-4px);
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #10b981;
+    }
+
+    .card p {
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .color-palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .color-swatch {
+      text-align: center;
+    }
+
+    .color-box {
+      height: 120px;
+      border-radius: 1rem;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .color-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .color-value {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .animation-demo {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .spinner {
+      width: 80px;
+      height: 80px;
+      margin: 2rem auto;
+      position: relative;
+    }
+
+    .spinner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(45deg, #10b981, #3b82f6, #f59e0b, #10b981);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: rotate 2s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .progress-bar {
+      height: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+      margin: 1rem 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .fps-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 2rem;
+      border-radius: 1rem;
+      margin: 0.5rem;
+    }
+
+    .fps-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .fps-excellent {
+      background: rgba(16, 185, 129, 0.2);
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    .fps-good {
+      background: rgba(59, 130, 246, 0.2);
+    }
+
+    .fps-fair {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .fps-poor {
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); }
+    }
+
+    .typography-sample {
+      margin-bottom: 1.5rem;
+    }
+
+    .font-display {
+      margin-bottom: 0.5rem;
+    }
+
+    .font-meta {
+      color: #94a3b8;
+      font-size: 0.875rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .code-block {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin: 0.5rem;
+    }
+
+    .button-primary {
+      background: #10b981;
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: #059669;
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>Premium Loading Screen</h1>
+      <p>Design System & Component Showcase</p>
+    </div>
+
+    <!-- Color Palette Section -->
+    <section class="section">
+      <h2 class="section-title">Color Palette</h2>
+      <div class="color-palette">
+        <div class="color-swatch">
+          <div class="color-box" style="background: #10b981;"></div>
+          <div class="color-label">Excellent</div>
+          <div class="color-value">#10b981</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: #3b82f6;"></div>
+          <div class="color-label">Good</div>
+          <div class="color-value">#3b82f6</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: #f59e0b;"></div>
+          <div class="color-label">Fair</div>
+          <div class="color-value">#f59e0b</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: #ef4444;"></div>
+          <div class="color-label">Poor</div>
+          <div class="color-value">#ef4444</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Animations Section -->
+    <section class="section">
+      <h2 class="section-title">Core Animations</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Loading Spinner</h3>
+          <p>Rotating gradient ring with pulsing glow effect</p>
+          <div class="animation-demo">
+            <div class="spinner"></div>
+          </div>
+          <div class="code-block">duration: 2s
+ease: linear
+repeat: infinite</div>
+        </div>
+
+        <div class="card">
+          <h3>Progress Bar</h3>
+          <p>Smooth fill animation with shimmer effect</p>
+          <div class="animation-demo">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 75%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+            </div>
+          </div>
+          <div class="code-block">duration: 0.8s
+ease: cubic-bezier(0.22, 1, 0.36, 1)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FPS Indicators Section -->
+    <section class="section">
+      <h2 class="section-title">FPS Indicators</h2>
+      <div class="animation-demo">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+          <div class="fps-indicator fps-excellent">
+            <span class="fps-value" style="color: #10b981;">60</span>
+            <span>Excellent</span>
+          </div>
+          <div class="fps-indicator fps-good">
+            <span class="fps-value" style="color: #3b82f6;">45</span>
+            <span>Good</span>
+          </div>
+          <div class="fps-indicator fps-fair">
+            <span class="fps-value" style="color: #f59e0b;">30</span>
+            <span>Fair</span>
+          </div>
+          <div class="fps-indicator fps-poor">
+            <span class="fps-value" style="color: #ef4444;">20</span>
+            <span>Poor</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Typography Section -->
+    <section class="section">
+      <h2 class="section-title">Typography</h2>
+      <div class="card">
+        <div class="typography-sample">
+          <div class="font-meta">Title - Inter Bold, 32px</div>
+          <div class="font-display" style="font-size: 32px; font-weight: 700;">
+            Loading 3D Environment
+          </div>
+        </div>
+
+        <div class="typography-sample">
+          <div class="font-meta">FPS Display - JetBrains Mono Bold, 48px</div>
+          <div class="font-display" style="font-family: 'JetBrains Mono', monospace; font-size: 48px; font-weight: 700; color: #10b981;">
+            60
+          </div>
+        </div>
+
+        <div class="typography-sample">
+          <div class="font-meta">Body Text - Inter Regular, 14px</div>
+          <div class="font-display" style="font-size: 14px; color: #94a3b8;">
+            Preparing your experience with premium quality assets
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactions Section -->
+    <section class="section">
+      <h2 class="section-title">Interactions</h2>
+      <div class="card">
+        <h3>Button States</h3>
+        <p>Hover and click for interactive feedback</p>
+        <div class="animation-demo">
+          <button class="button button-primary">Switch to Low Quality</button>
+          <button class="button button-primary">Switch to Medium Quality</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Implementation Section -->
+    <section class="section">
+      <h2 class="section-title">Implementation</h2>
+      <div class="card">
+        <h3>Quick Start</h3>
+        <div class="code-block">import { LoadingScreen } from '@/components/loading';
+
+&lt;LoadingScreen
+  onComplete={() => console.log('Done!')}
+  minimumDisplayTime={2000}
+  showFPSMonitor={true}
+/&gt;</div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

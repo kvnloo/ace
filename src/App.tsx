@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { View, FeatureData } from './types';
 import NavBar from './components/NavBar';
@@ -7,6 +7,7 @@ import ThreeScene from './components/ThreeScene';
 import AIChat from './components/AIChat';
 import Specifications from './components/Specifications';
 import Amenities from './components/Amenities';
+import Footer from './components/ui/Footer';
 import LoadingScreen from './components/loading/LoadingScreen';
 import { useLoading } from './components/loading/LoadingProvider';
 import { FPSMonitorProvider } from './components/performance/FPSMonitorContext';
@@ -19,6 +20,15 @@ import {
   Users,
   ArrowRight
 } from 'lucide-react';
+
+// Lazy load page components
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+const FAQ = lazy(() => import('./pages/FAQ'));
+const Gallery = lazy(() => import('./pages/Gallery'));
+const Sustainability = lazy(() => import('./pages/Sustainability'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Terms = lazy(() => import('./pages/Terms'));
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
@@ -373,8 +383,125 @@ const App: React.FC = () => {
               </motion.div>
             )}
 
+            {/* ABOUT VIEW */}
+            {currentView === View.ABOUT && (
+              <motion.div
+                key="about"
+                initial="initial"
+                animate="enter"
+                exit="exit"
+                variants={pageVariants}
+                className="h-full overflow-y-auto custom-scrollbar pb-20"
+              >
+                <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="text-tennis-yellow">Loading...</div></div>}>
+                  <About />
+                </Suspense>
+              </motion.div>
+            )}
+
+            {/* CONTACT VIEW */}
+            {currentView === View.CONTACT && (
+              <motion.div
+                key="contact"
+                initial="initial"
+                animate="enter"
+                exit="exit"
+                variants={pageVariants}
+                className="h-full overflow-y-auto custom-scrollbar pb-20"
+              >
+                <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="text-tennis-yellow">Loading...</div></div>}>
+                  <Contact />
+                </Suspense>
+              </motion.div>
+            )}
+
+            {/* FAQ VIEW */}
+            {currentView === View.FAQ && (
+              <motion.div
+                key="faq"
+                initial="initial"
+                animate="enter"
+                exit="exit"
+                variants={pageVariants}
+                className="h-full overflow-y-auto custom-scrollbar pb-20"
+              >
+                <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="text-tennis-yellow">Loading...</div></div>}>
+                  <FAQ />
+                </Suspense>
+              </motion.div>
+            )}
+
+            {/* GALLERY VIEW */}
+            {currentView === View.GALLERY && (
+              <motion.div
+                key="gallery"
+                initial="initial"
+                animate="enter"
+                exit="exit"
+                variants={pageVariants}
+                className="h-full overflow-y-auto custom-scrollbar pb-20"
+              >
+                <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="text-tennis-yellow">Loading...</div></div>}>
+                  <Gallery />
+                </Suspense>
+              </motion.div>
+            )}
+
+            {/* SUSTAINABILITY VIEW */}
+            {currentView === View.SUSTAINABILITY && (
+              <motion.div
+                key="sustainability"
+                initial="initial"
+                animate="enter"
+                exit="exit"
+                variants={pageVariants}
+                className="h-full overflow-y-auto custom-scrollbar pb-20"
+              >
+                <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="text-tennis-yellow">Loading...</div></div>}>
+                  <Sustainability />
+                </Suspense>
+              </motion.div>
+            )}
+
+            {/* PRIVACY VIEW */}
+            {currentView === View.PRIVACY && (
+              <motion.div
+                key="privacy"
+                initial="initial"
+                animate="enter"
+                exit="exit"
+                variants={pageVariants}
+                className="h-full overflow-y-auto custom-scrollbar pb-20"
+              >
+                <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="text-tennis-yellow">Loading...</div></div>}>
+                  <Privacy />
+                </Suspense>
+              </motion.div>
+            )}
+
+            {/* TERMS VIEW */}
+            {currentView === View.TERMS && (
+              <motion.div
+                key="terms"
+                initial="initial"
+                animate="enter"
+                exit="exit"
+                variants={pageVariants}
+                className="h-full overflow-y-auto custom-scrollbar pb-20"
+              >
+                <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="text-tennis-yellow">Loading...</div></div>}>
+                  <Terms />
+                </Suspense>
+              </motion.div>
+            )}
+
           </AnimatePresence>
         </main>
+
+        {/* Footer - Hidden on 3D demo view */}
+        {currentView !== View.FACILITY_DEMO && (
+          <Footer onChangeView={setCurrentView} />
+        )}
 
         {/* Global Elements */}
         <AIChat />

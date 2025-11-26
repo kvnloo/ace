@@ -548,7 +548,7 @@ const Amenities: React.FC = () => {
 
             <div className="mt-8">
               <button className="w-full py-3 px-6 rounded-xl font-bold transition-all bg-white/5 border border-white/10 text-white hover:bg-white/10">
-                Get Started
+                Join Waitlist
               </button>
             </div>
           </motion.div>
@@ -589,7 +589,7 @@ const Amenities: React.FC = () => {
 
             <div className="mt-8">
               <button className="w-full py-3 px-6 rounded-xl font-bold transition-all bg-tennis-yellow text-slate-950 hover:bg-tennis-yellow/90">
-                Get Started
+                Join Waitlist
               </button>
             </div>
           </motion.div>
@@ -626,10 +626,199 @@ const Amenities: React.FC = () => {
 
             <div className="mt-8">
               <button className="w-full py-3 px-6 rounded-xl font-bold transition-all bg-white/5 border border-white/10 text-white hover:bg-white/10">
-                Get Started
+                Join Waitlist
               </button>
             </div>
           </motion.div>
+        </div>
+
+        {/* Comparison Table */}
+        <div className="mt-16">
+          <h3 className="text-3xl font-bold text-center mb-8">Feature Comparison</h3>
+
+          {/* Desktop Table */}
+          <div className="hidden lg:block overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="text-left py-4 px-6 text-gray-200 font-medium">Feature</th>
+                  <th className="text-center py-4 px-6">
+                    <div className="font-bold text-white mb-1">Foundation</div>
+                    <div className="text-tennis-yellow font-bold text-lg">$299</div>
+                  </th>
+                  <th className="text-center py-4 px-6 bg-white/5 relative">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-tennis-yellow text-slate-950 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+                      MOST POPULAR
+                    </div>
+                    <div className="font-bold text-white mb-1 mt-2">Optimization</div>
+                    <div className="text-tennis-yellow font-bold text-lg">$999</div>
+                  </th>
+                  <th className="text-center py-4 px-6">
+                    <div className="font-bold text-white mb-1">Elite</div>
+                    <div className="text-tennis-yellow font-bold text-lg">$2,999</div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { feature: 'Court Access', foundation: '10 hrs/month', optimization: 'Unlimited', elite: 'Unlimited Priority' },
+                  { feature: 'Biomarker Tracking', foundation: 'Basic (20 markers)', optimization: 'Advanced (147 markers)', elite: 'Full Spectrum (147 markers)' },
+                  { feature: 'AI Coaching', foundation: 'Basic Reports', optimization: 'Advanced Personalized', elite: 'Personal AI + Expert' },
+                  { feature: 'Digital Twin Access', foundation: '✗', optimization: '✓', elite: '✓' },
+                  { feature: 'Vertical Farm Nutrition', foundation: '✗', optimization: 'Planning', elite: 'Delivery Included' },
+                  { feature: 'Recovery Suite Access', foundation: 'Pay Per Use', optimization: '8 sessions/month', elite: 'Unlimited' },
+                  { feature: 'Cognitive Lab Access', foundation: '✗', optimization: '4 sessions/month', elite: 'Unlimited' },
+                  { feature: 'Priority Booking', foundation: '✗', optimization: '✓', elite: '✓ + 24/7 Access' },
+                  { feature: 'Guest Passes', foundation: '0/month', optimization: '2/month', elite: 'Unlimited' },
+                  { feature: '1-on-1 Consultations', foundation: '✗', optimization: 'Quarterly', elite: 'Monthly' },
+                  { feature: 'Custom Research Analysis', foundation: '✗', optimization: 'Standard', elite: 'Dedicated Team' },
+                  { feature: 'Research Integration', foundation: 'Weekly Summaries', optimization: '247+ studies/day', elite: 'Real-time + Analysis' },
+                  { feature: 'Support Level', foundation: 'Email', optimization: 'Priority', elite: 'Dedicated Concierge' },
+                  { feature: 'Onboarding', foundation: 'Self-guided', optimization: 'Guided Setup', elite: 'White-glove Service' },
+                  { feature: 'Equipment Locker', foundation: '✗', optimization: '✓', elite: '✓ Premium' }
+                ].map((row, i) => (
+                  <tr
+                    key={i}
+                    className="border-b border-white/5 hover:bg-white/5 transition-colors"
+                  >
+                    <td className="py-4 px-6 text-gray-200 font-medium">{row.feature}</td>
+                    <td className="py-4 px-6 text-center text-sm">
+                      {row.foundation === '✗' ? (
+                        <span className="text-red-400 text-xl">✗</span>
+                      ) : row.foundation === '✓' ? (
+                        <span className="text-tennis-yellow text-xl">✓</span>
+                      ) : (
+                        <span className="text-white">{row.foundation}</span>
+                      )}
+                    </td>
+                    <td className="py-4 px-6 text-center text-sm bg-white/5">
+                      {row.optimization === '✗' ? (
+                        <span className="text-red-400 text-xl">✗</span>
+                      ) : row.optimization === '✓' ? (
+                        <span className="text-tennis-yellow text-xl">✓</span>
+                      ) : (
+                        <span className="text-white">{row.optimization}</span>
+                      )}
+                    </td>
+                    <td className="py-4 px-6 text-center text-sm">
+                      {row.elite === '✗' ? (
+                        <span className="text-red-400 text-xl">✗</span>
+                      ) : row.elite === '✓' ? (
+                        <span className="text-tennis-yellow text-xl">✓</span>
+                      ) : (
+                        <span className="text-white">{row.elite}</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Accordion */}
+          <div className="lg:hidden space-y-4">
+            {[
+              { tier: 'Foundation', price: '$299', features: [
+                { name: 'Court Access', value: '10 hrs/month' },
+                { name: 'Biomarker Tracking', value: 'Basic (20 markers)' },
+                { name: 'AI Coaching', value: 'Basic Reports' },
+                { name: 'Digital Twin Access', value: '✗' },
+                { name: 'Vertical Farm Nutrition', value: '✗' },
+                { name: 'Recovery Suite Access', value: 'Pay Per Use' },
+                { name: 'Cognitive Lab Access', value: '✗' },
+                { name: 'Priority Booking', value: '✗' },
+                { name: 'Guest Passes', value: '0/month' },
+                { name: '1-on-1 Consultations', value: '✗' },
+                { name: 'Custom Research Analysis', value: '✗' },
+                { name: 'Research Integration', value: 'Weekly Summaries' },
+                { name: 'Support Level', value: 'Email' },
+                { name: 'Onboarding', value: 'Self-guided' },
+                { name: 'Equipment Locker', value: '✗' }
+              ]},
+              { tier: 'Optimization', price: '$999', popular: true, features: [
+                { name: 'Court Access', value: 'Unlimited' },
+                { name: 'Biomarker Tracking', value: 'Advanced (147 markers)' },
+                { name: 'AI Coaching', value: 'Advanced Personalized' },
+                { name: 'Digital Twin Access', value: '✓' },
+                { name: 'Vertical Farm Nutrition', value: 'Planning' },
+                { name: 'Recovery Suite Access', value: '8 sessions/month' },
+                { name: 'Cognitive Lab Access', value: '4 sessions/month' },
+                { name: 'Priority Booking', value: '✓' },
+                { name: 'Guest Passes', value: '2/month' },
+                { name: '1-on-1 Consultations', value: 'Quarterly' },
+                { name: 'Custom Research Analysis', value: 'Standard' },
+                { name: 'Research Integration', value: '247+ studies/day' },
+                { name: 'Support Level', value: 'Priority' },
+                { name: 'Onboarding', value: 'Guided Setup' },
+                { name: 'Equipment Locker', value: '✓' }
+              ]},
+              { tier: 'Elite', price: '$2,999', features: [
+                { name: 'Court Access', value: 'Unlimited Priority' },
+                { name: 'Biomarker Tracking', value: 'Full Spectrum (147 markers)' },
+                { name: 'AI Coaching', value: 'Personal AI + Expert' },
+                { name: 'Digital Twin Access', value: '✓' },
+                { name: 'Vertical Farm Nutrition', value: 'Delivery Included' },
+                { name: 'Recovery Suite Access', value: 'Unlimited' },
+                { name: 'Cognitive Lab Access', value: 'Unlimited' },
+                { name: 'Priority Booking', value: '✓ + 24/7 Access' },
+                { name: 'Guest Passes', value: 'Unlimited' },
+                { name: '1-on-1 Consultations', value: 'Monthly' },
+                { name: 'Custom Research Analysis', value: 'Dedicated Team' },
+                { name: 'Research Integration', value: 'Real-time + Analysis' },
+                { name: 'Support Level', value: 'Dedicated Concierge' },
+                { name: 'Onboarding', value: 'White-glove Service' },
+                { name: 'Equipment Locker', value: '✓ Premium' }
+              ]}
+            ].map((tier, i) => (
+              <div key={i} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                <div className={`p-6 ${tier.popular ? 'bg-tennis-yellow/10 border-b border-tennis-yellow/20' : 'border-b border-white/10'} relative`}>
+                  {tier.popular && (
+                    <div className="absolute top-2 right-2 bg-tennis-yellow text-slate-950 px-3 py-1 rounded-full text-xs font-bold">
+                      MOST POPULAR
+                    </div>
+                  )}
+                  <h4 className="text-xl font-bold mb-1">{tier.tier}</h4>
+                  <div className="text-2xl font-bold text-tennis-yellow">{tier.price}/month</div>
+                </div>
+                <div className="p-6 space-y-3">
+                  {tier.features.map((feat, j) => (
+                    <div key={j} className="flex justify-between items-center text-sm border-b border-white/5 pb-2 last:border-b-0">
+                      <span className="text-gray-200">{feat.name}</span>
+                      <span className="text-white font-medium">
+                        {feat.value === '✗' ? (
+                          <span className="text-red-400 text-lg">✗</span>
+                        ) : feat.value === '✓' ? (
+                          <span className="text-tennis-yellow text-lg">✓</span>
+                        ) : (
+                          feat.value
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-6 pt-0">
+                  <button className={`w-full py-3 px-6 rounded-xl font-bold transition-all ${
+                    tier.popular
+                      ? 'bg-tennis-yellow text-slate-950 hover:bg-tennis-yellow/90'
+                      : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'
+                  }`}>
+                    Join Waitlist
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA Footer */}
+          <div className="mt-12 text-center">
+            <p className="text-gray-200 mb-4">Questions about membership?</p>
+            <a
+              href="#faq"
+              className="inline-block px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors font-medium"
+            >
+              View FAQ
+            </a>
+          </div>
         </div>
       </div>
     </div>
