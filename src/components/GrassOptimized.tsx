@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -12,11 +12,14 @@ interface GrassOptimizedProps {
 }
 
 /**
- * Optimized Grass Component
- * Based on original enhance/3D implementation with performance optimizations
+ * Optimized Grass Component with PROPER instance coloring
  *
- * Key: Uses inline <planeGeometry args={[0.15, 1]} /> like the original
- * with per-instance color variation via setColorAt
+ * KEY FIX: Don't use vertexColors with setColorAt!
+ * - vertexColors is for vertex-level colors on geometry
+ * - setColorAt sets per-instance colors that multiply with material color
+ * - Using both causes the color to be wrong (brown/gray instead of green)
+ *
+ * Solution: Use a white base material color and let setColorAt handle all coloring
  */
 const GrassOptimized: React.FC<GrassOptimizedProps> = ({
   position,
@@ -49,11 +52,11 @@ const GrassOptimized: React.FC<GrassOptimizedProps> = ({
     low: 50      // ~20fps
   })[performanceMode], [performanceMode]);
 
-  // Generate grass blade data with color variation (original approach)
+  // Generate grass blade data with color variation
   const grassData = useMemo(() => {
     const instances = [];
     const [width, depth] = size;
-    const tempColor = new THREE.Color();
+    const baseColor = new THREE.Color(color);
 
     for (let i = 0; i < optimizedBladeCount; i++) {
       const x = (Math.random() - 0.5) * width;
@@ -62,16 +65,16 @@ const GrassOptimized: React.FC<GrassOptimizedProps> = ({
       const rotation = Math.random() * Math.PI * 2;
       const scale = 0.8 + Math.random() * 0.4;
 
-      // Color variation for natural look (original approach)
-      const colorVariation = 0.85 + Math.random() * 0.15;
-      tempColor.setStyle(color).multiplyScalar(colorVariation);
+      // Color variation for natural look (85% to 115% of base color)
+      const colorVariation = 0.85 + Math.random() * 0.30;
+      const bladeColor = baseColor.clone().multiplyScalar(colorVariation);
 
       instances.push({
         position: [x, 0, z] as [number, number, number],
         rotation,
         height,
         scale,
-        color: tempColor.clone(),
+        color: bladeColor,
         phase: Math.random() * Math.PI * 2
       });
     }
@@ -79,8 +82,8 @@ const GrassOptimized: React.FC<GrassOptimizedProps> = ({
     return instances;
   }, [size, optimizedBladeCount, color]);
 
-  // Apply initial transforms
-  useMemo(() => {
+  // Apply initial transforms - use useEffect to ensure meshRef is available
+  useEffect(() => {
     if (!meshRef.current) return;
 
     const tempObject = new THREE.Object3D();
@@ -138,7 +141,7 @@ const GrassOptimized: React.FC<GrassOptimizedProps> = ({
     for (let i = 0; i < bladesToUpdate; i++) {
       const blade = grassData[i];
 
-      // Wind calculation (matches original)
+      // Wind calculation
       const windStrength = performanceMode === 'high'
         ? Math.sin(timeRef.current + blade.phase) * 0.08 * lodMultiplier
         : Math.sin(timeRef.current * 0.5) * 0.04;
@@ -168,14 +171,21 @@ const GrassOptimized: React.FC<GrassOptimizedProps> = ({
         receiveShadow
         frustumCulled={true}
       >
-        {/* KEY: Same geometry as original - thin elongated quad (0.15 wide, 1 tall) */}
+        {/* Grass blade geometry - thin elongated quad */}
         <planeGeometry args={[0.15, 1]} />
+        {/*
+          KEY: Use color="#ffffff" (white) as base!
+          The instance colors from setColorAt will multiply with this.
+          White * green = green. Any other base color would tint the result wrong.
+
+          DO NOT use vertexColors - that's for per-vertex colors on geometry,
+          not for per-instance colors!
+        */}
         <meshStandardMaterial
-          vertexColors
+          color="#ffffff"
           side={THREE.DoubleSide}
           roughness={0.8}
           metalness={0}
-          flatShading={false}
         />
       </instancedMesh>
     </group>

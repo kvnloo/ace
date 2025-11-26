@@ -719,20 +719,21 @@ const BuildingShell = ({ activeFloor }: { activeFloor: FloorLevel }) => {
         <group>
             <OrganicStructure />
 
-            {/* Glass Facade Wrap */}
+            {/* Glass Facade Wrap - rendered with BackSide only so interior is visible from outside */}
             {!isInternalView && (
                 <group position={[0, 40, 0]}>
                     <mesh>
                         <boxGeometry args={[BUILDING_WIDTH - 5, 80, BUILDING_DEPTH - 5]} />
                         <meshPhysicalMaterial
                             color="#e2e8f0"
-                            transmission={0.8}
-                            opacity={0.3}
+                            transmission={0.95}
+                            opacity={0.15}
                             transparent
-                            roughness={0.1}
-                            metalness={0.1}
-                            thickness={0.5}
-                            side={THREE.DoubleSide}
+                            roughness={0.05}
+                            metalness={0.05}
+                            thickness={0.1}
+                            side={THREE.BackSide}
+                            depthWrite={false}
                         />
                     </mesh>
                 </group>

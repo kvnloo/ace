@@ -8,7 +8,7 @@
 
 import React, { useMemo, useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import GrassOptimized from './GrassOptimized';
+import GrassAdaptive from './GrassAdaptive';
 import { getCourtTexture, type CourtSurfaceType } from '../utils/courtTextures';
 
 interface CourtConfig {
@@ -204,7 +204,15 @@ const InstancedCourtType: React.FC<{
 };
 
 /**
- * Grass surface effects - optimized grass blade rendering with LOD support
+ * Grass surface effects - FPS-adaptive grass blade rendering
+ *
+ * Real-world reference:
+ * - Tennis court: 78ft x 36ft = 2,808 sq ft
+ * - Real grass: ~2,500 blades/sq ft = ~7 million blades per court
+ * - Our adaptive system: 15k-80k blades (0.2%-1.1% of real density)
+ *
+ * The adaptive algorithm starts at 15k blades and exponentially
+ * increases density while FPS remains above target (60fps).
  */
 const GrassEffects: React.FC<{ courts: CourtConfig[] }> = ({ courts }) => {
   return (
@@ -212,14 +220,18 @@ const GrassEffects: React.FC<{ courts: CourtConfig[] }> = ({ courts }) => {
       {courts.map((court, i) => {
         const [x, y, z] = court.position;
         return (
-          <GrassOptimized
+          <GrassAdaptive
             key={`grass-${i}`}
             position={[x, y + 0.04, z]}
             size={[10, 22]}
-            bladeCount={1500}
-            color="#4d7c0f" // Original grass green from enhance/3D
+            color="#4d7c0f"
             animated={true}
-            performanceMode="high"
+            targetFPS={60}
+            initialDensity={25000}
+            maxDensity={150000}
+            onDensityChange={(density, fps) => {
+              console.log(`Court ${i}: ${density.toLocaleString()} blades @ ${fps.toFixed(0)} FPS`);
+            }}
           />
         );
       })}

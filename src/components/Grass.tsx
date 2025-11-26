@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -12,8 +12,13 @@ interface GrassProps {
 
 /**
  * Grass component using instanced meshes for performance
- * Original implementation from enhance/3D branch
- * Uses simple inline geometry with per-instance color variation
+ *
+ * KEY FIX: Don't use vertexColors with setColorAt!
+ * - vertexColors is for vertex-level colors on geometry
+ * - setColorAt sets per-instance colors that multiply with material color
+ * - Using both causes the color to be wrong (brown/gray instead of green)
+ *
+ * Solution: Use a white base material color and let setColorAt handle all coloring
  */
 const Grass: React.FC<GrassProps> = ({
   position,
@@ -29,7 +34,7 @@ const Grass: React.FC<GrassProps> = ({
   const grassData = useMemo(() => {
     const instances = [];
     const [width, depth] = size;
-    const tempColor = new THREE.Color();
+    const baseColor = new THREE.Color(color);
 
     for (let i = 0; i < bladeCount; i++) {
       const x = (Math.random() - 0.5) * width;
@@ -38,16 +43,16 @@ const Grass: React.FC<GrassProps> = ({
       const rotation = Math.random() * Math.PI * 2;
       const scale = 0.8 + Math.random() * 0.4;
 
-      // Color variation for natural look
-      const colorVariation = 0.85 + Math.random() * 0.15;
-      tempColor.setStyle(color).multiplyScalar(colorVariation);
+      // Color variation for natural look (85% to 115% of base color)
+      const colorVariation = 0.85 + Math.random() * 0.30;
+      const bladeColor = baseColor.clone().multiplyScalar(colorVariation);
 
       instances.push({
         position: [x, 0, z] as [number, number, number],
         rotation,
         height,
         scale,
-        color: tempColor.clone(),
+        color: bladeColor,
         phase: Math.random() * Math.PI * 2
       });
     }
@@ -55,8 +60,8 @@ const Grass: React.FC<GrassProps> = ({
     return instances;
   }, [size, bladeCount, color]);
 
-  // Apply initial transforms to instanced mesh
-  useMemo(() => {
+  // Apply initial transforms - use useEffect to ensure meshRef is available
+  useEffect(() => {
     if (!meshRef.current) return;
 
     const tempObject = new THREE.Object3D();
@@ -110,14 +115,21 @@ const Grass: React.FC<GrassProps> = ({
         castShadow
         receiveShadow
       >
-        {/* KEY: Grass blade geometry - thin elongated quad (0.15 wide, 1 tall) */}
+        {/* Grass blade geometry - thin elongated quad */}
         <planeGeometry args={[0.15, 1]} />
+        {/*
+          KEY: Use color="#ffffff" (white) as base!
+          The instance colors from setColorAt will multiply with this.
+          White * green = green. Any other base color would tint the result wrong.
+
+          DO NOT use vertexColors - that's for per-vertex colors on geometry,
+          not for per-instance colors!
+        */}
         <meshStandardMaterial
-          vertexColors
+          color="#ffffff"
           side={THREE.DoubleSide}
           roughness={0.8}
           metalness={0}
-          flatShading={false}
         />
       </instancedMesh>
     </group>
