@@ -1,6 +1,6 @@
 # Feature Migration Status: enhance/3D → ace-3Dmerge
 
-**Last Updated**: 2025-11-25
+**Last Updated**: 2025-11-25 (Visual Enhancements Session)
 **Current Branch**: claude/merge-3d-features-carefully-016UHu9qyUERZi7foXuCqokY
 **Base Worktree**: ace-3Dmerge
 
@@ -18,12 +18,13 @@ This document tracks the migration of features from the `enhance/3D` branch to t
 | Loading System | 4 | 4 | 1 | 0 |
 | Weather System | 2 | 2 | 0 | 0 |
 | Debug/Performance | 6 | 5 | 0 | 1 |
+| Visual Enhancements | 4 | 4 | 0 | 0 |
 | Facility Spaces | 12 | 0 | 0 | 12 |
 | 3D Scene Variants | 8 | 0 | 0 | 8 |
-| Advanced Features | 10 | 0 | 0 | 10 |
-| **TOTAL** | **49+** | **18** | **1** | **31+** |
+| Advanced Features | 6 | 0 | 0 | 6 |
+| **TOTAL** | **49+** | **22** | **1** | **27+** |
 
-**Overall Progress**: ~37% migrated
+**Overall Progress**: ~45% migrated
 
 ---
 
@@ -58,13 +59,34 @@ This document tracks the migration of features from the `enhance/3D` branch to t
 - ✅ AssetLoader service
 - ✅ Hooks (useAssetEnabled, useComponentEnabled, useFPSBatchController)
 
-### Phase 3: FPS Monitor Enhancement (In Progress)
+### Phase 3: FPS Monitor Enhancement (Completed)
 
-**Current Work:**
-- 🔄 FPSMonitor.tsx - Separate component with transition capabilities
-- 🔄 FPSMonitorContext.tsx - Global context for FPS state
-- 🔄 GlobalFPSMonitor.tsx - Persistent overlay component
-- ⏳ Seamless transition animation from loading screen to overlay
+**Completed:**
+- ✅ FPSMonitor.tsx - Separate component with transition capabilities
+- ✅ FPSMonitorContext.tsx - Global context for FPS state
+- ✅ GlobalFPSMonitor.tsx - Persistent overlay component
+- ✅ Portal rendering for proper z-index handling
+- ✅ Overlay positioning fixed (top-44 to appear below other overlays)
+
+### Phase 4: Visual Enhancements (Completed - 2025-11-25)
+
+**Ported Visual Components:**
+- ✅ LightingSystem.tsx - Advanced lighting with time-of-day presets, stadium floodlights, court spotlights, fog
+- ✅ ClayCourtEffect.tsx - Procedural clay texture with Canvas API, animated dust particles
+- ✅ GrassOptimized.tsx - Performance-optimized instanced grass with LOD system
+- ✅ HeatMapOverlay.tsx - Heat map analytics with custom GLSL shaders, pattern detection, historical playback
+
+**Features Added:**
+- Time-of-day lighting presets (dawn, day, dusk, night)
+- Stadium floodlights (16) and court spotlights (96)
+- Volumetric fog and celestial light animation
+- Quality-based shadow rendering
+- Procedural clay texture with noise and dirt patches
+- Animated dust particle system (150 particles)
+- Instanced grass rendering with wind animation
+- Camera distance-based LOD for performance
+- AI-powered hot zone detection in heat maps
+- Historical playback with timeline controls
 
 ---
 
@@ -140,17 +162,22 @@ This document tracks the migration of features from the `enhance/3D` branch to t
 | ThreeSceneWithBatching.tsx | Medium | High | BatchController |
 | ThreeSceneWrapper.tsx | Low | Low | None |
 
-### ❌ NOT MIGRATED - Advanced Features (0/10)
+### ✅ MIGRATED - Visual Enhancements (4/4)
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| LightingSystem.tsx | ✅ Done | Time-of-day presets, floodlights, fog |
+| ClayCourtEffect.tsx | ✅ Done | Procedural texture, dust particles |
+| GrassOptimized.tsx | ✅ Done | Instanced grass with LOD |
+| HeatMapOverlay.tsx | ✅ Done | GLSL shaders, pattern detection |
+
+### ❌ NOT MIGRATED - Advanced Features (0/6)
 
 | Component | Priority | Complexity | Dependencies |
 |-----------|----------|------------|--------------|
-| LightingSystem.tsx | **HIGH** | Very High | @react-three/postprocessing |
 | CharacterSystem.tsx | **HIGH** | Very High | Pathfinding, animations |
-| GrassOptimized.tsx | **HIGH** | High | Shaders |
 | Grass.tsx | Medium | Medium | None |
-| ClayCourtEffect.tsx | Medium | Medium | None |
-| TennisCourtWithHeatMap.tsx | Medium | Medium | HeatMapOverlay |
-| HeatMapOverlay.tsx | Medium | Medium | None |
+| TennisCourtWithHeatMap.tsx | Medium | Medium | HeatMapOverlay ✅ |
 | CourtNavigationUI.tsx | Medium | Medium | None |
 | ErrorBoundary.tsx | **HIGH** | Low | None |
 | FallbackUI.tsx | Medium | Low | None |
