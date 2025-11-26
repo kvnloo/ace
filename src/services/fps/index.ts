@@ -4,15 +4,22 @@
  * Exports all FPS-related services and integrations
  */
 
+// Re-export ComponentBatchManager from batch-loading service
 export {
-    ComponentBatch,
     ComponentBatchManager,
     componentBatchManager,
-    type BatchConfig,
-    type BatchState,
-    type BatchChangeEvent,
-    type BatchChangeCallback
-} from './ComponentBatchManager';
+    ComponentTier,
+    COMPONENT_DEFINITIONS
+} from '../batch-loading/ComponentBatchManager';
+
+export type {
+    ComponentDefinition,
+    TierConfig,
+    ComponentState,
+    TierChangeEvent,
+    TierChangeCallback,
+    ComponentChangeCallback
+} from '../batch-loading/ComponentBatchManager';
 
 export {
     FPSBatchController,

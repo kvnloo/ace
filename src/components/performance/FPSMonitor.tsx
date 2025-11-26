@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { createPortal } from 'react-dom';
 import {
   Sparkles,
   TrendingUp,
@@ -89,12 +90,8 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
               ? 'fair'
               : 'poor';
 
-      setFpsLevel((prevLevel) => {
-        if (prevLevel !== level) {
-          onFpsLevelChange?.(level);
-        }
-        return level;
-      });
+      // Update FPS level state
+      setFpsLevel(level);
 
       animationFrameId = requestAnimationFrame(updateFPS);
     };
@@ -104,7 +101,16 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [showFPSMonitor, onFpsLevelChange]);
+  }, [showFPSMonitor]);
+
+  // Notify parent of FPS level changes (in separate effect to avoid setState during render)
+  const prevFpsLevelRef = useRef<FPSLevel | null>(null);
+  useEffect(() => {
+    if (onFpsLevelChange && fpsLevel !== prevFpsLevelRef.current) {
+      prevFpsLevelRef.current = fpsLevel;
+      onFpsLevelChange(fpsLevel);
+    }
+  }, [fpsLevel, onFpsLevelChange]);
 
   // Helper functions copied from LoadingScreen
   const getFPSColor = useCallback((level: FPSLevel) => {
@@ -131,31 +137,44 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
   if (!showFPSMonitor) return null;
 
   // Render FPS Monitor - with Portal support for overlay/transitioning
-  // Render FPS Monitor - with Portal support for overlay/transitioning
   const monitorContent = (
     <motion.div
-      layoutId="fps-monitor-container"
+      layoutId="fps-monitor-shared"
       ref={elementRef}
-      className={`${className} ${isPortalMode ? 'fixed top-20 right-4 z-[100]' : ''}`}
+      className={`${className} ${isPortalMode ? 'fixed top-4 left-4 z-[9999]' : ''}`}
       data-testid="fps-meter"
       layout
       transition={{
-        layout: { type: "spring", stiffness: 300, damping: 30 },
-        scale: { duration: 0.4 },
+        layout: {
+          type: "spring",
+          stiffness: 200,
+          damping: 25,
+          duration: 0.8
+        },
+        scale: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
         opacity: { duration: 0.4 }
       }}
-      initial={mode === 'transitioning' ? { scale: 1.1, boxShadow: "0px 10px 30px rgba(0,0,0,0.5)" } : undefined}
+      initial={mode === 'transitioning' ? {
+        scale: 1,
+        opacity: 1
+      } : undefined}
       animate={
         mode === 'transitioning'
           ? {
-            scale: 0.8, // Shrink slightly as it moves to corner
-            boxShadow: "0px 5px 15px rgba(0,0,0,0.3)",
+            scale: 0.7, // Shrink as it moves to corner
+            opacity: 1,
           }
           : mode === 'overlay'
-            ? { scale: 1, boxShadow: "none" }
-            : undefined
+            ? {
+              scale: 1,
+              opacity: 1
+            }
+            : {
+              scale: 1,
+              opacity: 1
+            }
       }
-      style={isPortalMode ? { pointerEvents: 'auto' } : undefined}
+      style={isPortalMode ? { pointerEvents: 'auto', willChange: 'transform' } : undefined}
     >
       {mode === 'embedded' ? (
         // Embedded mode - original layout from LoadingScreen
@@ -198,6 +217,22 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
             </div>
           </div>
 
+          {/* FPS Statistics Row */}
+          <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div className="bg-white/5 rounded-lg py-1.5 px-2">
+              <div className="text-lg font-bold font-['JetBrains_Mono'] text-blue-400">{fpsData.average}</div>
+              <div className="text-[10px] text-gray-400 uppercase tracking-wider">Avg</div>
+            </div>
+            <div className="bg-white/5 rounded-lg py-1.5 px-2">
+              <div className="text-lg font-bold font-['JetBrains_Mono'] text-red-400">{fpsData.min || '--'}</div>
+              <div className="text-[10px] text-gray-400 uppercase tracking-wider">Min</div>
+            </div>
+            <div className="bg-white/5 rounded-lg py-1.5 px-2">
+              <div className="text-lg font-bold font-['JetBrains_Mono'] text-green-400">{fpsData.max || '--'}</div>
+              <div className="text-[10px] text-gray-400 uppercase tracking-wider">Max</div>
+            </div>
+          </div>
+
           {/* Mini FPS Graph */}
           <div className="mt-4 h-16 flex items-end gap-1 justify-start">
             {fpsData.history.map((fps, index) => {
@@ -235,20 +270,27 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
         // Overlay mode - compact floating design
         <motion.div
           className={`glass-card rounded-2xl ${isMinimized ? 'p-2' : 'p-4'} min-w-[${isMinimized ? 'auto' : '200px'}] transition-all duration-300`}
+          initial={mode === 'transitioning' ? { scale: 1, opacity: 1 } : undefined}
           animate={
             mode === 'transitioning'
               ? {
-                scale: [1, 1.1, 0.6],
-                y: [0, -20, 0],
+                scale: 0.8,
+                opacity: 1,
               }
-              : {}
+              : mode === 'overlay'
+                ? {
+                  scale: 1,
+                  opacity: 1,
+                }
+                : {}
           }
           transition={{
-            duration: 1.2,
+            duration: 0.8,
             ease: [0.22, 1, 0.36, 1],
           }}
           onAnimationComplete={() => {
             if (mode === 'transitioning') {
+              console.log('[FPSMonitor] Transition animation complete');
               onTransitionComplete?.();
             }
           }}
@@ -312,8 +354,15 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
                 </div>
               </div>
 
+              {/* FPS Statistics Row - Compact */}
+              <div className="mt-2 flex justify-between text-[10px] text-gray-400 px-1">
+                <span>Avg: <span className="text-blue-400 font-['JetBrains_Mono']">{fpsData.average}</span></span>
+                <span>Min: <span className="text-red-400 font-['JetBrains_Mono']">{fpsData.min || '--'}</span></span>
+                <span>Max: <span className="text-green-400 font-['JetBrains_Mono']">{fpsData.max || '--'}</span></span>
+              </div>
+
               {/* Compact graph for overlay */}
-              <div className="mt-3 h-10 flex items-end gap-0.5 justify-start">
+              <div className="mt-2 h-10 flex items-end gap-0.5 justify-start">
                 {fpsData.history.slice(-20).map((fps, index) => {
                   const maxFps = Math.max(...fpsData.history, 1);
                   const heightPercentage = (fps / maxFps) * 100;
@@ -346,6 +395,11 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
   );
 
   // Render FPS Monitor
+  // Use portal for overlay/transitioning modes to escape parent z-index/opacity
+  if (isPortalMode && typeof document !== 'undefined') {
+    return createPortal(monitorContent, document.body);
+  }
+
   return monitorContent;
 };
 

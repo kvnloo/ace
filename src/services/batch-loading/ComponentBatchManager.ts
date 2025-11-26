@@ -25,7 +25,7 @@ export interface ComponentDefinition {
     description: string;
     estimatedCost: number; // Expected FPS impact
     dependencies?: string[]; // Component IDs this depends on
-    category: 'court' | 'building' | 'nature' | 'effect' | 'system' | 'mechanical';
+    category: 'court' | 'building' | 'nature' | 'effect' | 'system' | 'mechanical' | 'weather';
 }
 
 export interface TierConfig {

@@ -8,6 +8,8 @@ import AIChat from './components/AIChat';
 import Specifications from './components/Specifications';
 import Amenities from './components/Amenities';
 import LoadingScreen from './components/loading/LoadingScreen';
+import { LoadingProvider } from './components/loading/LoadingProvider';
+import { assetRegistry } from './utils/debug/assetRegistry';
 import { FPSMonitorProvider } from './components/performance/FPSMonitorContext';
 import GlobalFPSMonitor from './components/performance/GlobalFPSMonitor';
 import {
@@ -15,6 +17,7 @@ import {
   Activity,
   Cpu,
   Sprout,
+  Users,
   ArrowRight
 } from 'lucide-react';
 
@@ -63,7 +66,7 @@ const App: React.FC = () => {
                 className="h-full overflow-y-auto custom-scrollbar pb-20"
               >
                 {/* Hero Section */}
-                <div className="relative h-[90vh] flex items-center justify-center px-6 overflow-hidden">
+                <section aria-label="Hero" className="relative h-[90vh] flex items-center justify-center px-6 overflow-hidden">
                   <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1622163642998-1ea36b1dde3b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
 
@@ -75,7 +78,7 @@ const App: React.FC = () => {
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-tennis-yellow/30 bg-tennis-yellow/10 text-tennis-yellow text-sm font-medium mb-6"
                     >
                       <Zap className="w-4 h-4" />
-                      <span>The Future of Tennis is Organic & Autonomous</span>
+                      <span>The Future of Racket Sports & Human Performance</span>
                     </motion.div>
 
                     <motion.h1
@@ -84,19 +87,19 @@ const App: React.FC = () => {
                       transition={{ delay: 0.3 }}
                       className="text-5xl md:text-8xl font-extrabold tracking-tighter mb-6 leading-tight"
                     >
-                      GRASS. <br />
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">AUTONOMOUS.</span> <br />
-                      PERFECTION.
+                      AUTONOMOUS. <br />
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">INTEGRATED.</span> <br />
+                      OPTIMIZED.
                     </motion.h1>
 
                     <motion.p
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
-                      className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed"
+                      className="text-xl text-gray-100 mb-10 max-w-2xl mx-auto leading-relaxed"
                     >
-                      Experience the world's first fully autonomous indoor grass court facility.
-                      Replaceable modular turf, AI coaching, and injury prevention technology.
+                      The world's first autonomous racket sports and health optimization facility with integrated vertical farming,
+                      AI coaching, and performance tracking across 147 biomarkers.
                     </motion.p>
 
                     <motion.div
@@ -108,6 +111,7 @@ const App: React.FC = () => {
                       <button
                         onClick={() => setCurrentView(View.FACILITY_DEMO)}
                         className="px-8 py-4 bg-tennis-yellow text-tennis-dark font-bold rounded-full hover:bg-white transition-all flex items-center gap-2 group"
+                        aria-label="Navigate to 3D facility demo"
                       >
                         Explore 3D Demo
                         <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -115,31 +119,111 @@ const App: React.FC = () => {
                       <button
                         onClick={() => setCurrentView(View.AMENITIES)}
                         className="px-8 py-4 bg-white/10 text-white font-bold rounded-full hover:bg-white/20 transition-all backdrop-blur-sm"
+                        aria-label="View facility amenities and features"
                       >
                         View Amenities
                       </button>
                     </motion.div>
                   </div>
-                </div>
+                </section>
 
-                {/* Statistics Teaser */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6 py-20 border-t border-white/10">
-                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                    <Cpu className="w-10 h-10 text-tennis-yellow mb-4" />
-                    <h3 className="text-2xl font-bold mb-2">Computer Vision</h3>
-                    <p className="text-gray-400">Real-time biomechanics analysis and injury prediction models running 60x per second.</p>
+                {/* 4-Pillar Feature Showcase */}
+                <section aria-label="Features" className="max-w-7xl mx-auto px-6 py-20 border-t border-white/10">
+                  <div className="mb-16 text-center">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4">Integrated <span className="text-tennis-yellow">Platform</span></h2>
+                    <p className="text-xl text-gray-200 max-w-2xl mx-auto">Four pillars of autonomous optimization working together</p>
                   </div>
-                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                    <Sprout className="w-10 h-10 text-tennis-yellow mb-4" />
-                    <h3 className="text-2xl font-bold mb-2">Modular Grass</h3>
-                    <p className="text-gray-400">Our on-site Grass Lab grows replacement grids. We swap worn turf in under 60 minutes.</p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {/* Multi-Sport Excellence */}
+                    <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                      <Activity className="w-10 h-10 text-green-400 mb-4" />
+                      <h3 className="text-2xl font-bold mb-2">Multi-Sport Excellence</h3>
+                      <p className="text-gray-200 mb-4">Tennis, Pickleball, Badminton, Squash with computer vision coaching and real-time biomechanics analysis</p>
+                      <ul className="space-y-2 text-sm text-gray-100">
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>RGB + depth cameras</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>Multi-surface courts</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>Indoor grass courts (first of its kind)</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>AI coaching feedback</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* APEX Performance */}
+                    <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                      <Users className="w-10 h-10 text-red-400 mb-4" />
+                      <h3 className="text-2xl font-bold mb-2">APEX Performance</h3>
+                      <p className="text-gray-200 mb-4">147 biomarkers tracked daily with AI-driven protocols and Blueprint-style health optimization</p>
+                      <ul className="space-y-2 text-sm text-gray-100">
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>VO₂ Max +28% avg</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>Sleep efficiency 94%</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>247+ studies/day</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* Vertical Farm */}
+                    <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                      <Sprout className="w-10 h-10 text-emerald-400 mb-4" />
+                      <h3 className="text-2xl font-bold mb-2">Vertical Farm</h3>
+                      <p className="text-gray-200 mb-4">Personalized nutrition grown on-site with 95% water efficiency and zero pesticides</p>
+                      <ul className="space-y-2 text-sm text-gray-100">
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>100% renewable energy</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>Genetic-optimized crops</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>Farm-to-table delivery</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* Autonomous Operations */}
+                    <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                      <Cpu className="w-10 h-10 text-indigo-400 mb-4" />
+                      <h3 className="text-2xl font-bold mb-2">Autonomous Operations</h3>
+                      <p className="text-gray-200 mb-4">Digital twin control with multi-agent scheduling, biometric access, and smart energy management</p>
+                      <ul className="space-y-2 text-sm text-gray-100">
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>1000+ IoT sensors</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>Unity/Three.js twin</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-tennis-yellow" />
+                          <span>Robotic maintenance</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                    <Activity className="w-10 h-10 text-tennis-yellow mb-4" />
-                    <h3 className="text-2xl font-bold mb-2">Performance</h3>
-                    <p className="text-gray-400">Strobe glass training and smart ball machines designed to break your reaction time plateaus.</p>
-                  </div>
-                </div>
+                </section>
               </motion.div>
             )}
 
@@ -167,18 +251,21 @@ const App: React.FC = () => {
                 variants={pageVariants}
                 className="w-full h-full relative bg-gradient-to-b from-slate-900 to-black"
               >
-                {/* Loading Screen */}
-                {show3DLoading && (
-                  <LoadingScreen
-                    onComplete={() => setShow3DLoading(false)}
-                    minimumDisplayTime={2000}
-                    showFPSMonitor={true}
-                  />
-                )}
+                {/* LoadingProvider wraps BOTH LoadingScreen AND ThreeScene for proper progress tracking */}
+                <LoadingProvider registry={assetRegistry}>
+                  {/* Loading Screen for asset progress */}
+                  {show3DLoading && (
+                    <LoadingScreen
+                      onComplete={() => setShow3DLoading(false)}
+                      minimumDisplayTime={2000}
+                      showFPSMonitor={true}
+                    />
+                  )}
 
-                <div className="absolute inset-0 z-0">
-                  <ThreeScene onFeatureSelect={setSelectedFeature} />
-                </div>
+                  <div className="absolute inset-0 z-0">
+                    <ThreeScene onFeatureSelect={setSelectedFeature} />
+                  </div>
+                </LoadingProvider>
 
                 {/* HUD Layer */}
                 <div className="absolute inset-0 z-10 pointer-events-none p-6 flex flex-col justify-between">

@@ -4,14 +4,19 @@
  * Central export point for the progressive component loading system.
  */
 
-export {
-    ComponentTier,
+// Export types with 'export type' for isolatedModules compatibility
+export type {
     ComponentDefinition,
     TierConfig,
     ComponentState,
     TierChangeEvent,
     TierChangeCallback,
-    ComponentChangeCallback,
+    ComponentChangeCallback
+} from './ComponentBatchManager';
+
+// Export enum and classes normally
+export {
+    ComponentTier,
     COMPONENT_DEFINITIONS,
     ComponentBatchManager,
     componentBatchManager

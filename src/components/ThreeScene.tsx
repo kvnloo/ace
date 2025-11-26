@@ -1,8 +1,11 @@
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import TennisCourt from './TennisCourt';
+import React, { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+
+// Lazy load heavy components
+const TennisCourt = lazy(() => import('./TennisCourt'));
 import {
+    PerformanceMonitor,
     OrbitControls,
     Html,
     Grid,
@@ -17,6 +20,7 @@ import {
 import * as THREE from 'three';
 import { FeatureData, ShadowQuality } from '../types';
 import { Layers, Ruler, Eye, Box, Maximize2 } from 'lucide-react';
+import PerformanceOverlay from './PerformanceOverlay';
 
 // --- Types & Constants ---
 
@@ -554,11 +558,12 @@ const GroundFloor = ({ active, showMeasurements, showLabels }: { active: boolean
         const row = Math.floor(i / 6);
         const col = i % 6;
         courts.push(
-            <TennisCourt
-                key={i}
-                type={type}
-                position={[-35 + col * 14, 0.1, -40 + row * 26]}
-            />
+            <Suspense key={i} fallback={null}>
+                <TennisCourt
+                    type={type}
+                    position={[-35 + col * 14, 0.1, -40 + row * 26]}
+                />
+            </Suspense>
         );
     }
 
@@ -754,9 +759,15 @@ const CampusGrounds = () => {
 
             {/* Outdoor Courts Feature (from image reference) */}
             <group position={[90, 0.2, 50]}>
-                <TennisCourt position={[0, 0, 0]} type="clay" id="court-clay-1" />
-                <TennisCourt position={[15, 0, 0]} type="hard" id="court-hard-1" />
-                <TennisCourt position={[30, 0, 0]} type="grass" id="court-grass-1" />
+                <Suspense fallback={null}>
+                    <TennisCourt position={[0, 0, 0]} type="clay" id="court-clay-1" />
+                </Suspense>
+                <Suspense fallback={null}>
+                    <TennisCourt position={[15, 0, 0]} type="hard" id="court-hard-1" />
+                </Suspense>
+                <Suspense fallback={null}>
+                    <TennisCourt position={[30, 0, 0]} type="grass" id="court-grass-1" />
+                </Suspense>
             </group>
 
             {/* Trees & Landscaping */}
@@ -777,9 +788,11 @@ interface ThreeSceneProps {
     shadowQuality?: ShadowQuality;
 }
 
-const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect, shadowQuality = 'high' }) => {
+const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect, shadowQuality: initialShadowQuality = 'high' }) => {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [activeFloor, setActiveFloor] = useState<FloorLevel>('ALL');
+    const [performanceMode, setPerformanceMode] = useState<'high' | 'medium' | 'low'>('high');
+    const [shadowQuality, setShadowQuality] = useState<ShadowQuality>(initialShadowQuality);
     const [annotationMode, setAnnotationMode] = useState<AnnotationMode>('LABELS');
     const controlsRef = useRef<any>(null);
     const isAnimatingRef = useRef(false);
@@ -806,7 +819,38 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect, shadowQuality 
                 setAnnotationMode={setAnnotationMode}
             />
 
-            <Canvas shadows dpr={[1, 1.5]} camera={{ position: [180, 100, 180], fov: 35 }}>
+            <PerformanceOverlay
+                performanceMode={performanceMode}
+                onPerformanceModeChange={setPerformanceMode}
+                shadowQuality={shadowQuality}
+                onShadowQualityChange={setShadowQuality}
+            />
+
+            <Canvas
+                shadows
+                dpr={[1, 2]}
+                camera={{ position: [180, 100, 180], fov: 35 }}
+                performance={{ min: 0.5 }}
+                frameloop="always"
+                gl={{
+                    powerPreference: "high-performance",
+                    antialias: true,
+                    stencil: false,
+                    depth: true,
+                }}
+            >
+                <PerformanceMonitor
+                    onIncline={() => {
+                        console.log('Performance improving');
+                        setPerformanceMode('high');
+                    }}
+                    onDecline={() => {
+                        console.log('Performance declining');
+                        setPerformanceMode(prev => prev === 'high' ? 'medium' : 'low');
+                    }}
+                    flipflops={3}
+                    factor={1}
+                >
                 <CameraRig activeFloor={activeFloor} controlsRef={controlsRef} isAnimatingRef={isAnimatingRef} />
                 <PerspectiveCamera makeDefault fov={40} />
                 <ambientLight intensity={0.4} />
@@ -876,6 +920,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect, shadowQuality 
                     makeDefault
                     onStart={() => { isAnimatingRef.current = false; }}
                 />
+            </PerformanceMonitor>
+
             </Canvas>
 
             <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/50 text-xs pointer-events-none select-none font-mono text-center">

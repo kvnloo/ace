@@ -8,18 +8,18 @@
 import { FPSMonitor, FPSChangeEvent } from '../loading/FPSMonitor';
 import {
     ComponentBatchManager,
-    ComponentBatch,
-    BatchChangeEvent
+    ComponentTier,
+    TierChangeEvent
 } from '../batch-loading/ComponentBatchManager';
 
 export interface FPSThreshold {
     fps: number;
     action: 'downgrade' | 'upgrade' | 'emergency';
-    targetBatches?: ComponentBatch[];
+    targetTiers?: ComponentTier[];
 }
 
 export interface WarningEvent {
-    type: 'fps_low' | 'fps_critical' | 'batch_disabled' | 'emergency_mode';
+    type: 'fps_low' | 'fps_critical' | 'tier_disabled' | 'emergency_mode';
     message: string;
     currentFPS: number;
     threshold: number;
@@ -30,7 +30,7 @@ export interface WarningEvent {
 export type WarningCallback = (event: WarningEvent) => void;
 
 export interface FPSBatchCorrelation {
-    batch: ComponentBatch;
+    tier: ComponentTier;
     enabledFPS: number[];
     disabledFPS: number[];
     averageImpact: number;
@@ -43,7 +43,7 @@ export class FPSBatchController {
     private warningCallbacks: WarningCallback[] = [];
     private isMonitoring = false;
     private checkInterval: number | null = null;
-    private correlationData = new Map<ComponentBatch, FPSBatchCorrelation>();
+    private correlationData = new Map<ComponentTier, FPSBatchCorrelation>();
 
     // FPS thresholds
     private readonly CRITICAL_FPS = 25;
@@ -75,9 +75,9 @@ export class FPSBatchController {
             this.handleFPSChange(event);
         });
 
-        // Monitor batch changes
-        this.batchManager.onBatchChange((event: BatchChangeEvent) => {
-            this.handleBatchChange(event);
+        // Monitor tier changes
+        this.batchManager.onTierChange((event: TierChangeEvent) => {
+            this.handleTierChange(event);
         });
     }
 
@@ -194,23 +194,11 @@ export class FPSBatchController {
             currentFPS,
             threshold: this.LOW_FPS,
             timestamp: Date.now(),
-            recommendedAction: 'Non-essential batches will be disabled'
+            recommendedAction: 'Non-essential tiers will be disabled'
         });
 
-        const disabled = await this.batchManager.downgradeToTargetFPS(
-            this.LOW_FPS,
-            currentFPS
-        );
-
-        if (disabled.length > 0) {
-            this.emitWarning({
-                type: 'batch_disabled',
-                message: `Disabled ${disabled.length} component batch(es) to improve performance`,
-                currentFPS,
-                threshold: this.LOW_FPS,
-                timestamp: Date.now()
-            });
-        }
+        // Auto-adjust tiers based on FPS
+        await this.batchManager.autoAdjustForFPS(currentFPS);
 
         this.consecutiveLowFPS = 0; // Reset after action
     }
@@ -221,14 +209,8 @@ export class FPSBatchController {
     private async handleHighFPS(currentFPS: number): Promise<void> {
         console.log(`✨ HIGH FPS: ${currentFPS.toFixed(1)} - Attempting upgrade`);
 
-        const enabled = await this.batchManager.upgradeWithAvailableFPS(
-            currentFPS,
-            this.STABLE_FPS
-        );
-
-        if (enabled.length > 0) {
-            console.log(`✅ Enabled ${enabled.length} additional batch(es)`);
-        }
+        // Auto-adjust tiers based on FPS
+        await this.batchManager.autoAdjustForFPS(currentFPS);
 
         this.consecutiveHighFPS = 0; // Reset after action
     }
@@ -251,41 +233,40 @@ export class FPSBatchController {
     }
 
     /**
-     * Handle batch change events
+     * Handle tier change events
      */
-    private handleBatchChange(event: BatchChangeEvent): void {
-        const { batch, enabled, reason, currentFPS } = event;
-        const config = this.batchManager.getBatchConfig(batch);
+    private handleTierChange(event: TierChangeEvent): void {
+        const { tier, enabled, reason, currentFPS } = event;
 
         console.log(
-            `🔄 Batch ${enabled ? 'enabled' : 'disabled'}: ${batch} (${config.description}) - Reason: ${reason}, FPS: ${currentFPS.toFixed(1)}`
+            `🔄 Tier ${tier} ${enabled ? 'enabled' : 'disabled'} - Reason: ${reason}, FPS: ${currentFPS.toFixed(1)}`
         );
 
         // Update correlation data
-        this.updateCorrelation(batch, currentFPS, enabled);
+        this.updateCorrelation(tier, currentFPS, enabled);
     }
 
     /**
-     * Record current FPS for all enabled batches
+     * Record current FPS for all enabled components
      */
     private recordCurrentFPS(fps: number): void {
-        const enabled = this.batchManager.getEnabledBatches();
-        enabled.forEach(batch => {
-            this.batchManager.recordBatchFPS(batch, fps);
+        const enabled = this.batchManager.getEnabledComponents();
+        enabled.forEach(componentId => {
+            this.batchManager.recordComponentFPS(componentId, fps);
         });
     }
 
     /**
-     * Update FPS-to-batch correlation data
+     * Update FPS-to-tier correlation data
      */
     private updateCorrelation(
-        batch: ComponentBatch,
+        tier: ComponentTier,
         fps: number,
         enabled: boolean
     ): void {
-        if (!this.correlationData.has(batch)) {
-            this.correlationData.set(batch, {
-                batch,
+        if (!this.correlationData.has(tier)) {
+            this.correlationData.set(tier, {
+                tier,
                 enabledFPS: [],
                 disabledFPS: [],
                 averageImpact: 0,
@@ -293,7 +274,7 @@ export class FPSBatchController {
             });
         }
 
-        const correlation = this.correlationData.get(batch)!;
+        const correlation = this.correlationData.get(tier)!;
 
         if (enabled) {
             correlation.enabledFPS.push(fps);
@@ -320,10 +301,10 @@ export class FPSBatchController {
     }
 
     /**
-     * Get FPS-to-batch correlation data
+     * Get FPS-to-tier correlation data
      */
-    getCorrelation(batch: ComponentBatch): FPSBatchCorrelation | undefined {
-        return this.correlationData.get(batch);
+    getCorrelation(tier: ComponentTier): FPSBatchCorrelation | undefined {
+        return this.correlationData.get(tier);
     }
 
     /**
@@ -338,8 +319,8 @@ export class FPSBatchController {
      */
     exportCorrelationData(): Record<string, FPSBatchCorrelation> {
         const data: Record<string, FPSBatchCorrelation> = {};
-        this.correlationData.forEach((correlation, batch) => {
-            data[batch] = correlation;
+        this.correlationData.forEach((correlation, tier) => {
+            data[`tier_${tier}`] = correlation;
         });
         return data;
     }
@@ -385,26 +366,33 @@ export class FPSBatchController {
     }
 
     /**
-     * Manually enable a batch
+     * Manually enable a tier
      */
-    async enableBatch(batch: ComponentBatch): Promise<boolean> {
+    async enableTier(tier: ComponentTier): Promise<boolean> {
         const currentFPS = this.fpsMonitor.getCurrentFPS();
-        return this.batchManager.enableBatch(batch, 'manual', currentFPS);
+        return this.batchManager.enableTier(tier, 'manual', currentFPS);
     }
 
     /**
-     * Manually disable a batch
+     * Manually disable a tier
      */
-    async disableBatch(batch: ComponentBatch): Promise<boolean> {
+    async disableTier(tier: ComponentTier): Promise<boolean> {
         const currentFPS = this.fpsMonitor.getCurrentFPS();
-        return this.batchManager.disableBatch(batch, 'manual', currentFPS);
+        return this.batchManager.disableTier(tier, 'manual', currentFPS);
     }
 
     /**
-     * Clear all manual overrides
+     * Enable a specific component
      */
-    clearManualOverrides(): void {
-        this.batchManager.clearManualOverrides();
+    async enableComponent(componentId: string): Promise<boolean> {
+        return this.batchManager.enableComponent(componentId, true);
+    }
+
+    /**
+     * Disable a specific component
+     */
+    async disableComponent(componentId: string): Promise<boolean> {
+        return this.batchManager.disableComponent(componentId, true);
     }
 
     /**

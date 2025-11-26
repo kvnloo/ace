@@ -6,15 +6,14 @@
  */
 
 import { useEffect, useState, useCallback } from 'react';
-import { FPSBatchController } from '../services/fps/FPSBatchController';
-import { ComponentBatch } from '../services/fps/ComponentBatchManager';
-import { WarningEvent } from '../services/fps/FPSBatchController';
+import { FPSBatchController, WarningEvent } from '../services/fps/FPSBatchController';
+import { ComponentTier } from '../services/batch-loading/ComponentBatchManager';
 
 export interface FPSBatchControllerState {
     currentFPS: number;
     averageFPS: number;
-    enabledBatches: ComponentBatch[];
-    disabledBatches: ComponentBatch[];
+    enabledComponents: string[];
+    enabledTiers: number[];
     warnings: WarningEvent[];
     isMonitoring: boolean;
 }
@@ -27,8 +26,8 @@ export const useFPSBatchController = (
     const [state, setState] = useState<FPSBatchControllerState>({
         currentFPS: 60,
         averageFPS: 60,
-        enabledBatches: [ComponentBatch.COURTS_ONLY],
-        disabledBatches: [],
+        enabledComponents: [],
+        enabledTiers: [ComponentTier.ESSENTIAL],
         warnings: [],
         isMonitoring: false
     });
@@ -40,12 +39,20 @@ export const useFPSBatchController = (
             const stats = fpsMonitor.getStats();
             const batchManager = controllerInstance.getBatchManager();
 
+            // Get enabled tiers
+            const enabledTiers: number[] = [];
+            for (let tier = ComponentTier.ESSENTIAL; tier <= ComponentTier.ENHANCED; tier++) {
+                if (batchManager.isTierEnabled(tier as ComponentTier)) {
+                    enabledTiers.push(tier);
+                }
+            }
+
             setState(prev => ({
                 ...prev,
                 currentFPS: stats.current,
                 averageFPS: stats.average,
-                enabledBatches: batchManager.getEnabledBatches(),
-                disabledBatches: batchManager.getDisabledBatches()
+                enabledComponents: batchManager.getEnabledComponents(),
+                enabledTiers
             }));
         }, 100);
 
@@ -87,16 +94,20 @@ export const useFPSBatchController = (
         setState(prev => ({ ...prev, isMonitoring: false }));
     }, [controllerInstance]);
 
-    const enableBatch = useCallback(async (batch: ComponentBatch) => {
-        return controllerInstance.enableBatch(batch);
+    const enableTier = useCallback(async (tier: ComponentTier) => {
+        return controllerInstance.enableTier(tier);
     }, [controllerInstance]);
 
-    const disableBatch = useCallback(async (batch: ComponentBatch) => {
-        return controllerInstance.disableBatch(batch);
+    const disableTier = useCallback(async (tier: ComponentTier) => {
+        return controllerInstance.disableTier(tier);
     }, [controllerInstance]);
 
-    const clearManualOverrides = useCallback(() => {
-        controllerInstance.clearManualOverrides();
+    const enableComponent = useCallback(async (componentId: string) => {
+        return controllerInstance.enableComponent(componentId);
+    }, [controllerInstance]);
+
+    const disableComponent = useCallback(async (componentId: string) => {
+        return controllerInstance.disableComponent(componentId);
     }, [controllerInstance]);
 
     const dismissWarning = useCallback((index: number) => {
@@ -116,9 +127,10 @@ export const useFPSBatchController = (
         actions: {
             startMonitoring,
             stopMonitoring,
-            enableBatch,
-            disableBatch,
-            clearManualOverrides,
+            enableTier,
+            disableTier,
+            enableComponent,
+            disableComponent,
             dismissWarning,
             clearWarnings
         }

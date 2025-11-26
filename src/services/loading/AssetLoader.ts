@@ -6,6 +6,7 @@
 
 import { AssetRegistry } from '../../utils/debug/assetRegistry';
 import { DebugContext } from '../../contexts/DebugContext';
+import { getPerformanceTracker } from '../../utils/debug/performanceTracker';
 import {
   LoadingPhase,
   LoadingState,
@@ -296,8 +297,10 @@ export class AssetLoader {
       progress.status = AssetLoadStatus.LOADED;
       progress.loadTime = Date.now() - loadStart;
 
-      // Enable asset in debug context
-      this.debugContext.enableAsset(assetId);
+      // Ensure asset is enabled in debug context
+      if (!this.debugContext.isAssetEnabled(assetId)) {
+        this.debugContext.toggleAsset(assetId);
+      }
 
       // Update phase progress
       this.updatePhaseProgress(assetId, true);
@@ -421,7 +424,7 @@ export class AssetLoader {
         assetId: asset.id,
         category: asset.type as AssetCategory,
         phase,
-        priority: asset.priority || 0,
+        priority: asset.performanceCost, // Use performanceCost as priority (higher cost = higher priority)
         dependencies: asset.dependencies || [],
         loadFn: async () => {
           // Placeholder - actual loading happens in loadAsset
@@ -603,12 +606,11 @@ export class AssetLoader {
   }
 
   /**
-   * Get current FPS (placeholder - should integrate with actual FPS counter)
+   * Get current FPS from performance tracker
    */
   private getCurrentFPS(): number {
-    // In real implementation, this would read from performance monitor
-    // For now, return simulated FPS
-    return 60 - (this.assets.size * 0.1);
+    const tracker = getPerformanceTracker();
+    return tracker.trackFPS();
   }
 
   /**

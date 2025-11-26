@@ -4,7 +4,7 @@
  * React context provider for managing asset loading state across the application.
  */
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { AssetRegistry } from '../../utils/debug/assetRegistry';
 import { AssetLoader } from '../../services/loading/AssetLoader';
 import { DebugContext } from '../../contexts/DebugContext';
@@ -62,6 +62,36 @@ export const LoadingProvider: React.FC<LoadingProviderProps> = ({
   const [fps, setFps] = useState(60);
   const [currentPhase, setCurrentPhase] = useState('Essential');
   const [loader, setLoader] = useState<AssetLoader | null>(null);
+
+  // Define updateFromProgress before useEffect to avoid hoisting issues
+  const updateFromProgress = useCallback((progress: LoadingProgress) => {
+    // Update overall progress
+    setOverallProgress(progress.totalProgress);
+    setIsLoading(progress.state === LoadingState.LOADING);
+
+    // Update individual asset states using functional update to avoid stale closure
+    setAssets(prevAssets => {
+      const updatedAssets = prevAssets.map(asset => {
+        const assetProgress = progress.assets.get(asset.id);
+        if (!assetProgress) return asset;
+
+        return {
+          ...asset,
+          loaded: assetProgress.status === 'loaded',
+          error: assetProgress.status === 'failed',
+          progress: assetProgress.status === 'loaded' ? 100 :
+                   assetProgress.status === 'loading' ? 50 :
+                   assetProgress.status === 'failed' ? 0 : 0,
+        };
+      });
+
+      // Update loaded count based on updated assets
+      const loaded = updatedAssets.filter(a => a.loaded).length;
+      setLoadedCount(loaded);
+
+      return updatedAssets;
+    });
+  }, []);
 
   useEffect(() => {
     // Initialize AssetLoader
@@ -123,34 +153,7 @@ export const LoadingProvider: React.FC<LoadingProviderProps> = ({
         startLoading(assetLoader);
       }, 100);
     }
-  }, [registry, debugContext, autoStart]);
-
-  const updateFromProgress = (progress: LoadingProgress) => {
-    // Update overall progress
-    setOverallProgress(progress.totalProgress);
-    setIsLoading(progress.state === LoadingState.LOADING);
-
-    // Update individual asset states
-    const updatedAssets = assets.map(asset => {
-      const assetProgress = progress.assets.get(asset.id);
-      if (!assetProgress) return asset;
-
-      return {
-        ...asset,
-        loaded: assetProgress.status === 'loaded',
-        error: assetProgress.status === 'failed',
-        progress: assetProgress.status === 'loaded' ? 100 :
-                 assetProgress.status === 'loading' ? 50 :
-                 assetProgress.status === 'failed' ? 0 : 0,
-      };
-    });
-
-    setAssets(updatedAssets);
-
-    // Update loaded count
-    const loaded = updatedAssets.filter(a => a.loaded).length;
-    setLoadedCount(loaded);
-  };
+  }, [registry, debugContext, autoStart, updateFromProgress]);
 
   const startLoading = async (loaderInstance?: AssetLoader) => {
     const activeLoader = loaderInstance || loader;

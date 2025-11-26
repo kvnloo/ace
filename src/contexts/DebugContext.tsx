@@ -11,7 +11,7 @@ export interface DebugAsset {
   name: string;
 
   /** Asset category for grouping */
-  type: 'grass' | 'lighting' | 'characters' | 'buildings' | 'environment' | 'effects' | 'other';
+  type: 'court' | 'grass' | 'lighting' | 'weather' | 'effects' | 'ui' | 'building' | 'character' | 'physics';
 
   /** Whether asset is enabled (rendered) */
   enabled: boolean;

@@ -503,4 +503,4 @@ if (typeof window !== 'undefined') {
 }
 
 // Export types
-export type { AssetDefinition, AssetType, RegisteredAsset };
+export type { AssetDefinition, AssetType };

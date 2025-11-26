@@ -30,13 +30,13 @@ export const checkWebGLSupport = (): WebGLCapabilities => {
 
     // Fallback to WebGL 1.0
     if (!gl) {
-      gl = canvas.getContext('webgl') as WebGLRenderingContext | null;
+      gl = canvas.getContext('webgl') as WebGL2RenderingContext | null;
       version = gl ? '1.0' : null;
     }
 
     // Alternative context names for older browsers
     if (!gl) {
-      gl = canvas.getContext('experimental-webgl') as WebGLRenderingContext | null;
+      gl = canvas.getContext('experimental-webgl') as WebGL2RenderingContext | null;
       version = gl ? '1.0' : null;
     }
 

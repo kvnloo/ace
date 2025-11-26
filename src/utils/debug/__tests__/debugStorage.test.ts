@@ -1,9 +1,12 @@
+/// <reference types="vitest/globals" />
+
 /**
  * Debug Storage Tests
  *
  * Comprehensive tests for localStorage persistence functionality
  */
 
+import { vi } from 'vitest';
 import {
   saveDebugState,
   loadDebugState,
@@ -258,9 +261,9 @@ describe('debugStorage', () => {
       saveDebugState(state);
 
       // Mock DOM methods
-      const createElementSpy = jest.spyOn(document, 'createElement');
-      const appendChildSpy = jest.spyOn(document.body, 'appendChild');
-      const removeChildSpy = jest.spyOn(document.body, 'removeChild');
+      const createElementSpy = vi.spyOn(document, 'createElement');
+      const appendChildSpy = vi.spyOn(document.body, 'appendChild');
+      const removeChildSpy = vi.spyOn(document.body, 'removeChild');
 
       exportToFile('test-export');
 
@@ -433,7 +436,7 @@ describe('debugStorage', () => {
     it('should handle quota exceeded errors', () => {
       // Mock quota exceeded error
       const originalSetItem = localStorage.setItem;
-      localStorage.setItem = jest.fn(() => {
+      localStorage.setItem = vi.fn(() => {
         const error = new DOMException('QuotaExceededError');
         (error as any).name = 'QuotaExceededError';
         throw error;
@@ -449,7 +452,7 @@ describe('debugStorage', () => {
 
     it('should handle security errors in private browsing', () => {
       const originalGetItem = localStorage.getItem;
-      localStorage.getItem = jest.fn(() => {
+      localStorage.getItem = vi.fn(() => {
         const error = new DOMException('SecurityError');
         (error as any).name = 'SecurityError';
         throw error;

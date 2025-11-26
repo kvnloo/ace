@@ -125,8 +125,11 @@ export interface PerformanceReport {
 interface FPSTracker {
   frameCount: number;
   lastTime: number;
+  lastFrameTime: number;
   fpsHistory: number[];
   currentFPS: number;
+  instantFPS: number;
+  fpsBuffer: number[];
 }
 
 /**
@@ -157,8 +160,11 @@ export class PerformanceTracker {
     this.fpsTracker = {
       frameCount: 0,
       lastTime: performance.now(),
+      lastFrameTime: performance.now(),
       fpsHistory: [],
-      currentFPS: 0
+      currentFPS: 0,
+      instantFPS: 0,
+      fpsBuffer: []
     };
 
     // Start FPS tracking
@@ -173,21 +179,42 @@ export class PerformanceTracker {
 
   /**
    * Start FPS tracking using requestAnimationFrame
+   * Uses per-frame timing for accurate high-refresh rate monitoring
    */
   private startFPSTracking(): void {
     const trackFrame = () => {
       const now = performance.now();
-      const delta = now - this.fpsTracker.lastTime;
+
+      // Per-frame timing for accurate FPS calculation
+      const frameDelta = now - this.fpsTracker.lastFrameTime;
+      this.fpsTracker.lastFrameTime = now;
+
+      // Calculate instant FPS from frame delta (avoid division by zero)
+      if (frameDelta > 0) {
+        this.fpsTracker.instantFPS = Math.round(1000 / frameDelta);
+
+        // Add to rolling buffer for smoothed average
+        this.fpsTracker.fpsBuffer.push(this.fpsTracker.instantFPS);
+
+        // Keep buffer at 10 frames for smooth average (updates ~60x/sec at 60fps)
+        if (this.fpsTracker.fpsBuffer.length > 10) {
+          this.fpsTracker.fpsBuffer.shift();
+        }
+
+        // Calculate smoothed FPS from buffer
+        const sum = this.fpsTracker.fpsBuffer.reduce((a, b) => a + b, 0);
+        this.fpsTracker.currentFPS = Math.round(sum / this.fpsTracker.fpsBuffer.length);
+      }
 
       this.fpsTracker.frameCount++;
+      const delta = now - this.fpsTracker.lastTime;
 
-      // Update FPS every second
-      if (delta >= 1000) {
-        this.fpsTracker.currentFPS = Math.round((this.fpsTracker.frameCount * 1000) / delta);
+      // Update history every 100ms for responsive graphs (10x faster than before)
+      if (delta >= 100) {
         this.fpsTracker.fpsHistory.push(this.fpsTracker.currentFPS);
 
-        // Keep only last 60 seconds of history
-        if (this.fpsTracker.fpsHistory.length > 60) {
+        // Keep last 300 samples (30 seconds at 100ms intervals)
+        if (this.fpsTracker.fpsHistory.length > 300) {
           this.fpsTracker.fpsHistory.shift();
         }
 
@@ -216,11 +243,11 @@ export class PerformanceTracker {
   private detectGPUInfo(): void {
     try {
       const canvas = document.createElement('canvas');
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      const gl = (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')) as WebGLRenderingContext | null;
 
       if (!gl) return;
 
-      this.webglContext = gl as WebGLRenderingContext;
+      this.webglContext = gl;
 
       const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
 
@@ -239,10 +266,17 @@ export class PerformanceTracker {
   }
 
   /**
-   * Track current FPS
+   * Track current FPS (smoothed average over last 10 frames)
    */
   public trackFPS(): number {
     return this.fpsTracker.currentFPS;
+  }
+
+  /**
+   * Get instant FPS (per-frame calculation, more responsive)
+   */
+  public getInstantFPS(): number {
+    return this.fpsTracker.instantFPS;
   }
 
   /**
