@@ -141,7 +141,7 @@ const FPSMonitor: React.FC<FPSMonitorProps> = ({
     <motion.div
       layoutId="fps-monitor-shared"
       ref={elementRef}
-      className={`${className} ${isPortalMode ? 'fixed top-44 left-4 z-[9999]' : ''}`}
+      className={`${className} ${isPortalMode ? 'fixed bottom-24 right-6 z-50' : ''}`}
       data-testid="fps-meter"
       layout
       transition={{
