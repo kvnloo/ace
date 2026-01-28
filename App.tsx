@@ -57,7 +57,7 @@ const App: React.FC = () => {
             >
               {/* Hero Section */}
               <div className="relative h-[90vh] flex items-center justify-center px-6 overflow-hidden">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1622163642998-1ea36b1dde3b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 scale-105" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1554068865-24cecd4e34b8?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
                 
                 <div className="relative z-10 max-w-4xl text-center">
