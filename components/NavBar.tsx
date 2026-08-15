@@ -31,22 +31,22 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
             className="text-2xl font-extrabold tracking-tighter text-white cursor-pointer flex items-center gap-2"
             onClick={() => onChangeView(View.HOME)}
         >
-            <span className="w-3 h-3 bg-tennis-yellow rounded-full animate-pulse"></span>
-            LAWNTECH <span className="text-tennis-yellow font-light">DYNAMICS</span>
+            <span className="w-3 h-3 bg-tennis-yellow rounded-full"></span>
+            ACE <span className="text-tennis-yellow font-light">PERFORMANCE CAMPUS</span>
         </div>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <NavItem view={View.HOME} label="Vision" />
+          <NavItem view={View.HOME} label="Campus" />
           <NavItem view={View.SPECIFICATIONS} label="Specs" />
           <NavItem view={View.FACILITY_DEMO} label="3D Map" />
           <NavItem view={View.AMENITIES} label="Amenities" />
-          <NavItem view={View.INVEST} label="Invest" />
+          <NavItem view={View.INVEST} label="Collaborate" />
           <button 
             className="border border-tennis-yellow text-tennis-yellow px-5 py-2 rounded-full text-sm font-bold hover:bg-tennis-yellow hover:text-tennis-dark transition-all"
             onClick={() => onChangeView(View.INVEST)}
           >
-            JOIN WAITING LIST
+            FOLLOW THE BUILD
           </button>
         </div>
 
@@ -61,11 +61,11 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
       {/* Mobile Menu */}
       {isMobileOpen && (
         <div className="absolute top-full left-0 w-full bg-slate-900 border-b border-white/10 p-6 flex flex-col gap-6 md:hidden glass-panel">
-          <NavItem view={View.HOME} label="Vision" />
+          <NavItem view={View.HOME} label="Campus" />
           <NavItem view={View.SPECIFICATIONS} label="Specs" />
           <NavItem view={View.FACILITY_DEMO} label="3D Map" />
           <NavItem view={View.AMENITIES} label="Amenities" />
-          <NavItem view={View.INVEST} label="Invest" />
+          <NavItem view={View.INVEST} label="Collaborate" />
         </div>
       )}
     </nav>

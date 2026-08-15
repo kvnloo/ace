@@ -42,14 +42,14 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-slate-950 text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
       <NavBar currentView={currentView} onChangeView={setCurrentView} />
 
-      <main className="relative w-full h-screen pt-20 overflow-hidden">
+      <main className="relative w-full h-[100dvh] pt-20 overflow-hidden">
         <AnimatePresence mode="wait">
           
           {/* HOME VIEW */}
           {currentView === View.HOME && (
             <motion.div 
               key="home"
-              initial="initial"
+              initial={false}
               animate="enter"
               exit="exit"
               variants={pageVariants}
@@ -62,38 +62,36 @@ const App: React.FC = () => {
                 
                 <div className="relative z-10 max-w-4xl text-center">
                   <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={false}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-tennis-yellow/30 bg-tennis-yellow/10 text-tennis-yellow text-sm font-medium mb-6"
                   >
                     <Zap className="w-4 h-4" />
-                    <span>The Future of Tennis is Organic & Autonomous</span>
+                    <span>Open-source facility concept</span>
                   </motion.div>
                   
                   <motion.h1 
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={false}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
                     className="text-5xl md:text-8xl font-extrabold tracking-tighter mb-6 leading-tight"
                   >
-                    GRASS. <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">AUTONOMOUS.</span> <br />
-                    PERFECTION.
+                    TRAIN THE ATHLETE. <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">MEASURE THE SYSTEM.</span>
                   </motion.h1>
 
                   <motion.p 
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={false}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
                     className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed"
                   >
-                    Experience the world's first fully autonomous indoor grass court facility. 
-                    Replaceable modular turf, AI coaching, and injury prevention technology.
+                    A proposed multi-sport campus for measured training, reaction work, recovery, and repeatable performance testing.
                   </motion.p>
 
                   <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={false}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
                     className="flex flex-col sm:flex-row items-center justify-center gap-4"
@@ -120,17 +118,17 @@ const App: React.FC = () => {
                 <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
                   <Cpu className="w-10 h-10 text-tennis-yellow mb-4" />
                   <h3 className="text-2xl font-bold mb-2">Computer Vision</h3>
-                  <p className="text-gray-400">Real-time biomechanics analysis and injury prediction models running 60x per second.</p>
+                  <p className="text-gray-400">A proposed measurement layer for movement, workload, reaction time, and longitudinal testing.</p>
                 </div>
                 <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
                   <Sprout className="w-10 h-10 text-tennis-yellow mb-4" />
                   <h3 className="text-2xl font-bold mb-2">Modular Grass</h3>
-                  <p className="text-gray-400">Our on-site Grass Lab grows replacement grids. We swap worn turf in under 60 minutes.</p>
+                  <p className="text-gray-400">A modular-surface research concept for maintaining consistent grass courts indoors.</p>
                 </div>
                 <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
                   <Activity className="w-10 h-10 text-tennis-yellow mb-4" />
                   <h3 className="text-2xl font-bold mb-2">Performance</h3>
-                  <p className="text-gray-400">Strobe glass training and smart ball machines designed to break your reaction time plateaus.</p>
+                  <p className="text-gray-400">Supervised perceptual training, sport-specific drills, recovery protocols, and objective retesting.</p>
                 </div>
               </div>
             </motion.div>
@@ -290,9 +288,8 @@ const App: React.FC = () => {
                       </div>
                       <h3 className="text-3xl font-bold">Autonomous Operations</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        The facility runs itself. A centralized Building Management System (BMS) optimizes HVAC and lighting using solar power.
-                        Robotic mowers maintain the courts while overhead drones constantly analyze surface quality. 
-                        Entry is seamless with biometric scanning, removing the need for keys or cards.
+                        The concept explores a centralized Building Management System for HVAC, lighting, court care, and energy use.
+                        Robotic maintenance, surface sensing, and privacy-conscious access controls remain proposed integrations.
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
@@ -356,8 +353,8 @@ const App: React.FC = () => {
             >
                 <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 p-8 md:p-12 rounded-3xl backdrop-blur-xl">
                     <div className="text-center mb-10">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">Join the Revolution</h2>
-                        <p className="text-gray-400">We are raising Series A funding to build the pilot facility in Austin, Texas.</p>
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4">Help shape ACE</h2>
+                        <p className="text-gray-400">Share expertise, research, facility requirements, or interest in the open-source concept.</p>
                     </div>
 
                     <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
@@ -385,7 +382,7 @@ const App: React.FC = () => {
                         </div>
                         
                         <button className="w-full bg-tennis-yellow text-tennis-dark font-bold text-lg py-4 rounded-xl hover:bg-white transition-all">
-                            Request Pitch Deck
+                            Submit interest
                         </button>
                     </form>
                 </div>
