@@ -22,8 +22,13 @@ import {
 } from 'lucide-react';
 
 const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<View>(View.HOME);
+  const [currentView, setCurrentView] = useState<View>(() =>
+    new URLSearchParams(window.location.search).get('camera') === 'arrival'
+      ? View.FACILITY_DEMO
+      : View.HOME
+  );
   const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);
+  const deterministicCapture = new URLSearchParams(window.location.search).get('camera') === 'arrival';
 
   // Reset selected feature when leaving demo view
   useEffect(() => {
@@ -34,7 +39,7 @@ const App: React.FC = () => {
 
   const pageVariants = {
     initial: { opacity: 0, y: 20 },
-    enter: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+    enter: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
     exit: { opacity: 0, y: -20, transition: { duration: 0.4 } }
   };
 
@@ -164,13 +169,13 @@ const App: React.FC = () => {
               
               {/* HUD Layer */}
               <div className="absolute inset-0 z-10 pointer-events-none p-6 flex flex-col justify-between">
-                <div className="mt-12">
+                {!deterministicCapture && <div className="mt-12">
                    <h2 className="text-3xl font-bold text-white drop-shadow-lg">Facility Interactive Map</h2>
                    <p className="text-white/70 text-sm max-w-md drop-shadow-md mt-2">
                      24 Courts • Vertical Farm • Performance Gym <br/>
                      Rotate the view to explore the entire complex.
                    </p>
-                </div>
+                </div>}
 
                 {/* Selected Feature Info Card */}
                 <AnimatePresence>
