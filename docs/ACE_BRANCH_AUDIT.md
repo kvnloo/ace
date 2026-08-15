@@ -58,28 +58,32 @@ Do not merge the branch. Reimplement or cherry-pick narrowly after verifying ind
 
 ## Homebase / pickleball donor
 
-Likely repository: `kvnloo/pickleball-palace-builder`.
+Verified local repository: `/workspace/zer0/products/homebase/pickleball`.
 
-Best donor ref: `origin/claude/game-performance-optimization-YuK2B` at `9e325bca52c4010cfd4cb16681dfc4305c0f0e72`, six commits ahead of its `main`.
+Product identity: Rally House Pickleball Digital Twin. This local working repository—not `kvnloo/pickleball-palace-builder`—is the Homebase implementation referenced by the owner.
 
-Strong concepts:
+Current inspected branch: `feat/optimize` at `7139d7d`, two commits ahead of local/main `90ff6c5`. The checkout already contained unrelated owner changes in `README.md`, `scripts/generate-robot-model.mjs`, and untracked `scripts/with-python.sh`; those must be preserved.
 
-- typed pickleball shot, score, serve and rally state;
-- configurable court/facility geometry;
-- consolidated frame loop;
-- low-allocation frame-time ring buffer;
-- squared-distance LOD thresholds and hysteresis;
-- frustum-culling helpers and distance-based shadow policy;
-- focused performance test contracts.
+Strong donor systems:
 
-Blockers before code transfer:
+- pure TypeScript USAPA 2025 rules engine with rendering-independent boundaries;
+- XState-backed player and rally state;
+- fixed-timestep 60 Hz animation loop;
+- per-court ball physics, scoring, serve and non-volley-zone behavior;
+- configurable 11-court facility layouts;
+- Three.js digital-twin scene builders, court selection and operational overlays;
+- facility analytics, gamification and service layers;
+- robot, scheduling, camera and facility-management dashboards;
+- floor-plan image ingestion into facility configuration;
+- substantial Vitest, Playwright, Testing Library and mutation-testing infrastructure;
+- recent frame-loop, renderer, draw-call and UI optimization work.
 
-- no committed license was found in the donor repository;
-- `package.json` and `package-lock.json` are out of sync, so `npm ci` fails on donor `main`;
-- donor uses React 18 / R3F 8 / Three 0.170 while ACE uses React 19 / R3F 9 / Three 0.181;
-- several optimization tests encode intent but do not prove browser behavior on ACE.
+Promotion boundary:
 
-Until ownership/relicensing is explicit, copy no code. Reimplement proven concepts behind ACE-owned tests.
+- Homebase should contribute domain truth, simulation, facility configuration and operations patterns.
+- ACE should own the architectural shell, premium campus presentation, multi-sport composition and Athlete OS experience.
+- Extract contracts behind adapters rather than coupling ACE directly to Homebase scene or dashboard internals.
+- Preserve the dirty Homebase working tree and audit licensing/ownership before publishing transferred code as OSS.
 
 ## Promotion sequence
 
