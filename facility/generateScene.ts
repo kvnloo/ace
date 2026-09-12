@@ -11,6 +11,7 @@ import {
   type AnyNodeId,
 } from '@pascal-app/core';
 import {
+  APEX_OFFSET_X,
   BUILDING_DEPTH,
   BUILDING_ID,
   BUILDING_WIDTH,
@@ -18,6 +19,13 @@ import {
   WALL_HEIGHT,
   WALL_THICKNESS,
 } from './program.ts';
+import {
+  APEX_BUILDING_ID,
+  APEX_DEPTH,
+  APEX_LEVEL_ID,
+  APEX_ROOMS,
+  APEX_WIDTH,
+} from './vision.ts';
 
 type MaterialPreset = 'concrete' | 'plaster' | 'glass' | 'wood' | 'metal';
 type SceneNodes = Record<AnyNodeId, AnyNode>;
@@ -302,6 +310,89 @@ function interiorWalls(floor: number): Array<{ id: `wall_${string}`; start: Poin
   return [];
 }
 
+function addApexCampus(nodes: SceneNodes, siteId: string) {
+  const x0 = -APEX_WIDTH / 2;
+  const z0 = -APEX_DEPTH / 2;
+  const cols = 3;
+  const rows = 3;
+  const cellW = APEX_WIDTH / cols;
+  const cellD = APEX_DEPTH / rows;
+  const childIds: string[] = [];
+
+  APEX_ROOMS.forEach((room, index) => {
+    const col = index % cols;
+    const row = Math.floor(index / cols);
+    const [zoneId, slabId] = addRoom(
+      nodes,
+      APEX_LEVEL_ID,
+      {
+        id: room.id,
+        name: room.name,
+        color: room.color,
+        polygon: rect(x0 + col * cellW, z0 + row * cellD, cellW, cellD),
+        floorFinish: 'campus-vision',
+        occupancy: room.occupancy,
+        metadata: {
+          honesty: 'VISION',
+          source: 'enhance/3D-apex-campus',
+          dimensions: 'inferred-30x30-cells',
+          cluster: room.cluster,
+        },
+      },
+      'tile',
+    );
+    childIds.push(zoneId, slabId);
+  });
+
+  const south = addWall(nodes, APEX_LEVEL_ID, 'wall_apex_south', [x0, z0], [x0 + APEX_WIDTH, z0], 'glass', [
+    { id: 'apex_entry', kind: 'door', along: APEX_WIDTH / 2, width: 3.6, height: 3.2 },
+  ]);
+  const east = addWall(
+    nodes,
+    APEX_LEVEL_ID,
+    'wall_apex_east',
+    [x0 + APEX_WIDTH, z0],
+    [x0 + APEX_WIDTH, z0 + APEX_DEPTH],
+    'glass',
+  );
+  const north = addWall(
+    nodes,
+    APEX_LEVEL_ID,
+    'wall_apex_north',
+    [x0 + APEX_WIDTH, z0 + APEX_DEPTH],
+    [x0, z0 + APEX_DEPTH],
+    'glass',
+  );
+  const west = addWall(nodes, APEX_LEVEL_ID, 'wall_apex_west', [x0, z0 + APEX_DEPTH], [x0, z0], 'glass');
+  childIds.push(south.id, east.id, north.id, west.id);
+
+  add(
+    nodes,
+    LevelNode.parse({
+      id: APEX_LEVEL_ID,
+      name: 'APEX — peak-performance wing',
+      parentId: APEX_BUILDING_ID,
+      level: 0,
+      height: WALL_HEIGHT,
+      children: childIds,
+      metadata: { honesty: 'VISION', source: 'enhance/3D-apex-campus' },
+    }),
+  );
+
+  add(
+    nodes,
+    BuildingNode.parse({
+      id: APEX_BUILDING_ID,
+      name: 'APEX peak-performance campus (VISION)',
+      parentId: siteId,
+      position: [APEX_OFFSET_X, 0, 0],
+      rotation: [0, 0, 0],
+      children: [APEX_LEVEL_ID],
+      metadata: { honesty: 'VISION', source: 'enhance/3D-apex-campus' },
+    }),
+  );
+}
+
 export type LawnTechScene = {
   nodes: SceneNodes;
   rootNodeIds: AnyNodeId[];
@@ -312,25 +403,27 @@ export function generateLawnTechScene(): LawnTechScene {
   const sitePad = 20;
   const site = SiteNode.parse({
     id: SITE_ID,
-    name: 'Naperville — LawnTech pretotype',
+    name: 'Naperville — peak-performance pretotype',
     polygon: {
       type: 'polygon',
       points: [
         [X0 - sitePad, Z0 - sitePad],
-        [X1 + sitePad, Z0 - sitePad],
-        [X1 + sitePad, Z1 + sitePad],
+        [APEX_OFFSET_X + APEX_WIDTH / 2 + sitePad, Z0 - sitePad],
+        [APEX_OFFSET_X + APEX_WIDTH / 2 + sitePad, Z1 + sitePad],
         [X0 - sitePad, Z1 + sitePad],
       ],
     },
     metadata: {
       origin: 'Naperville',
       honesty: 'pretotype',
+      vision: 'peak-performance-campus',
       envelope: 'inferred-140x120',
       wallHeight: 'inferred-10m-sport-hall',
       compiler: 'ace-facility@1',
       farmSections: 'unspecified',
+      apex: 'vision-named-rooms-inferred-cells',
     },
-    children: [BUILDING_ID],
+    children: [BUILDING_ID, APEX_BUILDING_ID],
   });
 
   const building = BuildingNode.parse({
@@ -397,6 +490,7 @@ export function generateLawnTechScene(): LawnTechScene {
   }
 
   add(nodes, building);
+  addApexCampus(nodes, site.id);
   add(nodes, site);
 
   return { nodes, rootNodeIds: [site.id] };

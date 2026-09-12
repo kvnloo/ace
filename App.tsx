@@ -14,7 +14,10 @@ import {
   Layers,
   Wind,
   ShieldCheck,
-  ShoppingBag
+  ShoppingBag,
+  Brain,
+  Heart,
+  Activity
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -64,7 +67,7 @@ const App: React.FC = () => {
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-tennis-yellow/30 bg-tennis-yellow/10 text-tennis-yellow text-sm font-medium mb-6"
                   >
                     <Zap className="w-4 h-4" />
-                    <span>Naperville spec · public 3D pretotype</span>
+                    <span>VISION campus · Naperville racquet SPEC · pretotype</span>
                   </motion.div>
                   
                   <motion.h1 
@@ -73,9 +76,8 @@ const App: React.FC = () => {
                     transition={{ delay: 0.3 }}
                     className="text-5xl md:text-8xl font-extrabold tracking-tighter mb-6 leading-tight"
                   >
-                    GRASS. <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">AUTONOMOUS.</span> <br />
-                    PERFECTION.
+                    PEAK PERFORMANCE. <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">EVERY ANGLE.</span>
                   </motion.h1>
 
                   <motion.p 
@@ -84,8 +86,8 @@ const App: React.FC = () => {
                     transition={{ delay: 0.4 }}
                     className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed"
                   >
-                    Indoor grass courts with a third-floor lab that grows the surface.
-                    The 3D map is a sketch of the Naperville origin spec — not a live twin.
+                    A campus for human flourishing — scientists, athletes, labs, physiotherapy, all sports.
+                    Naperville racquet counts are the origin spec. APEX is the vision. This Pages site is a sketch, not a live twin.
                   </motion.p>
 
                   <motion.div 
@@ -113,20 +115,20 @@ const App: React.FC = () => {
 
               {/* Statistics Teaser */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6 py-20 border-t border-white/10">
+                <div className="p-6 rounded-2xl bg-[#0c0d0b] border border-tennis-yellow/40">
+                  <span className="text-[10px] font-mono tracking-widest text-tennis-yellow">VISION</span>
+                  <h3 className="text-2xl font-bold mb-2 mt-3">Peak-performance campus</h3>
+                  <p className="text-gray-400">Scientists, athletes, labs, physiotherapy, all sports. APEX rooms are named program — not origin measurements, not a live clinic.</p>
+                </div>
                 <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
                   <span className="text-[10px] font-mono tracking-widest text-tennis-yellow/80">SPEC</span>
                   <h3 className="text-2xl font-bold mb-2 mt-3">24 tennis courts</h3>
-                  <p className="text-gray-400">Hard, clay, grass, and wood on the ground floor. Counts from the origin spec — not an even 6/6/6/6 split unless the spec says so.</p>
-                </div>
-                <div className="p-6 rounded-2xl bg-[#0c0d0b] border border-tennis-yellow/40">
-                  <span className="text-[10px] font-mono tracking-widest text-tennis-yellow">PLANNED</span>
-                  <h3 className="text-2xl font-bold mb-2 mt-3">Grass lab</h3>
-                  <p className="text-gray-400">Third floor grows modular turf: <span className="text-white">500 m² per section</span> in the origin. Section count is unspecified. Fast swap is a goal, not a receipt.</p>
+                  <p className="text-gray-400">Naperville origin: hard, clay, grass, and wood on the ground floor. Counts from the spec — not an even 6/6/6/6 split unless the spec says so.</p>
                 </div>
                 <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                  <span className="text-[10px] font-mono tracking-widest text-white/50">MOCK</span>
-                  <h3 className="text-2xl font-bold mb-2 mt-3">Ops overlay</h3>
-                  <p className="text-gray-400">Biomechanics HUD and 60 FPS numbers are theater on this demo. The court is the product; chrome stays thin.</p>
+                  <span className="text-[10px] font-mono tracking-widest text-white/50">PLANNED</span>
+                  <h3 className="text-2xl font-bold mb-2 mt-3">Grass lab + APEX wing</h3>
+                  <p className="text-gray-400">Third floor grows modular turf: <span className="text-white">500 m² per section</span>. Section count unspecified. APEX cells are inferred. Fast swap is a goal, not a receipt.</p>
                 </div>
               </div>
             </motion.div>
@@ -165,10 +167,10 @@ const App: React.FC = () => {
               {/* HUD Layer */}
               <div className="absolute inset-0 z-10 pointer-events-none p-6 flex flex-col justify-between">
                 <div className="mt-12">
-                   <h2 className="text-3xl font-bold text-white drop-shadow-lg">Facility sketch</h2>
+                   <h2 className="text-3xl font-bold text-white drop-shadow-lg">Campus sketch</h2>
                    <p className="text-white/70 text-sm max-w-md drop-shadow-md mt-2">
-                     Naperville origin · Pascal nodes · 24 tennis · third-floor grass lab<br/>
-                     Envelope 140×120 m is inferred. HUD is MOCK. CSS court if WebGL is blank.
+                     VISION APEX wing · Naperville racquet SPEC · Pascal nodes<br/>
+                     Envelope and APEX cells inferred. HUD is MOCK. CSS sketch if WebGL is blank.
                    </p>
                 </div>
 
@@ -218,9 +220,41 @@ const App: React.FC = () => {
               className="h-full overflow-y-auto custom-scrollbar pb-20 px-6"
             >
               <div className="max-w-7xl mx-auto pt-10">
-                <h2 className="text-4xl font-bold mb-12 border-b border-white/10 pb-6">Facility Amenities</h2>
+                <h2 className="text-4xl font-bold mb-4 border-b border-white/10 pb-6">Campus program</h2>
+                <p className="text-gray-400 text-lg mb-12 max-w-3xl">
+                  Peak performance from every angle. APEX labs, physio, gym, and pool are <span className="text-tennis-yellow font-mono text-sm">VISION</span>.
+                  Naperville racquet counts are <span className="text-white font-mono text-sm">SPEC</span>. This site does not run a facility.
+                </p>
                 
                 <div className="space-y-24">
+
+                  <div className="flex flex-col md:flex-row items-center gap-12">
+                    <div className="flex-1 space-y-6">
+                      <div className="w-16 h-16 rounded-2xl bg-red-900/30 flex items-center justify-center text-red-400">
+                        <Brain className="w-8 h-8" />
+                      </div>
+                      <h3 className="text-3xl font-bold">APEX peak-performance wing</h3>
+                      <p className="text-gray-400 text-lg leading-relaxed">
+                        From <span className="font-mono text-sm">origin/enhance/3D</span>: biometric, cognitive, movement, research, and nutrition rooms plus recovery / physiotherapy.
+                        Named program identity — not 147 biomarkers, not a measured VO₂ panel, not a live twin.
+                      </p>
+                      <ul className="space-y-3 text-gray-300">
+                        <li className="flex items-center gap-2"><Heart className="w-4 h-4 text-red-400"/> Biometric lab — VISION</li>
+                        <li className="flex items-center gap-2"><Brain className="w-4 h-4 text-blue-400"/> Cognitive + movement + research — VISION</li>
+                        <li className="flex items-center gap-2"><Activity className="w-4 h-4 text-green-400"/> Gym, pool, clubhouse — VISION (all sports)</li>
+                      </ul>
+                    </div>
+                    <div className="flex-1 h-[400px] rounded-3xl overflow-hidden relative group border border-tennis-yellow/20 bg-gradient-to-br from-[#1a1520] via-[#12141c] to-[#0c0d0b]">
+                       <div className="absolute inset-[12%] grid grid-cols-3 gap-1 opacity-70">
+                         {Array.from({ length: 9 }).map((_, i) => (
+                           <div key={i} className="border border-tennis-yellow/15 bg-white/5" />
+                         ))}
+                       </div>
+                       <div className="absolute inset-0 flex items-center justify-center">
+                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-tennis-yellow">VISION · APEX CAMPUS</span>
+                       </div>
+                    </div>
+                  </div>
                   
                   {/* 1. Vertical Grass Lab */}
                   <div className="flex flex-col md:flex-row items-center gap-12">
@@ -252,10 +286,10 @@ const App: React.FC = () => {
                        <div className="w-16 h-16 rounded-2xl bg-blue-900/30 flex items-center justify-center text-blue-400">
                         <Layers className="w-8 h-8" />
                       </div>
-                      <h3 className="text-3xl font-bold">Multi-Sport Ecosystem</h3>
+                      <h3 className="text-3xl font-bold">Naperville racquet (origin SPEC)</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        Spanning the Ground, 1st, and 2nd floors, we offer a comprehensive racquet experience. 
-                        From the high-speed action of Badminton and Table Tennis on the Mezzanine to the social atmosphere of Pickleball and the historic elegance of Real Tennis on the upper deck.
+                        First site nested in the campus vision. Ground, L1, and L2 are the origin racquet program — not all-sports counts.
+                        All-sports identity lives on the APEX wing as VISION until a spec names those rooms.
                       </p>
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                           <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
@@ -357,7 +391,7 @@ const App: React.FC = () => {
                 <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 p-8 md:p-12 rounded-3xl backdrop-blur-xl">
                     <div className="text-center mb-10">
                         <h2 className="text-3xl md:text-5xl font-bold mb-4">Join the pretotype</h2>
-                        <p className="text-gray-400">Origin spec is Naperville. This form does not submit (MOCK). Other cities named here are a pitch, not a second facility spec.</p>
+                        <p className="text-gray-400">Vision is a peak-performance campus. Origin spec is Naperville racquet. This form does not submit (MOCK).</p>
                     </div>
 
                     <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>

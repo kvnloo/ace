@@ -1,0 +1,12 @@
+# Stack-neutral: GitHub Actions only. Do not add npm/pip/cargo ecosystems here;
+# oss-onboard must not bake a language lockfile updater into every target.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    labels:
+      - enhancement
+      - area:verify

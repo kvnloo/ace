@@ -32,6 +32,8 @@ After deployment, your sites will be available at:
 - **Production (main)**: `https://<username>.github.io/<repo>/`
 - **Development (dev)**: `https://<username>.github.io/<repo>/dev/`
 
+Rolling Verified OSS Loop branches (`preview`, `nightly`) are **not** Pages slots. Do not invent `/preview/<slug>/` without extending `.github/workflows/deploy.yml`.
+
 Replace `<username>` with your GitHub username and `<repo>` with your repository name.
 
 ## How It Works

@@ -7,6 +7,9 @@ import { FeatureData } from '../types';
 import { generateLawnTechScene } from '../facility/generateScene';
 import {
   AnnotationMode,
+  APEX_BUILDING_ID,
+  APEX_LEVEL_ID,
+  APEX_OFFSET_X,
   BUILDING_ID,
   FEATURES,
   FloorLevel,
@@ -119,8 +122,11 @@ function CameraFramer({ floor }: { floor: FloorLevel }) {
   const { camera, invalidate } = useThree();
   React.useLayoutEffect(() => {
     if (floor === 'ALL') {
-      camera.position.set(180, 70, 180);
-      camera.lookAt(0, 18, 0);
+      camera.position.set(240, 90, 220);
+      camera.lookAt(APEX_OFFSET_X / 2, 18, 0);
+    } else if (floor === 'APEX') {
+      camera.position.set(APEX_OFFSET_X + 90, 48, 90);
+      camera.lookAt(APEX_OFFSET_X, 8, 0);
     } else {
       const y = floor * 10 + 18;
       camera.position.set(90, y + 24, 90);
@@ -142,6 +148,16 @@ function applyFloorMode(floor: FloorLevel) {
   if (floor === 'ALL') {
     viewer.setLevelMode('exploded');
     viewer.setSelection({ buildingId: BUILDING_ID, levelId: null, zoneId: null, selectedIds: [] });
+    return;
+  }
+  if (floor === 'APEX') {
+    viewer.setLevelMode('solo');
+    viewer.setSelection({
+      buildingId: APEX_BUILDING_ID,
+      levelId: APEX_LEVEL_ID,
+      zoneId: null,
+      selectedIds: [],
+    });
     return;
   }
   viewer.setLevelMode('solo');
@@ -208,6 +224,7 @@ const PascalFacility: React.FC<PascalFacilityProps> = ({ onFeatureSelect }) => {
     (feature: FeatureData) => {
       setSelectedId(feature.id);
       onFeatureSelect(feature);
+      if (feature.id.includes('apex')) setActiveFloor('APEX');
       if (feature.id.includes('ground')) setActiveFloor(0);
       if (feature.id.includes('level1')) setActiveFloor(1);
       if (feature.id.includes('level2')) setActiveFloor(2);
@@ -280,6 +297,7 @@ const PascalFacility: React.FC<PascalFacilityProps> = ({ onFeatureSelect }) => {
                 if (activeFloor === 1) return f.id.includes('level1');
                 if (activeFloor === 2) return f.id.includes('level2');
                 if (activeFloor === 3) return f.id.includes('level3');
+                if (activeFloor === 'APEX') return f.id.includes('apex');
                 return true;
               }).map((f) => (
                 <button
@@ -297,7 +315,7 @@ const PascalFacility: React.FC<PascalFacilityProps> = ({ onFeatureSelect }) => {
             </div>
           )}
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/45 text-[10px] pointer-events-none select-none font-mono text-center tracking-widest uppercase">
-            Naperville pretotype · Pascal facility · envelope inferred
+            Naperville pretotype · VISION campus · Pascal facility
           </div>
         </>
       )}

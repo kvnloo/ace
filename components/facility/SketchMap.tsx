@@ -21,11 +21,12 @@ export const ControlsOverlay: React.FC<{
           <Layers className="w-3 h-3" /> Floor View
         </div>
         {[
+          { id: 'APEX', label: 'APEX: Campus' },
           { id: 3, label: 'L3: Lab' },
           { id: 2, label: 'L2: Social' },
           { id: 1, label: 'L1: Racquet' },
           { id: 0, label: 'G: Tennis' },
-          { id: 'ALL', label: 'Full Facility' },
+          { id: 'ALL', label: 'Full Campus' },
         ].map((item) => (
           <button
             key={item.id}
@@ -75,7 +76,7 @@ export const ControlsOverlay: React.FC<{
 };
 
 const CourtDiagram: React.FC<{
-  variant: 'tennis' | 'badminton' | 'pickle' | 'farm' | 'campus';
+  variant: 'tennis' | 'badminton' | 'pickle' | 'farm' | 'campus' | 'apex';
 }> = ({ variant }) => {
   if (variant === 'farm') {
     return (
@@ -94,6 +95,58 @@ const CourtDiagram: React.FC<{
           <span className="text-[10px] font-mono text-white/50 tracking-widest">
             500 m² / section · count unspecified
           </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === 'apex') {
+    const cells = [
+      'Biometric',
+      'Cognitive',
+      'Movement',
+      'Research',
+      'Nutrition',
+      'Recovery',
+      'Gym',
+      'Pool',
+      'Clubhouse',
+    ];
+    return (
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1a1520] via-[#12141c] to-[#0c0d0b]">
+        <div className="absolute inset-0 flex items-center justify-center p-8 md:p-16">
+          <div className="grid grid-cols-3 gap-2 w-full max-w-xl aspect-square">
+            {cells.map((label) => (
+              <div
+                key={label}
+                className="border border-tennis-yellow/25 bg-white/5 flex items-center justify-center"
+              >
+                <span className="text-[10px] font-mono tracking-widest text-white/70 uppercase">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === 'campus') {
+    return (
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1a2420] via-[#121816] to-[#0c0d0b]">
+        <div className="absolute inset-0 flex items-center justify-center gap-4 md:gap-8 p-8">
+          <div className="w-[42%] max-w-sm aspect-[7/6] border border-white/20 bg-[#3f6b1d]/40 flex flex-col items-center justify-center gap-1">
+            <span className="text-[10px] font-mono text-white/70 tracking-widest">SPEC</span>
+            <span className="text-sm font-bold text-white">LawnTech racquet</span>
+            <span className="text-[10px] font-mono text-white/50">24 tennis · grass lab</span>
+          </div>
+          <div className="w-[38%] max-w-xs aspect-square border border-tennis-yellow/30 bg-white/5 grid grid-cols-3 gap-px p-2">
+            {Array.from({ length: 9 }).map((_, i) => (
+              <div key={i} className="bg-tennis-yellow/10" />
+            ))}
+          </div>
+        </div>
+        <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 text-[10px] font-mono text-tennis-yellow/80 tracking-widest">
+          VISION campus · inferred cells
         </div>
       </div>
     );
@@ -148,6 +201,7 @@ export const SketchFallback: React.FC<{
     if (activeFloor === 1) return f.id.includes('level1');
     if (activeFloor === 2) return f.id.includes('level2');
     if (activeFloor === 3) return f.id.includes('level3');
+    if (activeFloor === 'APEX') return f.id.includes('apex');
     return true;
   });
 
@@ -170,7 +224,9 @@ export const SketchFallback: React.FC<{
           <span className="mt-3 text-tennis-yellow font-mono text-xs tracking-widest">
             {sketch.variant === 'farm'
               ? '500 m² / section (origin)'
-              : 'envelope 140×120 m · inferred'}
+              : sketch.variant === 'apex' || sketch.variant === 'campus'
+                ? 'APEX cells inferred · not origin'
+                : 'envelope 140×120 m · inferred'}
           </span>
         )}
       </div>
@@ -192,7 +248,7 @@ export const SketchFallback: React.FC<{
         </div>
       )}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/45 text-[10px] pointer-events-none select-none font-mono text-center tracking-widest uppercase">
-        Naperville pretotype · Pascal program sketch
+        Naperville pretotype · VISION campus · Pascal program sketch
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Layers, Droplets, Zap, Home, Server } from 'lucide-react';
+import { CheckCircle2, Layers, Droplets, Zap, Home, Server, Brain } from 'lucide-react';
 
 const Specifications: React.FC = () => {
   const specs = [
@@ -29,7 +29,7 @@ const Specifications: React.FC = () => {
       items: [
         { label: "Pickleball Courts", value: "8 Courts" },
         { label: "Real Tennis Court", value: "1 Historic Court" },
-        { label: "Viewing Decks", value: "360° Glass Walkways" }
+        { label: "Viewing decks", value: "Not in origin spec" }
       ]
     },
     {
@@ -40,6 +40,16 @@ const Specifications: React.FC = () => {
         { label: "Sections", value: "Unspecified (not 4×500 unless specced)" },
         { label: "Technology", value: "Hydroponics — PLANNED" },
         { label: "Patch transport", value: "PLANNED" }
+      ]
+    },
+    {
+      category: "APEX campus (VISION)",
+      icon: <Brain className="w-6 h-6 text-red-400" />,
+      items: [
+        { label: "Labs", value: "Biometric, cognitive, movement, research, nutrition" },
+        { label: "Recovery", value: "Physiotherapy + recovery suite" },
+        { label: "Training", value: "Gym, pool, clubhouse — all sports" },
+        { label: "Dimensions", value: "Inferred 30×30 m cells — not origin" }
       ]
     },
     {
@@ -57,9 +67,9 @@ const Specifications: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="mb-16 text-center">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">Facility <span className="text-tennis-yellow">Blueprints</span></h2>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">Campus <span className="text-tennis-yellow">Blueprints</span></h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Naperville origin: four floors of sport with a grass lab on top. Numbers below match the spec; inferred theater is labeled.
+                Vision: peak performance from every angle. SPEC numbers are Naperville racquet. APEX rooms are named VISION — not origin measurements.
             </p>
         </div>
 

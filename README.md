@@ -1,38 +1,44 @@
-# LawnTech Dynamics — indoor grass-court pretotype
+# ACE — peak-performance campus pretotype
 
 <div align="center">
 
-**A public digital-twin pretotype of an indoor racquet facility with a third-floor grass lab**
+**A public pretotype of a peak-performance campus for human flourishing — scientists, athletes, labs, physiotherapy, all sports.**
 
-[View Live Demo](https://kvnloo.github.io/ace/) • [Dev Preview](https://kvnloo.github.io/ace/dev/) • [Documentation](.github/DEPLOYMENT.md)
+[Live Pages (`main`)](https://kvnloo.github.io/ace/) • [Dev Preview](https://kvnloo.github.io/ace/dev/) • [Deployment](.github/DEPLOYMENT.md)
 
-This Pages site is a **pretotype**, not a running BMS. LIVE / MOCK / PLANNED stamps in the UI say which claims are spec vs. theater. GitHub Pages deploys **`main`** and **`dev` only** — there is no nightly or PR preview. Honesty work lives on feature branches until merge.
+This Pages site is a **pretotype**, not a running BMS or live twin. Stamps in the UI say which claims are **VISION**, **SPEC**, **PLANNED**, or **MOCK**. GitHub Pages deploys **`main`** and **`dev` only** — there is no nightly or PR preview. Honesty work lives on feature branches until merge.
 
 </div>
 
 ---
 
-## Project Overview
+## Vision vs spec
 
-LawnTech Dynamics is a four-floor racquet-sports facility concept: indoor courts plus an on-site grass lab so the playing surface can be grown and swapped instead of painted green. The origin spec is **Naperville, Illinois**. The Invest page may mention other cities as a **pitch** — that is MOCK, not the spec.
+The vision (from `origin/enhance/3D`, APEX) is a **peak-performance facility for all things pursuing human flourishing**: scientists, athletes, labs, physiotherapy, gym, pool, clubhouse, all sports — not tennis-only.
 
-### Core idea
-- **Grass as a crop**: third-floor lab grows modular turf for the courts below
-- **Indoor facility that prepares itself**: climate, surface, and access as one loop (pretotype)
-- **Court is the hero**: the 3D demo is a spatial sketch, not a photoreal twin. If WebGL cannot paint, the map falls back to a CSS court still.
-- **Measure, don't guess**: turf quality and energy are the honest metrics — not "AI-powered" as a product
+The Naperville racquet building is the origin **SPEC** nested inside that vision. This repo compiles both into Pascal: LawnTech (SPEC) plus an APEX wing (VISION named rooms, inferred cells).
+
+| Stamp | What |
+|---|---|
+| **VISION** | APEX labs (biometric, cognitive, movement, research, nutrition), recovery / physio, gym, pool, clubhouse. Not origin measurements. |
+| **SPEC** | 24 tennis / 16 badminton / 4 squash / 16 table tennis / 8 pickleball / 1 real tennis. Grass lab: 500 m² per section, **section count unspecified**. |
+| **PLANNED / MOCK** | Live BMS, drones, 60 FPS, Gemini as a product, 6/6/6/6 split, four farm racks, 60-minute turf-swap receipt. |
+| **This repo runs** | Pascal Viewer + CSS fallback. Not a live facility. Homebase owns the live GPU loop. |
+
+Do not copy `enhance/3D` Three.js lab theater into this tree as the renderer. Mine the program; compile through Pascal.
 
 ---
 
-## 🏗️ Facility Layout
+## 🏗️ Naperville origin layout (SPEC)
 
 ### **Ground Floor** - Tennis Complex
-24 premium tennis courts featuring:
+24 tennis courts featuring:
 - Grass courts (replaceable modular turf)
 - Hard courts
 - Clay courts
 - Wood courts
-- Pro shop and premium locker rooms
+- Pro shop and locker rooms
+- Surface split is **unspecified** (not 6/6/6/6 unless the spec says so)
 
 ### **First Floor** - Mezzanine Sports
 - 16 badminton courts
@@ -55,16 +61,28 @@ Origin spec: **500 m² per section**. Section count is not in the origin (an ear
 
 ### Pages demo (this tree)
 - **React 19.2** + TypeScript
-- **Pascal Viewer** (`@pascal-app/core` / `viewer` / `nodes` 1.0.0) for the facility sketch — Site → Building → Levels 0–3
+- **Pascal Viewer** (`@pascal-app/core` / `viewer` / `nodes` 1.0.0) — Site → LawnTech levels 0–3 + APEX VISION wing
 - Envelope **140×120 m** and **10 m** storeys are **inferred**, not origin measurements
+- APEX rooms are **nine VISION zones** on inferred 30×30 m cells
 - Grass lab is **one PLANNED zone** (origin: 500 m²/section; section count unspecified)
-- CSS court fallback when WebGL cannot paint
+- CSS campus / court fallback when WebGL cannot paint
 - **Framer Motion**, **Vite**
-- **Gemini** chat is a **stub** on GitHub Pages (no live coaching product)
+- **Gemini** chat is a **stub** on GitHub Pages (not a concierge product)
 - Pascal **editor** is not shipped; `@pascal-app/editor` is a read-only shim so node definitions can load
+
+### Proof
+
+```bash
+npm test          # facility/check-scene.ts
+npm run build
+```
+
+Mutation is **n/a** — Stryker is not adopted. Do not invent a score.
 
 ### Not in this tree
 OpenTwins, Eclipse Ditto, Eclipse Hono, Jenkins, Unity-in-Docker, and a live BMS are **origin research language**, not wired dependencies. Do not treat README history as a running stack.
+
+Agents: read [`AGENTS.md`](AGENTS.md) and [`ROADMAP.md`](ROADMAP.md). Workers never merge `main` or `dev`.
 
 ---
 
@@ -72,7 +90,7 @@ OpenTwins, Eclipse Ditto, Eclipse Hono, Jenkins, Unity-in-Docker, and a live BMS
 
 ### Prerequisites
 - Node.js (v20 or higher)
-- npm or yarn
+- npm
 - Git
 
 ### Local Setup
@@ -88,7 +106,7 @@ OpenTwins, Eclipse Ditto, Eclipse Hono, Jenkins, Unity-in-Docker, and a live BMS
    npm install
    ```
 
-3. **Configure environment**
+3. **Configure environment** (optional; chat is a stub without it)
    Create a `.env.local` file:
    ```env
    GEMINI_API_KEY=your_api_key_here
@@ -99,11 +117,10 @@ OpenTwins, Eclipse Ditto, Eclipse Hono, Jenkins, Unity-in-Docker, and a live BMS
    npm run dev
    ```
 
-   Open [http://localhost:3000](http://localhost:3000) in your browser
-
 ### Build for Production
 
 ```bash
+npm test
 npm run build
 npm run preview
 ```
@@ -117,6 +134,8 @@ This project uses GitHub Actions for automated deployment to GitHub Pages:
 - **Production**: Automatically deploys from `main` branch to `/`
 - **Development**: Automatically deploys from `dev` branch to `/dev/`
 
+Rolling git branches (`preview`, `nightly`) from the Verified OSS Loop are **not** Pages slots. Do not invent `/preview/<slug>/` without extending `.github/workflows/deploy.yml`.
+
 See [Deployment Guide](.github/DEPLOYMENT.md) for detailed setup instructions.
 
 ### Deployment URLs
@@ -125,80 +144,13 @@ See [Deployment Guide](.github/DEPLOYMENT.md) for detailed setup instructions.
 
 ---
 
-## Features
-
-### Interactive 3D facility sketch
-A Three.js sketch of the four floors. Court is the hero. HUD cards are MOCK overlays — they are not a live sensor bind.
-
-### Chat (stub)
-The Gemini box answers from prompt text when a key is present. On Pages it is a stub. Not a coaching product.
-
-### Specs vs theater
-Origin court counts (24 tennis + mezzanine + pickleball + real tennis) are in the spec. **60 FPS / 225 km/h / 1900 N** are README theater from an earlier draft — not measured on this demo. Vertical farm and robot swap are **PLANNED**.
-
----
-
 ## Spec lineage
 
-The facility numbers come from the private racket-sports origin spec (Naperville, four floors). This public repo is a later, thinner pretotype. Voyager/Eureka-style curriculum language is inspiration for a future ops loop, not a second scheduler in this tree.
+- **Vision program**: `origin/enhance/3D` APEX campus (labs, physio, gym, pool, clubhouse, all sports)
+- **Origin numbers**: private racket-sports spec (Naperville, four floors)
+- Voyager/Eureka-style curriculum language is inspiration for a future ops loop, not a second scheduler in this tree
 
 A pretty 3D scene is a **projection**, not proof of autonomy.
-
----
-
-## 👥 Expert Roles
-
-| Role | Responsibility |
-|------|----------------|
-| **Architect** | Facility layout and safety compliance |
-| **Digital Twin Modeler** | Virtual replica and simulation systems |
-| **Automation Engineer** | Robotics and autonomous systems integration |
-| **Sports Surface Specialist** | Court maintenance and quality assurance |
-| **Building Systems Engineer** | BMS and energy optimization |
-
----
-
-## 🎯 Strategic Goals
-
-1. **Autonomous Excellence**: Achieve 24/7 operation with minimal human intervention
-2. **Sustainability**: Net-zero energy consumption through solar and smart systems
-3. **User Experience**: Seamless booking, access, and service delivery
-4. **Performance**: Industry-leading analytics and injury prevention
-5. **Community**: Local partnerships and educational collaborations
-
----
-
-## 🤝 Partnerships & Funding
-
-### Strategic Partnerships
-- Local sports organizations for cost sharing
-- Educational institutions for research collaboration
-- Government agencies for sustainability grants
-
-### Investment
-The Invest form does not submit (MOCK). Origin location is Naperville. Other cities on that page are a pitch, not a second spec.
-
----
-
-## 📊 Technical Specifications
-
-### Data Collection
-- Multi-sensor array for court conditions
-- Environmental monitoring (temperature, humidity, air quality)
-- Player movement tracking and analysis
-- Real-time video analytics
-
-### Simulation & Analysis
-- Energy usage forecasting
-- Maintenance schedule optimization
-- Player traffic pattern analysis
-- Resource allocation modeling
-
-### System Integration
-- Centralized control via BMS
-- Real-time IoT device communication
-- Cloud-based analytics platform
-- Mobile app for member access
 
 ---
 
@@ -206,44 +158,20 @@ The Invest form does not submit (MOCK). Origin location is Naperville. Other cit
 
 ```
 ace/
-├── .github/
-│   ├── workflows/        # CI/CD pipelines
-│   └── DEPLOYMENT.md     # Deployment documentation
-├── components/           # React components
-│   ├── NavBar.tsx
-│   ├── ThreeScene.tsx
-│   ├── AIChat.tsx
-│   └── Specifications.tsx
-├── services/            # Service layer
-├── App.tsx              # Main application
-├── index.tsx            # Entry point
-├── types.ts             # TypeScript definitions
-└── vite.config.ts       # Build configuration
+├── AGENTS.md                 # Verified OSS Loop + ACE ownership
+├── ROADMAP.md              # First untracked item is what autodevelop mints
+├── facility/              # Pascal program + scene compiler
+│   ├── program.ts
+│   ├── vision.ts           # APEX VISION rooms
+│   ├── generateScene.ts
+│   └── check-scene.ts
+├── components/
+│   ├── PascalFacility.tsx
+│   ├── facility/SketchMap.tsx
+│   └── ThreeScene.tsx     # unused legacy — do not remount
+├── .github/workflows/      # Pages deploy + validate + loop receipts
+└── App.tsx
 ```
-
----
-
-## 🔧 Configuration
-
-### Base Path Configuration
-The project supports dynamic base paths for multi-environment deployment:
-
-```typescript
-// vite.config.ts
-const base = process.env.VITE_BASE_PATH || '/';
-```
-
-Set via environment variable during build:
-```bash
-VITE_BASE_PATH=/dev/ npm run build
-```
-
----
-
-## 📖 Documentation
-
-- [Deployment Guide](.github/DEPLOYMENT.md) - GitHub Pages setup and troubleshooting
-- [AI Studio Link](https://ai.studio/apps/drive/1Fc7kvKrC_eN-FRp7CerebmQONPqJW6z2) - Original project workspace
 
 ---
 
@@ -256,15 +184,6 @@ This project is licensed under the terms specified in [LICENSE](LICENSE).
 ## Acknowledgments
 
 - Origin facility spec (private digital-twin racket-sports project)
-- React Three Fiber / three.js for the public sketch
+- APEX campus program from the `enhance/3D` branch
+- Pascal Viewer for the public sketch
 - Gemini is optional and stubbed on Pages
-
----
-
-<div align="center">
-
-**Built with ❤️ by the LawnTech Dynamics team**
-
-[Report Bug](https://github.com/kvnloo/ace/issues) • [Request Feature](https://github.com/kvnloo/ace/issues) • [Contact Us](https://kvnloo.github.io/ace/)
-
-</div>

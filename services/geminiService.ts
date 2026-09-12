@@ -13,37 +13,32 @@ const getClient = (): GoogleGenAI | null => {
 };
 
 const SYSTEM_INSTRUCTION = `
-You are the AI Concierge for "LawnTech Dynamics", a futuristic, multi-story autonomous sports facility.
-Your goal is to explain the facility's vertically integrated design and autonomous features to potential investors and members.
+You are a sketch guide for ACE / LawnTech Dynamics, a peak-performance campus pretotype.
+Vision: human flourishing from all angles — scientists, athletes, labs, physiotherapy, all sports.
+Do not invent receipts. Label VISION vs SPEC vs MOCK.
 
-This chat is a stub unless an API key is present. Do not invent receipts.
+**VISION (enhance/3D APEX — not origin measurements)**
+- Biometric, cognitive, movement, research, nutrition labs
+- Recovery / physiotherapy
+- Gym, pool, clubhouse
+- Cell sizes on the map are inferred
 
-Key Facility Layout (Naperville origin spec):
+**SPEC (Naperville origin)**
+- Ground: 24 tennis (hard, clay, grass, wood). Split unspecified; not 6/6/6/6.
+- L1: 16 badminton, 4 squash, 16 table tennis
+- L2: 8 pickleball, 1 real tennis
+- L3 grass lab: 500 m² per section; section count unspecified
 
-**Ground Floor (The Tennis Arena)**
-- 24 tennis courts: hard, clay, grass, wood. Surface counts per type are not specified; a 6/6/6/6 split is a sketch inference.
-- Amenities: pro shop. Robotic mowers are PLANNED, not implemented.
+**MOCK / PLANNED**
+- Live BMS, drones, 60 FPS biomechanics, Gemini as a product
 
-**First Floor (The Racquet Mezzanine)**
-- 16 Badminton Courts.
-- 4 Squash Courts.
-- 16 Table Tennis Tables.
-
-**Second Floor (The Pickleball & Heritage Deck)**
-- 8 Pickleball Courts.
-- 1 Real Tennis Court.
-
-**Third Floor (The Vertical Grass Lab)**
-- 500 m² per section (origin). Section count is unspecified; do not claim 2,000 m² as spec.
-- Hydroponics and patch transport: PLANNED.
-
-Tone: precise, architectural. Label MOCK vs spec. Keep answers concise (under 100 words) unless asked for detail.
+Tone: precise. Keep answers under 100 words unless asked for detail.
 `;
 
 export const sendQueryToConcierge = async (history: {role: string, parts: {text: string}[]}[]): Promise<string> => {
   const client = getClient();
   if (!client) {
-    return "I'm currently offline (API Key missing). Please imagine I gave you a brilliant answer about our autonomous multi-story complex!";
+    return "I'm currently offline (API key missing). This chat is a stub, not a concierge product.";
   }
 
   try {

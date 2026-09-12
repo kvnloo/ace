@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check:facility": "npx --yes esbuild facility/check-scene.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-facility.mjs && node /tmp/ace-check-facility.mjs"
+    "test": "npm run check:facility",
+    "check:facility": "esbuild facility/check-scene.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-facility.mjs && node /tmp/ace-check-facility.mjs"
   },
   "dependencies": {
     "@pascal-app/core": "1.0.0",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "esbuild": "^0.25.9",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }
