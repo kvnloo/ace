@@ -214,22 +214,31 @@ export const SketchFallback: React.FC<{
         setAnnotationMode={setAnnotationMode}
       />
       <CourtDiagram variant={sketch.variant} />
-      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-6 text-center">
-        <h2 className="text-3xl md:text-5xl font-bold text-white drop-shadow-lg">{sketch.title}</h2>
-        <p className="text-white/70 mt-3 max-w-lg">{sketch.note}</p>
-        <span className="mt-6 px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-tennis-yellow/30 text-sm font-mono text-tennis-yellow">
-          CSS SKETCH · {reason}
-        </span>
-        {annotationMode === 'MEASUREMENTS' && (
-          <span className="mt-3 text-tennis-yellow font-mono text-xs tracking-widest">
-            {sketch.variant === 'farm'
-              ? '500 m² / section (origin)'
-              : sketch.variant === 'apex' || sketch.variant === 'campus'
-                ? 'APEX cells inferred · not origin'
-                : 'envelope 140×120 m · inferred'}
+      {sketch.variant === 'apex' || sketch.variant === 'campus' ? (
+        <div className="absolute top-28 right-6 pointer-events-none text-right">
+          <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-tennis-yellow/30 text-sm font-mono text-tennis-yellow">
+            CSS SKETCH · {reason}
           </span>
-        )}
-      </div>
+          {annotationMode === 'MEASUREMENTS' && (
+            <div className="mt-2 text-tennis-yellow font-mono text-xs tracking-widest">
+              APEX cells inferred · not origin
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-6 text-center">
+          <h2 className="text-3xl md:text-5xl font-bold text-white drop-shadow-lg">{sketch.title}</h2>
+          <p className="text-white/70 mt-3 max-w-lg">{sketch.note}</p>
+          <span className="mt-4 px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-tennis-yellow/30 text-sm font-mono text-tennis-yellow">
+            CSS SKETCH · {reason}
+          </span>
+          {annotationMode === 'MEASUREMENTS' && (
+            <span className="mt-3 text-tennis-yellow font-mono text-xs tracking-widest">
+              {sketch.variant === 'farm' ? '500 m² / section (origin)' : 'envelope 140×120 m · inferred'}
+            </span>
+          )}
+        </div>
+      )}
       {visibleFeatures.length > 0 && (
         <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-wrap justify-center gap-2 max-w-3xl px-4 z-10">
           {visibleFeatures.map((f) => (
