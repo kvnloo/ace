@@ -1,24 +1,26 @@
-# LawnTech Dynamics - Autonomous Indoor Grass Court Facility
+# LawnTech Dynamics — indoor grass-court pretotype
 
 <div align="center">
 
-**The world's first fully autonomous indoor grass court tennis facility**
+**A public digital-twin pretotype of an indoor racquet facility with a third-floor grass lab**
 
 [View Live Demo](https://kvnloo.github.io/ace/) • [Dev Preview](https://kvnloo.github.io/ace/dev/) • [Documentation](.github/DEPLOYMENT.md)
+
+This Pages site is a **pretotype**, not a running BMS. LIVE / MOCK / PLANNED stamps in the UI say which claims are spec vs. theater.
 
 </div>
 
 ---
 
-## 🎯 Project Overview
+## Project Overview
 
-LawnTech Dynamics is an innovative multi-floor racquet sports facility concept combining autonomous operations, sustainable grass cultivation, and AI-powered performance analytics. Located in Naperville, Illinois, this facility aims to revolutionize indoor sports through cutting-edge technology and sustainable practices.
+LawnTech Dynamics is a four-floor racquet-sports facility concept: indoor courts plus an on-site grass lab so the playing surface can be grown and swapped instead of painted green. The origin spec is **Naperville, Illinois**. The Invest page may mention other cities as a **pitch** — that is MOCK, not the spec.
 
-### Core Innovation
-- **🌱 Autonomous Grass Management**: Vertical farming system that grows and swaps court surfaces robotically
-- **🤖 AI-Powered Operations**: Self-managing facility with minimal human oversight
-- **📊 Performance Analytics**: Real-time biomechanics tracking and injury prevention
-- **♻️ Sustainable Design**: Solar-powered with advanced resource optimization
+### Core idea
+- **Grass as a crop**: third-floor lab grows modular turf for the courts below
+- **Indoor facility that prepares itself**: climate, surface, and access as one loop (pretotype)
+- **Court is the hero**: the 3D demo is a spatial sketch, not a photoreal twin
+- **Measure, don't guess**: turf quality and energy are the honest metrics — not "AI-powered" as a product
 
 ---
 
@@ -42,32 +44,23 @@ LawnTech Dynamics is an innovative multi-floor racquet sports facility concept c
 - 1 historic real tennis court
 
 ### **Third Floor** - Vertical Grass Lab
-2,000 m² autonomous farming facility with:
-- Hydroponics and climate control
-- Robotic patch transport system
-- 60-minute court surface replacement capability
+Origin spec: **500 m² per section**. Section count is not in the origin (an earlier public page inferred 4 × 500 = 2,000 m²).
+- Hydroponics and climate control (**PLANNED**)
+- Patch transport (**PLANNED** — not a live robot fleet)
+- Fast turf swap is a pretotype goal, not a measured receipt
 
 ---
 
-## 🚀 Technology Stack
+## What this repo actually runs
 
-### Frontend
-- **React 19** with TypeScript
-- **Framer Motion** for animations
-- **Three.js** for 3D facility visualization
-- **Tailwind CSS** for styling
-- **Vite** for build tooling
+### Pages demo (this tree)
+- **React 19** + TypeScript
+- **React Three Fiber** + **three** for the facility sketch
+- **Framer Motion**, **Vite**
+- **Gemini** chat is a **stub** on GitHub Pages (no live coaching product)
 
-### AI & Analytics
-- **Google Gemini AI** for chat interface
-- Computer vision for biomechanics analysis
-- Predictive maintenance algorithms
-
-### Autonomous Systems
-- Building Management System (BMS)
-- Robotic mowers and maintenance drones
-- Biometric access control
-- Smart HVAC optimization
+### Not in this tree
+OpenTwins, Eclipse Ditto, Eclipse Hono, Jenkins, Unity-in-Docker, and a live BMS are **origin research language**, not wired dependencies. Do not treat README history as a running stack.
 
 ---
 
@@ -128,57 +121,24 @@ See [Deployment Guide](.github/DEPLOYMENT.md) for detailed setup instructions.
 
 ---
 
-## 🎨 Features
+## Features
 
-### Interactive 3D Facility Tour
-Explore the entire facility complex with:
-- Rotatable 3D visualization
-- Interactive hotspots for each area
-- Detailed feature information cards
+### Interactive 3D facility sketch
+A Three.js sketch of the four floors. Court is the hero. HUD cards are MOCK overlays — they are not a live sensor bind.
 
-### AI-Powered Chat Assistant
-Get instant answers about:
-- Facility features and amenities
-- Membership options
-- Technical specifications
-- Court booking
+### Chat (stub)
+The Gemini box answers from prompt text when a key is present. On Pages it is a stub. Not a coaching product.
 
-### Real-Time Performance Analytics
-- Biomechanics tracking at 60 FPS
-- Serve speed analysis (225 km/h capability)
-- Ground force measurement (1900 N torque)
-- Pronation/supination tracking
-
-### Autonomous Operations Dashboard
-Monitor facility systems:
-- Smart HVAC climate control
-- Robotic maintenance status
-- Court surface quality metrics
-- Energy consumption analytics
+### Specs vs theater
+Origin court counts (24 tennis + mezzanine + pickleball + real tennis) are in the spec. **60 FPS / 225 km/h / 1900 N** are README theater from an earlier draft — not measured on this demo. Vertical farm and robot swap are **PLANNED**.
 
 ---
 
-## 🏛️ Project Architecture
+## Spec lineage
 
-### Digital Twin Framework
-Built on **OpenTwins** technology:
-- **Eclipse Ditto**: Digital twin definitions
-- **Eclipse Hono**: IoT device integration
-- Real-time monitoring and control
-- Predictive maintenance algorithms
+The facility numbers come from the private racket-sports origin spec (Naperville, four floors). This public repo is a later, thinner pretotype. Voyager/Eureka-style curriculum language is inspiration for a future ops loop, not a second scheduler in this tree.
 
-### Agent-Based Automation
-Inspired by Voyager and Eureka methodologies:
-- **Automatic Curriculum**: Dynamic task progression
-- **Skill Library**: Reusable action patterns
-- **Reward Optimization**: Evolutionary performance tuning
-- **Self-Verification**: Continuous improvement loops
-
-### Feedback-Driven Learning
-- Environment feedback integration
-- Execution error analysis
-- Iterative skill refinement
-- Performance metrics tracking
+A pretty 3D scene is a **projection**, not proof of autonomy.
 
 ---
 
@@ -211,9 +171,8 @@ Inspired by Voyager and Eureka methodologies:
 - Educational institutions for research collaboration
 - Government agencies for sustainability grants
 
-### Investment Opportunities
-Currently raising Series A funding for Austin, Texas pilot facility.
-Contact via the [Invest page](https://kvnloo.github.io/ace/) for more information.
+### Investment
+The Invest form does not submit (MOCK). Origin location is Naperville. Other cities on that page are a pitch, not a second spec.
 
 ---
 
@@ -290,12 +249,11 @@ This project is licensed under the terms specified in [LICENSE](LICENSE).
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- **OpenTwins** for digital twin infrastructure
-- **Eclipse Foundation** for Ditto and Hono frameworks
-- **Google** for Gemini AI integration
-- **Community Contributors** for feedback and support
+- Origin facility spec (private digital-twin racket-sports project)
+- React Three Fiber / three.js for the public sketch
+- Gemini is optional and stubbed on Pages
 
 ---
 

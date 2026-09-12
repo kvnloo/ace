@@ -8,11 +8,9 @@ const Specifications: React.FC = () => {
       category: "Ground Floor: Tennis Arena",
       icon: <Home className="w-6 h-6 text-tennis-yellow" />,
       items: [
-        { label: "Hard Courts (DecoTurf)", value: "6 Courts" },
-        { label: "Clay Courts (Red Clay)", value: "6 Courts" },
-        { label: "Grass Courts (Organic)", value: "6 Courts" },
-        { label: "Wood Courts (Maple)", value: "6 Courts" },
-        { label: "Amenities", value: "Pro Shop & Lockers" }
+        { label: "Tennis courts", value: "24 (hard, clay, grass, wood)" },
+        { label: "Split", value: "Not specified as 6/6/6/6" },
+        { label: "Amenities", value: "Pro shop & lockers" }
       ]
     },
     {
@@ -38,10 +36,10 @@ const Specifications: React.FC = () => {
       category: "Level 3: Vertical Farming",
       icon: <Droplets className="w-6 h-6 text-green-400" />,
       items: [
-        { label: "Farming Area", value: "4 x 500m² Sections" },
-        { label: "Technology", value: "Auto-Hydroponics" },
-        { label: "Lighting", value: "Full Spectrum LED" },
-        { label: "Robot Fleet", value: "Patch Transporters" }
+        { label: "Farming area", value: "500 m² per section (origin)" },
+        { label: "Sections", value: "Unspecified (not 4×500 unless specced)" },
+        { label: "Technology", value: "Hydroponics — PLANNED" },
+        { label: "Patch transport", value: "PLANNED" }
       ]
     },
     {
@@ -61,7 +59,7 @@ const Specifications: React.FC = () => {
         <div className="mb-16 text-center">
             <h2 className="text-4xl md:text-6xl font-bold mb-6">Facility <span className="text-tennis-yellow">Blueprints</span></h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                A four-story vertical integration of sport, agriculture, and technology.
+                Naperville origin: four floors of sport with a grass lab on top. Numbers below match the spec; inferred theater is labeled.
             </p>
         </div>
 
