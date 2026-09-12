@@ -160,6 +160,257 @@ const ControlsOverlay = ({
   );
 };
 
+function probeWebGLPaint(): boolean {
+  if (typeof document === 'undefined') return false;
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = 16;
+    canvas.height = 16;
+    const opts: WebGLContextAttributes = {
+      preserveDrawingBuffer: true,
+      antialias: false,
+    };
+    const gl = (canvas.getContext('webgl2', opts) ||
+      canvas.getContext('webgl', opts) ||
+      canvas.getContext('experimental-webgl', opts)) as WebGLRenderingContext | null;
+    if (!gl) return false;
+    if (typeof gl.isContextLost === 'function' && gl.isContextLost()) return false;
+    gl.viewport(0, 0, 16, 16);
+    gl.clearColor(0.15, 0.55, 0.22, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    const px = new Uint8Array(4);
+    gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
+    const painted = px[0] > 10 || px[1] > 20 || px[2] > 10;
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
+    return painted;
+  } catch {
+    return false;
+  }
+}
+
+class WebGLErrorBoundary extends React.Component<
+  { onFail: () => void; children: React.ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch() {
+    this.props.onFail();
+  }
+  render() {
+    if (this.state.failed) return null;
+    return this.props.children;
+  }
+}
+
+const SKETCH_BY_FLOOR: Record<
+  string,
+  { title: string; note: string; variant: 'tennis' | 'badminton' | 'pickle' | 'farm' | 'campus' }
+> = {
+  ALL: {
+    title: 'Naperville facility',
+    note: '24 tennis · grass lab · CSS sketch',
+    variant: 'campus',
+  },
+  '0': {
+    title: 'Ground: Tennis arena',
+    note: '24 courts · hard / clay / grass / wood',
+    variant: 'tennis',
+  },
+  '1': {
+    title: 'L1: Racquet mezzanine',
+    note: '16 badminton · 4 squash · 16 table tennis',
+    variant: 'badminton',
+  },
+  '2': {
+    title: 'L2: Pickleball & heritage',
+    note: '8 pickleball · 1 real tennis',
+    variant: 'pickle',
+  },
+  '3': {
+    title: 'L3: Vertical grass lab',
+    note: '500 m² per section · section count unspecified',
+    variant: 'farm',
+  },
+};
+
+const CourtDiagram: React.FC<{
+  variant: 'tennis' | 'badminton' | 'pickle' | 'farm' | 'campus';
+}> = ({ variant }) => {
+  if (variant === 'farm') {
+    return (
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1a3d24] via-[#243d28] to-[#0c0d0b]">
+        <div
+          className="absolute inset-0 opacity-50"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(90deg, transparent 0, transparent 18px, rgba(199,237,36,0.12) 18px, rgba(199,237,36,0.12) 20px), repeating-linear-gradient(0deg, transparent 0, transparent 22px, rgba(199,237,36,0.08) 22px, rgba(199,237,36,0.08) 24px)',
+          }}
+        />
+        <div className="absolute inset-[12%] grid grid-cols-2 gap-6">
+          {[0, 1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="rounded-lg border border-tennis-yellow/25 bg-[#1a3d24]/80 flex items-center justify-center"
+            >
+              <span className="text-[10px] font-mono text-tennis-yellow/80 tracking-widest">
+                SECTION · inferred
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  const surface =
+    variant === 'pickle'
+      ? 'bg-[#3d7a3a]'
+      : variant === 'badminton'
+        ? 'bg-[#1f6b4a]'
+        : 'bg-[#3f6b1d]';
+
+  return (
+    <div className="absolute inset-0 bg-gradient-to-br from-[#243528] via-[#1a2a22] to-[#0c0d0b]">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(61,122,58,0.35),_transparent_70%)]" />
+      <div className="absolute inset-0 flex items-center justify-center p-8 md:p-20">
+        <div
+          className={`relative w-full max-w-xl aspect-[10/22] ${surface} rounded-sm shadow-[0_0_80px_rgba(0,0,0,0.45)] border border-white/15`}
+        >
+          <div className="absolute inset-[6%] border-2 border-white/50">
+            <div className="absolute left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-white/80" />
+            <div className="absolute left-[12%] right-[12%] top-[18%] bottom-[18%] border border-white/40">
+              <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/30" />
+              <div className="absolute left-0 right-0 top-1/2 h-px bg-white/40" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SketchFallback: React.FC<{
+  activeFloor: FloorLevel;
+  setActiveFloor: (f: FloorLevel) => void;
+  annotationMode: AnnotationMode;
+  setAnnotationMode: (m: AnnotationMode) => void;
+  selectedId: string | null;
+  onSelect: (feature: FeatureData) => void;
+}> = ({
+  activeFloor,
+  setActiveFloor,
+  annotationMode,
+  setAnnotationMode,
+  selectedId,
+  onSelect,
+}) => {
+  const sketch = SKETCH_BY_FLOOR[String(activeFloor)] ?? SKETCH_BY_FLOOR.ALL;
+  const showLabels = annotationMode === 'LABELS' || annotationMode === 'MEASUREMENTS';
+  const visibleFeatures = FEATURES.filter((f) => {
+    if (!showLabels) return false;
+    if (activeFloor === 'ALL') return true;
+    if (activeFloor === 0) return f.id.includes('ground');
+    if (activeFloor === 1) return f.id.includes('level1');
+    if (activeFloor === 2) return f.id.includes('level2');
+    if (activeFloor === 3) return f.id.includes('level3');
+    return true;
+  });
+
+  return (
+    <div className="w-full h-full absolute inset-0 bg-[#0c0d0b]">
+      <ControlsOverlay
+        activeFloor={activeFloor}
+        setActiveFloor={setActiveFloor}
+        annotationMode={annotationMode}
+        setAnnotationMode={setAnnotationMode}
+      />
+      <CourtDiagram variant={sketch.variant} />
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-6 text-center">
+        <h2 className="text-3xl md:text-5xl font-bold text-white drop-shadow-lg">{sketch.title}</h2>
+        <p className="text-white/70 mt-3 max-w-lg">{sketch.note}</p>
+        <span className="mt-6 px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-tennis-yellow/30 text-sm font-mono text-tennis-yellow">
+          CSS SKETCH · WebGL did not paint
+        </span>
+        {annotationMode === 'MEASUREMENTS' && (
+          <span className="mt-3 text-tennis-yellow font-mono text-xs tracking-widest">
+            {sketch.variant === 'farm' ? '500 m² / section (origin)' : '10m × 22m · typical court'}
+          </span>
+        )}
+      </div>
+      {visibleFeatures.length > 0 && (
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-wrap justify-center gap-2 max-w-3xl px-4 z-10">
+          {visibleFeatures.map((f) => (
+            <button
+              key={f.id}
+              onClick={() => onSelect(f)}
+              className={`px-3 py-2 rounded-lg text-xs font-bold border ${
+                selectedId === f.id
+                  ? 'bg-tennis-yellow text-black border-tennis-yellow'
+                  : 'bg-slate-900/80 text-white border-white/20'
+              }`}
+            >
+              {f.icon} {f.title}
+            </button>
+          ))}
+        </div>
+      )}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/45 text-[10px] pointer-events-none select-none font-mono text-center tracking-widest uppercase">
+        Naperville pretotype · architectural sketch
+      </div>
+    </div>
+  );
+};
+
+const PaintGuard: React.FC<{ onPainted: () => void; onBlank: () => void }> = ({
+  onPainted,
+  onBlank,
+}) => {
+  const { gl } = useThree();
+  const frames = useRef(0);
+  const settled = useRef(false);
+
+  useFrame(() => {
+    if (settled.current) return;
+    frames.current += 1;
+    if (frames.current < 24) return;
+    settled.current = true;
+    try {
+      const ctx = gl.getContext();
+      const w = ctx.drawingBufferWidth;
+      const h = ctx.drawingBufferHeight;
+      if (w < 2 || h < 2) {
+        onBlank();
+        return;
+      }
+      const px = new Uint8Array(4);
+      const samples: Array<[number, number]> = [
+        [0.5, 0.5],
+        [0.4, 0.45],
+        [0.6, 0.45],
+        [0.5, 0.38],
+        [0.5, 0.6],
+      ];
+      let lit = false;
+      for (const [u, v] of samples) {
+        ctx.readPixels(Math.floor(w * u), Math.floor(h * v), 1, 1, ctx.RGBA, ctx.UNSIGNED_BYTE, px);
+        if (px[0] + px[1] + px[2] > 18) {
+          lit = true;
+          break;
+        }
+      }
+      if (lit) onPainted();
+      else onBlank();
+    } catch {
+      onBlank();
+    }
+  });
+
+  return null;
+};
+
 // --- 3D Components ---
 
 interface MarkerProps {
@@ -801,8 +1052,16 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeFloor, setActiveFloor] = useState<FloorLevel>('ALL');
   const [annotationMode, setAnnotationMode] = useState<AnnotationMode>('LABELS');
+  const [attempt3d, setAttempt3d] = useState(() => probeWebGLPaint());
+  const [webglLive, setWebglLive] = useState(false);
   const controlsRef = useRef<any>(null);
   const isAnimatingRef = useRef(false);
+
+  useEffect(() => {
+    if (!attempt3d || webglLive) return;
+    const timer = window.setTimeout(() => setAttempt3d(false), 2500);
+    return () => window.clearTimeout(timer);
+  }, [attempt3d, webglLive]);
 
   const handleSelect = (feature: FeatureData) => {
     setSelectedId(feature.id);
@@ -817,21 +1076,57 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
   const showLabels = annotationMode === 'LABELS';
   const showMeasurements = annotationMode === 'MEASUREMENTS';
 
+  const fallback = (
+    <SketchFallback
+      activeFloor={activeFloor}
+      setActiveFloor={setActiveFloor}
+      annotationMode={annotationMode}
+      setAnnotationMode={setAnnotationMode}
+      selectedId={selectedId}
+      onSelect={handleSelect}
+    />
+  );
+
   return (
     <div className="w-full h-full absolute inset-0">
-      <ControlsOverlay 
-        activeFloor={activeFloor} 
-        setActiveFloor={setActiveFloor} 
-        annotationMode={annotationMode}
-        setAnnotationMode={setAnnotationMode}
-      />
+      {!webglLive && fallback}
 
+      {attempt3d && (
+      <WebGLErrorBoundary
+        onFail={() => {
+          setAttempt3d(false);
+          setWebglLive(false);
+        }}
+      >
+      <div className={`absolute inset-0 ${webglLive ? 'z-[1]' : 'z-0 opacity-0 pointer-events-none'}`}>
       <Canvas
         shadows
         dpr={[1, 1.75]}
         camera={{ position: [180, 100, 180], fov: 35 }}
-        gl={{ toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05, antialias: true }}
+        gl={{
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.05,
+          antialias: true,
+          preserveDrawingBuffer: true,
+          alpha: true,
+        }}
+        onCreated={({ gl }) => {
+          gl.setClearColor(0x000000, 0);
+          gl.domElement.addEventListener(
+            'webglcontextlost',
+            (event) => {
+              event.preventDefault();
+              setAttempt3d(false);
+              setWebglLive(false);
+            },
+            { once: true }
+          );
+        }}
       >
+        <PaintGuard
+          onPainted={() => setWebglLive(true)}
+          onBlank={() => setAttempt3d(false)}
+        />
         <CameraRig activeFloor={activeFloor} controlsRef={controlsRef} isAnimatingRef={isAnimatingRef} />
         <PerspectiveCamera makeDefault fov={40} />
         <hemisphereLight args={['#c9dce8', '#3f4a32', 0.42]} />
@@ -890,10 +1185,23 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
           onStart={() => { isAnimatingRef.current = false; }}
         />
       </Canvas>
-      
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/45 text-[10px] pointer-events-none select-none font-mono text-center tracking-widest uppercase">
-        Naperville pretotype · architectural sketch
       </div>
+      </WebGLErrorBoundary>
+      )}
+
+      {webglLive && (
+        <>
+          <ControlsOverlay
+            activeFloor={activeFloor}
+            setActiveFloor={setActiveFloor}
+            annotationMode={annotationMode}
+            setAnnotationMode={setAnnotationMode}
+          />
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/45 text-[10px] pointer-events-none select-none font-mono text-center tracking-widest uppercase">
+            Naperville pretotype · architectural sketch
+          </div>
+        </>
+      )}
     </div>
   );
 };

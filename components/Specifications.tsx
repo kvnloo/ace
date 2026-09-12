@@ -43,13 +43,13 @@ const Specifications: React.FC = () => {
       ]
     },
     {
-      category: "Autonomous Systems",
-      icon: <Server className="w-6 h-6 text-red-400" />,
+      category: "Ops overlay (not live)",
+      icon: <Server className="w-6 h-6 text-tennis-yellow" />,
       items: [
-        { label: "Access", value: "Biometric / Mobile App" },
-        { label: "Monitoring", value: "Drone & Lidar Fleet" },
-        { label: "Energy", value: "Solar + Smart BMS" },
-        { label: "Irrigation", value: "AI Predictive Water" }
+        { label: "Access", value: "PLANNED — app / biometric language" },
+        { label: "Monitoring", value: "MOCK — drone / lidar overlay" },
+        { label: "Energy", value: "PLANNED — solar + BMS language" },
+        { label: "Irrigation", value: "PLANNED" }
       ]
     }
   ];

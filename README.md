@@ -19,7 +19,7 @@ LawnTech Dynamics is a four-floor racquet-sports facility concept: indoor courts
 ### Core idea
 - **Grass as a crop**: third-floor lab grows modular turf for the courts below
 - **Indoor facility that prepares itself**: climate, surface, and access as one loop (pretotype)
-- **Court is the hero**: the 3D demo is a spatial sketch, not a photoreal twin
+- **Court is the hero**: the 3D demo is a spatial sketch, not a photoreal twin. If WebGL cannot paint, the map falls back to a CSS court still.
 - **Measure, don't guess**: turf quality and energy are the honest metrics — not "AI-powered" as a product
 
 ---

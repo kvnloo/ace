@@ -278,60 +278,62 @@ const App: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* 3. Autonomous Operations */}
+                  {/* 3. Ops overlay — PLANNED, not a live BMS */}
                   <div className="flex flex-col md:flex-row items-center gap-12">
                     <div className="flex-1 space-y-6">
-                       <div className="w-16 h-16 rounded-2xl bg-purple-900/30 flex items-center justify-center text-purple-400">
+                       <div className="w-16 h-16 rounded-2xl bg-slate-800/80 flex items-center justify-center text-tennis-yellow">
                         <Cpu className="w-8 h-8" />
                       </div>
-                      <h3 className="text-3xl font-bold">Autonomous Operations</h3>
+                      <h3 className="text-3xl font-bold">Ops overlay</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        The facility runs itself. A centralized Building Management System (BMS) optimizes HVAC and lighting using solar power.
-                        Robotic mowers maintain the courts while overhead drones constantly analyze surface quality. 
-                        Entry is seamless with biometric scanning, removing the need for keys or cards.
+                        BMS, drones, and biometric doors are <span className="text-tennis-yellow font-mono text-sm">PLANNED</span> theater on this pretotype. This Pages site does not run a facility. The court is the product; ops chrome stays thin.
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
-                            <Wind className="w-5 h-5 text-purple-400" />
+                            <Wind className="w-5 h-5 text-tennis-yellow" />
                             <div>
-                                <h4 className="font-bold text-white">Smart HVAC</h4>
-                                <p className="text-xs text-gray-400">AI Climate Control</p>
+                                <h4 className="font-bold text-white">Climate loop</h4>
+                                <p className="text-xs text-gray-400">PLANNED — solar + HVAC language</p>
                             </div>
                         </div>
                          <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
-                            <ShieldCheck className="w-5 h-5 text-purple-400" />
+                            <ShieldCheck className="w-5 h-5 text-tennis-yellow" />
                             <div>
-                                <h4 className="font-bold text-white">Biometric Entry</h4>
-                                <p className="text-xs text-gray-400">Secure & Seamless</p>
+                                <h4 className="font-bold text-white">Access overlay</h4>
+                                <p className="text-xs text-gray-400">MOCK — not a wired door stack</p>
                             </div>
                         </div>
                       </div>
                     </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=2006&auto=format&fit=crop" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" alt="Autonomous Tech" />
+                    <div className="flex-1 h-[400px] rounded-3xl overflow-hidden relative group border border-white/10 bg-gradient-to-br from-[#1e293b] via-[#0f172a] to-[#0c0d0b]">
+                       <div className="absolute inset-[14%] border border-dashed border-white/15 rounded-xl" />
+                       <div className="absolute inset-0 flex items-center justify-center">
+                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-white/80">PLANNED · OPS OVERLAY</span>
+                       </div>
                     </div>
                   </div>
 
-                   {/* 4. Member Experience */}
+                   {/* 4. Pro shop — origin; recovery chrome is MOCK */}
                   <div className="flex flex-col md:flex-row-reverse items-center gap-12">
                     <div className="flex-1 space-y-6">
                        <div className="w-16 h-16 rounded-2xl bg-orange-900/30 flex items-center justify-center text-orange-400">
                         <ShoppingBag className="w-8 h-8" />
                       </div>
-                      <h3 className="text-3xl font-bold">Member Experience</h3>
+                      <h3 className="text-3xl font-bold">Pro shop</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        We prioritize comfort and recovery. Our Pro Shop is stocked with the latest gear. 
-                        Locker rooms and waiting areas are managed by smart sensors to ensure cleanliness and supply availability.
-                        Automated emergency systems monitor the entire facility to instantly alert services if an incident occurs.
+                        Origin spec includes a ground-floor pro shop and lockers. Sensor-managed bathrooms and automated emergency dispatch are <span className="text-orange-300 font-mono text-sm">MOCK</span>. The court is the product; member chrome stays thin.
                       </p>
                        <ul className="space-y-3 text-gray-300">
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Smart Bathroom Sanitation Monitoring</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Automated Emergency Response</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Mobile App Booking & Payments</li>
+                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Pro shop — origin</li>
+                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Lockers — origin</li>
+                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> App booking — MOCK</li>
                       </ul>
                     </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="https://images.unsplash.com/photo-1591123720164-de1348028a82?q=80&w=1974&auto=format&fit=crop" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" alt="Locker Room" />
+                    <div className="flex-1 h-[400px] rounded-3xl overflow-hidden relative group border border-white/10 bg-gradient-to-br from-[#3f2a1c] via-[#1c1410] to-[#0c0d0b]">
+                       <div className="absolute inset-[18%] border border-white/15 rounded-sm" />
+                       <div className="absolute inset-0 flex items-center justify-center">
+                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-white/80">ORIGIN · PRO SHOP</span>
+                       </div>
                     </div>
                   </div>
 
