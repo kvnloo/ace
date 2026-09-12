@@ -6,7 +6,7 @@
 
 [View Live Demo](https://kvnloo.github.io/ace/) • [Dev Preview](https://kvnloo.github.io/ace/dev/) • [Documentation](.github/DEPLOYMENT.md)
 
-This Pages site is a **pretotype**, not a running BMS. LIVE / MOCK / PLANNED stamps in the UI say which claims are spec vs. theater.
+This Pages site is a **pretotype**, not a running BMS. LIVE / MOCK / PLANNED stamps in the UI say which claims are spec vs. theater. GitHub Pages deploys **`main`** and **`dev` only** — there is no nightly or PR preview. Honesty work lives on feature branches until merge.
 
 </div>
 
@@ -54,10 +54,14 @@ Origin spec: **500 m² per section**. Section count is not in the origin (an ear
 ## What this repo actually runs
 
 ### Pages demo (this tree)
-- **React 19** + TypeScript
-- **React Three Fiber** + **three** for the facility sketch
+- **React 19.2** + TypeScript
+- **Pascal Viewer** (`@pascal-app/core` / `viewer` / `nodes` 1.0.0) for the facility sketch — Site → Building → Levels 0–3
+- Envelope **140×120 m** and **10 m** storeys are **inferred**, not origin measurements
+- Grass lab is **one PLANNED zone** (origin: 500 m²/section; section count unspecified)
+- CSS court fallback when WebGL cannot paint
 - **Framer Motion**, **Vite**
 - **Gemini** chat is a **stub** on GitHub Pages (no live coaching product)
+- Pascal **editor** is not shipped; `@pascal-app/editor` is a read-only shim so node definitions can load
 
 ### Not in this tree
 OpenTwins, Eclipse Ditto, Eclipse Hono, Jenkins, Unity-in-Docker, and a live BMS are **origin research language**, not wired dependencies. Do not treat README history as a running stack.

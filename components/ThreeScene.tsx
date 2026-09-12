@@ -1,4 +1,5 @@
 
+/** Legacy Three.js primitive facility. Map view now mounts `PascalFacility`. */
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { 

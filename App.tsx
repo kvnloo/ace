@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { View, FeatureData } from './types';
 import NavBar from './components/NavBar';
-import ThreeScene from './components/ThreeScene';
+const PascalFacility = React.lazy(() => import('./components/PascalFacility'));
 import AIChat from './components/AIChat';
 import Specifications from './components/Specifications';
 import { 
@@ -157,7 +157,9 @@ const App: React.FC = () => {
               className="w-full h-full relative bg-gradient-to-b from-slate-900 to-black"
             >
               <div className="absolute inset-0 z-0">
-                <ThreeScene onFeatureSelect={setSelectedFeature} />
+                <Suspense fallback={<div className="w-full h-full bg-[#0c0d0b]" />}>
+                  <PascalFacility onFeatureSelect={setSelectedFeature} />
+                </Suspense>
               </div>
               
               {/* HUD Layer */}
@@ -165,8 +167,8 @@ const App: React.FC = () => {
                 <div className="mt-12">
                    <h2 className="text-3xl font-bold text-white drop-shadow-lg">Facility sketch</h2>
                    <p className="text-white/70 text-sm max-w-md drop-shadow-md mt-2">
-                     Naperville origin · 24 tennis · third-floor grass lab<br/>
-                     Rotate to walk the floors. HUD is MOCK.
+                     Naperville origin · Pascal nodes · 24 tennis · third-floor grass lab<br/>
+                     Envelope 140×120 m is inferred. HUD is MOCK. CSS court if WebGL is blank.
                    </p>
                 </div>
 
