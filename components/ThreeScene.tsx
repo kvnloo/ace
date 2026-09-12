@@ -28,10 +28,10 @@ const BUILDING_DEPTH = 120;
 const BRAND_YELLOW = "#DFFF4F";
 
 const FEATURES: FeatureData[] = [
-  { id: 'ground_tennis', title: 'Ground: Tennis Arena', description: '24 Courts: 6 Hard, 6 Clay, 6 Grass, 6 Wood.', icon: '🎾', position: [0, 5, 20] },
+  { id: 'ground_tennis', title: 'Ground: Tennis Arena', description: '24 tennis courts (hard, clay, grass, wood) plus a pro shop. The 6/6/6/6 split in this sketch is inferred, not origin-specified.', icon: '🎾', position: [0, 5, 20] },
   { id: 'level1_racquet', title: 'L1: Racquet Mezzanine', description: '16 Badminton, 4 Squash, 16 Table Tennis.', icon: '🏸', position: [-20, 25, 0] },
   { id: 'level2_social', title: 'L2: Pickleball & Heritage', description: '8 Pickleball courts and 1 Real Tennis court.', icon: '🏓', position: [20, 45, 0] },
-  { id: 'level3_farm', title: 'L3: Vertical Grass Lab', description: '4x 500sqm Autonomous Farming Sectors.', icon: '🌱', position: [0, 65, 0] },
+  { id: 'level3_farm', title: 'L3: Vertical Grass Lab', description: '500 m² per section (origin). Section count is unspecified — this sketch shows four as a layout inference.', icon: '🌱', position: [0, 65, 0] },
   { id: 'outdoor_plaza', title: 'Outdoor Plaza', description: 'Public courts and relaxation zones.', icon: '🌳', position: [80, 0, 80] },
 ];
 
@@ -186,10 +186,11 @@ const Marker: React.FC<MarkerProps> = ({ position, title, onClick, isSelected, v
         >
             <sphereGeometry args={[1.5, 32, 32]} />
             <meshStandardMaterial 
-            color={isSelected || hovered ? BRAND_YELLOW : "#ffffff"} 
+            color={isSelected || hovered ? BRAND_YELLOW : "#f4f1e4"} 
             emissive={isSelected ? BRAND_YELLOW : "#000"} 
-            emissiveIntensity={0.8}
-            toneMapped={false}
+            emissiveIntensity={isSelected ? 0.35 : 0}
+            roughness={0.35}
+            metalness={0.05}
             />
         </mesh>
       </Float>
@@ -296,7 +297,7 @@ const FloorRibbon = ({ width, depth }: { width: number, depth: number }) => {
     return (
         <mesh rotation={[Math.PI/2, 0, 0]} position={[0, -0.5, 0]}>
             <extrudeGeometry args={[shape, extrudeSettings]} />
-            <meshStandardMaterial color="#ffffff" roughness={0.1} metalness={0.1} />
+            <meshStandardMaterial color="#e8e4d9" roughness={0.45} metalness={0.02} />
         </mesh>
     )
 }
@@ -326,9 +327,9 @@ const FloorPlate = ({
       <mesh receiveShadow rotation={[-Math.PI/2, 0, 0]} position={[0, 0, 0]}>
         <planeGeometry args={[width, depth]} />
         <meshStandardMaterial 
-            color={isGround ? "#0f172a" : "#f1f5f9"} 
-            roughness={0.5} 
-            metalness={0.1} 
+            color={isGround ? "#161410" : "#ece7dc"} 
+            roughness={isGround ? 0.85 : 0.62} 
+            metalness={0.02} 
         />
       </mesh>
 
@@ -340,7 +341,7 @@ const FloorPlate = ({
           <group position={[0, FLOOR_HEIGHT - 1, 0]}>
                <mesh rotation={[Math.PI / 2, 0, 0]}>
                     <planeGeometry args={[width, depth]} />
-                    <meshStandardMaterial color="#f8fafc" emissive="#fff" emissiveIntensity={0.1} />
+                    <meshStandardMaterial color="#f4efe6" emissive="#fff7ed" emissiveIntensity={0.04} roughness={0.7} />
                </mesh>
                {/* Ceiling Lights */}
                {Array.from({length: 6}).map((_, i) => (
@@ -398,19 +399,20 @@ const Net = ({ width }: { width: number }) => (
 )
 
 const TennisCourt: React.FC<{ position: [number, number, number], type: 'grass' | 'hard' | 'clay' | 'wood' }> = ({ position, type }) => {
-    const colors = { grass: '#4d7c0f', hard: '#3b82f6', clay: '#ea580c', wood: '#d4a373' };
+    const colors = { grass: '#3f6b1d', hard: '#3a5f9a', clay: '#c45c2c', wood: '#c4a574' };
+    const roughness = { grass: 0.95, hard: 0.72, clay: 0.88, wood: 0.42 };
     return (
     <group position={position}>
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[10, 22]} />
-        <meshStandardMaterial color={colors[type]} roughness={type === 'wood' ? 0.2 : 0.8} />
+        <meshStandardMaterial color={colors[type]} roughness={roughness[type]} metalness={type === 'wood' ? 0.08 : 0} />
       </mesh>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
         <planeGeometry args={[8, 20]} />
-        <meshBasicMaterial color="white" wireframe={false} transparent opacity={0.8} />
+        <meshStandardMaterial color="#f4f1e8" roughness={0.9} metalness={0} />
         <mesh position={[0, 0, 0.01]}>
              <planeGeometry args={[7.8, 19.8]} />
-             <meshBasicMaterial color={colors[type]} />
+             <meshStandardMaterial color={colors[type]} roughness={roughness[type]} metalness={0} />
         </mesh>
       </mesh>
       <Net width={10} />
@@ -422,7 +424,7 @@ const BadmintonCourt: React.FC<{ position: [number, number, number] }> = ({ posi
     <group position={position}>
        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[6, 13]} />
-          <meshStandardMaterial color="#059669" />
+          <meshStandardMaterial color="#1f6b4a" roughness={0.78} metalness={0} />
         </mesh>
         <Net width={6} />
     </group>
@@ -432,7 +434,7 @@ const RealTennisCourt: React.FC<{ position: [number, number, number] }> = ({ pos
     <group position={position}>
          <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
             <planeGeometry args={[12, 24]} />
-            <meshStandardMaterial color="#44403c" />
+            <meshStandardMaterial color="#3f3a34" roughness={0.8} metalness={0} />
         </mesh>
         <mesh position={[-5, 2, 0]} rotation={[0, 0, 0]}>
             <boxGeometry args={[2, 4, 24]} />
@@ -455,10 +457,10 @@ const FarmRack: React.FC<{ position: [number, number, number] }> = ({ position }
         {[0.5, 1.5, 2.5, 3.5].map((y, i) => (
             <mesh key={i} position={[0, y, 0]}>
                 <boxGeometry args={[29, 0.2, 9]} />
-                <meshStandardMaterial color="#22c55e" />
+                <meshStandardMaterial color="#3f7a32" roughness={0.7} metalness={0} />
             </mesh>
         ))}
-        <pointLight position={[0, 4, 0]} color="#a855f7" intensity={2} distance={15} />
+        <pointLight position={[0, 4, 0]} color="#fef3c7" intensity={0.55} distance={14} />
     </group>
 )
 
@@ -541,7 +543,7 @@ const OrganicStructure = () => {
             {curves.map((curve, i) => (
                 <mesh key={i} castShadow receiveShadow>
                     <tubeGeometry args={[curve, 64, 2, 8, false]} />
-                    <meshStandardMaterial color="#ffffff" roughness={0.2} metalness={0.1} />
+                    <meshStandardMaterial color="#f2eee6" roughness={0.55} metalness={0.04} />
                 </mesh>
             ))}
         </group>
@@ -602,7 +604,7 @@ const GroundFloor = ({ active, showMeasurements, showLabels }: { active: boolean
             {/* Pro Shop Area */}
             <mesh position={[0, 3, 55]} castShadow>
                 <boxGeometry args={[20, 6, 8]} />
-                <meshStandardMaterial color="#0f172a" />
+                <meshStandardMaterial color="#1c1916" roughness={0.7} metalness={0.04} />
             </mesh>
 
              {/* Per-Cluster Dimensions */}
@@ -645,7 +647,7 @@ const GroundFloor = ({ active, showMeasurements, showLabels }: { active: boolean
                     outlineWidth={0.1}
                     outlineColor="#000"
                 >
-                    {row.label} COURTS
+                    {row.label} · inferred
                 </Text>
             ))}
         </group>
@@ -691,7 +693,7 @@ const LevelTwo = ({ active, showMeasurements }: { active: boolean, showMeasureme
             />
             {Array.from({length:8}).map((_, i) => (
                <group key={`p${i}`} position={[-25 + (i%4)*10, 0.1, -15 + Math.floor(i/4)*16]}>
-                    <mesh rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[6, 12]} /><meshStandardMaterial color="#8b5cf6" /></mesh>
+                    <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[6, 12]} /><meshStandardMaterial color="#3d7a3a" roughness={0.9} metalness={0} /></mesh>
                     <Net width={6} />
                </group>
             ))}
@@ -768,7 +770,7 @@ const CampusGrounds = () => {
             {/* Main Plaza Pavement */}
             <mesh rotation={[-Math.PI/2, 0, 0]} receiveShadow>
                 <planeGeometry args={[300, 300]} />
-                <meshStandardMaterial color="#e2e8f0" roughness={0.8} />
+                <meshStandardMaterial color="#c9c6b8" roughness={0.92} metalness={0} />
             </mesh>
 
             {/* Outdoor Courts Feature (from image reference) */}
@@ -824,19 +826,26 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
         setAnnotationMode={setAnnotationMode}
       />
 
-      <Canvas shadows dpr={[1, 1.5]} camera={{ position: [180, 100, 180], fov: 35 }}>
+      <Canvas
+        shadows
+        dpr={[1, 1.75]}
+        camera={{ position: [180, 100, 180], fov: 35 }}
+        gl={{ toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05, antialias: true }}
+      >
         <CameraRig activeFloor={activeFloor} controlsRef={controlsRef} isAnimatingRef={isAnimatingRef} />
         <PerspectiveCamera makeDefault fov={40} />
-        <ambientLight intensity={0.4} />
+        <hemisphereLight args={['#c9dce8', '#3f4a32', 0.42]} />
+        <ambientLight intensity={0.18} />
         <directionalLight 
             position={[-80, 150, 100]} 
-            intensity={2} 
+            intensity={1.15} 
             castShadow 
             shadow-mapSize={[2048, 2048]}
+            color="#fff4e0"
         >
             <orthographicCamera attach="shadow-camera" args={[-150, 150, 150, -150]} />
         </directionalLight>
-        <Environment preset="park" />
+        <Environment preset="warehouse" background={false} />
 
         <group>
             <BuildingShell activeFloor={activeFloor} />
@@ -867,7 +876,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
                 )
             })}
 
-           <ContactShadows position={[0, -0.2, 0]} opacity={0.6} scale={400} blur={3} far={20} color="#000" />
+           <ContactShadows position={[0, -0.2, 0]} opacity={0.42} scale={400} blur={2.6} far={24} color="#1a1914" />
         </group>
         
         <OrbitControls 
@@ -882,9 +891,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ onFeatureSelect }) => {
         />
       </Canvas>
       
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/50 text-xs pointer-events-none select-none font-mono text-center">
-        ECO-FACILITY VIEWER v3.3 <br/>
-        INTERACTIVE ARCHITECTURAL MODEL
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/45 text-[10px] pointer-events-none select-none font-mono text-center tracking-widest uppercase">
+        Naperville pretotype · architectural sketch
       </div>
     </div>
   );
