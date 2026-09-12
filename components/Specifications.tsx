@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Layers, Droplets, Zap, Home, Server } from 'lucide-react';
+import { CheckCircle2, Layers, Droplets, Zap, Home, Server, Brain } from 'lucide-react';
 
 const Specifications: React.FC = () => {
   const specs = [
@@ -8,11 +8,9 @@ const Specifications: React.FC = () => {
       category: "Ground Floor: Tennis Arena",
       icon: <Home className="w-6 h-6 text-tennis-yellow" />,
       items: [
-        { label: "Hard Courts (DecoTurf)", value: "6 Courts" },
-        { label: "Clay Courts (Red Clay)", value: "6 Courts" },
-        { label: "Grass Courts (Organic)", value: "6 Courts" },
-        { label: "Wood Courts (Maple)", value: "6 Courts" },
-        { label: "Amenities", value: "Pro Shop & Lockers" }
+        { label: "Tennis courts", value: "24 (hard, clay, grass, wood)" },
+        { label: "Split", value: "Not specified as 6/6/6/6" },
+        { label: "Amenities", value: "Pro shop & lockers" }
       ]
     },
     {
@@ -31,27 +29,37 @@ const Specifications: React.FC = () => {
       items: [
         { label: "Pickleball Courts", value: "8 Courts" },
         { label: "Real Tennis Court", value: "1 Historic Court" },
-        { label: "Viewing Decks", value: "360° Glass Walkways" }
+        { label: "Viewing decks", value: "Not in origin spec" }
       ]
     },
     {
       category: "Level 3: Vertical Farming",
       icon: <Droplets className="w-6 h-6 text-green-400" />,
       items: [
-        { label: "Farming Area", value: "4 x 500m² Sections" },
-        { label: "Technology", value: "Auto-Hydroponics" },
-        { label: "Lighting", value: "Full Spectrum LED" },
-        { label: "Robot Fleet", value: "Patch Transporters" }
+        { label: "Farming area", value: "500 m² per section (origin)" },
+        { label: "Sections", value: "Unspecified (not 4×500 unless specced)" },
+        { label: "Technology", value: "Hydroponics — PLANNED" },
+        { label: "Patch transport", value: "PLANNED" }
       ]
     },
     {
-      category: "Autonomous Systems",
-      icon: <Server className="w-6 h-6 text-red-400" />,
+      category: "APEX campus (VISION)",
+      icon: <Brain className="w-6 h-6 text-red-400" />,
       items: [
-        { label: "Access", value: "Biometric / Mobile App" },
-        { label: "Monitoring", value: "Drone & Lidar Fleet" },
-        { label: "Energy", value: "Solar + Smart BMS" },
-        { label: "Irrigation", value: "AI Predictive Water" }
+        { label: "Labs", value: "Biometric, cognitive, movement, research, nutrition" },
+        { label: "Recovery", value: "Physiotherapy + recovery suite" },
+        { label: "Training", value: "Gym, pool, clubhouse — all sports" },
+        { label: "Dimensions", value: "Inferred 30×30 m cells — not origin" }
+      ]
+    },
+    {
+      category: "Ops overlay (not live)",
+      icon: <Server className="w-6 h-6 text-tennis-yellow" />,
+      items: [
+        { label: "Access", value: "PLANNED — app / biometric language" },
+        { label: "Monitoring", value: "MOCK — drone / lidar overlay" },
+        { label: "Energy", value: "PLANNED — solar + BMS language" },
+        { label: "Irrigation", value: "PLANNED" }
       ]
     }
   ];
@@ -59,9 +67,9 @@ const Specifications: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="mb-16 text-center">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">Facility <span className="text-tennis-yellow">Blueprints</span></h2>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">Campus <span className="text-tennis-yellow">Blueprints</span></h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                A four-story vertical integration of sport, agriculture, and technology.
+                Vision: peak performance from every angle. SPEC numbers are Naperville racquet. APEX rooms are named VISION — not origin measurements.
             </p>
         </div>
 

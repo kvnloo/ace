@@ -31,8 +31,9 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
             className="text-2xl font-extrabold tracking-tighter text-white cursor-pointer flex items-center gap-2"
             onClick={() => onChangeView(View.HOME)}
         >
-            <span className="w-3 h-3 bg-tennis-yellow rounded-full animate-pulse"></span>
+            <span className="w-3 h-3 bg-tennis-yellow rounded-full"></span>
             LAWNTECH <span className="text-tennis-yellow font-light">DYNAMICS</span>
+            <span className="ml-3 text-[10px] tracking-widest font-mono font-normal text-tennis-yellow/80 border border-tennis-yellow/40 px-2 py-0.5 rounded-full">PRETOTYPE</span>
         </div>
 
         {/* Desktop Nav */}

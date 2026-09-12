@@ -1,24 +1,23 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { View, FeatureData } from './types';
 import NavBar from './components/NavBar';
-import ThreeScene from './components/ThreeScene';
+const PascalFacility = React.lazy(() => import('./components/PascalFacility'));
 import AIChat from './components/AIChat';
 import Specifications from './components/Specifications';
 import { 
   Zap, 
-  Activity, 
-  Camera, 
   Cpu, 
   Sprout, 
-  Users, 
   ArrowRight,
-  PlayCircle,
   Layers,
   Wind,
   ShieldCheck,
-  ShoppingBag
+  ShoppingBag,
+  Brain,
+  Heart,
+  Activity
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -68,7 +67,7 @@ const App: React.FC = () => {
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-tennis-yellow/30 bg-tennis-yellow/10 text-tennis-yellow text-sm font-medium mb-6"
                   >
                     <Zap className="w-4 h-4" />
-                    <span>The Future of Tennis is Organic & Autonomous</span>
+                    <span>VISION campus · Naperville racquet SPEC · pretotype</span>
                   </motion.div>
                   
                   <motion.h1 
@@ -77,9 +76,8 @@ const App: React.FC = () => {
                     transition={{ delay: 0.3 }}
                     className="text-5xl md:text-8xl font-extrabold tracking-tighter mb-6 leading-tight"
                   >
-                    GRASS. <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">AUTONOMOUS.</span> <br />
-                    PERFECTION.
+                    PEAK PERFORMANCE. <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">EVERY ANGLE.</span>
                   </motion.h1>
 
                   <motion.p 
@@ -88,8 +86,8 @@ const App: React.FC = () => {
                     transition={{ delay: 0.4 }}
                     className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed"
                   >
-                    Experience the world's first fully autonomous indoor grass court facility. 
-                    Replaceable modular turf, AI coaching, and injury prevention technology.
+                    A campus for human flourishing — scientists, athletes, labs, physiotherapy, all sports.
+                    Naperville racquet counts are the origin spec. APEX is the vision. This Pages site is a sketch, not a live twin.
                   </motion.p>
 
                   <motion.div 
@@ -117,20 +115,20 @@ const App: React.FC = () => {
 
               {/* Statistics Teaser */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6 py-20 border-t border-white/10">
-                <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                  <Cpu className="w-10 h-10 text-tennis-yellow mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Computer Vision</h3>
-                  <p className="text-gray-400">Real-time biomechanics analysis and injury prediction models running 60x per second.</p>
+                <div className="p-6 rounded-2xl bg-[#0c0d0b] border border-tennis-yellow/40">
+                  <span className="text-[10px] font-mono tracking-widest text-tennis-yellow">VISION</span>
+                  <h3 className="text-2xl font-bold mb-2 mt-3">Peak-performance campus</h3>
+                  <p className="text-gray-400">Scientists, athletes, labs, physiotherapy, all sports. APEX rooms are named program — not origin measurements, not a live clinic.</p>
                 </div>
                 <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                  <Sprout className="w-10 h-10 text-tennis-yellow mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Modular Grass</h3>
-                  <p className="text-gray-400">Our on-site Grass Lab grows replacement grids. We swap worn turf in under 60 minutes.</p>
+                  <span className="text-[10px] font-mono tracking-widest text-tennis-yellow/80">SPEC</span>
+                  <h3 className="text-2xl font-bold mb-2 mt-3">24 tennis courts</h3>
+                  <p className="text-gray-400">Naperville origin: hard, clay, grass, and wood on the ground floor. Counts from the spec — not an even 6/6/6/6 split unless the spec says so.</p>
                 </div>
                 <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                  <Activity className="w-10 h-10 text-tennis-yellow mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Performance</h3>
-                  <p className="text-gray-400">Strobe glass training and smart ball machines designed to break your reaction time plateaus.</p>
+                  <span className="text-[10px] font-mono tracking-widest text-white/50">PLANNED</span>
+                  <h3 className="text-2xl font-bold mb-2 mt-3">Grass lab + APEX wing</h3>
+                  <p className="text-gray-400">Third floor grows modular turf: <span className="text-white">500 m² per section</span>. Section count unspecified. APEX cells are inferred. Fast swap is a goal, not a receipt.</p>
                 </div>
               </div>
             </motion.div>
@@ -161,16 +159,18 @@ const App: React.FC = () => {
               className="w-full h-full relative bg-gradient-to-b from-slate-900 to-black"
             >
               <div className="absolute inset-0 z-0">
-                <ThreeScene onFeatureSelect={setSelectedFeature} />
+                <Suspense fallback={<div className="w-full h-full bg-[#0c0d0b]" />}>
+                  <PascalFacility onFeatureSelect={setSelectedFeature} />
+                </Suspense>
               </div>
               
               {/* HUD Layer */}
               <div className="absolute inset-0 z-10 pointer-events-none p-6 flex flex-col justify-between">
                 <div className="mt-12">
-                   <h2 className="text-3xl font-bold text-white drop-shadow-lg">Facility Interactive Map</h2>
+                   <h2 className="text-3xl font-bold text-white drop-shadow-lg">Campus sketch</h2>
                    <p className="text-white/70 text-sm max-w-md drop-shadow-md mt-2">
-                     24 Courts • Vertical Farm • Performance Gym <br/>
-                     Rotate the view to explore the entire complex.
+                     VISION APEX wing · Naperville racquet SPEC · Pascal nodes<br/>
+                     Envelope and APEX cells inferred. HUD is MOCK. CSS sketch if WebGL is blank.
                    </p>
                 </div>
 
@@ -220,9 +220,41 @@ const App: React.FC = () => {
               className="h-full overflow-y-auto custom-scrollbar pb-20 px-6"
             >
               <div className="max-w-7xl mx-auto pt-10">
-                <h2 className="text-4xl font-bold mb-12 border-b border-white/10 pb-6">Facility Amenities</h2>
+                <h2 className="text-4xl font-bold mb-4 border-b border-white/10 pb-6">Campus program</h2>
+                <p className="text-gray-400 text-lg mb-12 max-w-3xl">
+                  Peak performance from every angle. APEX labs, physio, gym, and pool are <span className="text-tennis-yellow font-mono text-sm">VISION</span>.
+                  Naperville racquet counts are <span className="text-white font-mono text-sm">SPEC</span>. This site does not run a facility.
+                </p>
                 
                 <div className="space-y-24">
+
+                  <div className="flex flex-col md:flex-row items-center gap-12">
+                    <div className="flex-1 space-y-6">
+                      <div className="w-16 h-16 rounded-2xl bg-red-900/30 flex items-center justify-center text-red-400">
+                        <Brain className="w-8 h-8" />
+                      </div>
+                      <h3 className="text-3xl font-bold">APEX peak-performance wing</h3>
+                      <p className="text-gray-400 text-lg leading-relaxed">
+                        From <span className="font-mono text-sm">origin/enhance/3D</span>: biometric, cognitive, movement, research, and nutrition rooms plus recovery / physiotherapy.
+                        Named program identity — not 147 biomarkers, not a measured VO₂ panel, not a live twin.
+                      </p>
+                      <ul className="space-y-3 text-gray-300">
+                        <li className="flex items-center gap-2"><Heart className="w-4 h-4 text-red-400"/> Biometric lab — VISION</li>
+                        <li className="flex items-center gap-2"><Brain className="w-4 h-4 text-blue-400"/> Cognitive + movement + research — VISION</li>
+                        <li className="flex items-center gap-2"><Activity className="w-4 h-4 text-green-400"/> Gym, pool, clubhouse — VISION (all sports)</li>
+                      </ul>
+                    </div>
+                    <div className="flex-1 h-[400px] rounded-3xl overflow-hidden relative group border border-tennis-yellow/20 bg-gradient-to-br from-[#1a1520] via-[#12141c] to-[#0c0d0b]">
+                       <div className="absolute inset-[12%] grid grid-cols-3 gap-1 opacity-70">
+                         {Array.from({ length: 9 }).map((_, i) => (
+                           <div key={i} className="border border-tennis-yellow/15 bg-white/5" />
+                         ))}
+                       </div>
+                       <div className="absolute inset-0 flex items-center justify-center">
+                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-tennis-yellow">VISION · APEX CAMPUS</span>
+                       </div>
+                    </div>
+                  </div>
                   
                   {/* 1. Vertical Grass Lab */}
                   <div className="flex flex-col md:flex-row items-center gap-12">
@@ -230,23 +262,20 @@ const App: React.FC = () => {
                       <div className="w-16 h-16 rounded-2xl bg-green-900/30 flex items-center justify-center text-tennis-yellow">
                         <Sprout className="w-8 h-8" />
                       </div>
-                      <h3 className="text-3xl font-bold">Level 3: The Vertical Grass Lab</h3>
+                      <h3 className="text-3xl font-bold">Level 3: Grass lab</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        Our facility houses a 2,000 m² autonomous vertical farm on the top floor, divided into four specialized sectors.
-                        We use advanced hydroponics and climate control to cultivate modular grass grids. 
-                        When a court wears down, robots transport and swap the turf in under 60 minutes.
+                        Origin spec: <span className="text-white">500 m² per section</span> on the third floor. How many sections is not specified — an earlier page inferred four (2,000 m²). Hydroponics and patch transport are <span className="text-tennis-yellow font-mono text-sm">PLANNED</span>. Fast turf swap is a pretotype goal, not a measured 60-minute receipt.
                       </p>
                       <ul className="space-y-3 text-gray-300">
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> Automated Hydroponics & Climate Control</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> Robotic Patch Transport System</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> 100% Sustainable Organic Surfaces</li>
+                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> 500 m² per section (origin)</li>
+                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> Patch transport — PLANNED</li>
+                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-tennis-yellow rounded-full"/> Courts below inherit the crop, not a painted texture</li>
                       </ul>
                     </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        {/* Updated Image to Vertical Farm Look */}
-                       <img src="/api/placeholder/800/600" data-placeholder-src="vertical-farm-robots.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Vertical Farming with Autonomous Robots" />
+                    <div className="flex-1 h-[400px] rounded-3xl overflow-hidden relative group border border-tennis-yellow/20 bg-gradient-to-br from-[#1a3d24] via-[#243d28] to-[#0c0d0b]">
+                       <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'repeating-linear-gradient(90deg, transparent 0, transparent 18px, rgba(199,237,36,0.08) 18px, rgba(199,237,36,0.08) 20px), repeating-linear-gradient(0deg, transparent 0, transparent 18px, rgba(199,237,36,0.06) 18px, rgba(199,237,36,0.06) 20px)' }} />
                        <div className="absolute inset-0 flex items-center justify-center">
-                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-tennis-yellow">STATUS: CULTIVATING</span>
+                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-tennis-yellow">PLANNED · GRASS LAB</span>
                        </div>
                     </div>
                   </div>
@@ -257,10 +286,10 @@ const App: React.FC = () => {
                        <div className="w-16 h-16 rounded-2xl bg-blue-900/30 flex items-center justify-center text-blue-400">
                         <Layers className="w-8 h-8" />
                       </div>
-                      <h3 className="text-3xl font-bold">Multi-Sport Ecosystem</h3>
+                      <h3 className="text-3xl font-bold">Naperville racquet (origin SPEC)</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        Spanning the Ground, 1st, and 2nd floors, we offer a comprehensive racquet experience. 
-                        From the high-speed action of Badminton and Table Tennis on the Mezzanine to the social atmosphere of Pickleball and the historic elegance of Real Tennis on the upper deck.
+                        First site nested in the campus vision. Ground, L1, and L2 are the origin racquet program — not all-sports counts.
+                        All-sports identity lives on the APEX wing as VISION until a spec names those rooms.
                       </p>
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                           <div className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
@@ -277,65 +306,70 @@ const App: React.FC = () => {
                           </div>
                        </div>
                     </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="/api/placeholder/800/600" data-placeholder-src="tennis-court-biomechanics-hud.jpg" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="Tennis Court with Real-time Biomechanics HUD" />
+                    <div className="flex-1 h-[400px] rounded-3xl overflow-hidden relative group border border-white/10 bg-gradient-to-br from-[#36573a] via-[#243028] to-[#0c0d0b]">
+                        <div className="absolute inset-[12%] border border-white/20 rounded-sm" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-white/80">MOCK · COURT SKETCH</span>
+                       </div>
                     </div>
                   </div>
 
-                  {/* 3. Autonomous Operations */}
+                  {/* 3. Ops overlay — PLANNED, not a live BMS */}
                   <div className="flex flex-col md:flex-row items-center gap-12">
                     <div className="flex-1 space-y-6">
-                       <div className="w-16 h-16 rounded-2xl bg-purple-900/30 flex items-center justify-center text-purple-400">
+                       <div className="w-16 h-16 rounded-2xl bg-slate-800/80 flex items-center justify-center text-tennis-yellow">
                         <Cpu className="w-8 h-8" />
                       </div>
-                      <h3 className="text-3xl font-bold">Autonomous Operations</h3>
+                      <h3 className="text-3xl font-bold">Ops overlay</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        The facility runs itself. A centralized Building Management System (BMS) optimizes HVAC and lighting using solar power.
-                        Robotic mowers maintain the courts while overhead drones constantly analyze surface quality. 
-                        Entry is seamless with biometric scanning, removing the need for keys or cards.
+                        BMS, drones, and biometric doors are <span className="text-tennis-yellow font-mono text-sm">PLANNED</span> theater on this pretotype. This Pages site does not run a facility. The court is the product; ops chrome stays thin.
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
-                            <Wind className="w-5 h-5 text-purple-400" />
+                            <Wind className="w-5 h-5 text-tennis-yellow" />
                             <div>
-                                <h4 className="font-bold text-white">Smart HVAC</h4>
-                                <p className="text-xs text-gray-400">AI Climate Control</p>
+                                <h4 className="font-bold text-white">Climate loop</h4>
+                                <p className="text-xs text-gray-400">PLANNED — solar + HVAC language</p>
                             </div>
                         </div>
                          <div className="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
-                            <ShieldCheck className="w-5 h-5 text-purple-400" />
+                            <ShieldCheck className="w-5 h-5 text-tennis-yellow" />
                             <div>
-                                <h4 className="font-bold text-white">Biometric Entry</h4>
-                                <p className="text-xs text-gray-400">Secure & Seamless</p>
+                                <h4 className="font-bold text-white">Access overlay</h4>
+                                <p className="text-xs text-gray-400">MOCK — not a wired door stack</p>
                             </div>
                         </div>
                       </div>
                     </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=2006&auto=format&fit=crop" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" alt="Autonomous Tech" />
+                    <div className="flex-1 h-[400px] rounded-3xl overflow-hidden relative group border border-white/10 bg-gradient-to-br from-[#1e293b] via-[#0f172a] to-[#0c0d0b]">
+                       <div className="absolute inset-[14%] border border-dashed border-white/15 rounded-xl" />
+                       <div className="absolute inset-0 flex items-center justify-center">
+                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-white/80">PLANNED · OPS OVERLAY</span>
+                       </div>
                     </div>
                   </div>
 
-                   {/* 4. Member Experience */}
+                   {/* 4. Pro shop — origin; recovery chrome is MOCK */}
                   <div className="flex flex-col md:flex-row-reverse items-center gap-12">
                     <div className="flex-1 space-y-6">
                        <div className="w-16 h-16 rounded-2xl bg-orange-900/30 flex items-center justify-center text-orange-400">
                         <ShoppingBag className="w-8 h-8" />
                       </div>
-                      <h3 className="text-3xl font-bold">Member Experience</h3>
+                      <h3 className="text-3xl font-bold">Pro shop</h3>
                       <p className="text-gray-400 text-lg leading-relaxed">
-                        We prioritize comfort and recovery. Our Pro Shop is stocked with the latest gear. 
-                        Locker rooms and waiting areas are managed by smart sensors to ensure cleanliness and supply availability.
-                        Automated emergency systems monitor the entire facility to instantly alert services if an incident occurs.
+                        Origin spec includes a ground-floor pro shop and lockers. Sensor-managed bathrooms and automated emergency dispatch are <span className="text-orange-300 font-mono text-sm">MOCK</span>. The court is the product; member chrome stays thin.
                       </p>
                        <ul className="space-y-3 text-gray-300">
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Smart Bathroom Sanitation Monitoring</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Automated Emergency Response</li>
-                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Mobile App Booking & Payments</li>
+                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Pro shop — origin</li>
+                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> Lockers — origin</li>
+                        <li className="flex items-center gap-2"><div className="w-2 h-2 bg-orange-400 rounded-full"/> App booking — MOCK</li>
                       </ul>
                     </div>
-                    <div className="flex-1 h-[400px] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                        <img src="https://images.unsplash.com/photo-1591123720164-de1348028a82?q=80&w=1974&auto=format&fit=crop" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" alt="Locker Room" />
+                    <div className="flex-1 h-[400px] rounded-3xl overflow-hidden relative group border border-white/10 bg-gradient-to-br from-[#3f2a1c] via-[#1c1410] to-[#0c0d0b]">
+                       <div className="absolute inset-[18%] border border-white/15 rounded-sm" />
+                       <div className="absolute inset-0 flex items-center justify-center">
+                         <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-white/80">ORIGIN · PRO SHOP</span>
+                       </div>
                     </div>
                   </div>
 
@@ -356,8 +390,8 @@ const App: React.FC = () => {
             >
                 <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 p-8 md:p-12 rounded-3xl backdrop-blur-xl">
                     <div className="text-center mb-10">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">Join the Revolution</h2>
-                        <p className="text-gray-400">We are raising Series A funding to build the pilot facility in Austin, Texas.</p>
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4">Join the pretotype</h2>
+                        <p className="text-gray-400">Vision is a peak-performance campus. Origin spec is Naperville racquet. This form does not submit (MOCK).</p>
                     </div>
 
                     <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>

@@ -9,7 +9,7 @@ const AIChat: React.FC = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', text: "Welcome to LawnTech Dynamics. I'm your AI Concierge. Ask me about our autonomous grass courts or replacement modular grids." }
+    { role: 'model', text: "This chat is a stub. Ask about the VISION campus (APEX labs, physio, all sports) or the Naperville racquet SPEC." }
   ]);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -58,7 +58,7 @@ const AIChat: React.FC = () => {
             <div className="p-4 border-b border-white/10 bg-tennis-green/20 flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <Bot className="w-5 h-5 text-tennis-yellow" />
-                <span className="font-semibold text-white">Facility AI Concierge</span>
+                <span className="font-semibold text-white">Campus sketch guide</span>
               </div>
               <button onClick={() => setIsOpen(false)} className="text-white/60 hover:text-white">
                 <X className="w-5 h-5" />
@@ -97,7 +97,7 @@ const AIChat: React.FC = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Ask about the grass tech..."
+                  placeholder="Ask about the campus vision..."
                   className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-tennis-yellow transition-colors"
                 />
                 <button 

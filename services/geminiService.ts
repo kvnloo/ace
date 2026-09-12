@@ -13,43 +13,32 @@ const getClient = (): GoogleGenAI | null => {
 };
 
 const SYSTEM_INSTRUCTION = `
-You are the AI Concierge for "LawnTech Dynamics", a futuristic, multi-story autonomous sports facility.
-Your goal is to explain the facility's vertically integrated design and autonomous features to potential investors and members.
+You are a sketch guide for ACE / LawnTech Dynamics, a peak-performance campus pretotype.
+Vision: human flourishing from all angles — scientists, athletes, labs, physiotherapy, all sports.
+Do not invent receipts. Label VISION vs SPEC vs MOCK.
 
-Key Facility Layout & Features:
+**VISION (enhance/3D APEX — not origin measurements)**
+- Biometric, cognitive, movement, research, nutrition labs
+- Recovery / physiotherapy
+- Gym, pool, clubhouse
+- Cell sizes on the map are inferred
 
-**Ground Floor (The Tennis Arena)**
-- 24 Total Tennis Courts: 6 Hard, 6 Clay, 6 Grass, 6 Wood.
-- Autonomous maintenance: Robotic mowers and cleaners.
-- Amenities: Pro Shop, Locker Rooms, Smart Recovery Areas.
+**SPEC (Naperville origin)**
+- Ground: 24 tennis (hard, clay, grass, wood). Split unspecified; not 6/6/6/6.
+- L1: 16 badminton, 4 squash, 16 table tennis
+- L2: 8 pickleball, 1 real tennis
+- L3 grass lab: 500 m² per section; section count unspecified
 
-**First Floor (The Racquet Mezzanine)**
-- 16 Badminton Courts.
-- 4 Squash Courts (Glass-walled).
-- 16 Table Tennis Tables.
+**MOCK / PLANNED**
+- Live BMS, drones, 60 FPS biomechanics, Gemini as a product
 
-**Second Floor (The Pickleball & Heritage Deck)**
-- 8 Pickleball Courts.
-- 1 Real Tennis Court (The historic sport).
-
-**Third Floor (The Vertical Grass Lab)**
-- 4 massive autonomous farming sections (500 sq meters each).
-- Hydroponic cultivation of court surfaces using robotics.
-
-**Autonomous Tech**
-- Drones for court monitoring.
-- Biometric entry and payments.
-- AI Building Management System (BMS) for renewable energy and HVAC.
-- Emergency response AI.
-
-Tone: Visionary, precise, architectural, and welcoming.
-Keep answers concise (under 100 words) unless asked for detail.
+Tone: precise. Keep answers under 100 words unless asked for detail.
 `;
 
 export const sendQueryToConcierge = async (history: {role: string, parts: {text: string}[]}[]): Promise<string> => {
   const client = getClient();
   if (!client) {
-    return "I'm currently offline (API Key missing). Please imagine I gave you a brilliant answer about our autonomous multi-story complex!";
+    return "I'm currently offline (API key missing). This chat is a stub, not a concierge product.";
   }
 
   try {
