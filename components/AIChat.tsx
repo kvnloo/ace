@@ -9,7 +9,7 @@ const AIChat: React.FC = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', text: "This chat is a stub. HomeBase is the indoor pickleball twin (live loop is private). Ask about SHIPPED engine / Facility OS, or the nested ACE campus SPEC." }
+    { role: 'model', text: "This chat is a stub. ATLAS is the soil-to-cell pretotype. Ask about GrowTwin (CEA), the racquet Facility OS (private live loop), or the nested campus SPEC." }
   ]);
   const scrollRef = useRef<HTMLDivElement>(null);
 

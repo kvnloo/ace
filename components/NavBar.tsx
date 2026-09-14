@@ -32,13 +32,13 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
             onClick={() => onChangeView(View.HOME)}
         >
             <span className="w-3 h-3 bg-tennis-yellow rounded-full"></span>
-            HOMEBASE <span className="text-tennis-yellow font-light">ACE</span>
+            ATLAS
             <span className="ml-3 text-[10px] tracking-widest font-mono font-normal text-tennis-yellow/80 border border-tennis-yellow/40 px-2 py-0.5 rounded-full">PRETOTYPE</span>
         </div>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <NavItem view={View.HOME} label="HomeBase" />
+          <NavItem view={View.HOME} label="ATLAS" />
           <NavItem view={View.AMENITIES} label="Product" />
           <NavItem view={View.SPECIFICATIONS} label="Specs" />
           <NavItem view={View.FACILITY_DEMO} label="Campus" />
@@ -62,7 +62,7 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
       {/* Mobile Menu */}
       {isMobileOpen && (
         <div className="absolute top-full left-0 w-full bg-slate-900 border-b border-white/10 p-6 flex flex-col gap-6 md:hidden glass-panel">
-          <NavItem view={View.HOME} label="HomeBase" />
+          <NavItem view={View.HOME} label="ATLAS" />
           <NavItem view={View.AMENITIES} label="Product" />
           <NavItem view={View.SPECIFICATIONS} label="Specs" />
           <NavItem view={View.FACILITY_DEMO} label="Campus" />

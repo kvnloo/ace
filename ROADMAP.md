@@ -9,7 +9,7 @@ Workers mint **exactly one** `needs-discussion` issue from the first untracked i
 | **VISION** | Peak-performance campus for human flourishing from all angles: scientists, athletes, labs, physiotherapy, all sports. Program mined from `origin/enhance/3D` (APEX). Not origin measurements. |
 | **SPEC** | Naperville origin racquet counts: 24 tennis / 16 badminton / 4 squash / 16 table tennis / 8 pickleball / 1 real tennis. Grass lab: 500 m² per section, section count unspecified. |
 | **PLANNED / MOCK** | Live BMS, drones, 60 FPS biomechanics, Gemini concierge product, 6/6/6/6 split, four farm racks, 60-minute turf-swap receipt. |
-| **This repo runs** | HomeBase public landing + Pascal pretotype + CSS fallback. Not a live facility. Homebase owns the live GPU loop. |
+| **This repo runs** | ATLAS public landing + Pascal pretotype + CSS fallback. Not a live facility. Live GPU loop stays private. |
 
 ## Untracked (oldest first)
 

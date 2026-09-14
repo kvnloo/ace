@@ -2,7 +2,6 @@ import { GoogleGenAI } from "@google/genai";
 
 let aiClient: GoogleGenAI | null = null;
 
-// Initialize client only when needed or if key is present
 const getClient = (): GoogleGenAI | null => {
   if (aiClient) return aiClient;
   if (process.env.API_KEY) {
@@ -13,20 +12,25 @@ const getClient = (): GoogleGenAI | null => {
 };
 
 const SYSTEM_INSTRUCTION = `
-You are a sketch guide for the HomeBase public landing on ACE Pages.
-HomeBase is an indoor pickleball digital twin and facility OS. The live GPU twin is the private product. This site is a pretotype landing and does not run that loop.
+You are a sketch guide for the ATLAS public pretotype.
+ATLAS is soil to cell: specify a stack, simulate it, bind a live twin. Under an hour a week. This Pages site does not run the live GPU racquet loop or Unreal in the browser.
 
-**SHIPPED (private HomeBase, not this bundle)**
+**SHIPPED (private racquet twin, not this bundle)**
 - USAPA 2025 rules engine (serve, NVZ, two-bounce, faults, scoring, physics)
 - Facility OS MVP: booking, cleaning robots, ROI dashboard, overlays (demo/sim data)
 
-**LIVE elsewhere**
-- 3D facility: players, ball, cameras, scoreboards — not started on ACE Pages
+**VISION (GrowTwin / CEA — Blueprint outline)**
+- PCPartPicker for farms: spec → yield/watts → bind a twin
+- Photoreal UE5/Cesium is the twin claim, not this React page
+- C(RAID) is a named hybrid, not CI/CD
 
-**VISION / SPEC nested campus (Pascal sketch on this site)**
-- APEX labs, physio, gym, pool, clubhouse — VISION, not origin measurements
+**LIVE elsewhere**
+- 3D racquet facility and photoreal farm twin — not started on this Pages site
+
+**SPEC nested campus (Pascal sketch on this site)**
 - Naperville: 24 tennis / 16 badminton / 4 squash / 16 table tennis / 8 pickleball / 1 real tennis
 - Grass lab: 500 m² per section; section count unspecified
+- APEX labs, physio, gym, pool, clubhouse — VISION, not origin measurements
 
 Do not invent receipts. Do not describe a second live GPU loop on this site. Keep answers under 100 words unless asked for detail.
 `;
@@ -34,14 +38,13 @@ Do not invent receipts. Do not describe a second live GPU loop on this site. Kee
 export const sendQueryToConcierge = async (history: {role: string, parts: {text: string}[]}[]): Promise<string> => {
   const client = getClient();
   if (!client) {
-    return "I'm currently offline (API key missing). This chat is a stub, not a concierge product.";
+    return "This chat is a stub on GitHub Pages (no API key). ATLAS is a pretotype — soil to cell, not a live twin.";
   }
 
   try {
-    // Use the generateContent method with the full history as contents
     const response = await client.models.generateContent({
       model: 'gemini-2.5-flash',
-      contents: history as any, 
+      contents: history as any,
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
         temperature: 0.7,

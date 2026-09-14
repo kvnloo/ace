@@ -56,7 +56,7 @@ Commands were filled by `init-oss-repo.sh` / `oss-onboard` from the tree it saw,
 
 ## ACE ownership
 
-ACE Pages is the **public pretotype landing for HomeBase** (indoor pickleball digital twin + facility OS). HomeBase (`kvnloo/homebase-pickleball`, private) owns the live GPU loop. This tree must not start a second live GPU loop, bundle that engine, or publish private facility floor plans.
+ACE Pages is the **public pretotype landing for ATLAS** (soil to cell: GrowTwin CEA + racquet Facility OS). The live GPU loop stays in the private racquet twin (`kvnloo/homebase-pickleball`). Photoreal farm twin is UE5 elsewhere. This tree must not start a second live GPU loop, bundle that engine, or publish private facility floor plans.
 
 A nested **peak-performance campus pretotype** remains on the Map view: Pascal Site → LawnTech (Naperville racquet **SPEC**) + APEX wing (**VISION** program from `origin/enhance/3D`). Mine the **program**. Do not resurrect the Three.js lab theater, debug FPS HUD, OpenTwins-as-wired, 88% completion badges, or `4 × 500 = 2,000 m²` as origin fact.
 
@@ -71,7 +71,7 @@ APEX rooms in Pascal (`building_apex`) are **VISION** named zones with inferred 
 ### This repo runs
 
 - Pascal Viewer (`@pascal-app/core` / `viewer` / `nodes` 1.0.0) plus a CSS court/campus fallback
-- Public HomeBase landing copy (`landing/public.ts`) — pretotype, not the live twin
+- Public ATLAS landing copy (`landing/public.ts`) — pretotype, not the live twin
 - `facility/generateScene.ts` compiles Site → LawnTech (SPEC) + APEX wing (VISION)
 - `npm test` → `facility/check-scene.ts` + `landing/check-copy.ts`
 

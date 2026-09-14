@@ -6,7 +6,7 @@ import NavBar from './components/NavBar';
 const PascalFacility = React.lazy(() => import('./components/PascalFacility'));
 import AIChat from './components/AIChat';
 import Specifications from './components/Specifications';
-import HomeBaseLanding, { HomeBaseProduct } from './components/HomeBaseLanding';
+import AtlasLanding, { AtlasProduct } from './components/AtlasLanding';
 import { campusNested, product } from './landing/public.ts';
 
 const App: React.FC = () => {
@@ -43,7 +43,7 @@ const App: React.FC = () => {
               variants={pageVariants}
               className="h-full overflow-y-auto custom-scrollbar pb-20"
             >
-              <HomeBaseLanding onChangeView={setCurrentView} />
+              <AtlasLanding onChangeView={setCurrentView} />
             </motion.div>
           )}
 
@@ -132,7 +132,7 @@ const App: React.FC = () => {
               variants={pageVariants}
               className="h-full overflow-y-auto custom-scrollbar pb-20 px-6"
             >
-              <HomeBaseProduct onChangeView={setCurrentView} />
+              <AtlasProduct onChangeView={setCurrentView} />
             </motion.div>
           )}
 
@@ -149,7 +149,7 @@ const App: React.FC = () => {
                 <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 p-8 md:p-12 rounded-3xl backdrop-blur-xl">
                     <div className="text-center mb-10">
                         <h2 className="text-3xl md:text-5xl font-bold mb-4">Join {product.name}</h2>
-                        <p className="text-gray-400">Public pretotype landing for the indoor pickleball facility OS. This form does not submit (MOCK).</p>
+                        <p className="text-gray-400">Public pretotype landing for ATLAS — soil to cell. This form does not submit (MOCK).</p>
                     </div>
 
                     <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>

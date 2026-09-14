@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Cpu, Layers, Zap } from 'lucide-react';
+import { ArrowRight, Cpu, Leaf, Zap } from 'lucide-react';
 import { campusNested, inFlight, lanes, pillars, product } from '../landing/public.ts';
 import { View } from '../types';
 
@@ -18,7 +18,13 @@ const stampClass: Record<string, string> = {
   PRETOTYPE: 'text-tennis-yellow',
 };
 
-const HomeBaseLanding: React.FC<Props> = ({ onChangeView }) => {
+const laneIcon = (group: string) => {
+  if (group === 'Play') return <Zap className="w-6 h-6" />;
+  if (group === 'Grow') return <Leaf className="w-6 h-6" />;
+  return <Cpu className="w-6 h-6" />;
+};
+
+const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
   return (
     <div className="h-full overflow-y-auto custom-scrollbar pb-20">
       <div className="relative min-h-[90vh] flex items-center justify-center px-6 overflow-hidden">
@@ -57,8 +63,8 @@ const HomeBaseLanding: React.FC<Props> = ({ onChangeView }) => {
             transition={{ delay: 0.3 }}
             className="text-5xl md:text-8xl font-extrabold tracking-tighter mb-6 leading-tight"
           >
-            THE FACILITY, <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">RUNNING.</span>
+            SOIL TO CELL. <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow to-white">UNDER AN HOUR A WEEK.</span>
           </motion.h1>
 
           <motion.p
@@ -80,7 +86,7 @@ const HomeBaseLanding: React.FC<Props> = ({ onChangeView }) => {
               onClick={() => onChangeView(View.AMENITIES)}
               className="px-8 py-4 bg-tennis-yellow text-tennis-dark font-bold rounded-full hover:bg-white transition-all flex items-center gap-2 group"
             >
-              See what shipped
+              See the tracks
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
             <button
@@ -118,7 +124,7 @@ const HomeBaseLanding: React.FC<Props> = ({ onChangeView }) => {
   );
 };
 
-export const HomeBaseProduct: React.FC<{ onChangeView: (view: View) => void }> = ({ onChangeView }) => {
+export const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({ onChangeView }) => {
   return (
     <div className="max-w-7xl mx-auto pt-10">
       <h2 className="text-4xl font-bold mb-4 border-b border-white/10 pb-6">{product.name}</h2>
@@ -131,7 +137,7 @@ export const HomeBaseProduct: React.FC<{ onChangeView: (view: View) => void }> =
         {lanes.map((lane) => (
           <div key={lane.group} className="p-6 rounded-2xl bg-white/5 border border-white/10">
             <div className="w-12 h-12 rounded-2xl bg-tennis-yellow/10 flex items-center justify-center text-tennis-yellow mb-4">
-              {lane.group === 'Play' ? <Zap className="w-6 h-6" /> : lane.group === 'Ops' ? <Cpu className="w-6 h-6" /> : <Layers className="w-6 h-6" />}
+              {laneIcon(lane.group)}
             </div>
             <h3 className="text-2xl font-bold mb-4">{lane.group}</h3>
             <ul className="space-y-3 text-gray-300">
@@ -176,7 +182,7 @@ export const HomeBaseProduct: React.FC<{ onChangeView: (view: View) => void }> =
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-tennis-yellow">
-              VISION · ACE CAMPUS
+              VISION · CAMPUS SKETCH
             </span>
           </div>
         </div>
@@ -185,4 +191,4 @@ export const HomeBaseProduct: React.FC<{ onChangeView: (view: View) => void }> =
   );
 };
 
-export default HomeBaseLanding;
+export default AtlasLanding;
