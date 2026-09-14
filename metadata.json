@@ -1,5 +1,5 @@
 {
-  "name": "LawnTech Dynamics",
-  "description": "A showcase website for a futuristic, autonomous indoor grass tennis facility featuring 3D interactive demos and AI integration.",
+  "name": "ATLAS",
+  "description": "Public pretotype landing for ATLAS — soil to cell. Specify a stack, simulate it, bind a twin. Not the live GPU or UE5 twin.",
   "requestFramePermissions": []
 }

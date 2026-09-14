@@ -2,7 +2,6 @@ import { GoogleGenAI } from "@google/genai";
 
 let aiClient: GoogleGenAI | null = null;
 
-// Initialize client only when needed or if key is present
 const getClient = (): GoogleGenAI | null => {
   if (aiClient) return aiClient;
   if (process.env.API_KEY) {
@@ -13,50 +12,39 @@ const getClient = (): GoogleGenAI | null => {
 };
 
 const SYSTEM_INSTRUCTION = `
-You are the AI Concierge for "LawnTech Dynamics", a futuristic, multi-story autonomous sports facility.
-Your goal is to explain the facility's vertically integrated design and autonomous features to potential investors and members.
+You are a sketch guide for the ATLAS public pretotype.
+ATLAS is soil to cell: specify a stack, simulate it, bind a live twin. Under an hour a week. This Pages site does not run the live GPU racquet loop or Unreal in the browser.
 
-Key Facility Layout & Features:
+**SHIPPED (private racquet twin, not this bundle)**
+- USAPA 2025 rules engine (serve, NVZ, two-bounce, faults, scoring, physics)
+- Facility OS MVP: booking, cleaning robots, ROI dashboard, overlays (demo/sim data)
 
-**Ground Floor (The Tennis Arena)**
-- 24 Total Tennis Courts: 6 Hard, 6 Clay, 6 Grass, 6 Wood.
-- Autonomous maintenance: Robotic mowers and cleaners.
-- Amenities: Pro Shop, Locker Rooms, Smart Recovery Areas.
+**VISION (GrowTwin / CEA — Blueprint outline)**
+- PCPartPicker for farms: spec → yield/watts → bind a twin
+- Photoreal UE5/Cesium is the twin claim, not this React page
+- C(RAID) is a named hybrid, not CI/CD
 
-**First Floor (The Racquet Mezzanine)**
-- 16 Badminton Courts.
-- 4 Squash Courts (Glass-walled).
-- 16 Table Tennis Tables.
+**LIVE elsewhere**
+- 3D racquet facility and photoreal farm twin — not started on this Pages site
 
-**Second Floor (The Pickleball & Heritage Deck)**
-- 8 Pickleball Courts.
-- 1 Real Tennis Court (The historic sport).
+**SPEC nested campus (Pascal sketch on this site)**
+- Naperville: 24 tennis / 16 badminton / 4 squash / 16 table tennis / 8 pickleball / 1 real tennis
+- Grass lab: 500 m² per section; section count unspecified
+- APEX labs, physio, gym, pool, clubhouse — VISION, not origin measurements
 
-**Third Floor (The Vertical Grass Lab)**
-- 4 massive autonomous farming sections (500 sq meters each).
-- Hydroponic cultivation of court surfaces using robotics.
-
-**Autonomous Tech**
-- Drones for court monitoring.
-- Biometric entry and payments.
-- AI Building Management System (BMS) for renewable energy and HVAC.
-- Emergency response AI.
-
-Tone: Visionary, precise, architectural, and welcoming.
-Keep answers concise (under 100 words) unless asked for detail.
+Do not invent receipts. Do not describe a second live GPU loop on this site. Keep answers under 100 words unless asked for detail.
 `;
 
 export const sendQueryToConcierge = async (history: {role: string, parts: {text: string}[]}[]): Promise<string> => {
   const client = getClient();
   if (!client) {
-    return "I'm currently offline (API Key missing). Please imagine I gave you a brilliant answer about our autonomous multi-story complex!";
+    return "This chat is a stub on GitHub Pages (no API key). ATLAS is a pretotype — soil to cell, not a live twin.";
   }
 
   try {
-    // Use the generateContent method with the full history as contents
     const response = await client.models.generateContent({
       model: 'gemini-2.5-flash',
-      contents: history as any, 
+      contents: history as any,
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
         temperature: 0.7,

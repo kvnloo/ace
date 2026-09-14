@@ -1,36 +1,46 @@
-# LawnTech Dynamics - Autonomous Indoor Grass Court Facility
+# ATLAS — public pretotype landing
 
 <div align="center">
 
-**The world's first fully autonomous indoor grass court tennis facility**
+**ATLAS is soil to cell: specify a stack, simulate it, bind a twin. Under an hour a week.**
 
-[View Live Demo](https://kvnloo.github.io/ace/) • [Dev Preview](https://kvnloo.github.io/ace/dev/) • [Documentation](.github/DEPLOYMENT.md)
+[Live Pages (`main`)](https://kvnloo.github.io/ace/) • [Dev Preview](https://kvnloo.github.io/ace/dev/) • [Deployment](.github/DEPLOYMENT.md)
+
+This Pages site is a **pretotype landing**, not a live GPU or UE5 twin. Stamps say **SHIPPED**, **LIVE** (elsewhere), **VISION**, **SPEC**, **PLANNED**, or **MOCK**. GitHub Pages deploys **`main`** and **`dev` only**.
 
 </div>
 
 ---
 
-## 🎯 Project Overview
+## What this site is
 
-LawnTech Dynamics is an innovative multi-floor racquet sports facility concept combining autonomous operations, sustainable grass cultivation, and AI-powered performance analytics. Located in Naperville, Illinois, this facility aims to revolutionize indoor sports through cutting-edge technology and sustainable practices.
+Public face of **ATLAS** (outlined on Blueprint as soil-to-cell). GrowTwin is PCPartPicker for farms. The racquet Facility OS shipped in a private twin. This site does **not** start a second 60Hz loop, bundle that engine, or run Unreal.
 
-### Core Innovation
-- **🌱 Autonomous Grass Management**: Vertical farming system that grows and swaps court surfaces robotically
-- **🤖 AI-Powered Operations**: Self-managing facility with minimal human oversight
-- **📊 Performance Analytics**: Real-time biomechanics tracking and injury prevention
-- **♻️ Sustainable Design**: Solar-powered with advanced resource optimization
+A nested **Pascal campus sketch** remains: Naperville racquet **SPEC** plus an APEX peak-performance wing (**VISION**). That sketch is not a live twin.
+
+| Stamp | What |
+|---|---|
+| **SHIPPED** | USAPA 2025 engine + Facility OS MVP in the private racquet twin (demo/sim data). Not this bundle. |
+| **VISION** | GrowTwin CEA — spec → yield/watts → bind a twin. UE5/Cesium is the twin claim. |
+| **LIVE** | GPU racquet twin and photoreal farm twin — private apps only. |
+| **SPEC** | Naperville origin racquet counts on the nested sketch. Grass lab: 500 m² per section, section count unspecified. |
+| **PLANNED / MOCK** | Blender-native GFX, web GFX quality lanes, waitlist form, Gemini chat. |
+| **This repo runs** | ATLAS landing copy + Pascal Viewer + CSS fallback. Live loops stay private. |
+
+Do not copy facility floor plans or private twin source into this tree. Do not resurrect the Three.js lab theater as the renderer. Mine campus program through Pascal.
 
 ---
 
-## 🏗️ Facility Layout
+## 🏗️ Naperville origin layout (SPEC)
 
 ### **Ground Floor** - Tennis Complex
-24 premium tennis courts featuring:
+24 tennis courts featuring:
 - Grass courts (replaceable modular turf)
 - Hard courts
 - Clay courts
 - Wood courts
-- Pro shop and premium locker rooms
+- Pro shop and locker rooms
+- Surface split is **unspecified** (not 6/6/6/6 unless the spec says so)
 
 ### **First Floor** - Mezzanine Sports
 - 16 badminton courts
@@ -42,32 +52,40 @@ LawnTech Dynamics is an innovative multi-floor racquet sports facility concept c
 - 1 historic real tennis court
 
 ### **Third Floor** - Vertical Grass Lab
-2,000 m² autonomous farming facility with:
-- Hydroponics and climate control
-- Robotic patch transport system
-- 60-minute court surface replacement capability
+Origin spec: **500 m² per section**. Section count is not in the origin (an earlier public page inferred 4 × 500 = 2,000 m²).
+- Hydroponics and climate control (**PLANNED**)
+- Patch transport (**PLANNED** — not a live robot fleet)
+- Fast turf swap is a pretotype goal, not a measured receipt
 
 ---
 
-## 🚀 Technology Stack
+## What this repo actually runs
 
-### Frontend
-- **React 19** with TypeScript
-- **Framer Motion** for animations
-- **Three.js** for 3D facility visualization
-- **Tailwind CSS** for styling
-- **Vite** for build tooling
+### Pages demo (this tree)
+- **ATLAS landing copy** (`landing/public.ts`) — pretotype; does not run the live twin
+- **React 19.2** + TypeScript
+- **Pascal Viewer** (`@pascal-app/core` / `viewer` / `nodes` 1.0.0) — nested campus sketch: Site → LawnTech levels 0–3 + APEX VISION wing
+- Envelope **140×120 m** and **10 m** storeys are **inferred**, not origin measurements
+- APEX rooms are **nine VISION zones** on inferred 30×30 m cells
+- Grass lab is **one PLANNED zone** (origin: 500 m²/section; section count unspecified)
+- CSS campus / court fallback when WebGL cannot paint
+- **Framer Motion**, **Vite**
+- **Gemini** chat is a **stub** on GitHub Pages (not a concierge product)
+- Pascal **editor** is not shipped; `@pascal-app/editor` is a read-only shim so node definitions can load
 
-### AI & Analytics
-- **Google Gemini AI** for chat interface
-- Computer vision for biomechanics analysis
-- Predictive maintenance algorithms
+### Proof
 
-### Autonomous Systems
-- Building Management System (BMS)
-- Robotic mowers and maintenance drones
-- Biometric access control
-- Smart HVAC optimization
+```bash
+npm test          # facility/check-scene.ts + landing/check-copy.ts
+npm run build
+```
+
+Mutation is **n/a** — Stryker is not adopted. Do not invent a score.
+
+### Not in this tree
+OpenTwins, Eclipse Ditto, Eclipse Hono, Jenkins, Unity-in-Docker, and a live BMS are **origin research language**, not wired dependencies. Do not treat README history as a running stack.
+
+Agents: read [`AGENTS.md`](AGENTS.md) and [`ROADMAP.md`](ROADMAP.md). Workers never merge `main` or `dev`.
 
 ---
 
@@ -75,7 +93,7 @@ LawnTech Dynamics is an innovative multi-floor racquet sports facility concept c
 
 ### Prerequisites
 - Node.js (v20 or higher)
-- npm or yarn
+- npm
 - Git
 
 ### Local Setup
@@ -91,7 +109,7 @@ LawnTech Dynamics is an innovative multi-floor racquet sports facility concept c
    npm install
    ```
 
-3. **Configure environment**
+3. **Configure environment** (optional; chat is a stub without it)
    Create a `.env.local` file:
    ```env
    GEMINI_API_KEY=your_api_key_here
@@ -102,11 +120,10 @@ LawnTech Dynamics is an innovative multi-floor racquet sports facility concept c
    npm run dev
    ```
 
-   Open [http://localhost:3000](http://localhost:3000) in your browser
-
 ### Build for Production
 
 ```bash
+npm test
 npm run build
 npm run preview
 ```
@@ -120,6 +137,8 @@ This project uses GitHub Actions for automated deployment to GitHub Pages:
 - **Production**: Automatically deploys from `main` branch to `/`
 - **Development**: Automatically deploys from `dev` branch to `/dev/`
 
+Rolling git branches (`preview`, `nightly`) from the Verified OSS Loop are **not** Pages slots. Do not invent `/preview/<slug>/` without extending `.github/workflows/deploy.yml`.
+
 See [Deployment Guide](.github/DEPLOYMENT.md) for detailed setup instructions.
 
 ### Deployment URLs
@@ -128,114 +147,13 @@ See [Deployment Guide](.github/DEPLOYMENT.md) for detailed setup instructions.
 
 ---
 
-## 🎨 Features
+## Spec lineage
 
-### Interactive 3D Facility Tour
-Explore the entire facility complex with:
-- Rotatable 3D visualization
-- Interactive hotspots for each area
-- Detailed feature information cards
+- **Vision program**: `origin/enhance/3D` APEX campus (labs, physio, gym, pool, clubhouse, all sports)
+- **Origin numbers**: private racket-sports spec (Naperville, four floors)
+- Voyager/Eureka-style curriculum language is inspiration for a future ops loop, not a second scheduler in this tree
 
-### AI-Powered Chat Assistant
-Get instant answers about:
-- Facility features and amenities
-- Membership options
-- Technical specifications
-- Court booking
-
-### Real-Time Performance Analytics
-- Biomechanics tracking at 60 FPS
-- Serve speed analysis (225 km/h capability)
-- Ground force measurement (1900 N torque)
-- Pronation/supination tracking
-
-### Autonomous Operations Dashboard
-Monitor facility systems:
-- Smart HVAC climate control
-- Robotic maintenance status
-- Court surface quality metrics
-- Energy consumption analytics
-
----
-
-## 🏛️ Project Architecture
-
-### Digital Twin Framework
-Built on **OpenTwins** technology:
-- **Eclipse Ditto**: Digital twin definitions
-- **Eclipse Hono**: IoT device integration
-- Real-time monitoring and control
-- Predictive maintenance algorithms
-
-### Agent-Based Automation
-Inspired by Voyager and Eureka methodologies:
-- **Automatic Curriculum**: Dynamic task progression
-- **Skill Library**: Reusable action patterns
-- **Reward Optimization**: Evolutionary performance tuning
-- **Self-Verification**: Continuous improvement loops
-
-### Feedback-Driven Learning
-- Environment feedback integration
-- Execution error analysis
-- Iterative skill refinement
-- Performance metrics tracking
-
----
-
-## 👥 Expert Roles
-
-| Role | Responsibility |
-|------|----------------|
-| **Architect** | Facility layout and safety compliance |
-| **Digital Twin Modeler** | Virtual replica and simulation systems |
-| **Automation Engineer** | Robotics and autonomous systems integration |
-| **Sports Surface Specialist** | Court maintenance and quality assurance |
-| **Building Systems Engineer** | BMS and energy optimization |
-
----
-
-## 🎯 Strategic Goals
-
-1. **Autonomous Excellence**: Achieve 24/7 operation with minimal human intervention
-2. **Sustainability**: Net-zero energy consumption through solar and smart systems
-3. **User Experience**: Seamless booking, access, and service delivery
-4. **Performance**: Industry-leading analytics and injury prevention
-5. **Community**: Local partnerships and educational collaborations
-
----
-
-## 🤝 Partnerships & Funding
-
-### Strategic Partnerships
-- Local sports organizations for cost sharing
-- Educational institutions for research collaboration
-- Government agencies for sustainability grants
-
-### Investment Opportunities
-Currently raising Series A funding for Austin, Texas pilot facility.
-Contact via the [Invest page](https://kvnloo.github.io/ace/) for more information.
-
----
-
-## 📊 Technical Specifications
-
-### Data Collection
-- Multi-sensor array for court conditions
-- Environmental monitoring (temperature, humidity, air quality)
-- Player movement tracking and analysis
-- Real-time video analytics
-
-### Simulation & Analysis
-- Energy usage forecasting
-- Maintenance schedule optimization
-- Player traffic pattern analysis
-- Resource allocation modeling
-
-### System Integration
-- Centralized control via BMS
-- Real-time IoT device communication
-- Cloud-based analytics platform
-- Mobile app for member access
+A pretty 3D scene is a **projection**, not proof of autonomy.
 
 ---
 
@@ -243,44 +161,20 @@ Contact via the [Invest page](https://kvnloo.github.io/ace/) for more informatio
 
 ```
 ace/
-├── .github/
-│   ├── workflows/        # CI/CD pipelines
-│   └── DEPLOYMENT.md     # Deployment documentation
-├── components/           # React components
-│   ├── NavBar.tsx
-│   ├── ThreeScene.tsx
-│   ├── AIChat.tsx
-│   └── Specifications.tsx
-├── services/            # Service layer
-├── App.tsx              # Main application
-├── index.tsx            # Entry point
-├── types.ts             # TypeScript definitions
-└── vite.config.ts       # Build configuration
+├── AGENTS.md                 # Verified OSS Loop + ACE ownership
+├── ROADMAP.md              # First untracked item is what autodevelop mints
+├── facility/              # Pascal program + scene compiler
+│   ├── program.ts
+│   ├── vision.ts           # APEX VISION rooms
+│   ├── generateScene.ts
+│   └── check-scene.ts
+├── components/
+│   ├── PascalFacility.tsx
+│   ├── facility/SketchMap.tsx
+│   └── ThreeScene.tsx     # unused legacy — do not remount
+├── .github/workflows/      # Pages deploy + validate + loop receipts
+└── App.tsx
 ```
-
----
-
-## 🔧 Configuration
-
-### Base Path Configuration
-The project supports dynamic base paths for multi-environment deployment:
-
-```typescript
-// vite.config.ts
-const base = process.env.VITE_BASE_PATH || '/';
-```
-
-Set via environment variable during build:
-```bash
-VITE_BASE_PATH=/dev/ npm run build
-```
-
----
-
-## 📖 Documentation
-
-- [Deployment Guide](.github/DEPLOYMENT.md) - GitHub Pages setup and troubleshooting
-- [AI Studio Link](https://ai.studio/apps/drive/1Fc7kvKrC_eN-FRp7CerebmQONPqJW6z2) - Original project workspace
 
 ---
 
@@ -290,19 +184,9 @@ This project is licensed under the terms specified in [LICENSE](LICENSE).
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- **OpenTwins** for digital twin infrastructure
-- **Eclipse Foundation** for Ditto and Hono frameworks
-- **Google** for Gemini AI integration
-- **Community Contributors** for feedback and support
-
----
-
-<div align="center">
-
-**Built with ❤️ by the LawnTech Dynamics team**
-
-[Report Bug](https://github.com/kvnloo/ace/issues) • [Request Feature](https://github.com/kvnloo/ace/issues) • [Contact Us](https://kvnloo.github.io/ace/)
-
-</div>
+- Origin facility spec (private digital-twin racket-sports project)
+- APEX campus program from the `enhance/3D` branch
+- Pascal Viewer for the public sketch
+- Gemini is optional and stubbed on Pages

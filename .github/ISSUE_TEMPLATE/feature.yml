@@ -1,0 +1,26 @@
+name: Feature
+description: A proposed change. Maintainers own whether it is claimable.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not start work until this issue is `claimable` and you hold a claim lease.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance
+      description: What a reviewer can check on an exact head
+      placeholder: test name, docs path, or runtime check

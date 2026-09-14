@@ -1,0 +1,25 @@
+area:docs:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'docs/**/*'
+      - '*.md'
+      - 'AGENTS.md'
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+
+area:loop:
+  - changed-files:
+    - any-glob-to-any-file: '.github/**/*'
+
+area:verify:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'tests/**/*'
+      - 'scripts/**/*'
+      - '**/*.test.*'
+      - 'skills/tdd/**'
+      - 'skills/verify/**'
+      - 'skills/orient/**'
+      - 'skills/anti-slop/**'
+      - 'skills/pstack/**'
+      - 'skills/dr-eggbot/**'

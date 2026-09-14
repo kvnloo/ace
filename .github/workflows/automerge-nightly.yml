@@ -1,0 +1,31 @@
+name: Automerge nightly
+
+on:
+  pull_request:
+    branches: [nightly]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+      - name: Enable auto-merge into nightly when scheme allows
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          if python3 scripts/rollout.py allow-automerge nightly; then
+            gh pr merge "$PR" --merge --auto --delete-branch=false
+          else
+            echo "scheme forbids nightly automerge"
+          fi

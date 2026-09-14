@@ -1,0 +1,27 @@
+name: Promote preview to nightly
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Merge preview into nightly when scheme allows
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! python3 scripts/rollout.py allow-promote preview-to-nightly; then
+            echo "scheme forbids preview→nightly promote"
+            exit 0
+          fi
+          git fetch origin preview nightly
+          git checkout nightly
+          git merge --no-ff origin/preview -m "Promote preview into nightly"
+          git push origin nightly

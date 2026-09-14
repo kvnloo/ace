@@ -1,0 +1,8 @@
+roadmap_revision: replace-with-git-sha
+updated_at: 2026-01-01T00:00:00Z
+owners: [YOUR_GITHUB_LOGIN]
+items:
+  - issue: 1
+    priority: P1
+    acceptance: tests-or-docs-path
+    claimable: true

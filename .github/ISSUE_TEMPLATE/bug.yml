@@ -1,0 +1,31 @@
+name: Bug
+description: Something is broken. Include a red command if you have one.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search open issues and PRs first. Issues are not claims — a claim lease comes after this is triaged `claimable`.
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual
+    validations:
+      required: true
+  - type: textarea
+    id: red
+    attributes:
+      label: Red command
+      description: Exact command that fails, or "manual / no command yet"
+      placeholder: pytest tests/test_foo.py::test_bar
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: OS, language version, commit SHA
