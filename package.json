@@ -7,8 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "npm run check:facility",
-    "check:facility": "esbuild facility/check-scene.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-facility.mjs && node /tmp/ace-check-facility.mjs"
+    "test": "npm run check:facility && npm run check:landing",
+    "check:facility": "esbuild facility/check-scene.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-facility.mjs && node /tmp/ace-check-facility.mjs",
+    "check:landing": "esbuild landing/check-copy.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-landing.mjs && node /tmp/ace-check-landing.mjs"
   },
   "dependencies": {
     "@pascal-app/core": "1.0.0",

@@ -1,31 +1,33 @@
-# ACE — peak-performance campus pretotype
+# ACE — HomeBase public landing
 
 <div align="center">
 
-**A public pretotype of a peak-performance campus for human flourishing — scientists, athletes, labs, physiotherapy, all sports.**
+**Public pretotype landing for HomeBase — indoor pickleball digital twin and facility OS.**
 
 [Live Pages (`main`)](https://kvnloo.github.io/ace/) • [Dev Preview](https://kvnloo.github.io/ace/dev/) • [Deployment](.github/DEPLOYMENT.md)
 
-This Pages site is a **pretotype**, not a running BMS or live twin. Stamps in the UI say which claims are **VISION**, **SPEC**, **PLANNED**, or **MOCK**. GitHub Pages deploys **`main`** and **`dev` only** — there is no nightly or PR preview. Honesty work lives on feature branches until merge.
+This Pages site is a **pretotype landing**, not the live GPU twin. HomeBase (private product) owns that loop. Stamps in the UI say which claims are **SHIPPED**, **LIVE** (elsewhere), **VISION**, **SPEC**, **PLANNED**, or **MOCK**. GitHub Pages deploys **`main`** and **`dev` only**.
 
 </div>
 
 ---
 
-## Vision vs spec
+## What this site is
 
-The vision (from `origin/enhance/3D`, APEX) is a **peak-performance facility for all things pursuing human flourishing**: scientists, athletes, labs, physiotherapy, gym, pool, clubhouse, all sports — not tennis-only.
+ACE Pages is the public face of **HomeBase**: pickleball rules engine, 3D facility twin, and Facility OS (booking, cleaning robots, ROI). Those systems shipped in the private repo. This site does **not** start a second 60Hz loop, bundle the engine, or wire the booking API.
 
-The Naperville racquet building is the origin **SPEC** nested inside that vision. This repo compiles both into Pascal: LawnTech (SPEC) plus an APEX wing (VISION named rooms, inferred cells).
+A nested **Pascal campus sketch** remains: Naperville racquet **SPEC** plus an APEX peak-performance wing (**VISION**). That sketch is not the live pickleball twin.
 
 | Stamp | What |
 |---|---|
-| **VISION** | APEX labs (biometric, cognitive, movement, research, nutrition), recovery / physio, gym, pool, clubhouse. Not origin measurements. |
-| **SPEC** | 24 tennis / 16 badminton / 4 squash / 16 table tennis / 8 pickleball / 1 real tennis. Grass lab: 500 m² per section, **section count unspecified**. |
-| **PLANNED / MOCK** | Live BMS, drones, 60 FPS, Gemini as a product, 6/6/6/6 split, four farm racks, 60-minute turf-swap receipt. |
-| **This repo runs** | Pascal Viewer + CSS fallback. Not a live facility. Homebase owns the live GPU loop. |
+| **SHIPPED** | USAPA 2025 engine + Facility OS MVP in the private HomeBase product (demo/sim data). Not this bundle. |
+| **LIVE** | GPU twin (players, ball, cameras, scoreboards) — private HomeBase app only. |
+| **VISION** | APEX labs, recovery / physio, gym, pool, clubhouse on the nested campus sketch. |
+| **SPEC** | Naperville origin racquet counts on the nested sketch. Grass lab: 500 m² per section, section count unspecified. |
+| **PLANNED / MOCK** | Blender-native GFX, web GFX quality lanes, waitlist form, Gemini chat. |
+| **This repo runs** | Landing copy + Pascal Viewer + CSS fallback. HomeBase owns the live GPU loop. |
 
-Do not copy `enhance/3D` Three.js lab theater into this tree as the renderer. Mine the program; compile through Pascal.
+Do not copy facility floor plans or private twin source into this tree. Do not resurrect the Three.js lab theater as the renderer. Mine campus program through Pascal.
 
 ---
 
@@ -60,8 +62,9 @@ Origin spec: **500 m² per section**. Section count is not in the origin (an ear
 ## What this repo actually runs
 
 ### Pages demo (this tree)
+- **HomeBase landing copy** (`landing/public.ts`) — pretotype; does not run the live twin
 - **React 19.2** + TypeScript
-- **Pascal Viewer** (`@pascal-app/core` / `viewer` / `nodes` 1.0.0) — Site → LawnTech levels 0–3 + APEX VISION wing
+- **Pascal Viewer** (`@pascal-app/core` / `viewer` / `nodes` 1.0.0) — nested campus sketch: Site → LawnTech levels 0–3 + APEX VISION wing
 - Envelope **140×120 m** and **10 m** storeys are **inferred**, not origin measurements
 - APEX rooms are **nine VISION zones** on inferred 30×30 m cells
 - Grass lab is **one PLANNED zone** (origin: 500 m²/section; section count unspecified)
@@ -73,7 +76,7 @@ Origin spec: **500 m² per section**. Section count is not in the origin (an ear
 ### Proof
 
 ```bash
-npm test          # facility/check-scene.ts
+npm test          # facility/check-scene.ts + landing/check-copy.ts
 npm run build
 ```
 

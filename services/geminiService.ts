@@ -13,26 +13,22 @@ const getClient = (): GoogleGenAI | null => {
 };
 
 const SYSTEM_INSTRUCTION = `
-You are a sketch guide for ACE / LawnTech Dynamics, a peak-performance campus pretotype.
-Vision: human flourishing from all angles — scientists, athletes, labs, physiotherapy, all sports.
-Do not invent receipts. Label VISION vs SPEC vs MOCK.
+You are a sketch guide for the HomeBase public landing on ACE Pages.
+HomeBase is an indoor pickleball digital twin and facility OS. The live GPU twin is the private product. This site is a pretotype landing and does not run that loop.
 
-**VISION (enhance/3D APEX — not origin measurements)**
-- Biometric, cognitive, movement, research, nutrition labs
-- Recovery / physiotherapy
-- Gym, pool, clubhouse
-- Cell sizes on the map are inferred
+**SHIPPED (private HomeBase, not this bundle)**
+- USAPA 2025 rules engine (serve, NVZ, two-bounce, faults, scoring, physics)
+- Facility OS MVP: booking, cleaning robots, ROI dashboard, overlays (demo/sim data)
 
-**SPEC (Naperville origin)**
-- Ground: 24 tennis (hard, clay, grass, wood). Split unspecified; not 6/6/6/6.
-- L1: 16 badminton, 4 squash, 16 table tennis
-- L2: 8 pickleball, 1 real tennis
-- L3 grass lab: 500 m² per section; section count unspecified
+**LIVE elsewhere**
+- 3D facility: players, ball, cameras, scoreboards — not started on ACE Pages
 
-**MOCK / PLANNED**
-- Live BMS, drones, 60 FPS biomechanics, Gemini as a product
+**VISION / SPEC nested campus (Pascal sketch on this site)**
+- APEX labs, physio, gym, pool, clubhouse — VISION, not origin measurements
+- Naperville: 24 tennis / 16 badminton / 4 squash / 16 table tennis / 8 pickleball / 1 real tennis
+- Grass lab: 500 m² per section; section count unspecified
 
-Tone: precise. Keep answers under 100 words unless asked for detail.
+Do not invent receipts. Do not describe a second live GPU loop on this site. Keep answers under 100 words unless asked for detail.
 `;
 
 export const sendQueryToConcierge = async (history: {role: string, parts: {text: string}[]}[]): Promise<string> => {
