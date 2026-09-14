@@ -40,7 +40,7 @@ Commands were filled by `init-oss-repo.sh` / `oss-onboard` from the tree it saw,
 
 | Layer | Command |
 |---|---|
-| Unit | `npm test` |
+| Unit | `npm test` (`check:facility` + `check:landing`) |
 | Mutation | `n/a` — Stryker not adopted; do not invent a score |
 | Runtime | `npm run build` |
 
@@ -56,7 +56,9 @@ Commands were filled by `init-oss-repo.sh` / `oss-onboard` from the tree it saw,
 
 ## ACE ownership
 
-ACE is a **peak-performance pretotype** — a campus for human flourishing from all angles (scientists, athletes, labs, physiotherapy, all sports). That vision comes from `origin/enhance/3D` (APEX). Mine the **program**. Do not resurrect the Three.js lab theater, debug FPS HUD, OpenTwins-as-wired, 88% completion badges, or `4 × 500 = 2,000 m²` as origin fact.
+ACE Pages is the **public pretotype landing for HomeBase** (indoor pickleball digital twin + facility OS). HomeBase (`kvnloo/homebase-pickleball`, private) owns the live GPU loop. This tree must not start a second live GPU loop, bundle that engine, or publish private facility floor plans.
+
+A nested **peak-performance campus pretotype** remains on the Map view: Pascal Site → LawnTech (Naperville racquet **SPEC**) + APEX wing (**VISION** program from `origin/enhance/3D`). Mine the **program**. Do not resurrect the Three.js lab theater, debug FPS HUD, OpenTwins-as-wired, 88% completion badges, or `4 × 500 = 2,000 m²` as origin fact.
 
 The Naperville racquet building is the origin **SPEC** nested inside that vision:
 
@@ -69,8 +71,9 @@ APEX rooms in Pascal (`building_apex`) are **VISION** named zones with inferred 
 ### This repo runs
 
 - Pascal Viewer (`@pascal-app/core` / `viewer` / `nodes` 1.0.0) plus a CSS court/campus fallback
+- Public HomeBase landing copy (`landing/public.ts`) — pretotype, not the live twin
 - `facility/generateScene.ts` compiles Site → LawnTech (SPEC) + APEX wing (VISION)
-- `npm test` → `facility/check-scene.ts` (levels, one grass lab, nine VISION zones, no inferred farm sections)
+- `npm test` → `facility/check-scene.ts` + `landing/check-copy.ts`
 
 ### Do not (ACE-specific)
 
