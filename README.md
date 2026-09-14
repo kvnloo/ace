@@ -1,12 +1,12 @@
-# ACE — HomeBase public landing
+# ATLAS — public pretotype landing
 
 <div align="center">
 
-**Public pretotype landing for HomeBase — indoor pickleball digital twin and facility OS.**
+**ATLAS is soil to cell: specify a stack, simulate it, bind a twin. Under an hour a week.**
 
 [Live Pages (`main`)](https://kvnloo.github.io/ace/) • [Dev Preview](https://kvnloo.github.io/ace/dev/) • [Deployment](.github/DEPLOYMENT.md)
 
-This Pages site is a **pretotype landing**, not the live GPU twin. HomeBase (private product) owns that loop. Stamps in the UI say which claims are **SHIPPED**, **LIVE** (elsewhere), **VISION**, **SPEC**, **PLANNED**, or **MOCK**. GitHub Pages deploys **`main`** and **`dev` only**.
+This Pages site is a **pretotype landing**, not a live GPU or UE5 twin. Stamps say **SHIPPED**, **LIVE** (elsewhere), **VISION**, **SPEC**, **PLANNED**, or **MOCK**. GitHub Pages deploys **`main`** and **`dev` only**.
 
 </div>
 
@@ -14,18 +14,18 @@ This Pages site is a **pretotype landing**, not the live GPU twin. HomeBase (pri
 
 ## What this site is
 
-ACE Pages is the public face of **HomeBase**: pickleball rules engine, 3D facility twin, and Facility OS (booking, cleaning robots, ROI). Those systems shipped in the private repo. This site does **not** start a second 60Hz loop, bundle the engine, or wire the booking API.
+Public face of **ATLAS** (outlined on Blueprint as soil-to-cell). GrowTwin is PCPartPicker for farms. The racquet Facility OS shipped in a private twin. This site does **not** start a second 60Hz loop, bundle that engine, or run Unreal.
 
-A nested **Pascal campus sketch** remains: Naperville racquet **SPEC** plus an APEX peak-performance wing (**VISION**). That sketch is not the live pickleball twin.
+A nested **Pascal campus sketch** remains: Naperville racquet **SPEC** plus an APEX peak-performance wing (**VISION**). That sketch is not a live twin.
 
 | Stamp | What |
 |---|---|
-| **SHIPPED** | USAPA 2025 engine + Facility OS MVP in the private HomeBase product (demo/sim data). Not this bundle. |
-| **LIVE** | GPU twin (players, ball, cameras, scoreboards) — private HomeBase app only. |
-| **VISION** | APEX labs, recovery / physio, gym, pool, clubhouse on the nested campus sketch. |
+| **SHIPPED** | USAPA 2025 engine + Facility OS MVP in the private racquet twin (demo/sim data). Not this bundle. |
+| **VISION** | GrowTwin CEA — spec → yield/watts → bind a twin. UE5/Cesium is the twin claim. |
+| **LIVE** | GPU racquet twin and photoreal farm twin — private apps only. |
 | **SPEC** | Naperville origin racquet counts on the nested sketch. Grass lab: 500 m² per section, section count unspecified. |
 | **PLANNED / MOCK** | Blender-native GFX, web GFX quality lanes, waitlist form, Gemini chat. |
-| **This repo runs** | Landing copy + Pascal Viewer + CSS fallback. HomeBase owns the live GPU loop. |
+| **This repo runs** | ATLAS landing copy + Pascal Viewer + CSS fallback. Live loops stay private. |
 
 Do not copy facility floor plans or private twin source into this tree. Do not resurrect the Three.js lab theater as the renderer. Mine campus program through Pascal.
 
@@ -62,7 +62,7 @@ Origin spec: **500 m² per section**. Section count is not in the origin (an ear
 ## What this repo actually runs
 
 ### Pages demo (this tree)
-- **HomeBase landing copy** (`landing/public.ts`) — pretotype; does not run the live twin
+- **ATLAS landing copy** (`landing/public.ts`) — pretotype; does not run the live twin
 - **React 19.2** + TypeScript
 - **Pascal Viewer** (`@pascal-app/core` / `viewer` / `nodes` 1.0.0) — nested campus sketch: Site → LawnTech levels 0–3 + APEX VISION wing
 - Envelope **140×120 m** and **10 m** storeys are **inferred**, not origin measurements

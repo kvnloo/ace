@@ -1,5 +1,5 @@
 {
-  "name": "HomeBase",
-  "description": "Public pretotype landing for HomeBase — indoor pickleball digital twin and facility OS. Not the live GPU twin.",
+  "name": "ATLAS",
+  "description": "Public pretotype landing for ATLAS — soil to cell. Specify a stack, simulate it, bind a twin. Not the live GPU or UE5 twin.",
   "requestFramePermissions": []
 }

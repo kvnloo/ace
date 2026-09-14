@@ -8,11 +8,14 @@ import {
 
 const blob = JSON.stringify({ product, pillars, lanes, inFlight, campusNested });
 
-if (product.name !== 'HomeBase') {
-  throw new Error(`public landing product must be HomeBase, got ${product.name}`);
+if (product.name !== 'ATLAS') {
+  throw new Error(`public landing product must be ATLAS, got ${product.name}`);
 }
-if (product.host !== 'ACE Pages') {
-  throw new Error('public landing host must stay ACE Pages');
+if (!/soil to cell/i.test(`${product.headline} ${product.subhead} ${product.kicker}`)) {
+  throw new Error('ATLAS copy must lead with soil-to-cell (Blueprint outline)');
+}
+if (!/hour a week/i.test(product.headline)) {
+  throw new Error('ATLAS headline must include under an hour a week');
 }
 if (!/pretotype/i.test(product.thisSite)) {
   throw new Error('this-site stamp must say pretotype');
@@ -24,7 +27,7 @@ if (!/does not run/i.test(product.thisSite)) {
   throw new Error('this-site stamp must say this Pages site does not run the twin');
 }
 if (!/private/i.test(product.liveTwin)) {
-  throw new Error('live twin must stay the private HomeBase product');
+  throw new Error('live twin must stay private — not this Pages tab');
 }
 if (pillars.length < 3) {
   throw new Error('need shipped engine, facility OS, and live-twin-elsewhere pillars');
@@ -36,11 +39,14 @@ if (!stamps.includes('SHIPPED') || !stamps.includes('LIVE')) {
 if (!lanes.some((lane) => /play/i.test(lane.group))) {
   throw new Error('product lanes must include Play');
 }
+if (!lanes.some((lane) => /grow/i.test(lane.group))) {
+  throw new Error('product lanes must include Grow (GrowTwin / CEA)');
+}
 if (!lanes.some((lane) => /ops/i.test(lane.group))) {
   throw new Error('product lanes must include Ops');
 }
 if (campusNested.stamp === 'LIVE') {
-  throw new Error('ACE campus sketch is not the live HomeBase twin');
+  throw new Error('campus sketch is not the live GPU twin');
 }
 if (!/Pascal|campus/i.test(campusNested.body)) {
   throw new Error('campus nested copy must name the Pascal campus sketch');
@@ -50,6 +56,9 @@ if (!inFlight.some((item) => /Blender/i.test(item.title))) {
 }
 
 const leaks = [
+  'HomeBase',
+  'HOMEBASE',
+  'homebase',
   'Rally House',
   'RallyHouse',
   'Groot',

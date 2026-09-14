@@ -6,13 +6,13 @@ import { product } from '../landing/public.ts';
 const Specifications: React.FC = () => {
   const specs = [
     {
-      category: "HomeBase (private twin)",
+      category: "ATLAS (private twins)",
       icon: <Cpu className="w-6 h-6 text-tennis-yellow" />,
       items: [
-        { label: "Product", value: "Indoor pickleball digital twin + facility OS" },
-        { label: "Engine", value: "USAPA 2025 — SHIPPED in private repo, not this bundle" },
-        { label: "Facility OS MVP", value: "Booking, robots, ROI, overlays — SHIPPED vs demo/sim data" },
-        { label: "This Pages site", value: "PRETOTYPE landing — does not run the live GPU loop" }
+        { label: "Brand", value: "ATLAS — soil to cell pretotype" },
+        { label: "GrowTwin", value: "CEA spec → simulate yield/watts → bind a twin (UE5 elsewhere)" },
+        { label: "Facility OS", value: "USAPA 2025 + booking/robots — SHIPPED in private repo, not this bundle" },
+        { label: "This Pages site", value: "PRETOTYPE landing — does not run the live GPU or UE5 loops" }
       ]
     },
     {
@@ -80,7 +80,7 @@ const Specifications: React.FC = () => {
         <div className="mb-16 text-center">
             <h2 className="text-4xl md:text-6xl font-bold mb-6">{product.name} <span className="text-tennis-yellow">Blueprints</span></h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Public pretotype landing. HomeBase engine and Facility OS shipped in the private twin. Nested campus numbers below are Naperville SPEC / APEX VISION — not the live pickleball loop.
+                Public pretotype landing. ATLAS is soil to cell: GrowTwin CEA plus a racquet Facility OS. Nested campus numbers below are Naperville SPEC / APEX VISION — not a live twin.
             </p>
         </div>
 
