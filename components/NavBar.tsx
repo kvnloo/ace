@@ -27,31 +27,31 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 bg-gradient-to-b from-slate-900/90 to-transparent pt-4 pb-8 px-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div 
-            className="text-2xl font-extrabold tracking-tighter text-white cursor-pointer flex items-center gap-2"
-            onClick={() => onChangeView(View.HOME)}
+        <div
+          className="text-2xl font-extrabold tracking-tighter text-white cursor-pointer flex items-center gap-2"
+          onClick={() => onChangeView(View.HOME)}
         >
-            <span className="w-3 h-3 bg-tennis-yellow rounded-full"></span>
-            ATLAS
-            <span className="ml-3 text-[10px] tracking-widest font-mono font-normal text-tennis-yellow/80 border border-tennis-yellow/40 px-2 py-0.5 rounded-full">PRETOTYPE</span>
+          <span className="w-3 h-3 bg-tennis-yellow rounded-full"></span>
+          ACE
+          <span className="ml-3 text-[10px] tracking-widest font-mono font-normal text-tennis-yellow/80 border border-tennis-yellow/40 px-2 py-0.5 rounded-full">
+            PRETOTYPE
+          </span>
         </div>
 
-        {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <NavItem view={View.HOME} label="ATLAS" />
-          <NavItem view={View.AMENITIES} label="Product" />
-          <NavItem view={View.SPECIFICATIONS} label="Specs" />
+          <NavItem view={View.HOME} label="ACE" />
+          <NavItem view={View.AMENITIES} label="System" />
+          <NavItem view={View.SPECIFICATIONS} label="Facility" />
           <NavItem view={View.FACILITY_DEMO} label="Campus" />
           <NavItem view={View.INVEST} label="Contact" />
-          <button 
+          <button
             className="border border-tennis-yellow text-tennis-yellow px-5 py-2 rounded-full text-sm font-bold hover:bg-tennis-yellow hover:text-tennis-dark transition-all"
             onClick={() => onChangeView(View.INVEST)}
           >
-            JOIN WAITING LIST
+            JOIN WAITLIST
           </button>
         </div>
 
-        {/* Mobile Toggle */}
         <div className="md:hidden">
           <button onClick={() => setIsMobileOpen(!isMobileOpen)} className="text-white">
             {isMobileOpen ? <X /> : <Menu />}
@@ -59,12 +59,11 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMobileOpen && (
         <div className="absolute top-full left-0 w-full bg-slate-900 border-b border-white/10 p-6 flex flex-col gap-6 md:hidden glass-panel">
-          <NavItem view={View.HOME} label="ATLAS" />
-          <NavItem view={View.AMENITIES} label="Product" />
-          <NavItem view={View.SPECIFICATIONS} label="Specs" />
+          <NavItem view={View.HOME} label="ACE" />
+          <NavItem view={View.AMENITIES} label="System" />
+          <NavItem view={View.SPECIFICATIONS} label="Facility" />
           <NavItem view={View.FACILITY_DEMO} label="Campus" />
           <NavItem view={View.INVEST} label="Contact" />
         </div>
