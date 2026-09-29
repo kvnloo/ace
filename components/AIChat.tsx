@@ -9,7 +9,10 @@ const AIChat: React.FC = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', text: "This chat is a stub. ATLAS is the soil-to-cell pretotype. Ask about GrowTwin (CEA), the racquet Facility OS (private live loop), or the nested campus SPEC." }
+    {
+      role: 'model',
+      text: 'This chat is a stub. ACE is the human-flourishing feedback-loop pretotype: personal + facility twins, expert collaboration, sport simulation, and measured intervention-response. Ask about the campus vision, current research tracks, or what is actually live versus planned.',
+    },
   ]);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -21,26 +24,24 @@ const AIChat: React.FC = () => {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    
+
     const userMsgText = input;
     setInput('');
-    
+
     const newUserMsg: ChatMessage = { role: 'user', text: userMsgText };
-    
-    // Optimistic update of UI
+
     const newMessages = [...messages, newUserMsg];
     setMessages(newMessages);
     setIsLoading(true);
 
-    // Prepare history for API (converting to SDK format)
-    const history = newMessages.map(m => ({
+    const history = newMessages.map((m) => ({
       role: m.role,
-      parts: [{ text: m.text }]
+      parts: [{ text: m.text }],
     }));
 
     const responseText = await sendQueryToConcierge(history);
-    
-    setMessages(prev => [...prev, { role: 'model', text: responseText }]);
+
+    setMessages((prev) => [...prev, { role: 'model', text: responseText }]);
     setIsLoading(false);
   };
 
@@ -54,25 +55,23 @@ const AIChat: React.FC = () => {
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             className="glass-panel w-[350px] sm:w-[400px] h-[500px] rounded-2xl flex flex-col shadow-2xl mb-4 overflow-hidden border border-white/10 bg-slate-900/90"
           >
-            {/* Header */}
             <div className="p-4 border-b border-white/10 bg-tennis-green/20 flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <Bot className="w-5 h-5 text-tennis-yellow" />
-                <span className="font-semibold text-white">Campus sketch guide</span>
+                <span className="font-semibold text-white">ACE pretotype guide</span>
               </div>
               <button onClick={() => setIsOpen(false)} className="text-white/60 hover:text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4" ref={scrollRef}>
               {messages.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div 
+                  <div
                     className={`max-w-[80%] p-3 rounded-2xl text-sm ${
-                      msg.role === 'user' 
-                        ? 'bg-tennis-green text-white rounded-br-none' 
+                      msg.role === 'user'
+                        ? 'bg-tennis-green text-white rounded-br-none'
                         : 'bg-white/10 text-white/90 rounded-bl-none'
                     }`}
                   >
@@ -89,7 +88,6 @@ const AIChat: React.FC = () => {
               )}
             </div>
 
-            {/* Input */}
             <div className="p-4 border-t border-white/10 bg-black/20">
               <div className="flex gap-2">
                 <input
@@ -97,10 +95,10 @@ const AIChat: React.FC = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Ask about the campus vision..."
+                  placeholder="Ask about ACE..."
                   className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-tennis-yellow transition-colors"
                 />
-                <button 
+                <button
                   onClick={handleSend}
                   disabled={isLoading}
                   className="bg-tennis-yellow text-tennis-dark p-2 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
@@ -117,7 +115,9 @@ const AIChat: React.FC = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-colors ${isOpen ? 'bg-white text-tennis-dark' : 'bg-tennis-yellow text-tennis-dark'}`}
+        className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-colors ${
+          isOpen ? 'bg-white text-tennis-dark' : 'bg-tennis-yellow text-tennis-dark'
+        }`}
       >
         {isOpen ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
       </motion.button>
