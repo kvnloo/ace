@@ -322,14 +322,20 @@ async function main(){
       el.dispatchEvent(new Event("input",{bubbles:true}));
       return true;
     })()`);
-    await sleep(180);
+    await sleep(140);
+    const contactDuring=await evaluate(cdp,desktop.sessionId,`(()=>({
+      identity:Boolean(document.querySelector("#ace-name")),
+      role:Boolean(document.querySelector("#ace-interest")),
+    }))()`);
+    if(contactDuring.identity || contactDuring.role) failures.push("Contact context revealed before the goal had time to settle");
+    await sleep(420);
     const contactAfter=await evaluate(cdp,desktop.sessionId,`(()=>({
       identity:Boolean(document.querySelector("#ace-name")),
       role:Boolean(document.querySelector("#ace-interest")),
     }))()`);
-    report.desktop.contact={before:contactBefore,after:contactAfter};
+    report.desktop.contact={before:contactBefore,during:contactDuring,after:contactAfter};
     report.desktop.contactShot=await screenshot(cdp,desktop.sessionId,"desktop-contact");
-    if(!contactAfter.identity || !contactAfter.role) failures.push("Contact context did not progressively resolve after goal input");
+    if(!contactAfter.identity || !contactAfter.role) failures.push("Contact context did not progressively resolve after the goal settled");
     failures.push(...desktop.failures.map((e)=>"desktop request: "+e));
     await closePage(cdp,desktop);
 
