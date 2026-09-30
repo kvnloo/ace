@@ -16,7 +16,7 @@ const requireText = (source: string, pattern: RegExp, message: string) => {
 
 requireText(landing, /ace-core/, 'landing must keep the human-centered system core');
 requireText(landing, /ace-loop-rail/, 'landing must expose the full feedback loop as a visible rail');
-requireText(landing, /ace-signal-band/, 'landing must keep the high-contrast signal band');
+requireText(landing, /ace-signal-field/, 'landing must keep the quiet operating-beliefs field');
 requireText(landing, /ace-paper-section/, 'landing must keep the high-contrast paper proof interlude');
 requireText(landing, /The facility is the environment/, 'landing must retain the top-level ACE thesis');
 requireText(nav, /ace-wordmark/, 'navigation must use ACE editorial chrome');
@@ -70,7 +70,7 @@ console.log(JSON.stringify({
     'loop rail',
     'poster-scale hero signature',
     'paper proof interlude',
-    'signal band',
+    'quiet signal field',
     'responsive mobile',
     'reduced motion',
     'editorial specs',
