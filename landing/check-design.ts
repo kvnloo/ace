@@ -33,6 +33,16 @@ requireText(css, /ace-core-orbit/, 'hero orbit motion contract missing');
 requireText(css, /\.ace-hero::before/, 'poster-scale ACE hero signature missing');
 requireText(css, /\.ace-paper-section/, 'paper/ink editorial interlude missing');
 requireText(css, /ace-map-controls/, 'campus controls design contract missing');
+requireText(css, /ace-campus-enable-3d/, 'adaptive campus control missing');
+requireText(read('components/experience/AceExperienceProvider.tsx'), /from 'lenis'/, 'Lenis runtime missing');
+requireText(read('components/CampusExperience.tsx'), /aceQuality === 'lite'/, 'lite-mode campus gate missing');
+requireText(read('App.tsx'), /DeferredGuide/, 'guide must remain interaction-deferred');
+if (/framer-motion/.test(read('package.json'))) {
+  throw new Error('public runtime must not regress to framer-motion');
+}
+if (/cdn\.tailwindcss\.com/.test(html)) {
+  throw new Error('Tailwind browser CDN must stay removed');
+}
 
 requireText(html, /Barlow\+Condensed/, 'Barlow Condensed must be loaded');
 requireText(html, /IBM\+Plex\+Mono/, 'IBM Plex Mono must be loaded');
