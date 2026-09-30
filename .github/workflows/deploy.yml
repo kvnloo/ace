@@ -23,6 +23,12 @@ jobs:
       DEPLOY_DIR: ${{ runner.temp }}/ace-pages
 
     steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          clean: true
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -33,12 +39,6 @@ jobs:
         run: |
           rm -rf "$DEPLOY_DIR"
           mkdir -p "$DEPLOY_DIR"
-
-      - name: Checkout main
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          clean: true
 
       - name: Build main
         run: |
