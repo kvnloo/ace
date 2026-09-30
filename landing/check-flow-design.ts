@@ -11,6 +11,7 @@ const app = read('App.tsx');
 const sketch = read('components/facility/SketchMap.tsx');
 const scene = read('facility/generateScene.ts');
 const theme = read('facility/theme.ts');
+const motion = read('landing/motion.ts');
 
 const requireText = (source: string, pattern: RegExp, message: string) => {
   if (!pattern.test(source)) throw new Error(message);
@@ -31,13 +32,15 @@ forbidText(css, /\.ace-signal-track\s*\{[^}]*var\(--ace-marquee-x/s, 'manifesto 
 forbidText(css, /\.ace-core-orbit\s*\{[^}]*animation:\s*aceSpin/s, 'hero system must not autonomously orbit');
 
 requireText(landing, /data-motion="stable-human"/, 'hero must declare stable-human motion semantics');
-requireText(landing, /resolve-evidence/, 'principles must expose evidence-resolution semantics');
-requireText(landing, /branch-counterfactual/, 'principles must expose counterfactual semantics');
+requireText(motion, /'Evidence before optimization'[\s\S]*resolve-evidence/, 'principles must expose evidence-resolution semantics');
+requireText(motion, /'Simulation must earn trust'[\s\S]*branch-counterfactual/, 'principles must expose counterfactual semantics');
 requireText(landing, /ace-loop-signal/, 'feedback loop needs one continuous semantic signal');
-requireText(product, /Understand:\s*'clarify'/, 'Understand lane must use clarify semantics');
-requireText(product, /Simulate:\s*'branch'/, 'Simulate lane must use branch semantics');
-requireText(product, /Connect:\s*'contextual-connect'/, 'Connect lane must use contextual connection semantics');
-requireText(product, /Improve:\s*'compare'/, 'Improve lane must use comparative semantics');
+requireText(motion, /Goal:[\s\S]*Observe:[\s\S]*Model:[\s\S]*Hypothesize:[\s\S]*Simulate:[\s\S]*Connect:[\s\S]*Intervene:[\s\S]*Measure:[\s\S]*Verify:[\s\S]*Learn:/, 'all ten loop steps need intentional motion semantics');
+if ((motion.match(/teaches:/g) ?? []).length < 18) throw new Error('semantic motion entries must explain what each effect teaches');
+requireText(motion, /Understand:[\s\S]*behavior:\s*'clarify'/, 'Understand lane must use clarify semantics');
+requireText(motion, /Simulate:[\s\S]*behavior:\s*'branch'/, 'Simulate lane must use branch semantics');
+requireText(motion, /Connect:[\s\S]*behavior:\s*'contextual-connect'/, 'Connect lane must use contextual connection semantics');
+requireText(motion, /Improve:[\s\S]*behavior:\s*'compare'/, 'Improve lane must use comparative semantics');
 
 requireText(specs, /data-stamp=\{category\.stamp\}/, 'spec cards must expose epistemic stamp to material layer');
 forbidText(specs, /ace-spec-enter/, 'spec route should not use staggered entrance animation');
