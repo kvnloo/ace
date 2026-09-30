@@ -1,3 +1,5 @@
+import { ACE_FACILITY_THEME } from './theme.ts';
+
 /** Peak-performance campus program mined from origin/enhance/3D. Not origin measurements. */
 
 export const APEX_BUILDING_ID = 'building_apex';
@@ -19,63 +21,63 @@ export const APEX_ROOMS: VisionRoom[] = [
   {
     id: 'biometric',
     name: 'Biometric lab',
-    color: '#7f1d1d',
+    color: ACE_FACILITY_THEME.vision,
     occupancy: 'VISION — VO2 / force plate / mocap language; capacity unspecified',
     cluster: 'labs',
   },
   {
     id: 'cognitive',
     name: 'Cognitive lab',
-    color: '#1e3a5f',
+    color: ACE_FACILITY_THEME.visionCool,
     occupancy: 'VISION — cognitive training; capacity unspecified',
     cluster: 'labs',
   },
   {
     id: 'movement',
     name: 'Movement studio',
-    color: '#14532d',
+    color: ACE_FACILITY_THEME.visionLife,
     occupancy: 'VISION — movement optimization; capacity unspecified',
     cluster: 'labs',
   },
   {
     id: 'research',
     name: 'Research integration',
-    color: '#3b0764',
+    color: ACE_FACILITY_THEME.vision,
     occupancy: 'VISION — scientists / protocol translation; capacity unspecified',
     cluster: 'labs',
   },
   {
     id: 'nutrition',
     name: 'Nutrition kitchen',
-    color: '#3f3f1a',
+    color: ACE_FACILITY_THEME.visionLife,
     occupancy: 'VISION — personalized nutrition language; capacity unspecified',
     cluster: 'labs',
   },
   {
     id: 'recovery',
     name: 'Recovery / physiotherapy',
-    color: '#0f766e',
+    color: ACE_FACILITY_THEME.visionCool,
     occupancy: 'VISION — recovery suite + physio; capacity unspecified',
     cluster: 'recovery',
   },
   {
     id: 'gym',
     name: 'Gym',
-    color: '#1f2937',
+    color: ACE_FACILITY_THEME.vision,
     occupancy: 'VISION — all-sports training floor; capacity unspecified',
     cluster: 'training',
   },
   {
     id: 'pool',
     name: 'Pool',
-    color: '#1e40af',
+    color: ACE_FACILITY_THEME.water,
     occupancy: 'VISION — aquatic training; capacity unspecified',
     cluster: 'training',
   },
   {
     id: 'clubhouse',
     name: 'Clubhouse',
-    color: '#44403c',
+    color: ACE_FACILITY_THEME.muted,
     occupancy: 'VISION — scientists / athletes / members; capacity unspecified',
     cluster: 'training',
   },

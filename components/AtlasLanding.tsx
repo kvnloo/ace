@@ -13,6 +13,7 @@ import {
   statusLegend,
 } from '../landing/public.ts';
 import { View } from '../types';
+import { loopMotion, motionBehavior, principleMotion } from '../landing/motion.ts';
 
 type Props = {
   onChangeView: (view: View) => void;
@@ -33,7 +34,7 @@ const Stamp: React.FC<{ stamp: string }> = ({ stamp }) => (
 );
 
 const OrbitCore: React.FC = () => (
-  <div className="ace-core-wrap" aria-label="ACE human-centered system diagram">
+  <div className="ace-core-wrap" data-motion="stable-human" aria-label="ACE human-centered system diagram">
     <div className="ace-core">
       <div className="ace-core-ring" aria-hidden="true" />
       <div className="ace-core-orbit" aria-hidden="true">
@@ -99,24 +100,6 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
               </button>
             </div>
 
-            <div className="ace-hero-notes" aria-label="ACE design principles">
-              <div className="ace-hero-note">
-                <strong>{feedbackLoop.length}</strong>
-                <span>steps in the learning loop</span>
-              </div>
-              <div className="ace-hero-note">
-                <strong>{evidenceClasses.length}</strong>
-                <span>evidence classes kept distinct</span>
-              </div>
-              <div className="ace-hero-note">
-                <strong>{architectureFlow.length}</strong>
-                <span>system layers from world to outcome</span>
-              </div>
-              <div className="ace-hero-note">
-                <strong>1</strong>
-                <span>human goal owner at the center</span>
-              </div>
-            </div>
           </div>
 
           <div className="ace-hero-entry ace-hero-entry-core">
@@ -131,11 +114,16 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
 
       <div className="ace-loop-rail" aria-label="ACE feedback loop">
         {feedbackLoop.map((step, index) => (
-          <div className="ace-loop-rail-item" key={step.label}>
+          <div
+            className="ace-loop-rail-item"
+            data-motion={motionBehavior(loopMotion, step.label)}
+            key={step.label}
+          >
             <span>{String(index + 1).padStart(2, '0')}</span>
             <strong>{step.label}</strong>
           </div>
         ))}
+        <div className="ace-loop-signal" aria-hidden="true"><span /></div>
       </div>
 
       <section className="ace-section" data-ace-reveal data-ace-section="01 / Principles">
@@ -153,7 +141,11 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
             </p>
             <div className="ace-manifest-grid">
               {principles.map((principle) => (
-                <article className="ace-manifest-item" key={principle.title}>
+                <article
+                  className="ace-manifest-item"
+                  data-motion={motionBehavior(principleMotion, principle.title)}
+                  key={principle.title}
+                >
                   <ShieldCheck className="ace-item-icon" />
                   <h3>{principle.title}</h3>
                   <p>{principle.body}</p>
@@ -290,7 +282,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
 
       <div className="ace-signal-band" aria-hidden="true">
         <div className="ace-signal-track">
-          {[...marquee, ...marquee].map((item, index) => (
+          {marquee.map((item, index) => (
             <span key={item + index}>✦ {item}</span>
           ))}
         </div>

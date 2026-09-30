@@ -142,8 +142,17 @@ async function createPage(cdp,{width,height,mobile=false,lite=false,reduced=fals
     if(msg.sessionId!==sessionId) return;
     if(msg.method==="Network.responseReceived") resources.push(msg.params.response?.url || "");
     if(msg.method==="Network.loadingFailed"){
-      const url=msg.params?.requestId || "";
-      if(msg.params?.errorText) failures.push(msg.params.errorText+" "+url);
+      const requestId=msg.params?.requestId || "";
+      if(msg.params?.errorText) failures.push("network: "+msg.params.errorText+" "+requestId);
+    }
+    if(msg.method==="Runtime.exceptionThrown"){
+      const details=msg.params?.exceptionDetails;
+      const description=details?.exception?.description || details?.text || "uncaught runtime exception";
+      failures.push("runtime: "+description);
+    }
+    if(msg.method==="Runtime.consoleAPICalled" && msg.params?.type==="error"){
+      const rendered=(msg.params.args || []).map((arg)=>arg.value ?? arg.description ?? "").filter(Boolean).join(" ");
+      failures.push("console: "+(rendered || "console.error"));
     }
   };
   cdp.listeners.add(listener);
@@ -154,7 +163,15 @@ async function createPage(cdp,{width,height,mobile=false,lite=false,reduced=fals
   await sleep(250);
   await evaluate(cdp,sessionId,`document.fonts?.ready?.then(()=>true).catch(()=>true)`,true).catch(()=>{});
 
-  return {sessionId,targetId,resources,failures,cleanup:()=>cdp.listeners.delete(listener)};
+  let mounted=false;
+  for(let i=0;i<40;i++){
+    mounted=await evaluate(cdp,sessionId,`Boolean(document.querySelector("#root > *"))`).catch(()=>false);
+    if(mounted) break;
+    await sleep(100);
+  }
+  if(!mounted) failures.push("runtime: app root did not mount");
+
+  return {sessionId,targetId,resources,failures,mounted,cleanup:()=>cdp.listeners.delete(listener)};
 }
 
 async function evaluate(cdp,sessionId,expression,awaitPromise=false){
@@ -265,6 +282,60 @@ async function main(){
     report.desktop.systemShot=await screenshot(cdp,desktop.sessionId,"desktop-system");
     if(!system.heading) failures.push("System route did not render");
     if(system.overflow>2) failures.push("System horizontal overflow "+system.overflow+"px");
+
+    await evaluate(cdp,desktop.sessionId,`(()=>{
+      const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Spec");
+      button?.click();
+      return Boolean(button);
+    })()`);
+    await sleep(450);
+    const spec=await evaluate(cdp,desktop.sessionId,`(()=>({
+      heading:Boolean(document.querySelector(".ace-spec-head h1")),
+      cards:document.querySelectorAll(".ace-spec-card").length,
+      cardAnimation:document.querySelector(".ace-spec-card") ? getComputedStyle(document.querySelector(".ace-spec-card")).animationName : "",
+      overflow:document.documentElement.scrollWidth-window.innerWidth,
+    }))()`);
+    report.desktop.spec=spec;
+    report.desktop.specShot=await screenshot(cdp,desktop.sessionId,"desktop-spec");
+    if(!spec.heading || spec.cards<8) failures.push("Spec route did not render complete matrix");
+    if(spec.cardAnimation && spec.cardAnimation!=="none") failures.push("Spec route must remain low-motion; card animation="+spec.cardAnimation);
+    if(spec.overflow>2) failures.push("Spec horizontal overflow "+spec.overflow+"px");
+
+    await evaluate(cdp,desktop.sessionId,`(()=>{
+      const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Contact");
+      button?.click();
+      return Boolean(button);
+    })()`);
+    await sleep(350);
+    const contactBefore=await evaluate(cdp,desktop.sessionId,`(()=>({
+      goal:Boolean(document.querySelector("#ace-goal")),
+      identity:Boolean(document.querySelector("#ace-name")),
+      overflow:document.documentElement.scrollWidth-window.innerWidth,
+    }))()`);
+    if(!contactBefore.goal) failures.push("Contact goal field missing");
+    if(contactBefore.identity) failures.push("Contact identity fields must stay deferred until a goal exists");
+    await evaluate(cdp,desktop.sessionId,`(()=>{
+      const el=document.querySelector("#ace-goal");
+      if(!el) return false;
+      const setter=Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,"value")?.set;
+      setter?.call(el,"Improve a measurable skill");
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      return true;
+    })()`);
+    await sleep(140);
+    const contactDuring=await evaluate(cdp,desktop.sessionId,`(()=>({
+      identity:Boolean(document.querySelector("#ace-name")),
+      role:Boolean(document.querySelector("#ace-interest")),
+    }))()`);
+    if(contactDuring.identity || contactDuring.role) failures.push("Contact context revealed before the goal had time to settle");
+    await sleep(420);
+    const contactAfter=await evaluate(cdp,desktop.sessionId,`(()=>({
+      identity:Boolean(document.querySelector("#ace-name")),
+      role:Boolean(document.querySelector("#ace-interest")),
+    }))()`);
+    report.desktop.contact={before:contactBefore,during:contactDuring,after:contactAfter};
+    report.desktop.contactShot=await screenshot(cdp,desktop.sessionId,"desktop-contact");
+    if(!contactAfter.identity || !contactAfter.role) failures.push("Contact context did not progressively resolve after the goal settled");
     failures.push(...desktop.failures.map((e)=>"desktop request: "+e));
     await closePage(cdp,desktop);
 
@@ -302,14 +373,19 @@ async function main(){
     await closePage(cdp,mobile);
 
     const reduced=await createPage(cdp,{width:1280,height:800,reduced:true});
-    const reducedFacts=await evaluate(cdp,reduced.sessionId,`(()=>({
-      motion:document.documentElement.dataset.aceMotion,
-      orbitAnimation:getComputedStyle(document.querySelector(".ace-core-orbit")).animationName,
-      overflow:document.documentElement.scrollWidth-window.innerWidth,
-    }))()`);
+    const reducedFacts=await evaluate(cdp,reduced.sessionId,`(()=>{
+      const orbit=document.querySelector(".ace-core-orbit");
+      return {
+        motion:document.documentElement.dataset.aceMotion,
+        orbitPresent:Boolean(orbit),
+        orbitAnimation:orbit ? getComputedStyle(orbit).animationName : "",
+        overflow:document.documentElement.scrollWidth-window.innerWidth,
+      };
+    })()`);
     report.reduced=reducedFacts;
     report.reduced.shot=await screenshot(cdp,reduced.sessionId,"reduced-home");
     if(reducedFacts.motion!=="reduced") failures.push("reduced-motion dataset missing ("+reducedFacts.motion+")");
+    if(!reducedFacts.orbitPresent) failures.push("reduced-motion home did not mount semantic hero");
     if(reducedFacts.overflow>2) failures.push("reduced-motion horizontal overflow "+reducedFacts.overflow+"px");
     failures.push(...reduced.failures.map((e)=>"reduced request: "+e));
     await closePage(cdp,reduced);

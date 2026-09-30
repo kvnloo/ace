@@ -7,12 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "npm run check:facility && npm run check:landing && npm run check:design",
+    "test": "npm run check:facility && npm run check:landing && npm run check:design && npm run check:flow",
     "check:facility": "esbuild facility/check-scene.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-facility.mjs && node /tmp/ace-check-facility.mjs",
     "check:landing": "esbuild landing/check-copy.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-landing.mjs && node /tmp/ace-check-landing.mjs",
     "check:design": "esbuild landing/check-design.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-design.mjs && node /tmp/ace-check-design.mjs",
+    "check:flow": "esbuild landing/check-flow-design.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-flow-design.mjs && node /tmp/ace-check-flow-design.mjs",
     "visual:smoke": "node scripts/visual-smoke.mjs",
-    "bundle:budget": "node scripts/bundle-budget.mjs"
+    "bundle:budget": "node scripts/bundle-budget.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@pascal-app/core": "1.0.0",

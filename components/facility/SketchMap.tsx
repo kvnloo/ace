@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layers, Ruler, Eye, Box, Maximize2 } from 'lucide-react';
-import { FeatureData } from '../types';
+import { FeatureData } from '../../types';
 import {
   AnnotationMode,
   FEATURES,
@@ -25,7 +25,7 @@ export const ControlsOverlay: React.FC<{
 }> = ({ activeFloor, setActiveFloor, annotationMode, setAnnotationMode }) => {
   return (
     <div className="ace-map-controls">
-      <div className="ace-control-panel">
+      <div className="ace-control-panel ace-augmentation-glass">
         <div className="ace-control-label">
           <Layers size={12} /> Floor
         </div>
@@ -84,13 +84,13 @@ const CourtDiagram: React.FC<{
 }> = ({ variant }) => {
   if (variant === 'farm') {
     return (
-      <div className="absolute inset-0 bg-gradient-to-br from-[#15281b] via-[#111913] to-[#050806]">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0b1a2e] via-[#071426] to-[#050d18]">
         <div
           className="absolute inset-0 opacity-50"
           aria-hidden="true"
           style={{
             backgroundImage:
-              'repeating-linear-gradient(90deg, transparent 0, transparent 18px, rgba(220,255,69,0.13) 18px, rgba(220,255,69,0.13) 19px), repeating-linear-gradient(0deg, transparent 0, transparent 22px, rgba(220,255,69,0.06) 22px, rgba(220,255,69,0.06) 23px)',
+              'repeating-linear-gradient(90deg, transparent 0, transparent 18px, rgba(223,255,79,0.13) 18px, rgba(223,255,79,0.13) 19px), repeating-linear-gradient(0deg, transparent 0, transparent 22px, rgba(223,255,79,0.06) 22px, rgba(223,255,79,0.06) 23px)',
           }}
         />
         <div className="absolute inset-[12%] border border-tennis-yellow/25 bg-black/20 flex flex-col items-center justify-center gap-2 text-center px-3">
@@ -106,11 +106,11 @@ const CourtDiagram: React.FC<{
   if (variant === 'apex') {
     const cells = ['Biometric', 'Cognitive', 'Movement', 'Research', 'Nutrition', 'Recovery', 'Gym', 'Pool', 'Clubhouse'];
     return (
-      <div className="absolute inset-0 bg-gradient-to-br from-[#101411] via-[#090d0a] to-[#050806]">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0b1a2e] via-[#071426] to-[#050d18]">
         <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-8 md:p-16">
           <div className="grid grid-cols-3 gap-px w-full max-w-xl aspect-square border border-white/10 bg-white/10">
             {cells.map((label, index) => (
-              <div key={label} className="bg-[#050806]/95 flex flex-col items-center justify-center min-w-0 p-2">
+              <div key={label} className="bg-[#071426]/95 flex flex-col items-center justify-center min-w-0 p-2">
                 <span className="ace-mono text-[8px] text-tennis-yellow/70 mb-2">{String(index + 1).padStart(2, '0')}</span>
                 <span className="ace-display text-[11px] sm:text-sm tracking-[0.08em] text-white/70 uppercase text-center break-words">
                   {label}
@@ -174,8 +174,8 @@ const CourtDiagram: React.FC<{
   const surface = variant === 'pickle' ? 'bg-[#315f31]' : variant === 'badminton' ? 'bg-[#174a37]' : 'bg-[#36551d]';
 
   return (
-    <div className="absolute inset-0 bg-gradient-to-br from-[#162019] via-[#0d130f] to-[#050806]">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(220,255,69,0.10),_transparent_68%)]" />
+    <div className="absolute inset-0 bg-gradient-to-br from-[#0b1a2e] via-[#071426] to-[#050d18]">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(223,255,79,0.10),_transparent_68%)]" />
       <div className="absolute inset-0 flex items-center justify-center p-8 md:p-20">
         <div className={`relative h-[68%] sm:h-auto sm:w-full sm:max-w-xl aspect-[10/22] ${surface} shadow-[0_0_90px_rgba(0,0,0,0.55)] border border-white/15`}>
           <div className="absolute inset-[6%] border border-white/55">
@@ -222,7 +222,7 @@ export const SketchFallback: React.FC<{
   });
 
   return (
-    <div className="w-full h-full absolute inset-0 bg-[#050806]">
+    <div className="w-full h-full absolute inset-0 bg-[#071426]">
       <ControlsOverlay
         activeFloor={activeFloor}
         setActiveFloor={setActiveFloor}
@@ -232,7 +232,7 @@ export const SketchFallback: React.FC<{
       <CourtDiagram variant={sketch.variant} />
 
       <div className="absolute top-20 sm:top-6 right-3 sm:right-6 pointer-events-none text-right max-w-[72vw] z-10">
-        <span className="inline-block border border-white/15 bg-black/45 backdrop-blur-md px-3 py-2 ace-mono text-[8px] sm:text-[9px] text-tennis-yellow/80 tracking-widest uppercase">
+        <span className="ace-augmentation-glass inline-block border border-white/15 px-3 py-2 ace-mono text-[8px] sm:text-[9px] text-tennis-yellow/80 tracking-widest uppercase">
           CSS FALLBACK · {reason}
         </span>
         {annotationMode === 'MEASUREMENTS' && (

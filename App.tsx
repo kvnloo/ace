@@ -12,14 +12,32 @@ type TransitionDocument = Document & {
   startViewTransition?: (update: () => void) => { finished: Promise<void> };
 };
 
+const CONTACT_CONTEXT_DELAY_MS = 420;
+
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
   const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);
+  const [contactGoal, setContactGoal] = useState('');
+  const [contactContextReady, setContactContextReady] = useState(false);
 
   useEffect(() => {
     document.documentElement.dataset.aceView = currentView.toLowerCase();
     if (currentView !== View.FACILITY_DEMO) setSelectedFeature(null);
   }, [currentView]);
+
+  useEffect(() => {
+    const meaningfulGoal = contactGoal.trim().length >= 12;
+    if (!meaningfulGoal) {
+      setContactContextReady(false);
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setContactContextReady(true);
+    }, CONTACT_CONTEXT_DELAY_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [contactGoal]);
 
   const navigate = React.useCallback((nextView: View) => {
     if (nextView === currentView) {
@@ -43,7 +61,7 @@ const App: React.FC = () => {
   }, [currentView]);
 
   return (
-    <div className="min-h-[100dvh] bg-[#050806] text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
+    <div className="min-h-[100dvh] bg-[#071426] text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
       <a className="ace-skip-link" href="#ace-main">Skip to content</a>
       <NavBar currentView={currentView} onChangeView={navigate} />
 
@@ -56,7 +74,7 @@ const App: React.FC = () => {
 
         {currentView === View.SPECIFICATIONS && (
           <div className="ace-route-enter min-h-[calc(100dvh-72px)]">
-            <Suspense fallback={<div className="w-full min-h-[calc(100dvh-72px)] bg-[#050806] grid place-items-center"><div className="ace-kicker">LOADING SPEC MATRIX</div></div>}>
+            <Suspense fallback={<div className="w-full min-h-[calc(100dvh-72px)] bg-[#071426] grid place-items-center"><div className="ace-kicker">LOADING SPEC MATRIX</div></div>}>
               <Specifications />
             </Suspense>
           </div>
@@ -65,7 +83,7 @@ const App: React.FC = () => {
         {currentView === View.FACILITY_DEMO && (
           <div className="ace-route-enter ace-campus-shell w-full h-[calc(100dvh-72px)] relative overflow-hidden">
             <div className="absolute inset-0 z-0">
-              <Suspense fallback={<div className="w-full h-full bg-[#050806] grid place-items-center"><div className="ace-kicker">LOADING CAMPUS SHELL</div></div>}>
+              <Suspense fallback={<div className="w-full h-full bg-[#071426] grid place-items-center"><div className="ace-kicker">LOADING CAMPUS SHELL</div></div>}>
                 <CampusExperience onFeatureSelect={setSelectedFeature} />
               </Suspense>
             </div>
@@ -78,9 +96,14 @@ const App: React.FC = () => {
 
             <div className="absolute inset-0 z-20 pointer-events-none flex flex-col justify-end">
               {selectedFeature && (
-                <article className="ace-feature-card ace-feature-card-enter">
+                <article className="ace-feature-card ace-feature-card-enter" aria-live="polite">
                   <div className="ace-feature-card-top">
-                    <span className="ace-feature-card-marker" aria-hidden="true"><span /></span>
+                    <div className="ace-feature-card-state">
+                      <span className="ace-feature-card-marker" aria-hidden="true"><span /></span>
+                      <span className="ace-stamp" data-stamp={selectedFeature.id.includes('apex') ? 'VISION' : selectedFeature.id.includes('level3') ? 'PLANNED' : 'SPEC'}>
+                        {selectedFeature.id.includes('apex') ? 'VISION' : selectedFeature.id.includes('level3') ? 'PLANNED' : 'SPEC'}
+                      </span>
+                    </div>
                     <button type="button" onClick={() => setSelectedFeature(null)} className="ace-feature-close">Close</button>
                   </div>
                   <h3>{selectedFeature.title}</h3>
@@ -116,14 +139,28 @@ const App: React.FC = () => {
                   </div>
                 </aside>
 
-                <form className="ace-contact-form" onSubmit={(e) => e.preventDefault()} aria-label="ACE interest form mock">
-                  <div className="ace-form-grid">
-                    <div className="ace-field"><label htmlFor="ace-name" className="ace-label">Full name</label><input id="ace-name" type="text" className="ace-input" placeholder="Jane Doe" /></div>
-                    <div className="ace-field"><label htmlFor="ace-email" className="ace-label">Email</label><input id="ace-email" type="email" className="ace-input" placeholder="jane@example.com" /></div>
+                <form className="ace-contact-form ace-contact-progressive" onSubmit={(e) => e.preventDefault()} aria-label="ACE interest form mock">
+                  <div className="ace-field ace-goal-field">
+                    <label htmlFor="ace-goal" className="ace-label">What do you want to improve?</label>
+                    <textarea
+                      id="ace-goal"
+                      className="ace-textarea"
+                      value={contactGoal}
+                      onChange={(event) => setContactGoal(event.target.value)}
+                      placeholder="A skill, plateau, research question, facility idea..."
+                    />
+                    <p className="ace-field-hint">Start with the human goal. When it becomes concrete, ACE reveals only the routing context it needs.</p>
                   </div>
-                  <div className="ace-field"><label htmlFor="ace-interest" className="ace-label">Role / interest</label><select id="ace-interest" className="ace-select" defaultValue="Founding Member"><option>Founding Member</option><option>Coach / Clinician / Researcher</option><option>Technology Partner</option><option>Potential Investor</option></select></div>
-                  <div className="ace-field"><label htmlFor="ace-message" className="ace-label">What would you want ACE to help you improve?</label><textarea id="ace-message" className="ace-textarea" placeholder="A skill, plateau, research question, facility idea..." /></div>
-                  <button type="button" className="ace-disabled-cta" aria-disabled="true">Waitlist integration planned</button>
+                  {contactContextReady && (
+                    <div className="ace-contact-followup" aria-live="polite">
+                      <div className="ace-field"><label htmlFor="ace-interest" className="ace-label">Which perspective are you bringing?</label><select id="ace-interest" className="ace-select" defaultValue="Founding Member"><option>Founding Member</option><option>Coach / Clinician / Researcher</option><option>Technology Partner</option><option>Potential Investor</option></select></div>
+                      <div className="ace-form-grid">
+                        <div className="ace-field"><label htmlFor="ace-name" className="ace-label">Full name</label><input id="ace-name" type="text" className="ace-input" placeholder="Jane Doe" /></div>
+                        <div className="ace-field"><label htmlFor="ace-email" className="ace-label">Email</label><input id="ace-email" type="email" className="ace-input" placeholder="jane@example.com" /></div>
+                      </div>
+                      <button type="button" className="ace-disabled-cta" aria-disabled="true">Waitlist integration planned</button>
+                    </div>
+                  )}
                   <div className="ace-contact-meta"><span>PRETOTYPE / NO SUBMISSION</span><span>NO MEDICAL OR PERFORMANCE CLAIM IMPLIED</span></div>
                 </form>
               </div>

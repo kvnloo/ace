@@ -1,5 +1,5 @@
 import { FeatureData } from '../types';
-import { APEX_GAP } from './vision.ts';
+import { APEX_BUILDING_ID, APEX_GAP, APEX_LEVEL_ID } from './vision.ts';
 
 export { APEX_BUILDING_ID, APEX_LEVEL_ID, APEX_ROOMS, APEX_ZONE_IDS } from './vision.ts';
 
@@ -18,6 +18,63 @@ export const APEX_OFFSET_X = BUILDING_WIDTH + APEX_GAP;
 export type FloorLevel = 'ALL' | 0 | 1 | 2 | 3 | 'APEX';
 export type AnnotationMode = 'NONE' | 'LABELS' | 'MEASUREMENTS';
 export type SketchVariant = 'tennis' | 'badminton' | 'pickle' | 'farm' | 'campus' | 'apex';
+
+export type FeatureSceneSelection = {
+  floor: FloorLevel;
+  buildingId: string;
+  levelId: string | null;
+  selectedIds: string[];
+};
+
+export const FEATURE_SCENE_SELECTIONS: Record<string, FeatureSceneSelection> = {
+  ground_tennis: {
+    floor: 0,
+    buildingId: BUILDING_ID,
+    levelId: 'level_0',
+    selectedIds: ['zone_tennis'],
+  },
+  level1_racquet: {
+    floor: 1,
+    buildingId: BUILDING_ID,
+    levelId: 'level_1',
+    selectedIds: ['zone_badminton', 'zone_squash', 'zone_table-tennis'],
+  },
+  level2_social: {
+    floor: 2,
+    buildingId: BUILDING_ID,
+    levelId: 'level_2',
+    selectedIds: ['zone_pickleball', 'zone_real-tennis'],
+  },
+  level3_farm: {
+    floor: 3,
+    buildingId: BUILDING_ID,
+    levelId: 'level_3',
+    selectedIds: ['zone_grass-lab'],
+  },
+  apex_labs: {
+    floor: 'APEX',
+    buildingId: APEX_BUILDING_ID,
+    levelId: APEX_LEVEL_ID,
+    selectedIds: ['zone_biometric', 'zone_cognitive', 'zone_movement', 'zone_research', 'zone_nutrition'],
+  },
+  apex_recovery: {
+    floor: 'APEX',
+    buildingId: APEX_BUILDING_ID,
+    levelId: APEX_LEVEL_ID,
+    selectedIds: ['zone_recovery'],
+  },
+  apex_training: {
+    floor: 'APEX',
+    buildingId: APEX_BUILDING_ID,
+    levelId: APEX_LEVEL_ID,
+    selectedIds: ['zone_gym', 'zone_pool', 'zone_clubhouse'],
+  },
+};
+
+export function sceneSelectionForFeature(featureId: string | null | undefined): FeatureSceneSelection | null {
+  if (!featureId) return null;
+  return FEATURE_SCENE_SELECTIONS[featureId] ?? null;
+}
 
 export const FEATURES: FeatureData[] = [
   {
