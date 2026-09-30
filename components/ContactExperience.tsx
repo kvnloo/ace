@@ -87,7 +87,7 @@ const ContactExperience: React.FC = () => {
                     <input id="ace-email" type="email" className="ace-input" autoComplete="email" />
                   </div>
                 </div>
-                <button type="button" className="ace-disabled-cta" aria-disabled="true">Waitlist integration planned</button>
+                <button type="button" className="ace-disabled-cta" aria-disabled="true" disabled>Waitlist integration planned</button>
               </>
             )}
           </div>
