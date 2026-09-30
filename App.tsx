@@ -14,7 +14,7 @@ type TransitionDocument = Document & {
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
-  const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);
+  const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);\n  const [contactGoal, setContactGoal] = useState('');
 
   useEffect(() => {
     document.documentElement.dataset.aceView = currentView.toLowerCase();
@@ -116,14 +116,28 @@ const App: React.FC = () => {
                   </div>
                 </aside>
 
-                <form className="ace-contact-form" onSubmit={(e) => e.preventDefault()} aria-label="ACE interest form mock">
-                  <div className="ace-form-grid">
-                    <div className="ace-field"><label htmlFor="ace-name" className="ace-label">Full name</label><input id="ace-name" type="text" className="ace-input" placeholder="Jane Doe" /></div>
-                    <div className="ace-field"><label htmlFor="ace-email" className="ace-label">Email</label><input id="ace-email" type="email" className="ace-input" placeholder="jane@example.com" /></div>
+                <form className="ace-contact-form ace-contact-progressive" onSubmit={(e) => e.preventDefault()} aria-label="ACE interest form mock">
+                  <div className="ace-field ace-goal-field">
+                    <label htmlFor="ace-goal" className="ace-label">What do you want to improve?</label>
+                    <textarea
+                      id="ace-goal"
+                      className="ace-textarea"
+                      value={contactGoal}
+                      onChange={(event) => setContactGoal(event.target.value)}
+                      placeholder="A skill, plateau, research question, facility idea..."
+                    />
+                    <p className="ace-field-hint">Start with the human goal. ACE can organize context around it.</p>
                   </div>
-                  <div className="ace-field"><label htmlFor="ace-interest" className="ace-label">Role / interest</label><select id="ace-interest" className="ace-select" defaultValue="Founding Member"><option>Founding Member</option><option>Coach / Clinician / Researcher</option><option>Technology Partner</option><option>Potential Investor</option></select></div>
-                  <div className="ace-field"><label htmlFor="ace-message" className="ace-label">What would you want ACE to help you improve?</label><textarea id="ace-message" className="ace-textarea" placeholder="A skill, plateau, research question, facility idea..." /></div>
-                  <button type="button" className="ace-disabled-cta" aria-disabled="true">Waitlist integration planned</button>
+                  {contactGoal.trim().length > 0 && (
+                    <div className="ace-contact-followup" aria-live="polite">
+                      <div className="ace-field"><label htmlFor="ace-interest" className="ace-label">Which perspective are you bringing?</label><select id="ace-interest" className="ace-select" defaultValue="Founding Member"><option>Founding Member</option><option>Coach / Clinician / Researcher</option><option>Technology Partner</option><option>Potential Investor</option></select></div>
+                      <div className="ace-form-grid">
+                        <div className="ace-field"><label htmlFor="ace-name" className="ace-label">Full name</label><input id="ace-name" type="text" className="ace-input" placeholder="Jane Doe" /></div>
+                        <div className="ace-field"><label htmlFor="ace-email" className="ace-label">Email</label><input id="ace-email" type="email" className="ace-input" placeholder="jane@example.com" /></div>
+                      </div>
+                      <button type="button" className="ace-disabled-cta" aria-disabled="true">Waitlist integration planned</button>
+                    </div>
+                  )}
                   <div className="ace-contact-meta"><span>PRETOTYPE / NO SUBMISSION</span><span>NO MEDICAL OR PERFORMANCE CLAIM IMPLIED</span></div>
                 </form>
               </div>
