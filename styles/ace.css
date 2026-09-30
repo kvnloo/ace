@@ -2444,3 +2444,105 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
     animation: none;
   }
 }
+
+
+/* --- Scroll-linked loop + evidence semantics ----------------------------- */
+
+.ace-loop-rail-item {
+  position: relative;
+  transition:
+    background .18s ease,
+    color .18s ease,
+    border-color .18s ease;
+}
+
+.ace-loop-rail-item::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: var(--ace-signal);
+  transition: transform .22s cubic-bezier(.22,1,.36,1);
+}
+
+.ace-loop-rail-item strong,
+.ace-loop-rail-item span {
+  transition: color .18s ease, opacity .18s ease;
+}
+
+html[data-ace-loop="1"] .ace-loop-rail-item:nth-child(1),
+html[data-ace-loop="2"] .ace-loop-rail-item:nth-child(2),
+html[data-ace-loop="3"] .ace-loop-rail-item:nth-child(3),
+html[data-ace-loop="4"] .ace-loop-rail-item:nth-child(4),
+html[data-ace-loop="5"] .ace-loop-rail-item:nth-child(5),
+html[data-ace-loop="6"] .ace-loop-rail-item:nth-child(6),
+html[data-ace-loop="7"] .ace-loop-rail-item:nth-child(7),
+html[data-ace-loop="8"] .ace-loop-rail-item:nth-child(8),
+html[data-ace-loop="9"] .ace-loop-rail-item:nth-child(9),
+html[data-ace-loop="10"] .ace-loop-rail-item:nth-child(10) {
+  background: rgba(220,255,69,.055);
+}
+
+html[data-ace-loop="1"] .ace-loop-rail-item:nth-child(1)::after,
+html[data-ace-loop="2"] .ace-loop-rail-item:nth-child(2)::after,
+html[data-ace-loop="3"] .ace-loop-rail-item:nth-child(3)::after,
+html[data-ace-loop="4"] .ace-loop-rail-item:nth-child(4)::after,
+html[data-ace-loop="5"] .ace-loop-rail-item:nth-child(5)::after,
+html[data-ace-loop="6"] .ace-loop-rail-item:nth-child(6)::after,
+html[data-ace-loop="7"] .ace-loop-rail-item:nth-child(7)::after,
+html[data-ace-loop="8"] .ace-loop-rail-item:nth-child(8)::after,
+html[data-ace-loop="9"] .ace-loop-rail-item:nth-child(9)::after,
+html[data-ace-loop="10"] .ace-loop-rail-item:nth-child(10)::after {
+  transform: scaleX(1);
+}
+
+html[data-ace-loop="1"] .ace-loop-rail-item:nth-child(1) strong,
+html[data-ace-loop="2"] .ace-loop-rail-item:nth-child(2) strong,
+html[data-ace-loop="3"] .ace-loop-rail-item:nth-child(3) strong,
+html[data-ace-loop="4"] .ace-loop-rail-item:nth-child(4) strong,
+html[data-ace-loop="5"] .ace-loop-rail-item:nth-child(5) strong,
+html[data-ace-loop="6"] .ace-loop-rail-item:nth-child(6) strong,
+html[data-ace-loop="7"] .ace-loop-rail-item:nth-child(7) strong,
+html[data-ace-loop="8"] .ace-loop-rail-item:nth-child(8) strong,
+html[data-ace-loop="9"] .ace-loop-rail-item:nth-child(9) strong,
+html[data-ace-loop="10"] .ace-loop-rail-item:nth-child(10) strong {
+  color: var(--ace-signal);
+}
+
+.ace-chip[data-evidence="OBSERVATION"],
+.ace-chip[data-evidence="SELF REPORT"],
+.ace-chip[data-evidence="EXPERT JUDGMENT"] {
+  color: rgba(241,243,232,.82);
+}
+
+.ace-chip[data-evidence="ESTIMATE"],
+.ace-chip[data-evidence="SIMULATION"] {
+  color: var(--ace-cyan);
+  border-color: rgba(140,236,255,.22);
+}
+
+.ace-chip[data-evidence="HYPOTHESIS"],
+.ace-chip[data-evidence="RECOMMENDATION"] {
+  color: var(--ace-orange);
+  border-color: rgba(255,154,98,.22);
+}
+
+.ace-chip[data-evidence="INTERVENTION"] {
+  color: var(--ace-signal);
+  border-color: rgba(220,255,69,.26);
+}
+
+.ace-chip[data-evidence="VERIFIED OUTCOME"] {
+  background: var(--ace-paper);
+  color: var(--ace-ink);
+  border-color: var(--ace-paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ace-loop-rail-item::after {
+    transition: none;
+  }
+}
