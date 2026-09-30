@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Network, ShieldCheck, Users } from 'lucide-react';
+import { Network, ShieldCheck, Users } from 'lucide-react';
 import {
   architectureFlow,
   blueprintPositioning,
@@ -85,7 +85,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
 
             <div className="ace-actions">
               <button type="button" className="ace-action-primary" onClick={() => onChangeView(View.AMENITIES)}>
-                Enter the system <ArrowRight size={17} />
+                Enter the system
               </button>
               <button
                 type="button"
@@ -302,7 +302,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
             Sports, labs, experts, nutrition, recovery, community, agents, simulation and the 3D world only matter if they help a person make a better decision, test it, and learn from what actually happened.
           </p>
           <button type="button" className="ace-action-primary" onClick={() => onChangeView(View.AMENITIES)}>
-            Explore ACE <ArrowRight size={17} />
+            Explore ACE
           </button>
         </div>
       </section>
