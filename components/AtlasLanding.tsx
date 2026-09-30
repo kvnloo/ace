@@ -13,7 +13,7 @@ import {
   statusLegend,
 } from '../landing/public.ts';
 import { View } from '../types';
-import { principleMotion } from '../landing/motion.ts';
+import { loopMotion, principleMotion } from '../landing/motion.ts';
 
 type Props = {
   onChangeView: (view: View) => void;
@@ -133,7 +133,11 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
 
       <div className="ace-loop-rail" aria-label="ACE feedback loop">
         {feedbackLoop.map((step, index) => (
-          <div className="ace-loop-rail-item" key={step.label}>
+          <div
+            className="ace-loop-rail-item"
+            data-motion={loopMotion[step.label]}
+            key={step.label}
+          >
             <span>{String(index + 1).padStart(2, '0')}</span>
             <strong>{step.label}</strong>
           </div>
@@ -257,7 +261,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
             </p>
             <div className="ace-proof-grid">
               {firstProof.map((step) => (
-                <article className="ace-proof-card" key={step.title}>
+                <article className="ace-proof-card" data-stamp={step.stamp} key={step.title}>
                   <Stamp stamp={step.stamp} />
                   <h3>{step.title}</h3>
                   <p>{step.body}</p>
