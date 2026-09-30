@@ -539,3 +539,142 @@ html[data-ace-loop] .ace-core-node::before {
 .ace-surface-tennis { background: #33542D !important; }
 .ace-surface-badminton { background: #265044 !important; }
 .ace-surface-pickle { background: #385F3D !important; }
+
+
+/* --- Noise quarantine ----------------------------------------------------
+ * Nightly explored many interaction primitives. This branch keeps the learning,
+ * but only allows motion that carries meaning.
+ */
+.ace-core-orbit {
+  transform: none !important;
+  transition: none !important;
+}
+
+.ace-core-node,
+html[data-ace-loop] .ace-core-node {
+  transform: translate(-50%, -50%) !important;
+}
+
+.ace-hero::before {
+  transform: translateY(-50%) !important;
+}
+
+.ace-hero-entry {
+  animation: aceFlowResolve .42s ease both !important;
+}
+
+.ace-hero-entry-copy,
+.ace-hero-entry-core {
+  animation-delay: 0ms !important;
+}
+
+.ace-route-enter {
+  animation: none !important;
+}
+
+[data-ace-reveal] {
+  transform: none !important;
+  transition: opacity .34s ease !important;
+}
+
+[data-ace-reveal][data-inview="true"] {
+  transform: none !important;
+}
+
+[data-ace-reveal][data-inview="true"] .ace-manifest-item,
+[data-ace-reveal][data-inview="true"] .ace-flow-row,
+[data-ace-reveal][data-inview="true"] .ace-proof-card,
+[data-ace-reveal][data-inview="true"] .ace-status-card,
+[data-ace-reveal][data-inview="true"] .ace-research-card {
+  animation: none !important;
+}
+
+.ace-flow-row,
+.ace-manifest-item,
+.ace-proof-card,
+.ace-status-card,
+.ace-product-lane,
+.ace-research-card,
+.ace-spec-card,
+.ace-chip,
+.ace-chat-button,
+.ace-chat-send {
+  transform: none !important;
+}
+
+.ace-flow-row:hover,
+.ace-manifest-item:hover,
+.ace-proof-card:hover,
+.ace-status-card:hover,
+.ace-product-lane:hover,
+.ace-research-card:hover,
+.ace-spec-card:hover,
+.ace-chip:hover,
+.ace-chat-button:hover,
+.ace-chat-button:active,
+.ace-chat-send:hover:not(:disabled) {
+  transform: none !important;
+}
+
+.ace-flow-row:hover .ace-flow-title,
+.ace-product-lane:hover h3,
+.ace-research-card:hover h4,
+.ace-spec-card:hover h2 {
+  transform: none !important;
+}
+
+.ace-flow-row::before,
+.ace-manifest-item::before,
+.ace-spec-card::before,
+.ace-product-lane::before,
+.ace-research-card::before {
+  width: 0 !important;
+  transition: none !important;
+}
+
+.ace-action-primary::before,
+.ace-nav-cta::before {
+  content: none !important;
+}
+
+.ace-action-secondary {
+  background-image: none !important;
+  background-size: auto !important;
+}
+
+.ace-scroll-cue {
+  transform: translateX(-50%) !important;
+}
+
+.ace-scroll-cue i {
+  animation: none !important;
+  transform: none !important;
+  opacity: .48;
+}
+
+.ace-mobile-nav,
+.ace-mobile-nav .ace-nav-link {
+  animation: none !important;
+}
+
+::view-transition-old(ace-content) {
+  animation: aceFlowContentOut .12s ease both !important;
+}
+
+::view-transition-new(ace-content) {
+  animation: aceFlowContentIn .20s ease both !important;
+}
+
+@keyframes aceFlowResolve {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes aceFlowContentOut {
+  to { opacity: 0; }
+}
+
+@keyframes aceFlowContentIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
