@@ -1,5 +1,5 @@
 {
-  "name": "ATLAS",
-  "description": "Public pretotype landing for ATLAS — soil to cell. Specify a stack, simulate it, bind a twin. Not the live GPU or UE5 twin.",
+  "name": "ACE",
+  "description": "Public pretotype for ACE: a human-flourishing feedback loop built around digital twins, expert collaboration, simulation, and verified intervention-response.",
   "requestFramePermissions": []
 }
