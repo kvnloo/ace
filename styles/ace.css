@@ -2546,3 +2546,37 @@ html[data-ace-loop="10"] .ace-loop-rail-item:nth-child(10) strong {
     transition: none;
   }
 }
+
+
+/* --- Intent prefetch + adaptive quality --------------------------------- */
+
+html[data-ace-quality="lite"] .ace-page::after {
+  display: none;
+}
+
+html[data-ace-quality="lite"] .ace-core-ring,
+html[data-ace-quality="lite"] .ace-core-orbit,
+html[data-ace-quality="lite"] .ace-core-node,
+html[data-ace-quality="lite"] .ace-signal-track {
+  animation: none;
+}
+
+html[data-ace-quality="lite"] .ace-nav,
+html[data-ace-quality="lite"] .ace-campus-copy,
+html[data-ace-quality="lite"] .ace-control-panel,
+html[data-ace-quality="lite"] .ace-feature-strip,
+html[data-ace-quality="lite"] .ace-feature-card,
+html[data-ace-quality="lite"] .ace-chat-panel {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-ace-scrolling="true"] .ace-page::after {
+  opacity: .45;
+}
+
+html[data-ace-scrolling="true"] .ace-control-panel,
+html[data-ace-scrolling="true"] .ace-feature-strip {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
