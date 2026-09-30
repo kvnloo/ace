@@ -17,6 +17,7 @@ const requireText = (source: string, pattern: RegExp, message: string) => {
 requireText(landing, /ace-core/, 'landing must keep the human-centered system core');
 requireText(landing, /ace-loop-rail/, 'landing must expose the full feedback loop as a visible rail');
 requireText(landing, /ace-signal-band/, 'landing must keep the high-contrast signal band');
+requireText(landing, /ace-paper-section/, 'landing must keep the high-contrast paper proof interlude');
 requireText(landing, /The facility is the environment/, 'landing must retain the top-level ACE thesis');
 requireText(nav, /ace-wordmark/, 'navigation must use ACE editorial chrome');
 requireText(nav, /aria-current/, 'navigation must expose current-page state accessibly');
@@ -29,6 +30,8 @@ requireText(css, /IBM Plex Mono/, 'mono typography token missing');
 requireText(css, /prefers-reduced-motion/, 'reduced-motion fallback missing');
 requireText(css, /@media \(max-width: 780px\)/, 'narrow-mobile design contract missing');
 requireText(css, /ace-core-orbit/, 'hero orbit motion contract missing');
+requireText(css, /\.ace-hero::before/, 'poster-scale ACE hero signature missing');
+requireText(css, /\.ace-paper-section/, 'paper/ink editorial interlude missing');
 requireText(css, /ace-map-controls/, 'campus controls design contract missing');
 
 requireText(html, /Barlow\+Condensed/, 'Barlow Condensed must be loaded');
@@ -55,6 +58,8 @@ console.log(JSON.stringify({
     'editorial typography',
     'human-centered hero',
     'loop rail',
+    'poster-scale hero signature',
+    'paper proof interlude',
     'signal band',
     'responsive mobile',
     'reduced motion',
