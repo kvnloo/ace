@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - nightly
-      - design/flow-state-system-v2
   pull_request:
     branches:
       - nightly
