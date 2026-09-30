@@ -2645,3 +2645,232 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
     transform: none;
   }
 }
+
+
+/* --- Native motion pass: no framer runtime ------------------------------ */
+
+.ace-skip-link {
+  position: fixed;
+  z-index: 120;
+  top: 8px;
+  left: 8px;
+  transform: translateY(-180%);
+  padding: 9px 12px;
+  border: 1px solid var(--ace-signal);
+  background: var(--ace-bg);
+  color: var(--ace-signal);
+  font-family: var(--ace-mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: transform .18s ease;
+}
+
+.ace-skip-link:focus {
+  transform: translateY(0);
+}
+
+.ace-loop-rail {
+  position: sticky;
+  top: 72px;
+  z-index: 42;
+  background: rgba(5,8,6,.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.ace-hero-entry {
+  animation: aceHeroIn .78s cubic-bezier(.22,1,.36,1) both;
+}
+
+.ace-hero-entry-copy {
+  animation-delay: .06s;
+}
+
+.ace-hero-entry-core {
+  animation-delay: .16s;
+}
+
+.ace-route-enter {
+  animation: aceRouteFallbackIn .32s cubic-bezier(.22,1,.36,1) both;
+}
+
+.ace-feature-card-enter,
+.ace-chat-enter {
+  animation: acePanelIn .28s cubic-bezier(.22,1,.36,1) both;
+  transform-origin: bottom right;
+}
+
+.ace-chat-launcher {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 50;
+}
+
+.ace-chat-button {
+  transition:
+    transform .18s cubic-bezier(.22,1,.36,1),
+    background .18s ease,
+    color .18s ease,
+    box-shadow .18s ease;
+}
+
+.ace-chat-button:hover {
+  transform: translateY(-2px) scale(1.025);
+  box-shadow: 0 18px 46px rgba(0,0,0,.42), 0 0 0 1px rgba(220,255,69,.22);
+}
+
+.ace-chat-button:active {
+  transform: translateY(0) scale(.97);
+}
+
+.ace-chat-button-open {
+  background: var(--ace-paper);
+  color: var(--ace-ink);
+}
+
+.ace-chat-message {
+  border: 1px solid var(--ace-line);
+  border-radius: 0;
+}
+
+.ace-chat-message-user {
+  background: rgba(220,255,69,.10);
+  border-color: rgba(220,255,69,.24);
+}
+
+.ace-chat-message-model {
+  background: rgba(241,243,232,.045);
+}
+
+.ace-chat-send {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ace-signal);
+  background: var(--ace-signal);
+  color: var(--ace-ink);
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+
+.ace-chat-send:hover:not(:disabled) {
+  background: var(--ace-paper);
+  transform: translateY(-1px);
+}
+
+.ace-chat-send:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+.ace-spec-enter {
+  animation: aceSpecIn .48s cubic-bezier(.22,1,.36,1) both;
+  animation-delay: calc(var(--ace-index, 0) * 32ms);
+}
+
+[data-ace-reveal][data-inview="true"] .ace-manifest-item,
+[data-ace-reveal][data-inview="true"] .ace-flow-row,
+[data-ace-reveal][data-inview="true"] .ace-proof-card,
+[data-ace-reveal][data-inview="true"] .ace-status-card,
+[data-ace-reveal][data-inview="true"] .ace-research-card {
+  animation: aceChildIn .54s cubic-bezier(.22,1,.36,1) both;
+}
+
+[data-ace-reveal][data-inview="true"] .ace-manifest-item:nth-child(2),
+[data-ace-reveal][data-inview="true"] .ace-flow-row:nth-child(2),
+[data-ace-reveal][data-inview="true"] .ace-proof-card:nth-child(2),
+[data-ace-reveal][data-inview="true"] .ace-status-card:nth-child(2),
+[data-ace-reveal][data-inview="true"] .ace-research-card:nth-child(2) { animation-delay: 45ms; }
+
+[data-ace-reveal][data-inview="true"] .ace-manifest-item:nth-child(3),
+[data-ace-reveal][data-inview="true"] .ace-flow-row:nth-child(3),
+[data-ace-reveal][data-inview="true"] .ace-proof-card:nth-child(3),
+[data-ace-reveal][data-inview="true"] .ace-status-card:nth-child(3),
+[data-ace-reveal][data-inview="true"] .ace-research-card:nth-child(3) { animation-delay: 90ms; }
+
+[data-ace-reveal][data-inview="true"] .ace-manifest-item:nth-child(n+4),
+[data-ace-reveal][data-inview="true"] .ace-flow-row:nth-child(n+4),
+[data-ace-reveal][data-inview="true"] .ace-proof-card:nth-child(n+4),
+[data-ace-reveal][data-inview="true"] .ace-status-card:nth-child(n+4),
+[data-ace-reveal][data-inview="true"] .ace-research-card:nth-child(n+4) { animation-delay: 125ms; }
+
+/* Scroll is now the source of truth for the orbital system. */
+.ace-core-orbit {
+  animation: none;
+  transform: rotate(calc(var(--ace-scroll) * 270deg));
+  transition: transform .08s linear;
+}
+
+.ace-core-node {
+  animation: none;
+  transform: translate(-50%, -50%) rotate(calc(var(--ace-scroll) * -270deg));
+  transition:
+    border-color .2s ease,
+    color .2s ease,
+    background .2s ease,
+    transform .08s linear;
+}
+
+/* The nav progress line changes context while the story moves between epistemic layers. */
+:root { --ace-context: var(--ace-signal); }
+html[data-ace-zone="system-topology"],
+html[data-ace-zone="humans-evidence"] { --ace-context: var(--ace-cyan); }
+html[data-ace-zone="first-proof"] { --ace-context: var(--ace-orange); }
+
+.ace-scroll-meter span {
+  background: linear-gradient(90deg, var(--ace-context), var(--ace-signal));
+}
+
+.ace-nav-link::after {
+  background: var(--ace-context);
+}
+
+@keyframes aceHeroIn {
+  from { opacity: 0; transform: translateY(18px) scale(.995); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+@keyframes aceRouteFallbackIn {
+  from { opacity: 0; transform: translateY(7px); filter: blur(2px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+@keyframes acePanelIn {
+  from { opacity: 0; transform: translateY(16px) scale(.975); filter: blur(3px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+@keyframes aceSpecIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes aceChildIn {
+  from { opacity: .001; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 780px) {
+  .ace-loop-rail { top: 64px; }
+  .ace-chat-launcher { right: 16px; bottom: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ace-hero-entry,
+  .ace-route-enter,
+  .ace-feature-card-enter,
+  .ace-chat-enter,
+  .ace-spec-enter,
+  [data-ace-reveal][data-inview="true"] .ace-manifest-item,
+  [data-ace-reveal][data-inview="true"] .ace-flow-row,
+  [data-ace-reveal][data-inview="true"] .ace-proof-card,
+  [data-ace-reveal][data-inview="true"] .ace-status-card,
+  [data-ace-reveal][data-inview="true"] .ace-research-card {
+    animation: none !important;
+  }
+
+  .ace-core-orbit { transform: none; transition: none; }
+  .ace-core-node { transform: translate(-50%, -50%); transition: none; }
+}
