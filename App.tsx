@@ -19,18 +19,17 @@ const App: React.FC = () => {
   }, [currentView]);
 
   const pageVariants = {
-    initial: { opacity: 0, y: 16 },
-    enter: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
-    exit: { opacity: 0, y: -12, transition: { duration: 0.25 } },
+    initial: { opacity: 0, y: 12 },
+    enter: { opacity: 1, y: 0, transition: { duration: 0.38, ease: [0.22, 1, 0.36, 1] } },
+    exit: { opacity: 0, y: -8, transition: { duration: 0.2 } },
   };
 
   return (
-    <div className="min-h-[100dvh] bg-slate-950 text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
+    <div className="min-h-[100dvh] bg-[#050806] text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
       <NavBar currentView={currentView} onChangeView={setCurrentView} />
 
-      <main className="relative w-full h-[100dvh] pt-[73px] overflow-hidden">
+      <main className="relative w-full h-[100dvh] pt-[72px] overflow-hidden">
         <AnimatePresence mode="wait">
-
           {currentView === View.HOME && (
             <motion.div
               key="home"
@@ -51,7 +50,7 @@ const App: React.FC = () => {
               animate="enter"
               exit="exit"
               variants={pageVariants}
-              className="h-full overflow-y-auto custom-scrollbar pb-20"
+              className="h-full overflow-y-auto custom-scrollbar"
             >
               <Specifications />
             </motion.div>
@@ -64,13 +63,13 @@ const App: React.FC = () => {
               animate="enter"
               exit="exit"
               variants={pageVariants}
-              className="w-full h-full relative bg-gradient-to-b from-slate-900 to-black overflow-hidden"
+              className="ace-campus-shell w-full h-full relative overflow-hidden"
             >
               <div className="absolute inset-0 z-0">
                 <Suspense
                   fallback={
-                    <div className="w-full h-full bg-[#0c0d0b] flex items-center justify-center text-white/40 font-mono text-xs tracking-widest">
-                      LOADING CAMPUS SKETCH
+                    <div className="w-full h-full bg-[#050806] grid place-items-center">
+                      <div className="ace-kicker">LOADING CAMPUS TWIN</div>
                     </div>
                   }
                 >
@@ -78,45 +77,41 @@ const App: React.FC = () => {
                 </Suspense>
               </div>
 
-              <div className="absolute inset-0 z-10 pointer-events-none p-4 sm:p-6 flex flex-col justify-between">
-                <div className="hidden md:block mt-4 max-w-lg">
-                  <span className="text-[10px] font-mono tracking-[0.25em] text-tennis-yellow">VISION · PRETOTYPE</span>
-                  <h2 className="text-3xl font-bold text-white drop-shadow-lg mt-2">{campusNested.title}</h2>
-                  <p className="text-white/60 text-sm drop-shadow-md mt-2">
-                    {campusNested.body}
-                  </p>
-                </div>
+              <div className="ace-campus-copy hidden md:block">
+                <span className="ace-stamp" data-stamp="VISION">VISION · PRETOTYPE</span>
+                <h2>{campusNested.title}</h2>
+                <p>{campusNested.body}</p>
+              </div>
 
+              <div className="absolute inset-0 z-20 pointer-events-none flex flex-col justify-end">
                 <AnimatePresence>
                   {selectedFeature && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 30, scale: 0.97 }}
+                    <motion.article
+                      initial={{ opacity: 0, y: 26, scale: 0.985 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 20, scale: 0.97 }}
-                      className="pointer-events-auto self-end md:self-start md:max-w-sm w-full max-w-[calc(100vw-2rem)] bg-slate-950/90 backdrop-blur-xl border border-tennis-yellow/30 p-5 sm:p-6 rounded-2xl shadow-2xl mb-3 sm:mb-0"
+                      exit={{ opacity: 0, y: 16, scale: 0.985 }}
+                      className="ace-feature-card"
                     >
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="w-12 h-12 rounded-full bg-tennis-yellow/20 flex items-center justify-center text-2xl">
-                          {selectedFeature.icon}
-                        </div>
+                      <div className="ace-feature-card-top">
+                        <span className="ace-feature-card-icon" aria-hidden="true">{selectedFeature.icon}</span>
                         <button
                           type="button"
                           onClick={() => setSelectedFeature(null)}
-                          className="text-white/50 hover:text-white text-xs uppercase tracking-wider font-bold px-2 py-1 rounded-md"
+                          className="ace-feature-close"
                         >
                           Close
                         </button>
                       </div>
-                      <h3 className="text-2xl font-bold text-white mb-2">{selectedFeature.title}</h3>
-                      <p className="text-gray-300 leading-relaxed mb-4">{selectedFeature.description}</p>
+                      <h3>{selectedFeature.title}</h3>
+                      <p>{selectedFeature.description}</p>
                       <button
                         type="button"
                         onClick={() => setCurrentView(View.SPECIFICATIONS)}
-                        className="w-full py-3 bg-tennis-yellow text-tennis-dark font-bold rounded-lg hover:bg-white transition-colors"
+                        className="ace-action-primary"
                       >
                         View facility context
                       </button>
-                    </motion.div>
+                    </motion.article>
                   )}
                 </AnimatePresence>
               </div>
@@ -130,7 +125,7 @@ const App: React.FC = () => {
               animate="enter"
               exit="exit"
               variants={pageVariants}
-              className="h-full overflow-y-auto custom-scrollbar pb-20 px-5 sm:px-6"
+              className="ace-page h-full overflow-y-auto custom-scrollbar px-4 sm:px-6"
             >
               <AtlasProduct onChangeView={setCurrentView} />
             </motion.div>
@@ -143,54 +138,78 @@ const App: React.FC = () => {
               animate="enter"
               exit="exit"
               variants={pageVariants}
-              className="h-full overflow-y-auto custom-scrollbar pb-20 flex items-center justify-center px-5 sm:px-6"
+              className="ace-page h-full overflow-y-auto custom-scrollbar"
             >
-              <div className="max-w-2xl w-full bg-slate-900/60 border border-white/10 p-6 sm:p-8 md:p-12 rounded-3xl backdrop-blur-xl my-8">
-                <div className="text-center mb-10">
-                  <span className="text-[10px] font-mono tracking-[0.25em] text-orange-300">MOCK · DOES NOT SUBMIT</span>
-                  <h2 className="text-3xl md:text-5xl font-bold mb-4 mt-3">Join {product.name}</h2>
-                  <p className="text-gray-400">
-                    Tell us which part of the ACE feedback loop matters to you. This public pretotype does not send or store this form yet.
+              <div className="ace-contact-page">
+                <header className="ace-contact-head">
+                  <div>
+                    <p className="ace-kicker">MOCK · DOES NOT SUBMIT</p>
+                    <h1>
+                      Join <span>{product.name}.</span>
+                    </h1>
+                  </div>
+                  <p>
+                    Tell us where your work intersects the loop. This public pretotype does not transmit or store the form yet; the interface is here to make the intended collaboration surface concrete.
                   </p>
+                </header>
+
+                <div className="ace-contact-layout">
+                  <aside className="ace-contact-context">
+                    <span className="ace-stamp" data-stamp="VISION">HUMANS ARE INFRASTRUCTURE</span>
+                    <h2>Bring a problem worth measuring.</h2>
+                    <p>
+                      ACE is most interesting when a real goal, a real expert, a falsifiable hypothesis, and a repeatable measurement can share the same loop.
+                    </p>
+                    <div className="ace-chip-grid">
+                      <span className="ace-chip">ATHLETE</span>
+                      <span className="ace-chip">COACH</span>
+                      <span className="ace-chip">CLINICIAN</span>
+                      <span className="ace-chip">RESEARCHER</span>
+                      <span className="ace-chip">ENGINEER</span>
+                      <span className="ace-chip">PARTNER</span>
+                    </div>
+                  </aside>
+
+                  <form className="ace-contact-form" onSubmit={(e) => e.preventDefault()} aria-label="ACE interest form mock">
+                    <div className="ace-form-grid">
+                      <div className="ace-field">
+                        <label htmlFor="ace-name" className="ace-label">Full name</label>
+                        <input id="ace-name" type="text" className="ace-input" placeholder="Jane Doe" />
+                      </div>
+                      <div className="ace-field">
+                        <label htmlFor="ace-email" className="ace-label">Email</label>
+                        <input id="ace-email" type="email" className="ace-input" placeholder="jane@example.com" />
+                      </div>
+                    </div>
+
+                    <div className="ace-field">
+                      <label htmlFor="ace-interest" className="ace-label">Role / interest</label>
+                      <select id="ace-interest" className="ace-select" defaultValue="Founding Member">
+                        <option>Founding Member</option>
+                        <option>Coach / Clinician / Researcher</option>
+                        <option>Technology Partner</option>
+                        <option>Potential Investor</option>
+                      </select>
+                    </div>
+
+                    <div className="ace-field">
+                      <label htmlFor="ace-message" className="ace-label">What would you want ACE to help you improve?</label>
+                      <textarea id="ace-message" className="ace-textarea" placeholder="A skill, plateau, research question, facility idea..." />
+                    </div>
+
+                    <button type="button" className="ace-disabled-cta" aria-disabled="true">
+                      Waitlist integration planned
+                    </button>
+
+                    <div className="ace-contact-meta">
+                      <span>PRETOTYPE / NO SUBMISSION</span>
+                      <span>NO MEDICAL OR PERFORMANCE CLAIM IMPLIED</span>
+                    </div>
+                  </form>
                 </div>
-
-                <form className="space-y-6" onSubmit={(e) => e.preventDefault()} aria-label="ACE interest form mock">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label htmlFor="ace-name" className="text-sm font-bold text-gray-300">Full Name</label>
-                      <input id="ace-name" type="text" className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors" placeholder="Jane Doe" />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="ace-email" className="text-sm font-bold text-gray-300">Email Address</label>
-                      <input id="ace-email" type="email" className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors" placeholder="jane@example.com" />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="ace-interest" className="text-sm font-bold text-gray-300">Interest</label>
-                    <select id="ace-interest" className="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors text-gray-300">
-                      <option>Founding Member</option>
-                      <option>Coach / Clinician / Researcher</option>
-                      <option>Technology Partner</option>
-                      <option>Potential Investor</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="ace-message" className="text-sm font-bold text-gray-300">What would you want ACE to help you improve?</label>
-                    <textarea id="ace-message" className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-tennis-yellow transition-colors h-32 resize-y" placeholder="A skill, plateau, research question, facility idea..." />
-                  </div>
-
-                  <button
-                    type="button"
-                    className="w-full border border-tennis-yellow/50 text-tennis-yellow font-bold text-lg py-4 rounded-xl cursor-not-allowed opacity-70"
-                    aria-disabled="true"
-                  >
-                    Waitlist integration planned
-                  </button>
-                </form>
               </div>
             </motion.div>
           )}
-
         </AnimatePresence>
       </main>
 
