@@ -1,20 +1,30 @@
 import {
+  architectureFlow,
+  blueprintPositioning,
   campusNested,
   evidenceClasses,
   expertDomains,
   facilityDomains,
   feedbackLoop,
+  firstProof,
   inFlight,
   lanes,
   pillars,
+  principles,
   product,
+  statusLegend,
 } from './public.ts';
 
 const blob = JSON.stringify({
   product,
+  blueprintPositioning,
   feedbackLoop,
+  principles,
+  architectureFlow,
   pillars,
+  statusLegend,
   lanes,
+  firstProof,
   evidenceClasses,
   expertDomains,
   facilityDomains,
@@ -41,6 +51,10 @@ if (!/private/i.test(product.liveTwin)) {
   throw new Error('private/live product boundary must remain explicit');
 }
 
+if (!/independent/i.test(blueprintPositioning.body) || !/no affiliation/i.test(blueprintPositioning.disclaimer)) {
+  throw new Error('Blueprint inspiration must explicitly avoid affiliation claims');
+}
+
 const loopLabels = feedbackLoop.map((step) => step.label);
 for (const required of ['Goal', 'Observe', 'Model', 'Hypothesize', 'Simulate', 'Connect', 'Intervene', 'Measure', 'Verify', 'Learn']) {
   if (!loopLabels.includes(required)) {
@@ -51,10 +65,27 @@ if (feedbackLoop[0]?.label !== 'Goal' || feedbackLoop.at(-1)?.label !== 'Learn')
   throw new Error('feedback loop must begin with Goal and end with Learn');
 }
 
+for (const required of ['Human agency first', 'Evidence before optimization', 'Humans are infrastructure', 'Simulation must earn trust']) {
+  if (!principles.some((principle) => principle.title === required)) {
+    throw new Error(`principles missing ${required}`);
+  }
+}
+
+for (const required of ['Physical ACE', 'Evidence', 'Digital twins', 'Simulation', 'Humans + agents', 'Verified outcome']) {
+  if (!architectureFlow.some((node) => node.label === required)) {
+    throw new Error(`architecture flow missing ${required}`);
+  }
+}
+
 const stamps = new Set(pillars.map((p) => p.stamp));
 for (const required of ['LIVE', 'SHIPPED', 'RESEARCH', 'VISION']) {
   if (!stamps.has(required as (typeof pillars)[number]['stamp'])) {
     throw new Error(`pillars must include ${required}`);
+  }
+}
+for (const required of ['LIVE', 'SHIPPED', 'RESEARCH', 'VISION', 'SPEC', 'MOCK']) {
+  if (!statusLegend.some((item) => item.stamp === required)) {
+    throw new Error(`status legend missing ${required}`);
   }
 }
 
@@ -62,6 +93,10 @@ for (const group of ['Understand', 'Simulate', 'Connect', 'Improve']) {
   if (!lanes.some((lane) => lane.group === group)) {
     throw new Error(`system lanes must include ${group}`);
   }
+}
+
+if (firstProof.length < 4 || !firstProof.some((item) => /intervention/i.test(item.title + item.body))) {
+  throw new Error('first proof must close the loop through an intervention');
 }
 
 for (const evidence of ['OBSERVATION', 'ESTIMATE', 'HYPOTHESIS', 'SIMULATION', 'INTERVENTION', 'VERIFIED OUTCOME']) {
@@ -82,6 +117,10 @@ if (!expertDomains.some((domain) => /nutrition/i.test(domain))) {
 if (!facilityDomains.some((domain) => /research/i.test(domain))) {
   throw new Error('facility vision must include research');
 }
+if (!facilityDomains.some((domain) => /agriculture/i.test(domain))) {
+  throw new Error('facility vision must include controlled-environment agriculture');
+}
+
 if (!inFlight.some((item) => /WorldKernel|physics/i.test(item.title))) {
   throw new Error('research tracks must mention the world/physics substrate');
 }
@@ -91,6 +130,12 @@ if (!inFlight.some((item) => /evidence|provenance/i.test(item.title))) {
 if (!inFlight.some((item) => /athlete|intervention/i.test(item.title))) {
   throw new Error('research tracks must include a falsifiable athlete loop');
 }
+if (!inFlight.some((item) => /expert|authority/i.test(item.title))) {
+  throw new Error('research tracks must include human/agent authority');
+}
+if (!inFlight.some((item) => /3D|traceable/i.test(item.title))) {
+  throw new Error('research tracks must include traceable 3D projection');
+}
 
 if (campusNested.stamp === 'LIVE') {
   throw new Error('campus sketch is not the live GPU twin');
@@ -98,8 +143,12 @@ if (campusNested.stamp === 'LIVE') {
 if (!/Pascal|campus/i.test(campusNested.body)) {
   throw new Error('campus nested copy must identify the Pascal/campus pretotype');
 }
+
 if (/learning styles/i.test(blob)) {
   throw new Error('landing must not use fixed learning-style claims');
+}
+if (/USAPA 2025/i.test(blob)) {
+  throw new Error('landing must not regress to stale USAPA 2025 claims');
 }
 
 const leaks = [
@@ -130,9 +179,12 @@ console.log(
       ok: true,
       product: product.name,
       loopSteps: feedbackLoop.length,
+      principles: principles.length,
+      architectureNodes: architectureFlow.length,
       pillars: pillars.length,
       lanes: lanes.length,
       evidenceClasses: evidenceClasses.length,
+      firstProof: firstProof.length,
     },
     null,
     2,
