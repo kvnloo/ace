@@ -230,7 +230,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
                   Every meaningful claim keeps its type, provenance, uncertainty and intended use. A prediction can be useful without being confused for an observation.
                 </p>
                 <div className="ace-chip-grid">
-                  {evidenceClasses.map((item) => <span key={item} className="ace-chip">{item}</span>)}
+                  {evidenceClasses.map((item) => <span key={item} className="ace-chip" data-evidence={item}>{item}</span>)}
                 </div>
               </article>
             </div>
