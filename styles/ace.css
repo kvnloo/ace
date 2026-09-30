@@ -2002,3 +2002,79 @@ body {
     display: none;
   }
 }
+
+
+/* --- Editorial paper interlude ------------------------------------------ */
+
+.ace-paper-section {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  padding-left: max(24px, calc((100vw - 1440px) / 2));
+  padding-right: max(24px, calc((100vw - 1440px) / 2));
+  border-top: 0;
+  background:
+    linear-gradient(90deg, rgba(9,12,10,.035) 1px, transparent 1px),
+    var(--ace-paper);
+  background-size: 32px 32px;
+  color: var(--ace-ink);
+}
+
+.ace-paper-section .ace-kicker {
+  color: #465500;
+}
+
+.ace-paper-section .ace-number {
+  color: rgba(9,12,10,.13);
+}
+
+.ace-paper-section .ace-section-index::after {
+  background: linear-gradient(#465500, transparent);
+}
+
+.ace-paper-section .ace-section-lede,
+.ace-paper-section .ace-proof-card p {
+  color: rgba(9,12,10,.64);
+}
+
+.ace-paper-section .ace-proof-grid,
+.ace-paper-section .ace-proof-card {
+  border-color: rgba(9,12,10,.18);
+}
+
+.ace-paper-section .ace-proof-card {
+  background: rgba(9,12,10,.015);
+}
+
+.ace-paper-section .ace-proof-card:hover {
+  background: rgba(9,12,10,.04);
+}
+
+.ace-paper-section .ace-proof-card::after {
+  color: rgba(9,12,10,.38);
+}
+
+.ace-paper-section .ace-proof-card:last-child::after {
+  color: #465500;
+}
+
+.ace-paper-section .ace-stamp {
+  color: rgba(9,12,10,.55);
+}
+
+.ace-paper-section .ace-stamp[data-stamp="LIVE"],
+.ace-paper-section .ace-stamp[data-stamp="SHIPPED"] {
+  color: #465500;
+}
+
+.ace-paper-section .ace-stamp[data-stamp="RESEARCH"] {
+  color: #08677a;
+}
+
+@media (max-width: 780px) {
+  .ace-paper-section {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
