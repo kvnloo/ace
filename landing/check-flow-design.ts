@@ -13,6 +13,7 @@ const scene = read('facility/generateScene.ts');
 const theme = read('facility/theme.ts');
 const motion = read('landing/motion.ts');
 const html = read('index.html');
+const experience = read('components/experience/AceExperienceProvider.tsx');
 
 const requireText = (source: string, pattern: RegExp, message: string) => {
   if (!pattern.test(source)) throw new Error(message);
@@ -43,6 +44,8 @@ forbidText(css, /\.ace-flow-row:hover[\s\S]{0,320}translateY\(-2px\)/, 'content 
 forbidText(css, /@keyframes\s+aceHeroIn[\s\S]{0,220}translate/i, 'hero entry should resolve optically in place, not travel into view');
 forbidText(css, /@keyframes\s+aceRouteFallbackIn[\s\S]{0,180}translate/i, 'route fallback should preserve spatial context');
 forbidText(css, /@keyframes\s+acePanelIn[\s\S]{0,220}translate/i, 'augmentation panels should resolve where they belong instead of flying in');
+forbidText(css, /--ace-scroll-px|--ace-velocity/, 'ambient scroll parallax/velocity should not animate the environment');
+forbidText(experience, /--ace-scroll-px|--ace-velocity|--ace-grid-y|--ace-marquee-x/, 'runtime should publish only narrative scroll state, not decorative motion fields');
 
 requireText(landing, /data-motion="stable-human"/, 'hero must declare stable-human motion semantics');
 requireText(motion, /'Evidence before optimization'[\s\S]*resolve-evidence/, 'principles must expose evidence-resolution semantics');
