@@ -19,8 +19,8 @@ const forbidText = (source: string, pattern: RegExp, message: string) => {
   if (pattern.test(source)) throw new Error(message);
 };
 
-requireText(css, /--ace-bg:\s*#0[56789a-f][0-9a-f]{4}/i, 'ACE base must remain a deep navy family rather than green-black');
-requireText(css, /--ace-signal:\s*#d[c-f]ff4[0-9a-f]/i, 'ACE tennis-lime signal token missing');
+requireText(css, /--ace-bg:\\s*#071426/i, 'ACE base must remain the canonical deep navy substrate');
+requireText(css, /--ace-signal:\\s*#dfff4f/i, 'ACE must retain the original tennis-green signal');
 requireText(css, /--ace-glass:/, 'augmentation glass token missing');
 requireText(css, /--ace-radius-human:/, 'human interaction radius token missing');
 requireText(css, /--ace-motion-settle:/, 'semantic motion timing token missing');
