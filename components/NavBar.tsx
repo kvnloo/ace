@@ -47,7 +47,7 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
   }, [currentView]);
 
   const prefetch = (view: View) => {
-    if (view === View.FACILITY_DEMO) void import('./PascalFacility');
+    if (view === View.FACILITY_DEMO) void import('./CampusExperience');
     if (view === View.SPECIFICATIONS) void import('./Specifications');
   };
 
