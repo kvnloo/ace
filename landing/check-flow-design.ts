@@ -46,6 +46,8 @@ forbidText(css, /@keyframes\s+aceRouteFallbackIn[\s\S]{0,180}translate/i, 'route
 forbidText(css, /@keyframes\s+acePanelIn[\s\S]{0,220}translate/i, 'augmentation panels should resolve where they belong instead of flying in');
 forbidText(css, /--ace-scroll-px|--ace-velocity/, 'ambient scroll parallax/velocity should not animate the environment');
 forbidText(experience, /--ace-scroll-px|--ace-velocity|--ace-grid-y|--ace-marquee-x/, 'runtime should publish only narrative scroll state, not decorative motion fields');
+forbidText(css, /@keyframes\s+ace(?:RouteOut|RouteIn|ContentOut|ContentIn|MenuIn|MenuItemIn)[\s\S]{0,260}transform:/i, 'navigation continuity should resolve in place instead of moving the viewport');
+forbidText(css, /animation:\s*ace(?:Pulse|Cue|Corridor)\b/i, 'continuous decorative loops must not run in the flow-state system');
 
 requireText(landing, /data-motion="stable-human"/, 'hero must declare stable-human motion semantics');
 requireText(motion, /'Evidence before optimization'[\s\S]*resolve-evidence/, 'principles must expose evidence-resolution semantics');
