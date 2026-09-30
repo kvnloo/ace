@@ -1,4 +1,6 @@
-import { ACE_FACILITY_THEME } from './theme.ts';\n\n/** Peak-performance campus program mined from origin/enhance/3D. Not origin measurements. */
+import { ACE_FACILITY_THEME } from './theme.ts';
+
+/** Peak-performance campus program mined from origin/enhance/3D. Not origin measurements. */
 
 export const APEX_BUILDING_ID = 'building_apex';
 export const APEX_LEVEL_ID = 'level_apex';
