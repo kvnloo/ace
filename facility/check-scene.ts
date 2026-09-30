@@ -1,5 +1,6 @@
 import { generateLawnTechScene, sceneStats } from './generateScene.ts';
 import { APEX_BUILDING_ID, APEX_LEVEL_ID, APEX_ROOMS, APEX_ZONE_IDS } from './vision.ts';
+import { FACILITY_COLORS } from './theme.ts';
 
 const scene = generateLawnTechScene();
 const stats = sceneStats(scene);
@@ -51,6 +52,25 @@ if (siteMeta.envelope !== 'inferred-140x120') {
 }
 if (siteMeta.vision !== 'peak-performance-campus') {
   throw new Error('site vision stamp missing');
+}
+
+const colorOf = (id: string) => String((scene.nodes[id] as { color?: string } | undefined)?.color ?? '');
+const expectedColors: Record<string, string> = {
+  'zone_tennis': FACILITY_COLORS.spec.tennis,
+  'zone_badminton': FACILITY_COLORS.spec.badminton,
+  'zone_pickleball': FACILITY_COLORS.spec.pickleball,
+  'zone_grass-lab': FACILITY_COLORS.spec.grassLab,
+};
+for (const [id, expected] of Object.entries(expectedColors)) {
+  if (colorOf(id) !== expected) {
+    throw new Error(`${id} palette drift: expected ${expected}, got ${colorOf(id)}`);
+  }
+}
+for (const room of APEX_ROOMS) {
+  const expected = FACILITY_COLORS.vision[room.id as keyof typeof FACILITY_COLORS.vision];
+  if (expected && colorOf(`zone_${room.id}`) !== expected) {
+    throw new Error(`zone_${room.id} VISION palette drift`);
+  }
 }
 
 const site = scene.nodes.site_naperville as { children?: string[] };
