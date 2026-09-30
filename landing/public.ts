@@ -24,6 +24,17 @@ export type LoopStep = {
   body: string;
 };
 
+export type Principle = {
+  title: string;
+  body: string;
+};
+
+export type ArchitectureNode = {
+  label: string;
+  body: string;
+  stamp?: HonestyStamp;
+};
+
 export const product = {
   name: 'ACE',
   host: 'ACE public pretotype',
@@ -35,6 +46,14 @@ export const product = {
     'PRETOTYPE landing. This page communicates the system direction and runs the Pascal campus sketch; it does not run the private 60Hz twin, clinical systems, or the experimental simulation stack.',
   liveTwin:
     'The live racquet twin and Facility OS remain private products. Research and vision capabilities below are labeled explicitly and are not presented as shipped.',
+};
+
+export const blueprintPositioning = {
+  eyebrow: 'FROM MEASUREMENT TO A HUMAN ECOSYSTEM',
+  title: 'Continuous measurement is only the beginning.',
+  body:
+    'ACE is inspired by the ambition behind quantified-self and Blueprint-style continuous measurement, but it is independent and broader: connect measurement to coaches, clinicians, researchers, peers, simulation, learning, nutrition, environment, and real-world follow-through.',
+  disclaimer: 'Independent concept; no affiliation with Blueprint or Bryan Johnson is implied.',
 };
 
 export const feedbackLoop: LoopStep[] = [
@@ -80,6 +99,58 @@ export const feedbackLoop: LoopStep[] = [
   },
 ];
 
+export const principles: Principle[] = [
+  {
+    title: 'Human agency first',
+    body: 'The participant owns the goal. The system should help them reason and act, not quietly substitute its own objective.',
+  },
+  {
+    title: 'Evidence before optimization',
+    body: 'Observation, estimate, hypothesis, simulation, intervention, and outcome must remain distinguishable and traceable.',
+  },
+  {
+    title: 'Humans are infrastructure',
+    body: 'Coaches, PTs, physicians, scientists, nutritionists, farmers, mentors, and peers are part of the system itself.',
+  },
+  {
+    title: 'Simulation must earn trust',
+    body: 'A beautiful digital twin is not enough. Simulations should be judged by whether predictions and intervention rankings transfer to reality.',
+  },
+];
+
+export const architectureFlow: ArchitectureNode[] = [
+  {
+    label: 'Physical ACE',
+    body: 'Courts, labs, rehab, training, nutrition, recovery, farm, community and experts.',
+    stamp: 'VISION',
+  },
+  {
+    label: 'Evidence',
+    body: 'Sensors, CV, instruments, self-report and expert observations with provenance + uncertainty.',
+    stamp: 'RESEARCH',
+  },
+  {
+    label: 'Digital twins',
+    body: 'Personal, facility and world state as evidence-backed models rather than invented truth.',
+    stamp: 'RESEARCH',
+  },
+  {
+    label: 'Simulation',
+    body: 'WorldKernel + independently codified sport/domain packages + counterfactual branches.',
+    stamp: 'RESEARCH',
+  },
+  {
+    label: 'Humans + agents',
+    body: 'Agents extend attention; users and scoped experts retain authority over consequential actions.',
+    stamp: 'VISION',
+  },
+  {
+    label: 'Verified outcome',
+    body: 'Real follow-up measurement determines whether the model, intervention and product deserve to survive.',
+    stamp: 'VISION',
+  },
+];
+
 export const pillars: Pillar[] = [
   {
     stamp: 'LIVE',
@@ -101,6 +172,15 @@ export const pillars: Pillar[] = [
     title: 'Human flourishing loop',
     body: 'Personal evidence graphs, response-to-intervention learning, expert routing, scoped agents, nutrition/recovery, research, community, and a traceable 3D view converge around one goal: help people become more capable.',
   },
+];
+
+export const statusLegend: Array<{ stamp: HonestyStamp; body: string }> = [
+  { stamp: 'LIVE', body: 'Running system exists elsewhere.' },
+  { stamp: 'SHIPPED', body: 'Implemented capability exists, sometimes on demo/sim data.' },
+  { stamp: 'RESEARCH', body: 'Active engineering or experiment; not yet a product claim.' },
+  { stamp: 'VISION', body: 'Intended direction; architecture or campus concept.' },
+  { stamp: 'SPEC', body: 'Sourced facility/program fact.' },
+  { stamp: 'MOCK', body: 'UI or behavior is illustrative.' },
 ];
 
 export const lanes: Lane[] = [
@@ -139,6 +219,29 @@ export const lanes: Lane[] = [
       'Progression and gamification should reflect verified capability gains',
       'The system should shrink or stop features that fail to improve real outcomes',
     ],
+  },
+];
+
+export const firstProof: Pillar[] = [
+  {
+    stamp: 'LIVE',
+    title: '1. Play a real session',
+    body: 'Start from an actual or intentionally synthetic pickleball session in the existing twin.',
+  },
+  {
+    stamp: 'RESEARCH',
+    title: '2. Build the evidence chain',
+    body: 'Capture rally observations, rule-adjudicated state, one capability estimate, and explicit uncertainty.',
+  },
+  {
+    stamp: 'RESEARCH',
+    title: '3. Compare alternatives',
+    body: 'Replay the rally and test a small number of simulated tactical or training alternatives.',
+  },
+  {
+    stamp: 'VISION',
+    title: '4. Human-approved intervention',
+    body: 'A coach/user chooses one intervention. The next comparable session decides whether the hypothesis survives.',
   },
 ];
 
