@@ -48,7 +48,7 @@ const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
   return (
     <React.Suspense
       fallback={
-        <div className="w-full h-full bg-[#050806] grid place-items-center">
+        <div className="w-full h-full bg-[#071426] grid place-items-center">
           <div className="ace-kicker">LOADING CAMPUS TWIN</div>
         </div>
       }
