@@ -50,6 +50,8 @@ forbidText(css, /@keyframes\s+ace(?:RouteOut|RouteIn|ContentOut|ContentIn|MenuIn
 forbidText(css, /animation:\s*ace(?:Pulse|Cue|Corridor)\b/i, 'continuous decorative loops must not run in the flow-state system');
 forbidText(css, /data-ace-loop/, 'the feedback loop must remain continuous rather than flashing discrete scroll-index states');
 forbidText(experience, /dataset\.aceLoop/, 'runtime must not quantize scroll into ten visual loop states');
+requireText(css, /data-ace-scrolling="true"\]\[data-ace-direction="down"\][\s\S]{0,500}\.ace-nav-links/, 'desktop navigation must recede during forward reading');
+requireText(css, /\.ace-nav:(?:hover|focus-within)[\s\S]{0,500}\.ace-nav-links/, 'navigation must recover full clarity on intentional attention');
 
 requireText(landing, /data-motion="stable-human"/, 'hero must declare stable-human motion semantics');
 requireText(motion, /'Evidence before optimization'[\s\S]*resolve-evidence/, 'principles must expose evidence-resolution semantics');
