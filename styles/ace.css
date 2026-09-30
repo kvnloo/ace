@@ -3441,3 +3441,49 @@ html[data-ace-menu="open"] {
     animation: none;
   }
 }
+
+
+/* --- Scroll-coupled field motion ---------------------------------------- */
+
+.ace-page::before {
+  background-position:
+    0 var(--ace-grid-y, 0px),
+    0 var(--ace-grid-y, 0px);
+  transition: background-position .06s linear;
+}
+
+.ace-signal-track {
+  animation: none;
+  transform: translate3d(var(--ace-marquee-x, 0px), 0, 0);
+  transition: transform .06s linear;
+  will-change: transform;
+}
+
+.ace-feature-strip,
+.ace-map-controls {
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x proximity;
+}
+
+.ace-feature-btn,
+.ace-floor-btn,
+.ace-overlay-btn {
+  scroll-snap-align: start;
+}
+
+@media (max-width: 780px) {
+  .ace-feature-strip,
+  .ace-map-controls {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ace-page::before,
+  .ace-signal-track {
+    transition: none;
+    transform: none;
+    background-position: 0 0;
+  }
+}
