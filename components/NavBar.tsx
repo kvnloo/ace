@@ -7,13 +7,43 @@ interface NavBarProps {
   onChangeView: (view: View) => void;
 }
 
+const fallbackSection: Record<View, string> = {
+  [View.HOME]: 'Manifesto',
+  [View.AMENITIES]: 'System',
+  [View.SPECIFICATIONS]: 'Spec',
+  [View.FACILITY_DEMO]: 'Campus',
+  [View.INVEST]: 'Contact',
+};
+
 const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
+  const [liveSection, setLiveSection] = React.useState(fallbackSection[currentView]);
   const base = import.meta.env.BASE_URL;
   const channel = base.includes('/nightly/') ? 'NIGHTLY' : base.includes('/dev/') ? 'DEV' : 'PRETOTYPE';
 
   React.useEffect(() => {
     setIsMobileOpen(false);
+    setLiveSection(fallbackSection[currentView]);
+
+    if (currentView !== View.HOME) return;
+
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-ace-section]'));
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        const label = (visible.target as HTMLElement).dataset.aceSection;
+        if (label) setLiveSection(label);
+      },
+      { rootMargin: '-34% 0px -52% 0px', threshold: [0, 0.2, 0.5, 1] },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, [currentView]);
 
   const NavItem = ({ view, label }: { view: View; label: string }) => (
@@ -41,6 +71,7 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
         </button>
 
         <span className="ace-channel">{channel}</span>
+        <span className="ace-live-section" aria-live="polite">{liveSection}</span>
 
         <nav className="ace-nav-links" aria-label="Primary navigation">
           <NavItem view={View.HOME} label="Manifesto" />
@@ -74,6 +105,7 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
           </nav>
         )}
       </div>
+      <div className="ace-scroll-meter" aria-hidden="true"><span /></div>
     </header>
   );
 };
