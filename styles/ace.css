@@ -3,7 +3,7 @@
   --ace-bg-2: #0b1a2e;
   --ace-paper: #f1f3e8;
   --ace-ink: #071426;
-  --ace-signal: #dcff45;
+  --ace-signal: #dfff4f;
   --ace-cyan: #8fb7c9;
   --ace-orange: #e6ad78;
   --ace-line: rgba(241, 243, 232, 0.16);
@@ -27,7 +27,7 @@ html {
 
 body {
   background:
-    radial-gradient(circle at 78% -8%, rgba(220, 255, 69, 0.1), transparent 28rem),
+    radial-gradient(circle at 78% -8%, rgba(223, 255, 79, 0.1), transparent 28rem),
     radial-gradient(circle at 12% 40%, rgba(140, 236, 255, 0.045), transparent 30rem),
     var(--ace-bg);
 }
@@ -128,7 +128,7 @@ body {
   border-radius: 50%;
   align-self: center;
   background: var(--ace-signal);
-  box-shadow: 0 0 28px rgba(220,255,69,.75);
+  box-shadow: 0 0 28px rgba(223,255,79,.75);
 }
 
 .ace-channel {
@@ -333,7 +333,7 @@ body {
 }
 
 .ace-action-secondary:hover {
-  background: rgba(220,255,69,.08);
+  background: rgba(223,255,79,.08);
 }
 
 .ace-hero-notes {
@@ -415,7 +415,7 @@ body {
 
 .ace-core::before {
   inset: 0;
-  box-shadow: 0 0 90px rgba(220,255,69,.07);
+  box-shadow: 0 0 90px rgba(223,255,79,.07);
 }
 
 .ace-core::after {
@@ -425,7 +425,7 @@ body {
 
 .ace-core-ring {
   inset: 31%;
-  border-color: rgba(220,255,69,.45);
+  border-color: rgba(223,255,79,.45);
   animation: acePulse 4.8s ease-in-out infinite;
 }
 
@@ -440,7 +440,7 @@ body {
   text-align: center;
   background: var(--ace-signal);
   color: var(--ace-ink);
-  box-shadow: 0 0 72px rgba(220,255,69,.25);
+  box-shadow: 0 0 72px rgba(223,255,79,.25);
 }
 
 .ace-core-human strong {
@@ -824,8 +824,8 @@ body {
 
 .ace-status-card[data-stamp="LIVE"] {
   background:
-    linear-gradient(135deg, rgba(220,255,69,.11), transparent 60%),
-    rgba(220,255,69,.025);
+    linear-gradient(135deg, rgba(223,255,79,.11), transparent 60%),
+    rgba(223,255,79,.025);
 }
 
 .ace-signal-band {
@@ -1310,7 +1310,7 @@ body {
 }
 
 .ace-spec-card:hover {
-  background: linear-gradient(180deg, rgba(220,255,69,.055), rgba(241,243,232,.008));
+  background: linear-gradient(180deg, rgba(223,255,79,.055), rgba(241,243,232,.008));
   transform: translateY(-2px);
 }
 
@@ -1394,7 +1394,7 @@ body {
   padding: 34px;
   border-right: 1px solid var(--ace-line);
   background:
-    linear-gradient(180deg, rgba(220,255,69,.045), transparent 44%),
+    linear-gradient(180deg, rgba(223,255,79,.045), transparent 44%),
     rgba(241,243,232,.01);
 }
 
@@ -1465,7 +1465,7 @@ body {
 .ace-select:focus,
 .ace-textarea:focus {
   border-color: var(--ace-signal);
-  background: rgba(220,255,69,.025);
+  background: rgba(223,255,79,.025);
 }
 
 .ace-select {
@@ -2099,7 +2099,7 @@ body {
 
 html[data-ace-scrolling="true"] .ace-nav {
   background: rgba(7, 20, 38, .94);
-  border-bottom-color: rgba(220, 255, 69, .22);
+  border-bottom-color: rgba(223, 255, 79, .22);
   box-shadow: 0 10px 28px rgba(0, 0, 0, .16);
 }
 
@@ -2136,7 +2136,7 @@ html[data-ace-scrolling="true"] .ace-live-section {
   transform-origin: left center;
   transform: scaleX(var(--ace-scroll));
   background: linear-gradient(90deg, var(--ace-signal), var(--ace-cyan));
-  box-shadow: 0 0 18px rgba(220, 255, 69, .35);
+  box-shadow: 0 0 18px rgba(223, 255, 79, .35);
   transition: transform .06s linear;
 }
 
@@ -2150,7 +2150,7 @@ html[data-ace-scrolling="true"] .ace-live-section {
 
 html[data-ace-scrolling="true"] .ace-wordmark-mark {
   transform: scale(1.18);
-  box-shadow: 0 0 34px rgba(220,255,69,.85);
+  box-shadow: 0 0 34px rgba(223,255,79,.85);
 }
 
 [data-ace-reveal] {
@@ -2223,8 +2223,8 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
 
 .ace-chip:hover {
   color: var(--ace-paper);
-  background: rgba(220,255,69,.055);
-  border-color: rgba(220,255,69,.26);
+  background: rgba(223,255,79,.055);
+  border-color: rgba(223,255,79,.26);
   transform: translateY(-1px);
 }
 
@@ -2246,7 +2246,7 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
 }
 
 .ace-action-secondary {
-  background-image: linear-gradient(90deg, rgba(220,255,69,.08), transparent);
+  background-image: linear-gradient(90deg, rgba(223,255,79,.08), transparent);
   background-size: 0% 100%;
   background-repeat: no-repeat;
   transition:
@@ -2268,8 +2268,8 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
 .ace-core:hover .ace-core-human {
   transform: scale(1.035);
   box-shadow:
-    0 0 0 1px rgba(220,255,69,.35),
-    0 0 92px rgba(220,255,69,.32);
+    0 0 0 1px rgba(223,255,79,.35),
+    0 0 92px rgba(223,255,79,.32);
 }
 
 .ace-core-node {
@@ -2284,7 +2284,7 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
 }
 
 .ace-signal-line {
-  text-shadow: 0 0 calc(12px + (var(--ace-velocity) * 5px)) rgba(220,255,69,.14);
+  text-shadow: 0 0 calc(12px + (var(--ace-velocity) * 5px)) rgba(223,255,79,.14);
 }
 
 .ace-paper-section {
@@ -2424,7 +2424,7 @@ html[data-ace-loop="7"] .ace-loop-rail-item:nth-child(7),
 html[data-ace-loop="8"] .ace-loop-rail-item:nth-child(8),
 html[data-ace-loop="9"] .ace-loop-rail-item:nth-child(9),
 html[data-ace-loop="10"] .ace-loop-rail-item:nth-child(10) {
-  background: rgba(220,255,69,.055);
+  background: rgba(223,255,79,.055);
 }
 
 html[data-ace-loop="1"] .ace-loop-rail-item:nth-child(1)::after,
@@ -2473,7 +2473,7 @@ html[data-ace-loop="10"] .ace-loop-rail-item:nth-child(10) strong {
 
 .ace-chip[data-evidence="INTERVENTION"] {
   color: var(--ace-signal);
-  border-color: rgba(220,255,69,.26);
+  border-color: rgba(223,255,79,.26);
 }
 
 .ace-chip[data-evidence="VERIFIED OUTCOME"] {
@@ -2525,7 +2525,7 @@ html[data-ace-scrolling="true"] .ace-feature-strip {
   border: 1px solid var(--ace-signal);
   border-radius: 50%;
   background: transparent;
-  box-shadow: 0 0 22px rgba(220,255,69,.22);
+  box-shadow: 0 0 22px rgba(223,255,79,.22);
   transition:
     transform .28s cubic-bezier(.22,1,.36,1),
     box-shadow .28s ease,
@@ -2538,7 +2538,7 @@ html[data-ace-scrolling="true"] .ace-feature-strip {
   inset: 5px;
   border-radius: 50%;
   background: var(--ace-signal);
-  box-shadow: 0 0 10px rgba(220,255,69,.75);
+  box-shadow: 0 0 10px rgba(223,255,79,.75);
 }
 
 .ace-wordmark-mark::after {
@@ -2649,7 +2649,7 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
 
 .ace-chat-button:hover {
   transform: translateY(-2px) scale(1.025);
-  box-shadow: 0 18px 46px rgba(0,0,0,.42), 0 0 0 1px rgba(220,255,69,.22);
+  box-shadow: 0 18px 46px rgba(0,0,0,.42), 0 0 0 1px rgba(223,255,79,.22);
 }
 
 .ace-chat-button:active {
@@ -2667,8 +2667,8 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
 }
 
 .ace-chat-message-user {
-  background: rgba(220,255,69,.10);
-  border-color: rgba(220,255,69,.24);
+  background: rgba(223,255,79,.10);
+  border-color: rgba(223,255,79,.24);
 }
 
 .ace-chat-message-model {
@@ -2808,7 +2808,7 @@ html {
   gap: 2px;
   min-width: 210px;
   padding: 11px 13px;
-  border: 1px solid rgba(220,255,69,.36);
+  border: 1px solid rgba(223,255,79,.36);
   background: rgba(7,20,38,.88);
   color: var(--ace-signal);
   text-align: left;
@@ -2966,7 +2966,7 @@ html[data-ace-view="facility_demo"] .fixed.bottom-4.right-4 {
   height: 6px;
   border-radius: 50%;
   background: var(--ace-signal);
-  box-shadow: 0 0 12px rgba(220,255,69,.55);
+  box-shadow: 0 0 12px rgba(223,255,79,.55);
 }
 
 .ace-action-primary::after,
@@ -3025,8 +3025,8 @@ html[data-ace-loop="9"] .ace-core-node[data-node="outcome"]::before {
 html[data-ace-loop="1"] .ace-core-human,
 html[data-ace-loop="10"] .ace-core-human {
   box-shadow:
-    0 0 0 1px rgba(220,255,69,.42),
-    0 0 96px rgba(220,255,69,.30);
+    0 0 0 1px rgba(223,255,79,.42),
+    0 0 96px rgba(223,255,79,.30);
 }
 
 @media (max-width: 780px) {
@@ -3089,8 +3089,8 @@ html[data-ace-loop="10"] .ace-core-human {
 }
 
 .ace-menu-button[aria-expanded="true"] {
-  border-color: rgba(220,255,69,.45);
-  background: rgba(220,255,69,.055);
+  border-color: rgba(223,255,79,.45);
+  background: rgba(223,255,79,.055);
   transform: rotate(2deg);
 }
 
@@ -3189,7 +3189,7 @@ html[data-ace-loop="10"] .ace-core-human {
 
 .ace-spec-card[data-stamp*="SHIPPED"] .ace-spec-card-icon {
   color: var(--ace-signal);
-  border-color: rgba(220,255,69,.3);
+  border-color: rgba(223,255,79,.3);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3257,7 +3257,7 @@ html[data-ace-menu="open"] {
     gap: 0;
     overflow-y: auto;
     background:
-      linear-gradient(180deg, rgba(220,255,69,.025), transparent 38%),
+      linear-gradient(180deg, rgba(223,255,79,.025), transparent 38%),
       var(--ace-bg);
     border-bottom: 0;
   }
@@ -3397,7 +3397,7 @@ html[data-ace-menu="open"] {
 .ace-campus-fallback-art {
   overflow: hidden;
   background:
-    radial-gradient(circle at 50% 48%, rgba(220,255,69,.055), transparent 24rem),
+    radial-gradient(circle at 50% 48%, rgba(223,255,79,.055), transparent 24rem),
     linear-gradient(135deg, #0b1a2e, #071426 62%, #071426);
 }
 
@@ -3453,7 +3453,7 @@ html[data-ace-menu="open"] {
 }
 
 .ace-campus-apex {
-  border-color: rgba(220,255,69,.32);
+  border-color: rgba(223,255,79,.32);
 }
 
 .ace-campus-zone-id {
@@ -3499,12 +3499,12 @@ html[data-ace-menu="open"] {
   display: grid;
   grid-template-columns: repeat(3,1fr);
   gap: 1px;
-  background: rgba(220,255,69,.13);
+  background: rgba(223,255,79,.13);
 }
 
 .ace-campus-apex-cells span {
   background: rgba(7,20,38,.94);
-  box-shadow: inset 0 0 0 1px rgba(220,255,69,.08);
+  box-shadow: inset 0 0 0 1px rgba(223,255,79,.08);
 }
 
 .ace-campus-human-hub {
@@ -3517,12 +3517,12 @@ html[data-ace-menu="open"] {
   place-items: center;
   align-content: center;
   border-radius: 50%;
-  border: 1px solid rgba(220,255,69,.48);
+  border: 1px solid rgba(223,255,79,.48);
   background: var(--ace-signal);
   color: var(--ace-ink);
   box-shadow:
-    0 0 0 10px rgba(220,255,69,.025),
-    0 0 52px rgba(220,255,69,.11);
+    0 0 0 10px rgba(223,255,79,.025),
+    0 0 52px rgba(223,255,79,.11);
 }
 
 .ace-campus-human-hub > span {
@@ -3549,11 +3549,11 @@ html[data-ace-menu="open"] {
   position: relative;
   min-width: 0;
   height: 1px;
-  background: linear-gradient(90deg, var(--ace-line-strong), rgba(220,255,69,.42));
+  background: linear-gradient(90deg, var(--ace-line-strong), rgba(223,255,79,.42));
 }
 
 .ace-campus-corridor-right {
-  background: linear-gradient(90deg, rgba(220,255,69,.42), rgba(140,236,255,.34));
+  background: linear-gradient(90deg, rgba(223,255,79,.42), rgba(140,236,255,.34));
 }
 
 .ace-campus-corridor i {
