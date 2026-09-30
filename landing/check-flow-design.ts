@@ -55,6 +55,7 @@ requireText(css, /data-ace-scrolling="true"\]\[data-ace-direction="down"\][\s\S]
 requireText(css, /\.ace-nav:(?:hover|focus-within)[\s\S]{0,500}\.ace-nav-links/, 'navigation must recover full clarity on intentional attention');
 
 requireText(landing, /data-motion="stable-human"/, 'hero must declare stable-human motion semantics');
+forbidText(landing, /ace-hero-notes/, 'hero must not become a metrics dashboard; the human loop is the focal idea');
 requireText(motion, /'Evidence before optimization'[\s\S]*resolve-evidence/, 'principles must expose evidence-resolution semantics');
 requireText(motion, /'Simulation must earn trust'[\s\S]*branch-counterfactual/, 'principles must expose counterfactual semantics');
 requireText(landing, /ace-loop-signal/, 'feedback loop needs one continuous semantic signal');
