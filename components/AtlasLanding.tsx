@@ -131,7 +131,6 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
       </section>
 
       <div className="ace-loop-rail" aria-label="ACE feedback loop">
-        <div className="ace-loop-signal" aria-hidden="true"><span /></div>
         {feedbackLoop.map((step, index) => (
           <div
             className="ace-loop-rail-item"
@@ -142,6 +141,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
             <strong>{step.label}</strong>
           </div>
         ))}
+        <div className="ace-loop-signal" aria-hidden="true"><span /></div>
       </div>
 
       <section className="ace-section" data-ace-reveal data-ace-section="01 / Principles">
