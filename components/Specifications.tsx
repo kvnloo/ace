@@ -136,9 +136,9 @@ const Specifications: React.FC = () => {
             const Icon = category.icon;
             return (
               <article
-                className="ace-spec-card ace-spec-enter"
+                className="ace-spec-card"
                 key={category.category}
-                style={{ '--ace-index': Math.min(index, 8) } as React.CSSProperties}
+                data-stamp={category.stamp}
               >
                 <div className="ace-spec-card-head">
                   <div className="ace-spec-card-icon"><Icon size={19} /></div>
