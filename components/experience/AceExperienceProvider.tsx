@@ -60,7 +60,6 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
     const onScroll = (instance: Lenis) => {
       const progress = Number.isFinite(instance.progress) ? instance.progress : 0;
       setRootVar('--ace-scroll', progress.toFixed(5));
-      setRootVar('--ace-scroll-px', `${Math.min(progress * 72, 72).toFixed(2)}px`);
       root.dataset.aceDirection = instance.direction < 0 ? 'up' : 'down';
       root.dataset.aceLoop = String(Math.min(10, Math.max(1, Math.floor(progress * 10) + 1)));
       root.dataset.aceScrolling = 'true';
