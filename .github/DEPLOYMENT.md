@@ -1,91 +1,71 @@
-# GitHub Pages Deployment Guide
+# GitHub Pages deployment
 
-This project uses GitHub Actions to automatically build and deploy to GitHub Pages from both `main` and `dev` branches.
+ACE publishes three build channels into one GitHub Pages artifact.
 
-## Setup Instructions
+## Channels
 
-### 1. Enable GitHub Pages
+- main -> https://kvnloo.github.io/ace/
+- dev -> https://kvnloo.github.io/ace/dev/
+- nightly -> https://kvnloo.github.io/ace/nightly/
 
-1. Go to your repository settings
-2. Navigate to **Pages** (under "Code and automation")
-3. Under **Source**, select **GitHub Actions**
+The nightly branch is the fast-moving preview surface. It can receive direct landing-page work without merging into dev or main.
 
-### 2. Deployment Strategy
+## Workflow
 
-The workflow automatically:
-- Builds the `main` branch and deploys to the root path (`/`)
-- Builds the `dev` branch and deploys to `/dev/` path
-- Combines both builds into a single deployment
+.github/workflows/deploy.yml triggers on pushes to main, dev, or nightly.
 
-### 3. Triggering Deployments
+Every run:
+1. checks out main and builds with VITE_BASE_PATH=/ace/;
+2. checks out dev and builds with VITE_BASE_PATH=/ace/dev/;
+3. checks out nightly and builds with VITE_BASE_PATH=/ace/nightly/;
+4. uploads the combined artifact;
+5. deploys it through GitHub Pages.
 
-Deployments are triggered automatically when you push to either:
-- `main` branch → Updates the production site at `https://<username>.github.io/<repo>/`
-- `dev` branch → Updates the dev site at `https://<username>.github.io/<repo>/dev/`
+Every successful deployment refreshes all three channels from their current branch heads.
 
-Both builds happen together regardless of which branch triggered the workflow, ensuring both sites are always in sync with their respective branches.
+## Setup
 
-## URLs
+Repository Settings -> Pages -> Source must be GitHub Actions.
 
-After deployment, your sites will be available at:
+The workflow needs contents:read, pages:write, and id-token:write.
 
-- **Production (main)**: `https://<username>.github.io/<repo>/`
-- **Development (dev)**: `https://<username>.github.io/<repo>/dev/`
+The deployment job deliberately avoids a branch-restricted environment gate so pushes to the dedicated nightly branch can publish the preview channel.
 
-Rolling Verified OSS Loop branches (`preview`, `nightly`) are **not** Pages slots. Do not invent `/preview/<slug>/` without extending `.github/workflows/deploy.yml`.
+## Verification
 
-Replace `<username>` with your GitHub username and `<repo>` with your repository name.
+Before treating a channel as live:
+1. confirm the latest Validate workflow passed;
+2. confirm Build and Deploy to GitHub Pages passed both build and deploy jobs;
+3. open the exact channel URL;
+4. verify the channel badge;
+5. check asset requests and console errors;
+6. exercise Home, System, Facility, Campus, Contact, and the pretotype guide on desktop and narrow mobile widths.
 
-## How It Works
+## Local channel builds
 
-1. **Build Phase**:
-   - Checks out and builds the `main` branch with base path `/`
-   - Checks out and builds the `dev` branch with base path `/dev/`
-   - Combines both builds into a single deployment directory
+Production-shaped:
+VITE_BASE_PATH=/ace/ npm run build
 
-2. **Deploy Phase**:
-   - Uploads the combined artifact to GitHub Pages
-   - GitHub Pages serves both sites from the same deployment
+Dev-shaped:
+VITE_BASE_PATH=/ace/dev/ npm run build
 
-## Monitoring Deployments
-
-- Go to the **Actions** tab in your repository
-- View the workflow runs for "Build and Deploy to GitHub Pages"
-- Each run shows the build and deployment status
+Nightly-shaped:
+VITE_BASE_PATH=/ace/nightly/ npm run build
 
 ## Troubleshooting
 
-### Deployment fails with "Artifact not found"
-- Ensure the workflow has completed the build phase successfully
-- Check the build logs for any compilation errors
+Build succeeds but deploy job never starts:
+Check repository Pages/environment protection settings. A branch-restricted github-pages environment can reject pushes from nightly before any deploy action executes.
 
-### 404 errors on deployed site
-- Verify that GitHub Pages is enabled in repository settings
-- Confirm the source is set to "GitHub Actions"
-- Wait a few minutes after deployment completes
+Artifact missing:
+The build job must finish all three branch builds and the upload-pages-artifact step.
 
-### Assets not loading correctly
-- Check that `vite.config.ts` correctly sets the base path
-- Verify the VITE_BASE_PATH environment variable in the workflow
+Assets 404 under a channel:
+Confirm the matching VITE_BASE_PATH: /ace/, /ace/dev/, or /ace/nightly/.
 
-## Local Testing
+A later deployment removes nightly:
+The workflow merged to the branch that triggered Pages must include the nightly build. Until this workflow lands in long-lived branches, a legacy main/dev deployment can replace the Pages artifact without /nightly/. Pushing nightly again restores it.
 
-To test the builds locally before deploying:
+## Honesty
 
-```bash
-# Test main branch build
-VITE_BASE_PATH=/ npm run build
-npm run preview
-
-# Test dev branch build
-VITE_BASE_PATH=/dev/ npm run build
-npm run preview
-```
-
-## Customization
-
-To modify deployment behavior, edit `.github/workflows/deploy.yml`:
-
-- Change trigger branches in the `on.push.branches` section
-- Modify base paths in the `VITE_BASE_PATH` environment variables
-- Adjust Node.js version in the `Setup Node.js` step
+A successful Pages deployment proves only that the public pretotype built and published. It does not prove that private twins, simulations, facility automation, coaching interventions, or campus systems are live.
