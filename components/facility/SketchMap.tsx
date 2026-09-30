@@ -84,7 +84,7 @@ const CourtDiagram: React.FC<{
 }> = ({ variant }) => {
   if (variant === 'farm') {
     return (
-      <div className="absolute inset-0 bg-gradient-to-br from-[#15281b] via-[#111913] to-[#050806]">
+      <div className="absolute inset-0 ace-facility-farm">
         <div
           className="absolute inset-0 opacity-50"
           aria-hidden="true"
@@ -106,11 +106,11 @@ const CourtDiagram: React.FC<{
   if (variant === 'apex') {
     const cells = ['Biometric', 'Cognitive', 'Movement', 'Research', 'Nutrition', 'Recovery', 'Gym', 'Pool', 'Clubhouse'];
     return (
-      <div className="absolute inset-0 bg-gradient-to-br from-[#101411] via-[#090d0a] to-[#050806]">
+      <div className="absolute inset-0 ace-facility-apex">
         <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-8 md:p-16">
           <div className="grid grid-cols-3 gap-px w-full max-w-xl aspect-square border border-white/10 bg-white/10">
             {cells.map((label, index) => (
-              <div key={label} className="bg-[#050806]/95 flex flex-col items-center justify-center min-w-0 p-2">
+              <div key={label} className="ace-facility-bg/95 flex flex-col items-center justify-center min-w-0 p-2">
                 <span className="ace-mono text-[8px] text-tennis-yellow/70 mb-2">{String(index + 1).padStart(2, '0')}</span>
                 <span className="ace-display text-[11px] sm:text-sm tracking-[0.08em] text-white/70 uppercase text-center break-words">
                   {label}
@@ -171,10 +171,10 @@ const CourtDiagram: React.FC<{
     );
   }
 
-  const surface = variant === 'pickle' ? 'bg-[#315f31]' : variant === 'badminton' ? 'bg-[#174a37]' : 'bg-[#36551d]';
+  const surface = variant === 'pickle' ? 'ace-surface-pickle' : variant === 'badminton' ? 'ace-surface-badminton' : 'ace-surface-tennis';
 
   return (
-    <div className="absolute inset-0 bg-gradient-to-br from-[#162019] via-[#0d130f] to-[#050806]">
+    <div className="absolute inset-0 ace-facility-court">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(220,255,69,0.10),_transparent_68%)]" />
       <div className="absolute inset-0 flex items-center justify-center p-8 md:p-20">
         <div className={`relative h-[68%] sm:h-auto sm:w-full sm:max-w-xl aspect-[10/22] ${surface} shadow-[0_0_90px_rgba(0,0,0,0.55)] border border-white/15`}>
@@ -222,7 +222,7 @@ export const SketchFallback: React.FC<{
   });
 
   return (
-    <div className="w-full h-full absolute inset-0 bg-[#050806]">
+    <div className="w-full h-full absolute inset-0 ace-facility-bg">
       <ControlsOverlay
         activeFloor={activeFloor}
         setActiveFloor={setActiveFloor}
