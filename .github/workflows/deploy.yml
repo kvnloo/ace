@@ -5,13 +5,13 @@ on:
     branches:
       - main
       - dev
+      - nightly
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -19,67 +19,76 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_DIR: ${{ runner.temp }}/ace-pages
 
     steps:
-      - name: Checkout main branch
-        uses: actions/checkout@v4
-        with:
-          ref: main
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: npm
 
-      - name: Install dependencies
-        run: npm install
+      - name: Prepare deploy directory
+        run: |
+          rm -rf "$DEPLOY_DIR"
+          mkdir -p "$DEPLOY_DIR"
 
-      - name: Build main branch
-        run: npm run build
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          clean: true
+
+      - name: Build main
+        run: |
+          npm ci
+          npm run build
+          cp -r dist/. "$DEPLOY_DIR/"
         env:
           VITE_BASE_PATH: '/ace/'
 
-      - name: Create deploy directory
-        run: mkdir -p deploy
-
-      - name: Copy main build to root
-        run: cp -r dist/* deploy/
-
-      - name: Checkout dev branch
+      - name: Checkout dev
         uses: actions/checkout@v4
         with:
           ref: dev
-          clean: false
+          clean: true
 
-      - name: Clean previous build
-        run: rm -rf dist node_modules
-
-      - name: Install dependencies for dev
-        run: npm install
-
-      - name: Build dev branch
-        run: npm run build
+      - name: Build dev
+        run: |
+          npm ci
+          npm run build
+          mkdir -p "$DEPLOY_DIR/dev"
+          cp -r dist/. "$DEPLOY_DIR/dev/"
         env:
           VITE_BASE_PATH: '/ace/dev/'
 
-      - name: Copy dev build to /dev subdirectory
+      - name: Checkout nightly
+        uses: actions/checkout@v4
+        with:
+          ref: nightly
+          clean: true
+
+      - name: Build nightly
         run: |
-          mkdir -p deploy/dev
-          cp -r dist/* deploy/dev/
+          npm ci
+          npm run build
+          mkdir -p "$DEPLOY_DIR/nightly"
+          cp -r dist/. "$DEPLOY_DIR/nightly/"
+        env:
+          VITE_BASE_PATH: '/ace/nightly/'
 
       - name: Upload combined artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./deploy
+          path: ${{ env.DEPLOY_DIR }}
 
   deploy:
     needs: build-and-deploy
     runs-on: ubuntu-latest
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
