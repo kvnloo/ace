@@ -123,6 +123,10 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
             <OrbitCore />
           </div>
         </div>
+        <div className="ace-scroll-cue" aria-hidden="true">
+          <span>Scroll / trace the loop</span>
+          <i />
+        </div>
       </section>
 
       <div className="ace-loop-rail" aria-label="ACE feedback loop">
