@@ -33,7 +33,7 @@ const Stamp: React.FC<{ stamp: string }> = ({ stamp }) => (
 );
 
 const OrbitCore: React.FC = () => (
-  <div className="ace-core-wrap" aria-label="ACE human-centered system diagram">
+  <div className="ace-core-wrap" data-motion="stable-human" aria-label="ACE human-centered system diagram">
     <div className="ace-core">
       <div className="ace-core-ring" aria-hidden="true" />
       <div className="ace-core-orbit" aria-hidden="true">
@@ -129,7 +129,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
         </div>
       </section>
 
-      <div className="ace-loop-rail" aria-label="ACE feedback loop">
+      <div className="ace-loop-rail" aria-label="ACE feedback loop">\n        <div className="ace-loop-signal" aria-hidden="true"><span /></div>
         {feedbackLoop.map((step, index) => (
           <div className="ace-loop-rail-item" key={step.label}>
             <span>{String(index + 1).padStart(2, '0')}</span>
