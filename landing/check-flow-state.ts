@@ -26,6 +26,10 @@ requireText(css, /--ace-bg:\s*#071426/i, 'ACE navy substrate missing');
 requireText(css, /--ace-signal:\s*#DFFF4F/i, 'legacy tennis-lime signal must be restored');
 requireText(css, /--ace-glass-bg:/, 'augmentation glass token missing');
 requireText(css, /\.ace-core-trace-signal/, 'continuous feedback-loop signal missing');
+requireText(css, /\.ace-core-orbit\s*\{[^}]*transform:\s*none\s*!important/s, 'hero orbit must remain spatially stable');
+requireText(css, /\[data-ace-reveal\]\s*\{[^}]*transform:\s*none\s*!important/s, 'reveal motion must not translate content');
+requireText(css, /\.ace-scroll-cue i\s*\{[^}]*animation:\s*none\s*!important/s, 'scroll cue must not pulse autonomously');
+requireText(css, /\.ace-action-primary::before[\s\S]*content:\s*none\s*!important/, 'decorative CTA shine sweep must stay disabled');
 requireText(css, /\.ace-progressive-field/, 'goal-first contact progressive disclosure styling missing');
 requireText(css, /prefers-reduced-motion/, 'reduced-motion flow-state rules missing');
 
