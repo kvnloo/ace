@@ -238,7 +238,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
         </div>
       </section>
 
-      <section className="ace-section">
+      <section className="ace-section ace-paper-section">
         <div className="ace-section-grid">
           <div className="ace-section-index">
             <span className="ace-number">04</span>
