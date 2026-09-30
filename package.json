@@ -10,7 +10,8 @@
     "test": "npm run check:facility && npm run check:landing && npm run check:design",
     "check:facility": "esbuild facility/check-scene.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-facility.mjs && node /tmp/ace-check-facility.mjs",
     "check:landing": "esbuild landing/check-copy.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-landing.mjs && node /tmp/ace-check-landing.mjs",
-    "check:design": "esbuild landing/check-design.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-design.mjs && node /tmp/ace-check-design.mjs"
+    "check:design": "esbuild landing/check-design.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-design.mjs && node /tmp/ace-check-design.mjs",
+    "visual:smoke": "node scripts/visual-smoke.mjs"
   },
   "dependencies": {
     "@pascal-app/core": "1.0.0",
@@ -31,6 +32,7 @@
     "typescript": "~5.8.2",
     "vite": "^6.2.0",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "puppeteer-core": "^24.15.0"
   }
 }
