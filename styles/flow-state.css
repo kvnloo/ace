@@ -96,10 +96,19 @@ body {
 }
 
 .ace-action-primary:hover,
-.ace-action-primary:focus-visible,
+.ace-action-primary:focus-visible {
+  background: var(--ace-signal);
+  border-color: var(--ace-signal);
+  color: var(--ace-ink);
+  box-shadow: 0 0 0 1px rgba(223,255,79,.22), 0 8px 28px rgba(223,255,79,.08);
+}
+
 .ace-nav-cta:hover,
 .ace-nav-cta:focus-visible {
-  box-shadow: 0 0 0 1px rgba(223,255,79,.22), 0 8px 28px rgba(223,255,79,.08);
+  background: rgba(223,255,79,.08);
+  border-color: rgba(223,255,79,.52);
+  color: var(--ace-signal);
+  box-shadow: 0 0 0 1px rgba(223,255,79,.12);
 }
 
 .ace-action-secondary:hover,
@@ -517,6 +526,7 @@ html[data-ace-loop] .ace-core-node::before {
 
 /* CSS fallback and Pascal shell use the same environmental family. */
 .ace-facility-bg { background: var(--ace-bg) !important; }
+.ace-facility-cell { background: rgba(7,20,38,.95) !important; }
 .ace-facility-farm {
   background: linear-gradient(145deg, #173247, #10263B 54%, #071426) !important;
 }
