@@ -2911,7 +2911,7 @@ html[data-ace-view="facility_demo"] .fixed.bottom-4.right-4 {
   z-index: 5;
   left: 50%;
   bottom: 22px;
-  transform: translateX(-50%) translateY(calc(var(--ace-scroll) * 18px));
+  transform: translateX(-50%);
   display: grid;
   justify-items: center;
   gap: 8px;
