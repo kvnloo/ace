@@ -101,8 +101,8 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
               <button
                 type="button"
                 className="ace-action-secondary"
-                onPointerEnter={() => void import('./PascalFacility')}
-                onFocus={() => void import('./PascalFacility')}
+                onPointerEnter={() => void import('./CampusExperience')}
+                onFocus={() => void import('./CampusExperience')}
                 onClick={() => onChangeView(View.FACILITY_DEMO)}
               >
                 Explore the campus
@@ -385,8 +385,8 @@ export const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({
             <button
               type="button"
               className="ace-action-secondary"
-              onPointerEnter={() => void import('./PascalFacility')}
-              onFocus={() => void import('./PascalFacility')}
+              onPointerEnter={() => void import('./CampusExperience')}
+              onFocus={() => void import('./CampusExperience')}
               onClick={() => onChangeView(View.FACILITY_DEMO)}
             >
               Open Pascal campus
