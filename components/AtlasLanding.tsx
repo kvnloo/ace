@@ -19,13 +19,13 @@ type Props = {
 };
 
 const orbitNodes = [
-  { label: 'Evidence', left: '50%', top: '3%' },
-  { label: 'Experts', left: '86%', top: '23%' },
-  { label: 'World', left: '96%', top: '59%' },
-  { label: 'Outcome', left: '70%', top: '92%' },
-  { label: 'Agents', left: '26%', top: '91%' },
-  { label: 'Simulation', left: '5%', top: '60%' },
-  { label: 'Twin', left: '13%', top: '23%' },
+  { id: 'evidence', label: 'Evidence', left: '50%', top: '3%' },
+  { id: 'experts', label: 'Experts', left: '86%', top: '23%' },
+  { id: 'world', label: 'World', left: '96%', top: '59%' },
+  { id: 'outcome', label: 'Outcome', left: '70%', top: '92%' },
+  { id: 'agents', label: 'Agents', left: '26%', top: '91%' },
+  { id: 'simulation', label: 'Simulation', left: '5%', top: '60%' },
+  { id: 'twin', label: 'Twin', left: '13%', top: '23%' },
 ];
 
 const Stamp: React.FC<{ stamp: string }> = ({ stamp }) => (
@@ -41,6 +41,7 @@ const OrbitCore: React.FC = () => (
           <div
             key={node.label}
             className="ace-core-node"
+            data-node={node.id}
             style={{ left: node.left, top: node.top }}
           >
             {node.label}
