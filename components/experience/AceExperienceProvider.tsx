@@ -22,6 +22,14 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
   const [reducedMotion, setReducedMotion] = React.useState(false);
 
   React.useEffect(() => {
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+    const lowPower =
+      Boolean(connection?.saveData) ||
+      (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 2) ||
+      (typeof deviceMemory === 'number' && deviceMemory <= 2);
+    document.documentElement.dataset.aceQuality = lowPower ? 'lite' : 'full';
+
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     const sync = () => setReducedMotion(media.matches);
     sync();
