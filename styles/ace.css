@@ -3018,3 +3018,62 @@ html[data-ace-view="facility_demo"] .fixed.bottom-4.right-4 {
     mask-image: linear-gradient(90deg, #000 0%, #000 92%, transparent 100%);
   }
 }
+
+
+/* --- Brand cleanup from screenshot review ------------------------------- */
+
+.ace-feature-dot {
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--ace-context);
+  box-shadow: 0 0 9px color-mix(in srgb, var(--ace-context) 62%, transparent);
+}
+
+.ace-feature-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ace-feature-card-marker {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ace-line-strong);
+}
+
+.ace-feature-card-marker::before,
+.ace-feature-card-marker::after {
+  content: "";
+  position: absolute;
+  background: var(--ace-cyan);
+  opacity: .48;
+}
+
+.ace-feature-card-marker::before {
+  width: 1px;
+  height: 100%;
+}
+
+.ace-feature-card-marker::after {
+  width: 100%;
+  height: 1px;
+}
+
+.ace-feature-card-marker span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ace-signal);
+  box-shadow: 0 0 12px rgba(220,255,69,.55);
+}
+
+.ace-action-primary::after,
+.ace-action-secondary::after,
+.ace-nav-cta::after {
+  margin-left: 8px;
+}
