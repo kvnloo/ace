@@ -501,3 +501,31 @@ html[data-ace-scrolling="true"] .ace-nav {
     border-radius: 16px 16px 0 0;
   }
 }
+
+/* Specificity reset for the nightly per-step flashes: the new branch uses one continuous trace. */
+html[data-ace-loop] .ace-core-node {
+  color: var(--ace-paper);
+  border-color: rgba(228,238,241,.13);
+  background: rgba(7,20,38,.64);
+  box-shadow: none !important;
+}
+html[data-ace-loop] .ace-core-node::before {
+  background: var(--ace-cyan);
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* CSS fallback and Pascal shell use the same environmental family. */
+.ace-facility-bg { background: var(--ace-bg) !important; }
+.ace-facility-farm {
+  background: linear-gradient(145deg, #173247, #10263B 54%, #071426) !important;
+}
+.ace-facility-apex {
+  background: linear-gradient(145deg, #122B45, #0D223A 54%, #071426) !important;
+}
+.ace-facility-court {
+  background: linear-gradient(145deg, #102B40, #0B2036 56%, #071426) !important;
+}
+.ace-surface-tennis { background: #33542D !important; }
+.ace-surface-badminton { background: #265044 !important; }
+.ace-surface-pickle { background: #385F3D !important; }
