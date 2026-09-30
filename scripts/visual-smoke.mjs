@@ -273,7 +273,7 @@ async function main(){
     })()`);
     await sleep(450);
     const spec=await evaluate(cdp,desktop.sessionId,`(()=>({
-      heading:[...document.querySelectorAll("h1")].some((el)=>/ACE\s*spec/i.test(el.textContent||"")),
+      heading:Boolean(document.querySelector(".ace-spec-head h1")),
       cards:document.querySelectorAll(".ace-spec-card").length,
       cardAnimation:document.querySelector(".ace-spec-card") ? getComputedStyle(document.querySelector(".ace-spec-card")).animationName : "",
       overflow:document.documentElement.scrollWidth-window.innerWidth,
