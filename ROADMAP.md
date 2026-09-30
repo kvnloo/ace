@@ -1,24 +1,50 @@
-# ACE roadmap
+# ACE public pretotype roadmap
 
-Workers mint **exactly one** `needs-discussion` issue from the first untracked item. Do not rewrite this file to claim work. Do not self-apply `claimable`.
+Workers mint exactly one `needs-discussion` issue from the first untracked item. Do not rewrite this file to claim work. Do not self-apply `claimable`.
+
+## North star
+
+The public experience should make the ACE thesis understandable without overstating what exists:
+
+**the facility is the environment; the feedback loop around the human is the product.**
+
+```text
+goal -> observe -> model -> hypothesize -> simulate
+     -> connect -> intervene -> measure -> verify -> learn
+```
 
 ## Honesty split
 
 | Stamp | Meaning |
 |---|---|
-| **VISION** | Peak-performance campus for human flourishing from all angles: scientists, athletes, labs, physiotherapy, all sports. Program mined from `origin/enhance/3D` (APEX). Not origin measurements. |
-| **SPEC** | Naperville origin racquet counts: 24 tennis / 16 badminton / 4 squash / 16 table tennis / 8 pickleball / 1 real tennis. Grass lab: 500 m² per section, section count unspecified. |
-| **PLANNED / MOCK** | Live BMS, drones, 60 FPS biomechanics, Gemini concierge product, 6/6/6/6 split, four farm racks, 60-minute turf-swap receipt. |
-| **This repo runs** | ATLAS public landing + Pascal pretotype + CSS fallback. Not a live facility. Live GPU loop stays private. |
+| **LIVE** | Running system exists elsewhere, outside this Pages bundle. |
+| **SHIPPED** | Implemented capability exists, sometimes against demo/sim data. |
+| **RESEARCH** | Active engineering/experiment; not a product claim. |
+| **VISION** | Intended architecture or campus program. |
+| **SPEC** | Sourced facility/program fact. |
+| **MOCK** | Illustrative UI/behavior only. |
+| **PRETOTYPE** | This public site. |
 
-## Untracked (oldest first)
+## Current public surface
 
-1. Delete or isolate unused `components/ThreeScene.tsx` so inferred 6/6/6/6 and four farm racks cannot remount if that canvas is imported again.
-2. GitHub Pages still deploys only `main` (`/ace/`) and `dev` (`/ace/dev/`). Rolling `preview` / `nightly` branches have no Pages slot — do not invent `/preview/<slug>/` without extending `.github/workflows/deploy.yml` and documenting it.
-3. APEX Pascal rooms are named VISION zones with inferred 30×30 m cells. Do not promote those dimensions (or 147 biomarkers, +28% VO₂, 1,388 seats) to origin until a spec says so.
-4. Do not start ACE as a second live GPU loop. Homebase (`kvnloo/homebase-pickleball`) owns the live GPU path.
+- ACE human-flourishing feedback-loop narrative.
+- evidence/provenance distinction and expert/agent authority story.
+- sport/simulation architecture as research, not shipped all-sport support.
+- Pascal campus pretotype + CSS fallback.
+- Naperville racquet SPEC nested inside APEX/ACE VISION.
+- production, dev, and direct-push nightly Pages channels.
 
-## Maintainer (not worker)
+## Untracked, oldest first
 
-- `.github/scripts/create-labels.sh` (gh write; workers cannot).
-- `bash scripts/ensure-rollout-branches.sh --root . --push` so `preview` and `nightly` exist. After that, new worker PRs target `preview`. Existing honesty PR #7 still targets `main` because it predates rolling branches.
+1. Add automated visual/runtime smoke for desktop + narrow mobile against the nightly Pages channel, including Home/System/Facility/Campus/Contact and console/asset failures.
+2. Replace the Tailwind browser CDN with a build-time CSS pipeline if the measured payload/startup/CSP benefit justifies the added toolchain.
+3. Replace generic decorative blocks with provenance-safe screenshots/renders from real ACE work where those assets can be published without leaking private state.
+4. Make the first pickleball evidence-chain demo explorable from the public site once the underlying evidence/provenance contract is stable enough to expose honestly.
+5. Keep the public status model synchronized with the deeper ACE research issues; new capabilities enter as RESEARCH/VISION and graduate only with evidence.
+
+## Maintainer notes
+
+- `nightly` is now a real Pages preview at `/ace/nightly/`.
+- Do not start ACE as a second live GPU loop. The private racquet twin owns that runtime.
+- APEX Pascal rooms remain VISION with inferred dimensions.
+- A pretty 3D scene is not evidence; simulation is not outcome.

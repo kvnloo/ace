@@ -7,7 +7,7 @@ This project follows the [Verified OSS Loop](https://github.com/kvnloo/verified-
 ## First 60 seconds
 
 1. Read this file, then `CONTRIBUTING.md`.
-2. `git fetch origin`. `python3 .verified-oss-loop/rollout.py show`. Branch from `origin/$(python3 .verified-oss-loop/rollout.py get worker_base)` unless the issue names another base. Day-pass PRs target `feature_target`. Overnight unattended PRs target `overnight_target`. See `docs/rollout.md` in the kit (or `.verified-oss-loop/rollout.yml` here).
+2. `git fetch origin`. `python3 .verified-oss-loop/rollout.py show`. Branch from `origin/$(python3 .verified-oss-loop/rollout.py get worker_base)` unless the issue names another base. Day-pass PRs target `feature_target`. Overnight unattended PRs target `overnight_target`.
 3. Search open issues and PRs. Do not duplicate in-flight work.
 4. Orient (`skills/orient/SKILL.md`). If GitNexus MCP is already there: `query` → `context` → `impact`. Do not run `gitnexus analyze` unless a human asked. Else Serena symbols, else `rg` + read.
 
@@ -18,11 +18,11 @@ gh pr list --state open
 
 ## Pick and claim
 
-Take **one** open issue labeled `claimable` and not `claimed`. Prefer `priority:P0`, then `P1`, then `good-first-issue`. Skip `needs-discussion` unless a human assigned it.
+Take one open issue labeled `claimable` and not `claimed`. Prefer `priority:P0`, then `P1`, then `good-first-issue`. Skip `needs-discussion` unless a human assigned it.
 
-If nothing is `claimable`: do not code. **Triage** — if a `needs-discussion` issue exists: one-paragraph proposal on the newest; stop. If none: mint **exactly one** issue from the first untracked item in `ROADMAP.md`, else a failing unit command from `AGENTS.md`, else docs drift; label **`needs-discussion` only**; stop. Do not self-apply `claimable`. Do not rewrite `ROADMAP.md`. **Stop** if triage found nothing untracked, a live claim exists, a competing PR covers the scope, or secrets are required. Comment the blocker only if an issue thread exists. Do not open a consolation PR.
+If nothing is `claimable`: do not code. If a `needs-discussion` issue exists, leave one concise proposal on the newest and stop. Otherwise mint exactly one issue from the first untracked item in `ROADMAP.md`, label it `needs-discussion`, and stop. Workers do not redefine `ROADMAP.md`.
 
-Claim comment (24h lease unless the project says otherwise):
+Claim comment:
 
 ```text
 claiming for autodevelop
@@ -36,61 +36,127 @@ Then add `claimed` and remove `claimable`. If a claim newer than 24h exists, pic
 
 ## Proof
 
-Commands were filled by `init-oss-repo.sh` / `oss-onboard` from the tree it saw, then ACE-ized. Do not invent a mutation score. Stryker is not adopted.
-
 | Layer | Command |
 |---|---|
 | Unit | `npm test` (`check:facility` + `check:landing`) |
-| Mutation | `n/a` — Stryker not adopted; do not invent a score |
+| Mutation | `n/a` — do not invent a score |
 | Runtime | `npm run build` |
 
-1. Name the intended vs current behavior.
-2. Fail, then pass (see `skills/tdd/SKILL.md`).
-3. Keep the smallest complete change (`skills/anti-slop/SKILL.md`).
-4. Run unit tests on the touched surface.
-5. If mutation is not `n/a`, run it on the contract you changed. A surviving mutant is a missing assertion.
-6. Open a PR at `feature_target` (or `overnight_target` if unattended overnight). Fill `.github/PULL_REQUEST_TEMPLATE.md`. Never merge `main` or `dev`. Do not merge preview/nightly yourself; automerge may, when `rollout.yml` allows.
-7. If the project runs an independent review bot (Greptile, CodeRabbit, Bugbot, Copilot, …), treat its comments as review, not merge. Fix real findings. Do not wait for a bot to approve itself.
+1. Name intended vs current behavior.
+2. Fail, then pass when changing behavior.
+3. Keep the smallest complete change.
+4. Run touched-surface tests.
+5. Fill the evidence receipt with exact base/head SHAs.
+6. Open a PR at the configured rollout target.
+7. Independent review bots are reviewers/evidence, not merge authority.
 
-**This branch:** honesty PR #7 still targets `main` because it predates rolling `preview`/`nightly`. After the maintainer runs `scripts/ensure-rollout-branches.sh --push`, new worker PRs target `preview`.
+Tests from another head are not evidence.
 
 ## ACE ownership
 
-ACE Pages is the **public pretotype landing for ATLAS** (soil to cell: GrowTwin CEA + racquet Facility OS). The live GPU loop stays in the private racquet twin (`kvnloo/homebase-pickleball`). Photoreal farm twin is UE5 elsewhere. This tree must not start a second live GPU loop, bundle that engine, or publish private facility floor plans.
+This repository is the **public ACE presentation/projection layer**.
 
-A nested **peak-performance campus pretotype** remains on the Map view: Pascal Site → LawnTech (Naperville racquet **SPEC**) + APEX wing (**VISION** program from `origin/enhance/3D`). Mine the **program**. Do not resurrect the Three.js lab theater, debug FPS HUD, OpenTwins-as-wired, 88% completion badges, or `4 × 500 = 2,000 m²` as origin fact.
+ACE's top-level thesis is a consent-governed human-flourishing feedback loop:
 
-The Naperville racquet building is the origin **SPEC** nested inside that vision:
+```text
+goal
+ -> observe
+ -> model
+ -> hypothesize
+ -> simulate
+ -> connect the right humans/agents
+ -> intervene
+ -> measure
+ -> verify
+ -> learn
+ -> repeat
+```
 
-- 24 tennis / 16 badminton / 4 squash / 16 table tennis / 8 pickleball / 1 real tennis
-- Grass lab: 500 m² per section; **section count unspecified**
-- Envelope 140×120 m and 10 m storeys are **inferred**
+The facility, sports, personal/facility twins, experts, agents, simulation, agriculture, robotics, gamification, and 3D scenes are infrastructure around that loop.
 
-APEX rooms in Pascal (`building_apex`) are **VISION** named zones with inferred 30×30 m cells. Gym, pool, clubhouse, and physio are program identity, not origin measurements.
+### Truth model
 
-### This repo runs
+Public copy must preserve these distinctions:
 
-- Pascal Viewer (`@pascal-app/core` / `viewer` / `nodes` 1.0.0) plus a CSS court/campus fallback
-- Public ATLAS landing copy (`landing/public.ts`) — pretotype, not the live twin
-- `facility/generateScene.ts` compiles Site → LawnTech (SPEC) + APEX wing (VISION)
-- `npm test` → `facility/check-scene.ts` + `landing/check-copy.ts`
+- `LIVE`: running system exists elsewhere.
+- `SHIPPED`: implemented capability exists, sometimes against demo/simulation data.
+- `RESEARCH`: active engineering/experiment, not a product claim.
+- `VISION`: intended architecture/program.
+- `SPEC`: sourced facility/program fact.
+- `MOCK`: illustrative behavior/UI.
+- `PRETOTYPE`: this public Pages experience.
 
-### Do not (ACE-specific)
+Never collapse observation, self-report, expert judgment, estimate, hypothesis, simulation, recommendation, intervention, and verified outcome into one kind of state.
 
-- Copy HomeForge / zerOS house, `NOW.yaml`, `:4210` bus, claim protocol, HYBRID, FBP, Keel, devices, or drones into this tree. Pascal embed + `plan2pascal` node mapping are the donor; ACE compiles four sport-hall floors by hand because plan2pascal v0 is single-level.
-- Start ACE as a second live GPU loop. Homebase (`kvnloo/homebase-pickleball`) owns the live GPU path on host 0.
-- Treat OpenTwins / Eclipse Ditto / Hono / Jenkins / Unity-in-Docker as wired dependencies. They are origin research language.
-- Invent `/preview/<slug>/` Pages slots. Current deploy is `main` → `/ace/` and `dev` → `/ace/dev/` only. Rolling git branches are not Pages.
-- Commit Sunshine credentials, API tokens, or `.env`.
-- Mutate Linear until a human YES on the relevant issue.
+Personalization means **measured response to interventions**, not fixed learning-style labels.
 
-## Do not
+### Current system direction
+
+The public landing should track the current ACE meta architecture without copying private data:
+
+- private racquet digital twin: `LIVE` elsewhere;
+- Facility OS foundations: `SHIPPED` against demo/sim data where verified;
+- 2026 pickleball rules/profile + sport-blind transition protocol + differential tapes: `RESEARCH`;
+- evidence/provenance spine: `RESEARCH`;
+- backend-neutral WorldKernel / ball-physics bakeoff: `RESEARCH`;
+- athlete intervention-response loop: `RESEARCH`;
+- expert graph + agent authority contracts: `RESEARCH`;
+- traceable 3D projection: `RESEARCH`;
+- multidisciplinary human-performance campus: `VISION`.
+
+Agents extend human attention and coordination. Coaches, PTs, physicians, nutritionists, biomechanists, scientists, farmers, engineers, peers, and mentors remain first-class humans with scoped authority.
+
+### Campus truth boundary
+
+The Naperville racquet building remains sourced `SPEC` nested inside a broader `VISION`:
+
+- 24 tennis / 16 badminton / 4 squash / 16 table tennis / 8 pickleball / 1 real tennis;
+- grass lab: 500 m² per section; section count unspecified;
+- envelope/storey/APEX-cell dimensions are inferred when marked as such.
+
+APEX rooms in Pascal are `VISION` zones. Program identity is not an origin measurement.
+
+### This repo actually runs
+
+- React/Vite public ACE landing;
+- Pascal Viewer campus pretotype + CSS fallback;
+- facility scene compiler/checks;
+- deterministic local pretotype guide;
+- `npm test` and `npm run build`.
+
+It does **not** run:
+- the private 60 Hz racquet twin;
+- clinical systems;
+- a medical decision engine;
+- the experimental physics/simulation backends;
+- a live BMS/robot fleet;
+- a real waitlist submission.
+
+### Pages channels
+
+- `main` → `/ace/`
+- `dev` → `/ace/dev/`
+- `nightly` → `/ace/nightly/`
+
+`nightly` is the direct fast-moving preview surface. Maintainers may push landing experiments there directly. Workers still follow the configured rollout/PR process.
+
+### Do not
+
+- start a second live GPU loop in this repo;
+- copy private facility floor plans, credentials, internal paths, host details, or private-twin state;
+- promote inferred geometry to sourced fact;
+- claim medical, coaching, simulation, or personalization outcomes without evidence;
+- treat the 3D scene as authoritative state;
+- reintroduce stale USA Pickleball 2025 claims as current authority;
+- treat OpenTwins / Ditto / Hono / Jenkins / Unity-in-Docker as wired dependencies unless the tree actually wires them;
+- expose API keys in the public browser bundle.
+
+## General do not
 
 - Commit secrets, tokens, `.env`, or pairing files.
-- Merge `main` or `dev`.
-- Redefine the roadmap.
-- Claim mutation coverage that the stack cannot run.
+- Merge `main` or `dev` as a worker.
+- Redefine the roadmap as a worker.
+- Claim mutation coverage the stack cannot run.
 - Overwrite `LICENSE`.
 - Duplicate `AGENTS.md` into `CLAUDE.md` / `GEMINI.md` / copilot-instructions.
 - Run `gitnexus analyze` as a side effect of a claim.
-- Dump the pstack plugin or Dr Eggbot marketplace pack into this tree. Pointers: `skills/pstack/SKILL.md`, `skills/dr-eggbot/SKILL.md`.
