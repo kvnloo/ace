@@ -51,6 +51,15 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
     if (view === View.SPECIFICATIONS) void import('./Specifications');
   };
 
+  React.useEffect(() => {
+    const zone = liveSection
+      .toLowerCase()
+      .replace(/^\d+\s*\/\s*/, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+    document.documentElement.dataset.aceZone = zone || 'manifesto';
+  }, [liveSection]);
+
   const NavItem = ({ view, label }: { view: View; label: string }) => (
     <button
       type="button"
