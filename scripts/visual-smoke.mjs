@@ -277,7 +277,7 @@ async function main(){
       return Boolean(button);
     })()`);
     for(let i=0;i<40;i++){
-      const ready=await evaluate(cdp,mobile.sessionId,`document.body.innerText.includes("Enable full 3D")`);
+      const ready=await evaluate(cdp,mobile.sessionId,`Boolean(document.querySelector(".ace-campus-enable-3d"))`);
       if(ready) break;
       await sleep(100);
     }
@@ -287,7 +287,7 @@ async function main(){
         quality:document.documentElement.dataset.aceQuality,
         overflow:document.documentElement.scrollWidth-window.innerWidth,
         hasCanvas:Boolean(document.querySelector("canvas")),
-        enable3d:document.body.innerText.includes("Enable full 3D"),
+        enable3d:Boolean(document.querySelector(".ace-campus-enable-3d")),
         pascalLoaded:resources.some((u)=>/PascalFacility/.test(u)),
       };
     })()`);
