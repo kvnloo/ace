@@ -307,7 +307,7 @@ const PascalFacility: React.FC<PascalFacilityProps> = ({ onFeatureSelect }) => {
                   onClick={() => handleSelect(f)}
                   className="ace-feature-btn"
                 >
-                  {f.icon} {f.title}
+                  <span className="ace-feature-dot" aria-hidden="true" />{f.title}
                 </button>
               ))}
             </div>
