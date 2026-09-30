@@ -2072,8 +2072,6 @@ body {
 
 :root {
   --ace-scroll: 0;
-  --ace-scroll-px: 0px;
-  --ace-velocity: 0;
 }
 
 html {
@@ -2133,10 +2131,6 @@ html[data-ace-scrolling="true"] .ace-live-section {
   background: linear-gradient(90deg, var(--ace-signal), var(--ace-cyan));
   box-shadow: 0 0 18px rgba(223, 255, 79, .35);
   transition: transform .06s linear;
-}
-
-.ace-hero::before {
-  transform: translateY(calc(-50% - var(--ace-scroll-px)));
 }
 
 .ace-wordmark-mark {
@@ -2239,7 +2233,7 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
 }
 
 .ace-signal-line {
-  text-shadow: 0 0 calc(12px + (var(--ace-velocity) * 5px)) rgba(223,255,79,.14);
+  text-shadow: 0 0 12px rgba(223,255,79,.14);
 }
 
 .ace-paper-section {
@@ -3018,9 +3012,8 @@ html[data-ace-loop="10"] .ace-core-human {
 
 .ace-core-ring {
   animation: none;
-  transform: scale(clamp(.96, calc(.96 + (var(--ace-velocity) * .018)), 1.07));
-  opacity: clamp(.45, calc(.48 + (var(--ace-velocity) * .11)), 1);
-  transition: transform .12s linear, opacity .12s linear;
+  opacity: .58;
+  transition: opacity var(--ace-motion-settle), border-color var(--ace-motion-settle);
 }
 
 .ace-menu-button {
