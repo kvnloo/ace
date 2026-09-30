@@ -13,6 +13,7 @@ import {
   statusLegend,
 } from '../landing/public.ts';
 import { View } from '../types';
+import { loopMotion, motionBehavior, principleMotion } from '../landing/motion.ts';
 
 type Props = {
   onChangeView: (view: View) => void;
@@ -132,7 +133,11 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
       <div className="ace-loop-rail" aria-label="ACE feedback loop">
         <div className="ace-loop-signal" aria-hidden="true"><span /></div>
         {feedbackLoop.map((step, index) => (
-          <div className="ace-loop-rail-item" key={step.label}>
+          <div
+            className="ace-loop-rail-item"
+            data-motion={motionBehavior(loopMotion, step.label)}
+            key={step.label}
+          >
             <span>{String(index + 1).padStart(2, '0')}</span>
             <strong>{step.label}</strong>
           </div>
@@ -156,12 +161,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
               {principles.map((principle) => (
                 <article
                   className="ace-manifest-item"
-                  data-motion={{
-                    'Human agency first': 'stable-agency',
-                    'Evidence before optimization': 'resolve-evidence',
-                    'Humans are infrastructure': 'contextual-connect',
-                    'Simulation must earn trust': 'branch-counterfactual',
-                  }[principle.title]}
+                  data-motion={motionBehavior(principleMotion, principle.title)}
                   key={principle.title}
                 >
                   <ShieldCheck className="ace-item-icon" />
