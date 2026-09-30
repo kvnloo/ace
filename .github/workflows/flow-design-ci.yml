@@ -3,6 +3,7 @@ name: ACE Flow Design CI
 on:
   push:
     branches:
+      - nightly
       - design/flow-state-system-v2
   pull_request:
     branches:
