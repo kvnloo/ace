@@ -1,0 +1,48 @@
+name: ACE Flow Design CI
+
+on:
+  push:
+    branches:
+      - design/flow-state-system-v2
+  pull_request:
+    branches:
+      - nightly
+
+permissions:
+  contents: read
+
+jobs:
+  design-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - name: Contract tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+        env:
+          VITE_BASE_PATH: '/ace/nightly/'
+      - name: Bundle budget
+        run: npm run bundle:budget
+      - name: Visual smoke
+        run: |
+          npm run preview -- --host 127.0.0.1 > /tmp/ace-preview.log 2>&1 &
+          PREVIEW_PID=$!
+          trap 'kill $PREVIEW_PID || true' EXIT
+          for i in {1..40}; do
+            curl -fsS http://127.0.0.1:4173/ >/dev/null && break
+            sleep 0.25
+          done
+          npm run visual:smoke
+      - name: Upload visual receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ace-flow-design-receipts
+          path: artifacts/visual-smoke
+          if-no-files-found: ignore
