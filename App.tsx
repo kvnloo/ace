@@ -2,11 +2,12 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { View, FeatureData } from './types';
 import NavBar from './components/NavBar';
 import DeferredGuide from './components/DeferredGuide';
+import ContactExperience from './components/ContactExperience';
 const CampusExperience = React.lazy(() => import('./components/CampusExperience'));
 const Specifications = React.lazy(() => import('./components/Specifications'));
 import AtlasLanding from './components/AtlasLanding';
 const AtlasProduct = React.lazy(() => import('./components/AtlasProduct'));
-import { campusNested, product } from './landing/public.ts';
+import { campusNested } from './landing/public.ts';
 
 type TransitionDocument = Document & {
   startViewTransition?: (update: () => void) => { finished: Promise<void> };
@@ -100,34 +101,7 @@ const App: React.FC = () => {
 
         {currentView === View.INVEST && (
           <div className="ace-route-enter ace-page min-h-[calc(100dvh-72px)]">
-            <div className="ace-contact-page" data-ace-reveal data-ace-section="Contact">
-              <header className="ace-contact-head">
-                <div><p className="ace-kicker">MOCK · DOES NOT SUBMIT</p><h1>Join <span>{product.name}.</span></h1></div>
-                <p>Tell us where your work intersects the loop. This public pretotype does not transmit or store the form yet; the interface is here to make the intended collaboration surface concrete.</p>
-              </header>
-
-              <div className="ace-contact-layout">
-                <aside className="ace-contact-context">
-                  <span className="ace-stamp" data-stamp="VISION">HUMANS ARE INFRASTRUCTURE</span>
-                  <h2>Bring a problem worth measuring.</h2>
-                  <p>ACE is most interesting when a real goal, a real expert, a falsifiable hypothesis, and a repeatable measurement can share the same loop.</p>
-                  <div className="ace-chip-grid">
-                    {['ATHLETE','COACH','CLINICIAN','RESEARCHER','ENGINEER','PARTNER'].map((role)=><span key={role} className="ace-chip">{role}</span>)}
-                  </div>
-                </aside>
-
-                <form className="ace-contact-form" onSubmit={(e) => e.preventDefault()} aria-label="ACE interest form mock">
-                  <div className="ace-form-grid">
-                    <div className="ace-field"><label htmlFor="ace-name" className="ace-label">Full name</label><input id="ace-name" type="text" className="ace-input" placeholder="Jane Doe" /></div>
-                    <div className="ace-field"><label htmlFor="ace-email" className="ace-label">Email</label><input id="ace-email" type="email" className="ace-input" placeholder="jane@example.com" /></div>
-                  </div>
-                  <div className="ace-field"><label htmlFor="ace-interest" className="ace-label">Role / interest</label><select id="ace-interest" className="ace-select" defaultValue="Founding Member"><option>Founding Member</option><option>Coach / Clinician / Researcher</option><option>Technology Partner</option><option>Potential Investor</option></select></div>
-                  <div className="ace-field"><label htmlFor="ace-message" className="ace-label">What would you want ACE to help you improve?</label><textarea id="ace-message" className="ace-textarea" placeholder="A skill, plateau, research question, facility idea..." /></div>
-                  <button type="button" className="ace-disabled-cta" aria-disabled="true">Waitlist integration planned</button>
-                  <div className="ace-contact-meta"><span>PRETOTYPE / NO SUBMISSION</span><span>NO MEDICAL OR PERFORMANCE CLAIM IMPLIED</span></div>
-                </form>
-              </div>
-            </div>
+            <ContactExperience />
           </div>
         )}
       </main>
