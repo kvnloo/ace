@@ -28,7 +28,7 @@ import {
   APEX_WIDTH,
 } from './vision.ts';
 
-type MaterialPreset = 'concrete' | 'plaster' | 'glass' | 'wood' | 'metal';
+type MaterialPreset = 'concrete' | 'plaster' | 'glass' | 'wood' | 'metal' | 'tile';
 type SceneNodes = Record<AnyNodeId, AnyNode>;
 type Point = [number, number];
 
