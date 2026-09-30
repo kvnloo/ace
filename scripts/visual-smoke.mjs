@@ -265,6 +265,54 @@ async function main(){
     report.desktop.systemShot=await screenshot(cdp,desktop.sessionId,"desktop-system");
     if(!system.heading) failures.push("System route did not render");
     if(system.overflow>2) failures.push("System horizontal overflow "+system.overflow+"px");
+
+    await evaluate(cdp,desktop.sessionId,`(()=>{
+      const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Spec");
+      button?.click();
+      return Boolean(button);
+    })()`);
+    await sleep(450);
+    const spec=await evaluate(cdp,desktop.sessionId,`(()=>({
+      heading:[...document.querySelectorAll("h1")].some((el)=>/ACE\s*spec/i.test(el.textContent||"")),
+      cards:document.querySelectorAll(".ace-spec-card").length,
+      cardAnimation:document.querySelector(".ace-spec-card") ? getComputedStyle(document.querySelector(".ace-spec-card")).animationName : "",
+      overflow:document.documentElement.scrollWidth-window.innerWidth,
+    }))()`);
+    report.desktop.spec=spec;
+    report.desktop.specShot=await screenshot(cdp,desktop.sessionId,"desktop-spec");
+    if(!spec.heading || spec.cards<8) failures.push("Spec route did not render complete matrix");
+    if(spec.cardAnimation && spec.cardAnimation!=="none") failures.push("Spec route must remain low-motion; card animation="+spec.cardAnimation);
+    if(spec.overflow>2) failures.push("Spec horizontal overflow "+spec.overflow+"px");
+
+    await evaluate(cdp,desktop.sessionId,`(()=>{
+      const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Contact");
+      button?.click();
+      return Boolean(button);
+    })()`);
+    await sleep(350);
+    const contactBefore=await evaluate(cdp,desktop.sessionId,`(()=>({
+      goal:Boolean(document.querySelector("#ace-goal")),
+      identity:Boolean(document.querySelector("#ace-name")),
+      overflow:document.documentElement.scrollWidth-window.innerWidth,
+    }))()`);
+    if(!contactBefore.goal) failures.push("Contact goal field missing");
+    if(contactBefore.identity) failures.push("Contact identity fields must stay deferred until a goal exists");
+    await evaluate(cdp,desktop.sessionId,`(()=>{
+      const el=document.querySelector("#ace-goal");
+      if(!el) return false;
+      const setter=Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,"value")?.set;
+      setter?.call(el,"Improve a measurable skill");
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      return true;
+    })()`);
+    await sleep(180);
+    const contactAfter=await evaluate(cdp,desktop.sessionId,`(()=>({
+      identity:Boolean(document.querySelector("#ace-name")),
+      role:Boolean(document.querySelector("#ace-interest")),
+    }))()`);
+    report.desktop.contact={before:contactBefore,after:contactAfter};
+    report.desktop.contactShot=await screenshot(cdp,desktop.sessionId,"desktop-contact");
+    if(!contactAfter.identity || !contactAfter.role) failures.push("Contact context did not progressively resolve after goal input");
     failures.push(...desktop.failures.map((e)=>"desktop request: "+e));
     await closePage(cdp,desktop);
 
