@@ -57,11 +57,21 @@ function probeWebGLPaint(): boolean {
   }
 }
 
+type WebGLErrorBoundaryProps = {
+  onFail: () => void;
+  children: React.ReactNode;
+};
+
+type WebGLErrorBoundaryState = {
+  failed: boolean;
+};
+
 class WebGLErrorBoundary extends React.Component<
-  { onFail: () => void; children: React.ReactNode },
-  { failed: boolean }
+  WebGLErrorBoundaryProps,
+  WebGLErrorBoundaryState
 > {
-  state = { failed: false };
+  declare readonly props: Readonly<WebGLErrorBoundaryProps>;
+  state: WebGLErrorBoundaryState = { failed: false };
   static getDerivedStateFromError() {
     return { failed: true };
   }
