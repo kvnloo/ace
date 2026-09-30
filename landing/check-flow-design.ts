@@ -73,6 +73,9 @@ if (goal < 0 || name < 0 || goal > name) {
   throw new Error('contact flow must ask the human goal before identity fields');
 }
 requireText(app, /ace-contact-progressive/, 'contact form needs progressive goal-first structure');
+requireText(app, /CONTACT_CONTEXT_DELAY_MS/, 'contact flow must intentionally pause before revealing routing context');
+requireText(app, /contactGoal\.trim\(\)\.length\s*>=\s*12/, 'contact flow should wait for a meaningful goal phrase before expanding');
+requireText(app, /contactContextReady/, 'contact follow-up must be governed by attention-ready state');
 
 requireText(theme, /ACE_FACILITY_THEME/, 'facility theme must be centralized');
 requireText(theme, /environment/, 'facility theme must define environmental substrate');
