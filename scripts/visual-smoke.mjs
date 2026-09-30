@@ -256,7 +256,7 @@ async function main(){
       button?.click();
       return Boolean(button);
     })()`);
-    await sleep(350);
+    await sleep(750);
     const system=await evaluate(cdp,desktop.sessionId,`(()=>({
       heading:[...document.querySelectorAll("h2")].some((el)=>/How the loop compounds/i.test(el.textContent||"")),
       overflow:document.documentElement.scrollWidth-window.innerWidth,
@@ -316,7 +316,10 @@ async function main(){
   } finally {
     cdp.close();
     chrome.child.kill("SIGTERM");
-    fs.rmSync(chrome.userDataDir,{recursive:true,force:true});
+    await Promise.race([
+      new Promise((resolve) => chrome.child.once("exit", resolve)),
+      sleep(1200),
+    ]);
   }
 
   report.failures=failures;
@@ -331,6 +334,11 @@ async function main(){
     "- result: "+(failures.length ? "FAIL — "+failures.join("; ") : "PASS"),
     "",
   ].join("\n"));
+  try {
+    fs.rmSync(chrome.userDataDir,{recursive:true,force:true,maxRetries:4,retryDelay:80});
+  } catch (err) {
+    console.warn("visual smoke cleanup warning:", String(err));
+  }
   console.log(JSON.stringify(report,null,2));
   if(failures.length) process.exitCode=1;
 }
