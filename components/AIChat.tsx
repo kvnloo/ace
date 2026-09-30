@@ -55,12 +55,12 @@ const AIChat: React.FC = () => {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="glass-panel w-[calc(100vw-2rem)] max-w-[400px] h-[min(500px,calc(100dvh-7rem))] rounded-2xl flex flex-col shadow-2xl mb-4 overflow-hidden border border-white/10 bg-slate-900/90"
+            className="ace-chat-panel glass-panel w-[calc(100vw-2rem)] max-w-[400px] h-[min(500px,calc(100dvh-7rem))] flex flex-col shadow-2xl mb-4 overflow-hidden border"
           >
-            <div className="p-4 border-b border-white/10 bg-tennis-green/20 flex justify-between items-center">
+            <div className="p-4 border-b border-white/10 bg-white/[0.03] flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <Bot className="w-5 h-5 text-tennis-yellow" />
-                <span className="font-semibold text-white">ACE pretotype guide</span>
+                <span className="ace-display font-medium tracking-[0.08em] uppercase text-white">ACE signal guide</span>
               </div>
               <button
                 type="button"
@@ -131,8 +131,8 @@ const AIChat: React.FC = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-colors ${
-          isOpen ? 'bg-white text-tennis-dark' : 'bg-tennis-yellow text-tennis-dark'
+        className={`ace-chat-button shadow-lg flex items-center justify-center transition-colors ${
+          isOpen ? 'bg-white text-tennis-dark' : ''
         }`}
       >
         {isOpen ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
