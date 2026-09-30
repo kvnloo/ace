@@ -14,7 +14,8 @@ type TransitionDocument = Document & {
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
-  const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);\n  const [contactGoal, setContactGoal] = useState('');
+  const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);
+  const [contactGoal, setContactGoal] = useState('');
 
   useEffect(() => {
     document.documentElement.dataset.aceView = currentView.toLowerCase();
