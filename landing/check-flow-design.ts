@@ -49,6 +49,7 @@ forbidText(experience, /--ace-scroll-px|--ace-velocity|--ace-grid-y|--ace-marque
 forbidText(css, /@keyframes\s+ace(?:RouteOut|RouteIn|ContentOut|ContentIn|MenuIn|MenuItemIn)[\s\S]{0,260}transform:/i, 'navigation continuity should resolve in place instead of moving the viewport');
 forbidText(css, /animation:\s*ace(?:Pulse|Cue|Corridor)\b/i, 'continuous decorative loops must not run in the flow-state system');
 forbidText(css, /data-ace-loop/, 'the feedback loop must remain continuous rather than flashing discrete scroll-index states');
+forbidText(css, /\.ace-scroll-cue\s*\{[^}]*translateY\(calc\(var\(--ace-scroll\)/s, 'scroll cue should disappear through opacity rather than travel through space');
 forbidText(experience, /dataset\.aceLoop/, 'runtime must not quantize scroll into ten visual loop states');
 requireText(css, /data-ace-scrolling="true"\]\[data-ace-direction="down"\][\s\S]{0,500}\.ace-nav-links/, 'desktop navigation must recede during forward reading');
 requireText(css, /\.ace-nav:(?:hover|focus-within)[\s\S]{0,500}\.ace-nav-links/, 'navigation must recover full clarity on intentional attention');
