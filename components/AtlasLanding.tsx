@@ -23,370 +23,377 @@ type Props = {
   onChangeView: (view: View) => void;
 };
 
-const stampClass: Record<string, string> = {
-  LIVE: 'text-tennis-yellow',
-  SHIPPED: 'text-tennis-yellow/80',
-  RESEARCH: 'text-cyan-300/90',
-  PLANNED: 'text-white/50',
-  VISION: 'text-tennis-yellow',
-  SPEC: 'text-white/70',
-  MOCK: 'text-orange-300/80',
-  PRETOTYPE: 'text-tennis-yellow',
-};
+const orbitNodes = [
+  { label: 'Evidence', left: '50%', top: '3%' },
+  { label: 'Experts', left: '86%', top: '23%' },
+  { label: 'World', left: '96%', top: '59%' },
+  { label: 'Outcome', left: '70%', top: '92%' },
+  { label: 'Agents', left: '26%', top: '91%' },
+  { label: 'Simulation', left: '5%', top: '60%' },
+  { label: 'Twin', left: '13%', top: '23%' },
+];
 
 const laneIcon = (group: string) => {
-  if (group === 'Understand') return <Activity className="w-6 h-6" />;
-  if (group === 'Simulate') return <Cpu className="w-6 h-6" />;
-  if (group === 'Connect') return <Users className="w-6 h-6" />;
-  return <Zap className="w-6 h-6" />;
+  if (group === 'Understand') return <Activity />;
+  if (group === 'Simulate') return <Cpu />;
+  if (group === 'Connect') return <Users />;
+  return <Zap />;
 };
 
 const Stamp: React.FC<{ stamp: string }> = ({ stamp }) => (
-  <span className={`text-[10px] font-mono tracking-[0.2em] ${stampClass[stamp] ?? 'text-white/50'}`}>
-    {stamp}
-  </span>
+  <span className="ace-stamp" data-stamp={stamp}>{stamp}</span>
+);
+
+const OrbitCore: React.FC = () => (
+  <div className="ace-core-wrap" aria-label="ACE human-centered system diagram">
+    <div className="ace-core">
+      <div className="ace-core-ring" aria-hidden="true" />
+      <div className="ace-core-orbit" aria-hidden="true">
+        {orbitNodes.map((node) => (
+          <div
+            key={node.label}
+            className="ace-core-node"
+            style={{ left: node.left, top: node.top }}
+          >
+            {node.label}
+          </div>
+        ))}
+      </div>
+      <div className="ace-core-human">
+        <div>
+          <strong>Human</strong>
+          <span>goal owner</span>
+        </div>
+      </div>
+    </div>
+    <p className="ace-core-caption">
+      MODEL ≠ REALITY<br />
+      SIMULATION ≠ OUTCOME<br />
+      EVIDENCE RETAINS PROVENANCE
+    </p>
+  </div>
 );
 
 const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
-  return (
-    <div className="min-h-full overflow-x-hidden">
-      <section className="relative min-h-[88dvh] flex items-center justify-center px-5 sm:px-6 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-30"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(90deg, transparent 0, transparent 47px, rgba(223,255,79,0.08) 47px, rgba(223,255,79,0.08) 48px), repeating-linear-gradient(0deg, transparent 0, transparent 21px, rgba(223,255,79,0.06) 21px, rgba(223,255,79,0.06) 22px)',
-          }}
-        />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(223,255,79,0.08),transparent_28rem)]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent" />
+  const marquee = [
+    'HUMAN AGENCY',
+    'OBSERVE BEFORE OPTIMIZE',
+    'EXPERTS ARE INFRASTRUCTURE',
+    'SIMULATION MUST EARN TRUST',
+    'VERIFY IN THE REAL WORLD',
+  ];
 
-        <div className="relative z-10 max-w-5xl text-center py-16">
+  return (
+    <div className="ace-page">
+      <section className="ace-hero">
+        <div className="ace-hero-grid">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            className="ace-hero-copy"
+            initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.12 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-tennis-yellow/30 bg-tennis-yellow/10 text-tennis-yellow text-xs sm:text-sm font-medium mb-6"
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Network className="w-4 h-4" />
-            <span>{product.kicker}</span>
+            <p className="ace-kicker">{product.kicker}</p>
+            <h1>
+              <span>A feedback loop</span>
+              <span className="ace-signal-line">around the human.</span>
+            </h1>
+            <p className="ace-hero-sub">{product.subhead}</p>
+
+            <div className="ace-actions">
+              <button type="button" className="ace-action-primary" onClick={() => onChangeView(View.AMENITIES)}>
+                Enter the system <ArrowRight size={17} />
+              </button>
+              <button type="button" className="ace-action-secondary" onClick={() => onChangeView(View.FACILITY_DEMO)}>
+                Explore the campus
+              </button>
+            </div>
+
+            <div className="ace-hero-notes" aria-label="ACE design principles">
+              <div className="ace-hero-note">
+                <strong>{feedbackLoop.length}</strong>
+                <span>steps in the learning loop</span>
+              </div>
+              <div className="ace-hero-note">
+                <strong>{evidenceClasses.length}</strong>
+                <span>evidence classes kept distinct</span>
+              </div>
+              <div className="ace-hero-note">
+                <strong>{architectureFlow.length}</strong>
+                <span>system layers from world to outcome</span>
+              </div>
+              <div className="ace-hero-note">
+                <strong>1</strong>
+                <span>human goal owner at the center</span>
+              </div>
+            </div>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-[-0.055em] mb-6 leading-[0.94]"
-          >
-            A FEEDBACK LOOP <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-tennis-yellow via-white to-cyan-200">
-              AROUND THE HUMAN.
-            </span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.28 }}
-            className="text-lg sm:text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed"
-          >
-            {product.subhead}
-          </motion.p>
-
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.36 }}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-md sm:max-w-none mx-auto"
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.14, duration: 0.7 }}
           >
-            <button
-              type="button"
-              onClick={() => onChangeView(View.AMENITIES)}
-              className="px-7 py-4 bg-tennis-yellow text-tennis-dark font-bold rounded-full hover:bg-white transition-all flex items-center justify-center gap-2 group"
-            >
-              See the system
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button
-              type="button"
-              onClick={() => onChangeView(View.FACILITY_DEMO)}
-              className="px-7 py-4 bg-white/10 text-white font-bold rounded-full hover:bg-white/20 transition-all backdrop-blur-sm border border-white/10"
-            >
-              Explore the campus sketch
-            </button>
+            <OrbitCore />
           </motion.div>
-
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] font-mono tracking-wider text-white/45">
-            <span>HUMAN AGENCY</span>
-            <span>MEASURED OUTCOMES</span>
-            <span>EXPERT COLLABORATION</span>
-            <span>TRACEABLE SIMULATION</span>
-          </div>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-5 sm:px-6 py-16 sm:py-20 border-t border-white/10">
-        <div className="max-w-3xl mb-10">
-          <p className="text-xs font-mono tracking-[0.3em] text-tennis-yellow mb-3">THE LOOP</p>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">Start with a goal. Learn from reality.</h2>
-          <p className="text-gray-400 text-base sm:text-lg">
-            ACE is organized around a repeatable human-in-the-loop cycle, not around a single score or a single model.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          {feedbackLoop.map((step, index) => (
-            <div key={step.label} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 min-h-[155px]">
-              <span className="text-[10px] font-mono text-white/35">{String(index + 1).padStart(2, '0')}</span>
-              <h3 className="text-lg font-bold mt-3 mb-2">{step.label}</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">{step.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-5 sm:px-6 py-16 sm:py-20 border-t border-white/10">
-        <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-14 items-start">
-          <div>
-            <p className="text-xs font-mono tracking-[0.3em] text-cyan-300 mb-3">{blueprintPositioning.eyebrow}</p>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-5">{blueprintPositioning.title}</h2>
-            <p className="text-gray-300 text-lg leading-relaxed mb-4">{blueprintPositioning.body}</p>
-            <p className="text-xs text-white/35">{blueprintPositioning.disclaimer}</p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {principles.map((principle) => (
-              <div key={principle.title} className="rounded-2xl bg-white/5 border border-white/10 p-5">
-                <ShieldCheck className="w-5 h-5 text-tennis-yellow mb-4" />
-                <h3 className="font-bold text-lg mb-2">{principle.title}</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">{principle.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-5 sm:px-6 py-16 sm:py-20 border-t border-white/10">
-        <div className="max-w-3xl mb-10">
-          <p className="text-xs font-mono tracking-[0.3em] text-tennis-yellow mb-3">SYSTEM TOPOLOGY</p>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">The digital twin is the connective tissue.</h2>
-          <p className="text-gray-400 text-lg">
-            It should connect the physical world to evidence, simulation, experts, agents, and measured follow-up without pretending any model is reality itself.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {architectureFlow.map((node, index) => (
-            <div key={node.label} className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.06] to-white/[0.02] p-5">
-              <div className="flex items-center justify-between gap-4 mb-4">
-                <span className="text-[10px] font-mono text-white/30">{String(index + 1).padStart(2, '0')}</span>
-                {node.stamp && <Stamp stamp={node.stamp} />}
-              </div>
-              <h3 className="text-xl font-bold mb-2">{node.label}</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">{node.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-5 sm:px-6 py-16 border-t border-white/10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <div>
-            <p className="text-xs font-mono tracking-[0.3em] text-tennis-yellow mb-3">HUMANS + AGENTS</p>
-            <h2 className="text-3xl md:text-5xl font-bold mb-5 tracking-tight">The right person is part of the architecture.</h2>
-            <p className="text-gray-400 text-lg leading-relaxed mb-8">
-              ACE should help people discover the limiting factor, surface the evidence, and involve the right expert. Agents extend attention and coordination; they do not replace scoped human authority.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {expertDomains.map((domain) => (
-                <span key={domain} className="px-3 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-gray-300">
-                  {domain}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-cyan-300/15 bg-cyan-300/[0.035] p-6 sm:p-7">
-            <p className="text-xs font-mono tracking-[0.3em] text-cyan-300 mb-3">EVIDENCE BEFORE OPTIMIZATION</p>
-            <h3 className="text-2xl font-bold mb-4">Do not let the twin invent truth.</h3>
-            <p className="text-gray-400 mb-6">
-              Every meaningful claim should retain what kind of thing it is, where it came from, and how uncertain it is.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {evidenceClasses.map((item) => (
-                <span key={item} className="px-3 py-2 rounded-lg bg-black/20 border border-white/10 text-[11px] font-mono tracking-wide text-white/70">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-5 sm:px-6 py-16 sm:py-20 border-t border-white/10">
-        <div className="max-w-3xl mb-10">
-          <p className="text-xs font-mono tracking-[0.3em] text-cyan-300 mb-3">FIRST PROOF</p>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">Prove one closed loop before building everything.</h2>
-          <p className="text-gray-400 text-lg">
-            Pickleball is the first instrumented testbed because the rules, outcomes, state transitions, and repeatable skills make the loop falsifiable.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-          {firstProof.map((step) => (
-            <div key={step.title} className="rounded-2xl border border-white/10 bg-white/5 p-5">
-              <Stamp stamp={step.stamp} />
-              <h3 className="text-xl font-bold mt-3 mb-2">{step.title}</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">{step.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-5 sm:px-6 py-16 border-t border-white/10">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
-          <div className="max-w-3xl">
-            <p className="text-xs font-mono tracking-[0.3em] text-white/45 mb-3">WHAT EXISTS VS WHAT WE ARE TESTING</p>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Status is part of the interface.</h2>
-          </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-2 max-w-xl">
-            {statusLegend.map((item) => (
-              <span key={item.stamp} className="text-[10px] text-white/45">
-                <strong className={stampClass[item.stamp]}>{item.stamp}</strong> · {item.body}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-          {pillars.map((pillar) => (
-            <div
-              key={pillar.title}
-              className={`p-6 rounded-2xl bg-white/5 border ${
-                pillar.stamp === 'LIVE' ? 'border-tennis-yellow/40 bg-[#0c0d0b]' : 'border-white/10'
-              }`}
-            >
-              <Stamp stamp={pillar.stamp} />
-              <h3 className="text-2xl font-bold mb-2 mt-3">{pillar.title}</h3>
-              <p className="text-gray-400 leading-relaxed">{pillar.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-5 sm:px-6 pb-16">
-        <div className="rounded-3xl border border-tennis-yellow/15 bg-gradient-to-br from-tennis-yellow/[0.07] via-white/[0.03] to-transparent p-6 sm:p-8 flex flex-col lg:flex-row gap-6 lg:items-center lg:justify-between">
-          <div className="max-w-3xl">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-2">The facility is the environment. The feedback loop is the product.</h2>
-            <p className="text-gray-400">
-              Sports, labs, experts, nutrition, recovery, community, agents, simulation, and the 3D world all exist to make the next real-world outcome more useful.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => onChangeView(View.AMENITIES)}
-            className="shrink-0 px-6 py-3 rounded-full bg-tennis-yellow text-tennis-dark font-bold hover:bg-white transition-colors"
-          >
-            Explore ACE
-          </button>
-        </div>
-      </section>
-
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 pb-8">
-        <p className="text-gray-500 text-sm max-w-4xl">{product.thisSite}</p>
-        <p className="text-gray-500 text-sm max-w-4xl mt-2">{product.liveTwin}</p>
-      </div>
-    </div>
-  );
-};
-
-export const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({ onChangeView }) => {
-  return (
-    <div className="max-w-7xl mx-auto pt-10">
-      <p className="text-xs font-mono tracking-[0.3em] text-tennis-yellow mb-3">ACE SYSTEM</p>
-      <h2 className="text-4xl md:text-6xl font-bold mb-4 border-b border-white/10 pb-6 tracking-tight">How the loop compounds</h2>
-      <p className="text-gray-400 text-lg mb-4 max-w-4xl">{product.subhead}</p>
-      <p className="text-gray-500 text-sm mb-12 max-w-4xl font-mono">
-        {product.thisSite} {product.liveTwin}
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-24">
-        {lanes.map((lane) => (
-          <div key={lane.group} className="p-6 rounded-2xl bg-white/5 border border-white/10">
-            <div className="w-12 h-12 rounded-2xl bg-tennis-yellow/10 flex items-center justify-center text-tennis-yellow mb-4">
-              {laneIcon(lane.group)}
-            </div>
-            <h3 className="text-2xl font-bold mb-4">{lane.group}</h3>
-            <ul className="space-y-3 text-gray-300">
-              {lane.items.map((item) => (
-                <li key={item} className="flex items-start gap-2">
-                  <span className="mt-2 w-1.5 h-1.5 rounded-full bg-tennis-yellow shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+      <div className="ace-loop-rail" aria-label="ACE feedback loop">
+        {feedbackLoop.map((step, index) => (
+          <div className="ace-loop-rail-item" key={step.label}>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <strong>{step.label}</strong>
           </div>
         ))}
       </div>
 
-      <div className="mb-16">
-        <p className="text-xs font-mono tracking-[0.3em] text-cyan-300 mb-3">CURRENT RESEARCH TRACKS</p>
-        <h3 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">Prove the loop before scaling the campus.</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {inFlight.map((item) => (
-            <div key={item.title} className="p-6 rounded-2xl border border-white/10 bg-white/5">
-              <Stamp stamp={item.stamp} />
-              <h4 className="text-2xl font-bold mt-3 mb-2">{item.title}</h4>
-              <p className="text-gray-400 leading-relaxed">{item.body}</p>
+      <section className="ace-section">
+        <div className="ace-section-grid">
+          <div className="ace-section-index">
+            <span className="ace-number">01</span>
+            <div>
+              <p className="ace-kicker">OPERATING PRINCIPLES</p>
+              <h2>Make the system earn trust.</h2>
             </div>
+          </div>
+          <div>
+            <p className="ace-section-lede">
+              {blueprintPositioning.body} {blueprintPositioning.disclaimer}
+            </p>
+            <div className="ace-manifest-grid">
+              {principles.map((principle) => (
+                <article className="ace-manifest-item" key={principle.title}>
+                  <ShieldCheck className="ace-item-icon" />
+                  <h3>{principle.title}</h3>
+                  <p>{principle.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="ace-section">
+        <div className="ace-section-grid">
+          <div className="ace-section-index">
+            <span className="ace-number">02</span>
+            <div>
+              <p className="ace-kicker">SYSTEM TOPOLOGY</p>
+              <h2>The twin is connective tissue.</h2>
+            </div>
+          </div>
+          <div>
+            <p className="ace-section-lede">
+              Physical reality flows through evidence, models, simulation, humans and agents, then comes back through measured outcomes. Each layer has a different trust level.
+            </p>
+            <div className="ace-flow">
+              {architectureFlow.map((node, index) => (
+                <article className="ace-flow-row" key={node.label}>
+                  <span className="ace-flow-num">{String(index + 1).padStart(2, '0')}</span>
+                  <h3 className="ace-flow-title">{node.label}</h3>
+                  <p className="ace-flow-body">{node.body}</p>
+                  {node.stamp ? <Stamp stamp={node.stamp} /> : <span />}
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="ace-section">
+        <div className="ace-section-grid">
+          <div className="ace-section-index">
+            <span className="ace-number">03</span>
+            <div>
+              <p className="ace-kicker">HUMANS + EVIDENCE</p>
+              <h2>Authority stays legible.</h2>
+            </div>
+          </div>
+          <div>
+            <div className="ace-dual">
+              <article className="ace-dual-panel">
+                <Users size={25} />
+                <h3>The right person is part of the architecture.</h3>
+                <p>
+                  ACE should discover the limiting factor, surface the evidence, and bring in the right expert. Agents extend attention and coordination; they do not silently inherit human authority.
+                </p>
+                <div className="ace-chip-grid">
+                  {expertDomains.map((domain) => <span key={domain} className="ace-chip">{domain}</span>)}
+                </div>
+              </article>
+
+              <article className="ace-dual-panel">
+                <Network size={25} />
+                <h3>Do not let the twin invent truth.</h3>
+                <p>
+                  Every meaningful claim keeps its type, provenance, uncertainty and intended use. A prediction can be useful without being confused for an observation.
+                </p>
+                <div className="ace-chip-grid">
+                  {evidenceClasses.map((item) => <span key={item} className="ace-chip">{item}</span>)}
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="ace-section">
+        <div className="ace-section-grid">
+          <div className="ace-section-index">
+            <span className="ace-number">04</span>
+            <div>
+              <p className="ace-kicker">FIRST PROOF</p>
+              <h2>One loop before everything.</h2>
+            </div>
+          </div>
+          <div>
+            <p className="ace-section-lede">
+              Pickleball is the first instrumented testbed because state, rules, outcomes and repeatable skills are explicit enough to falsify the architecture.
+            </p>
+            <div className="ace-proof-grid">
+              {firstProof.map((step) => (
+                <article className="ace-proof-card" key={step.title}>
+                  <Stamp stamp={step.stamp} />
+                  <h3>{step.title}</h3>
+                  <p>{step.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="ace-section">
+        <div className="ace-section-grid">
+          <div className="ace-section-index">
+            <span className="ace-number">05</span>
+            <div>
+              <p className="ace-kicker">TRUTH MODEL</p>
+              <h2>Status is part of the interface.</h2>
+            </div>
+          </div>
+          <div>
+            <p className="ace-section-lede">
+              The design should make uncertainty and maturity visible instead of hiding them in footnotes. Shipped, research and vision are different products of the loop.
+            </p>
+            <div className="ace-status-grid">
+              {pillars.map((pillar) => (
+                <article className="ace-status-card" data-stamp={pillar.stamp} key={pillar.title}>
+                  <Stamp stamp={pillar.stamp} />
+                  <h3>{pillar.title}</h3>
+                  <p>{pillar.body}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="ace-chip-grid" style={{ marginTop: 28 }}>
+              {statusLegend.map((item) => (
+                <span className="ace-chip" key={item.stamp}>
+                  {item.stamp} · {item.body}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="ace-signal-band" aria-hidden="true">
+        <div className="ace-signal-track">
+          {[...marquee, ...marquee].map((item, index) => (
+            <span key={item + index}>✦ {item}</span>
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start mb-24">
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-7">
-          <p className="text-xs font-mono tracking-[0.3em] text-tennis-yellow mb-3">THE PHYSICAL CAMPUS</p>
-          <h3 className="text-3xl font-bold mb-5">A place where domains can actually meet.</h3>
-          <p className="text-gray-400 mb-6">
-            The facility vision is intentionally multidisciplinary. Some capabilities may ultimately live through external partners rather than under one roof; the campus sketch is a program, not a construction claim.
+      <section className="ace-final">
+        <p className="ace-kicker">ACE / PRETOTYPE</p>
+        <h2>
+          The facility is the environment.<br />
+          <span>The feedback loop is the product.</span>
+        </h2>
+        <div className="ace-final-row">
+          <p className="ace-final-copy">
+            Sports, labs, experts, nutrition, recovery, community, agents, simulation and the 3D world only matter if they help a person make a better decision, test it, and learn from what actually happened.
           </p>
-          <div className="flex flex-wrap gap-2">
-            {facilityDomains.map((domain) => (
-              <span key={domain} className="px-3 py-2 rounded-full border border-white/10 bg-black/20 text-sm text-gray-300">
-                {domain}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-6">
-          <Stamp stamp={campusNested.stamp} />
-          <h3 className="text-3xl font-bold">{campusNested.title}</h3>
-          <p className="text-gray-400 text-lg leading-relaxed">{campusNested.body}</p>
-          <button
-            type="button"
-            onClick={() => onChangeView(View.FACILITY_DEMO)}
-            className="self-start px-6 py-3 bg-white/10 rounded-full font-bold hover:bg-white/20 transition-all border border-white/10"
-          >
-            Open Pascal campus
+          <button type="button" className="ace-action-primary" onClick={() => onChangeView(View.AMENITIES)}>
+            Explore ACE <ArrowRight size={17} />
           </button>
-          <div className="h-[280px] rounded-3xl overflow-hidden relative border border-tennis-yellow/20 bg-gradient-to-br from-[#1a1520] via-[#12141c] to-[#0c0d0b]">
-            <div className="absolute inset-[12%] grid grid-cols-3 gap-1 opacity-70">
-              {Array.from({ length: 9 }).map((_, i) => (
-                <div key={i} className="border border-tennis-yellow/15 bg-white/5" />
-              ))}
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 text-sm font-mono text-tennis-yellow text-center">
-                VISION · HUMAN PERFORMANCE CAMPUS
-              </span>
-            </div>
-          </div>
         </div>
-      </div>
+      </section>
+
+      <footer className="ace-footnote">
+        <span>{product.thisSite}</span>
+        <span>{product.liveTwin}</span>
+      </footer>
     </div>
   );
 };
+
+export const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({ onChangeView }) => (
+  <div className="ace-product">
+    <header className="ace-product-head">
+      <p className="ace-kicker">ACE SYSTEM</p>
+      <h2>How the loop compounds.</h2>
+      <p className="ace-section-lede">{product.subhead}</p>
+    </header>
+
+    <div className="ace-product-lanes">
+      {lanes.map((lane) => (
+        <article className="ace-product-lane" key={lane.group}>
+          {laneIcon(lane.group)}
+          <h3>{lane.group}</h3>
+          <ul>
+            {lane.items.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </article>
+      ))}
+    </div>
+
+    <section className="ace-section" style={{ width: '100%' }}>
+      <div className="ace-section-grid">
+        <div className="ace-section-index">
+          <span className="ace-number">R&D</span>
+          <div>
+            <p className="ace-kicker">CURRENT RESEARCH</p>
+            <h2>Prove the loop before scaling the campus.</h2>
+          </div>
+        </div>
+        <div className="ace-research-grid">
+          {inFlight.map((item) => (
+            <article className="ace-research-card" key={item.title}>
+              <Stamp stamp={item.stamp} />
+              <h4>{item.title}</h4>
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section className="ace-section" style={{ width: '100%' }}>
+      <div className="ace-section-grid">
+        <div className="ace-section-index">
+          <span className="ace-number">PHY</span>
+          <div>
+            <p className="ace-kicker">PHYSICAL CAMPUS</p>
+            <h2>A place where domains can meet.</h2>
+          </div>
+        </div>
+        <div>
+          <p className="ace-section-lede">{campusNested.body}</p>
+          <div className="ace-chip-grid">
+            {facilityDomains.map((domain) => <span className="ace-chip" key={domain}>{domain}</span>)}
+          </div>
+          <div className="ace-actions">
+            <button type="button" className="ace-action-secondary" onClick={() => onChangeView(View.FACILITY_DEMO)}>
+              Open Pascal campus
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+);
 
 export default AtlasLanding;
