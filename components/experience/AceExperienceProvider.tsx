@@ -51,6 +51,7 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
       setRootVar('--ace-scroll-px', `${Math.min(progress * 72, 72).toFixed(2)}px`);
       setRootVar('--ace-velocity', Math.min(Math.abs(velocity), 5).toFixed(3));
       root.dataset.aceDirection = instance.direction < 0 ? 'up' : 'down';
+      root.dataset.aceLoop = String(Math.min(10, Math.max(1, Math.floor(progress * 10) + 1)));
       root.dataset.aceScrolling = 'true';
       window.clearTimeout(scrollIdleTimer);
       scrollIdleTimer = window.setTimeout(() => {
