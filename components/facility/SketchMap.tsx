@@ -247,7 +247,7 @@ export const SketchFallback: React.FC<{
               onClick={() => onSelect(f)}
               className="ace-feature-btn"
             >
-              {f.icon} {f.title}
+              <span className="ace-feature-dot" aria-hidden="true" />{f.title}
             </button>
           ))}
         </div>
