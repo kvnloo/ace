@@ -43,7 +43,7 @@ const App: React.FC = () => {
   }, [currentView]);
 
   return (
-    <div className="min-h-[100dvh] bg-[#050806] text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
+    <div className="min-h-[100dvh] bg-[#071426] text-white selection:bg-tennis-yellow selection:text-tennis-dark font-sans">
       <a className="ace-skip-link" href="#ace-main">Skip to content</a>
       <NavBar currentView={currentView} onChangeView={navigate} />
 
@@ -56,7 +56,7 @@ const App: React.FC = () => {
 
         {currentView === View.SPECIFICATIONS && (
           <div className="ace-route-enter min-h-[calc(100dvh-72px)]">
-            <Suspense fallback={<div className="w-full min-h-[calc(100dvh-72px)] bg-[#050806] grid place-items-center"><div className="ace-kicker">LOADING SPEC MATRIX</div></div>}>
+            <Suspense fallback={<div className="w-full min-h-[calc(100dvh-72px)] bg-[#071426] grid place-items-center"><div className="ace-kicker">LOADING SPEC MATRIX</div></div>}>
               <Specifications />
             </Suspense>
           </div>
@@ -65,7 +65,7 @@ const App: React.FC = () => {
         {currentView === View.FACILITY_DEMO && (
           <div className="ace-route-enter ace-campus-shell w-full h-[calc(100dvh-72px)] relative overflow-hidden">
             <div className="absolute inset-0 z-0">
-              <Suspense fallback={<div className="w-full h-full bg-[#050806] grid place-items-center"><div className="ace-kicker">LOADING CAMPUS SHELL</div></div>}>
+              <Suspense fallback={<div className="w-full h-full bg-[#071426] grid place-items-center"><div className="ace-kicker">LOADING CAMPUS SHELL</div></div>}>
                 <CampusExperience onFeatureSelect={setSelectedFeature} />
               </Suspense>
             </div>
