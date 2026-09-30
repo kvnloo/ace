@@ -4096,3 +4096,59 @@ html[data-ace-scrolling="true"] .ace-core-ring {
     transition: none !important;
   }
 }
+
+
+/* --- Quiet interaction audit -------------------------------------------- */
+/* Remove exploration-era movement that does not carry semantic information. */
+
+.ace-scroll-cue i,
+.ace-campus-corridor i {
+  animation: none !important;
+}
+
+.ace-scroll-cue i {
+  opacity: .48;
+  transform: scaleY(.72);
+}
+
+.ace-campus-corridor i {
+  left: 50%;
+  opacity: .58;
+}
+
+.ace-core:hover .ace-core-human,
+.ace-core:focus-within .ace-core-human {
+  transform: none;
+  box-shadow:
+    0 0 0 1px rgba(223,255,79,.24),
+    0 0 64px rgba(223,255,79,.18);
+}
+
+.ace-flow-row:hover .ace-flow-title,
+.ace-product-lane:hover h3,
+.ace-research-card:hover h4,
+.ace-spec-card:hover h2 {
+  transform: none;
+}
+
+.ace-action-primary:hover::before,
+.ace-nav-cta:hover::before {
+  transform: none;
+}
+
+.ace-chat-button:hover,
+.ace-chat-send:hover:not(:disabled),
+.ace-campus-enable-3d:hover {
+  transform: none;
+}
+
+[data-ace-reveal][data-inview="true"] .ace-manifest-item[data-motion]::after,
+[data-ace-reveal][data-inview="true"] + .ace-product-lanes .ace-product-lane[data-motion]::after,
+.ace-product-lanes[data-inview="true"] .ace-product-lane[data-motion]::after {
+  opacity: .22;
+}
+
+.ace-manifest-item[data-motion]:hover::after,
+.ace-product-lane[data-motion]:hover::after {
+  opacity: .62;
+}
