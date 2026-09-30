@@ -7,9 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "npm run check:facility && npm run check:landing",
+    "test": "npm run check:facility && npm run check:landing && npm run check:design",
     "check:facility": "esbuild facility/check-scene.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-facility.mjs && node /tmp/ace-check-facility.mjs",
-    "check:landing": "esbuild landing/check-copy.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-landing.mjs && node /tmp/ace-check-landing.mjs"
+    "check:landing": "esbuild landing/check-copy.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-landing.mjs && node /tmp/ace-check-landing.mjs",
+    "check:design": "esbuild landing/check-design.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-design.mjs && node /tmp/ace-check-design.mjs"
   },
   "dependencies": {
     "@pascal-app/core": "1.0.0",
