@@ -26,7 +26,8 @@ const App: React.FC = () => {
   }, [currentView]);
 
   useEffect(() => {
-    if (contactGoal.trim().length < 12) {
+    const meaningfulGoal = contactGoal.trim().length >= 12;
+    if (!meaningfulGoal) {
       setContactContextReady(false);
       return;
     }
