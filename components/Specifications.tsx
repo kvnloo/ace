@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Activity, Brain, Cpu, Droplets, Home, Layers, Network, Server, Users, Zap } from 'lucide-react';
 import { product } from '../landing/public.ts';
 
@@ -136,12 +135,10 @@ const Specifications: React.FC = () => {
           {specs.map((category, index) => {
             const Icon = category.icon;
             return (
-              <motion.article
-                className="ace-spec-card"
+              <article
+                className="ace-spec-card ace-spec-enter"
                 key={category.category}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: Math.min(index * 0.035, 0.24), duration: 0.4 }}
+                style={{ '--ace-index': Math.min(index, 8) } as React.CSSProperties}
               >
                 <div className="ace-spec-card-head">
                   <div className="ace-spec-card-icon"><Icon size={19} /></div>
@@ -161,7 +158,7 @@ const Specifications: React.FC = () => {
                     </li>
                   ))}
                 </dl>
-              </motion.article>
+              </article>
             );
           })}
         </div>
