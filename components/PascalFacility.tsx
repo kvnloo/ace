@@ -290,7 +290,7 @@ const PascalFacility: React.FC<PascalFacilityProps> = ({ onFeatureSelect }) => {
             setAnnotationMode={setAnnotationMode}
           />
           {annotationMode !== 'NONE' && (
-            <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-wrap justify-center gap-2 max-w-3xl px-4 z-10">
+            <div className="ace-feature-strip">
               {FEATURES.filter((f) => {
                 if (activeFloor === 'ALL') return true;
                 if (activeFloor === 0) return f.id.includes('ground');
@@ -301,21 +301,20 @@ const PascalFacility: React.FC<PascalFacilityProps> = ({ onFeatureSelect }) => {
                 return true;
               }).map((f) => (
                 <button
+                  type="button"
+                  aria-pressed={selectedId === f.id}
                   key={f.id}
                   onClick={() => handleSelect(f)}
-                  className={`px-3 py-2 rounded-lg text-xs font-bold border ${
-                    selectedId === f.id
-                      ? 'bg-tennis-yellow text-black border-tennis-yellow'
-                      : 'bg-slate-900/80 text-white border-white/20'
-                  }`}
+                  className="ace-feature-btn"
                 >
                   {f.icon} {f.title}
                 </button>
               ))}
             </div>
           )}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/45 text-[10px] pointer-events-none select-none font-mono text-center tracking-widest uppercase">
-            Naperville pretotype · VISION campus · Pascal facility
+          <div className="ace-map-stamp">
+            PASCAL LIVE · VISION CAMPUS<br />
+            NAPERVILLE PRETOTYPE
           </div>
         </>
       )}
