@@ -14,6 +14,7 @@ import {
   FEATURES,
   FloorLevel,
   levelNodeId,
+  sceneSelectionForFeature,
 } from '../facility/program';
 import { ControlsOverlay, SketchFallback } from './facility/SketchMap';
 
@@ -148,8 +149,10 @@ function CameraFramer({ floor }: { floor: FloorLevel }) {
   return null;
 }
 
-function applyFloorMode(floor: FloorLevel) {
+function applyFloorMode(floor: FloorLevel, selectedFeatureId: string | null = null) {
   const viewer = useViewer.getState();
+  const featureSelection = sceneSelectionForFeature(selectedFeatureId);
+  const selectedIds = featureSelection?.floor === floor ? featureSelection.selectedIds : [];
   viewer.setRenderContext('viewer');
   viewer.setWallMode('cutaway');
   viewer.setShowZones(true);
@@ -157,7 +160,7 @@ function applyFloorMode(floor: FloorLevel) {
   viewer.setShadows(false);
   if (floor === 'ALL') {
     viewer.setLevelMode('exploded');
-    viewer.setSelection({ buildingId: BUILDING_ID, levelId: null, zoneId: null, selectedIds: [] });
+    viewer.setSelection({ buildingId: BUILDING_ID, levelId: null, zoneId: null, selectedIds });
     return;
   }
   if (floor === 'APEX') {
@@ -166,7 +169,7 @@ function applyFloorMode(floor: FloorLevel) {
       buildingId: APEX_BUILDING_ID,
       levelId: APEX_LEVEL_ID,
       zoneId: null,
-      selectedIds: [],
+      selectedIds,
     });
     return;
   }
@@ -175,7 +178,7 @@ function applyFloorMode(floor: FloorLevel) {
     buildingId: BUILDING_ID,
     levelId: levelNodeId(floor),
     zoneId: null,
-    selectedIds: [],
+    selectedIds,
   });
 }
 
@@ -199,7 +202,7 @@ const PascalFacility: React.FC<PascalFacilityProps> = ({ onFeatureSelect }) => {
       const { nodes, rootNodeIds } = generateLawnTechScene();
       useScene.getState().setScene(nodes, rootNodeIds);
       useScene.getState().setReadOnly(true);
-      applyFloorMode(activeFloor);
+      applyFloorMode(activeFloor, selectedId);
       if (!cancelled) {
         window.__PASCAL_STATUS__ = 'ready';
         setStatus('ready');
@@ -218,8 +221,8 @@ const PascalFacility: React.FC<PascalFacilityProps> = ({ onFeatureSelect }) => {
   }, []);
 
   useEffect(() => {
-    if (status === 'ready') applyFloorMode(activeFloor);
-  }, [activeFloor, status]);
+    if (status === 'ready') applyFloorMode(activeFloor, selectedId);
+  }, [activeFloor, selectedId, status]);
 
   useEffect(() => {
     if (!attempt3d || webglLive) return;
@@ -234,11 +237,8 @@ const PascalFacility: React.FC<PascalFacilityProps> = ({ onFeatureSelect }) => {
     (feature: FeatureData) => {
       setSelectedId(feature.id);
       onFeatureSelect(feature);
-      if (feature.id.includes('apex')) setActiveFloor('APEX');
-      if (feature.id.includes('ground')) setActiveFloor(0);
-      if (feature.id.includes('level1')) setActiveFloor(1);
-      if (feature.id.includes('level2')) setActiveFloor(2);
-      if (feature.id.includes('level3')) setActiveFloor(3);
+      const selection = sceneSelectionForFeature(feature.id);
+      if (selection) setActiveFloor(selection.floor);
     },
     [onFeatureSelect],
   );
