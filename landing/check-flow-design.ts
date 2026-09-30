@@ -31,13 +31,13 @@ forbidText(css, /\.ace-signal-track\s*\{[^}]*var\(--ace-marquee-x/s, 'manifesto 
 forbidText(css, /\.ace-core-orbit\s*\{[^}]*animation:\s*aceSpin/s, 'hero system must not autonomously orbit');
 
 requireText(landing, /data-motion="stable-human"/, 'hero must declare stable-human motion semantics');
-requireText(landing, /data-motion="resolve-evidence"/, 'principles must expose evidence-resolution semantics');
-requireText(landing, /data-motion="branch-counterfactual"/, 'principles must expose counterfactual semantics');
+requireText(landing, /resolve-evidence/, 'principles must expose evidence-resolution semantics');
+requireText(landing, /branch-counterfactual/, 'principles must expose counterfactual semantics');
 requireText(landing, /ace-loop-signal/, 'feedback loop needs one continuous semantic signal');
-requireText(product, /data-motion="clarify"/, 'Understand lane must use clarify semantics');
-requireText(product, /data-motion="branch"/, 'Simulate lane must use branch semantics');
-requireText(product, /data-motion="contextual-connect"/, 'Connect lane must use contextual connection semantics');
-requireText(product, /data-motion="compare"/, 'Improve lane must use comparative semantics');
+requireText(product, /Understand:\s*'clarify'/, 'Understand lane must use clarify semantics');
+requireText(product, /Simulate:\s*'branch'/, 'Simulate lane must use branch semantics');
+requireText(product, /Connect:\s*'contextual-connect'/, 'Connect lane must use contextual connection semantics');
+requireText(product, /Improve:\s*'compare'/, 'Improve lane must use comparative semantics');
 
 requireText(specs, /data-stamp=\{category\.stamp\}/, 'spec cards must expose epistemic stamp to material layer');
 forbidText(specs, /ace-spec-enter/, 'spec route should not use staggered entrance animation');
