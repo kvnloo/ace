@@ -12,15 +12,31 @@ type TransitionDocument = Document & {
   startViewTransition?: (update: () => void) => { finished: Promise<void> };
 };
 
+const CONTACT_CONTEXT_DELAY_MS = 420;
+
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
   const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);
   const [contactGoal, setContactGoal] = useState('');
+  const [contactContextReady, setContactContextReady] = useState(false);
 
   useEffect(() => {
     document.documentElement.dataset.aceView = currentView.toLowerCase();
     if (currentView !== View.FACILITY_DEMO) setSelectedFeature(null);
   }, [currentView]);
+
+  useEffect(() => {
+    if (contactGoal.trim().length < 12) {
+      setContactContextReady(false);
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setContactContextReady(true);
+    }, CONTACT_CONTEXT_DELAY_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [contactGoal]);
 
   const navigate = React.useCallback((nextView: View) => {
     if (nextView === currentView) {
@@ -132,9 +148,9 @@ const App: React.FC = () => {
                       onChange={(event) => setContactGoal(event.target.value)}
                       placeholder="A skill, plateau, research question, facility idea..."
                     />
-                    <p className="ace-field-hint">Start with the human goal. ACE can organize context around it.</p>
+                    <p className="ace-field-hint">Start with the human goal. When it becomes concrete, ACE reveals only the routing context it needs.</p>
                   </div>
-                  {contactGoal.trim().length > 0 && (
+                  {contactContextReady && (
                     <div className="ace-contact-followup" aria-live="polite">
                       <div className="ace-field"><label htmlFor="ace-interest" className="ace-label">Which perspective are you bringing?</label><select id="ace-interest" className="ace-select" defaultValue="Founding Member"><option>Founding Member</option><option>Coach / Clinician / Researcher</option><option>Technology Partner</option><option>Potential Investor</option></select></div>
                       <div className="ace-form-grid">
