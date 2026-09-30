@@ -30,7 +30,7 @@ const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({ onChan
 
     <div className="ace-product-lanes">
       {lanes.map((lane) => (
-        <article className="ace-product-lane" key={lane.group}>
+        <article className="ace-product-lane" data-lane={lane.group.toLowerCase()} key={lane.group}>
           {laneIcon(lane.group)}
           <h3>{lane.group}</h3>
           <ul>
