@@ -19,6 +19,7 @@ import {
   WALL_HEIGHT,
   WALL_THICKNESS,
 } from './program.ts';
+import { ACE_FACILITY_THEME } from './theme.ts';
 import {
   APEX_BUILDING_ID,
   APEX_DEPTH,
