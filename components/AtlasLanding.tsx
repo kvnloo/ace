@@ -100,24 +100,6 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
               </button>
             </div>
 
-            <div className="ace-hero-notes" aria-label="ACE design principles">
-              <div className="ace-hero-note">
-                <strong>{feedbackLoop.length}</strong>
-                <span>steps in the learning loop</span>
-              </div>
-              <div className="ace-hero-note">
-                <strong>{evidenceClasses.length}</strong>
-                <span>evidence classes kept distinct</span>
-              </div>
-              <div className="ace-hero-note">
-                <strong>{architectureFlow.length}</strong>
-                <span>system layers from world to outcome</span>
-              </div>
-              <div className="ace-hero-note">
-                <strong>1</strong>
-                <span>human goal owner at the center</span>
-              </div>
-            </div>
           </div>
 
           <div className="ace-hero-entry ace-hero-entry-core">
