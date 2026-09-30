@@ -12,6 +12,7 @@ const sketch = read('components/facility/SketchMap.tsx');
 const scene = read('facility/generateScene.ts');
 const theme = read('facility/theme.ts');
 const motion = read('landing/motion.ts');
+const html = read('index.html');
 
 const requireText = (source: string, pattern: RegExp, message: string) => {
   if (!pattern.test(source)) throw new Error(message);
@@ -25,6 +26,10 @@ requireText(css, /--ace-signal:\s*#dfff4f/i, 'ACE must retain the original tenni
 requireText(css, /--ace-glass:/, 'augmentation glass token missing');
 requireText(css, /--ace-radius-human:/, 'human interaction radius token missing');
 requireText(css, /--ace-motion-settle:/, 'semantic motion timing token missing');
+requireText(html, /<meta name="theme-color" content="#071426"\s*\/>/i, 'bootstrap theme-color must match the canonical navy substrate');
+requireText(html, /:root\s*\{[^}]*background:\s*#071426/s, 'bootstrap :root background must match the canonical navy substrate');
+requireText(html, /html\s*\{[^}]*background:\s*#071426/s, 'bootstrap html background must match the canonical navy substrate');
+forbidText(html, /\\n\s*<link rel="icon"/i, 'index.html must not render escaped newline text before the app mounts');
 
 forbidText(css, /\.ace-product-lane:hover\s*>\s*svg\s*\{[^}]*transform:/s, 'system lane hover must not use decorative icon transforms');
 forbidText(css, /\.ace-page::after\s*\{[^}]*--ace-pointer|\.ace-page::after[\s\S]{0,400}var\(--ace-pointer-/s, 'global pointer-follow spotlight must be removed');
