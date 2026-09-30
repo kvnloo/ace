@@ -2189,17 +2189,14 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
 [data-ace-reveal] {
   opacity: .001;
   transform: translate3d(0, 28px, 0);
-  filter: blur(5px);
   transition:
-    opacity .72s cubic-bezier(.22,1,.36,1),
-    transform .72s cubic-bezier(.22,1,.36,1),
-    filter .72s cubic-bezier(.22,1,.36,1);
+    opacity .48s cubic-bezier(.22,1,.36,1),
+    transform .48s cubic-bezier(.22,1,.36,1);
 }
 
 [data-ace-reveal][data-inview="true"] {
   opacity: 1;
   transform: translate3d(0, 0, 0);
-  filter: blur(0);
 }
 
 .ace-section {
@@ -2680,7 +2677,7 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
 }
 
 .ace-hero-entry {
-  animation: aceHeroIn .78s cubic-bezier(.22,1,.36,1) both;
+  animation: aceHeroIn .52s cubic-bezier(.22,1,.36,1) both;
 }
 
 .ace-hero-entry-copy {
@@ -2688,7 +2685,7 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
 }
 
 .ace-hero-entry-core {
-  animation-delay: .16s;
+  animation-delay: .08s;
 }
 
 .ace-route-enter {
@@ -2828,8 +2825,8 @@ html[data-ace-zone="first-proof"] { --ace-context: var(--ace-orange); }
 }
 
 @keyframes aceHeroIn {
-  from { opacity: 0; transform: translateY(18px) scale(.995); filter: blur(4px); }
-  to { opacity: 1; transform: none; filter: blur(0); }
+  from { opacity: 0; transform: translateY(14px) scale(.997); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes aceRouteFallbackIn {
@@ -2977,5 +2974,47 @@ html[data-ace-quality="lite"] .ace-campus-enable-3d {
   .ace-product-lane::after,
   .ace-spec-card::after {
     transition: none;
+  }
+}
+
+
+/* --- Screenshot-driven polish ------------------------------------------ */
+
+.ace-footnote {
+  font-size: 10px;
+  line-height: 1.65;
+  color: rgba(241,243,232,.44);
+  padding-top: 18px;
+  border-top: 1px solid var(--ace-line);
+}
+
+html[data-ace-view="facility_demo"] .ace-chat-launcher,
+html[data-ace-view="facility_demo"] .fixed.bottom-4.right-4 {
+  transition: opacity .18s ease;
+}
+
+@media (max-width: 780px) {
+  html[data-ace-view="facility_demo"] .ace-chat-launcher,
+  html[data-ace-view="facility_demo"] .fixed.bottom-4.right-4 {
+    display: none;
+  }
+
+  .ace-campus-enable-3d {
+    bottom: 124px;
+    right: 8px;
+    width: min(250px, calc(100vw - 16px));
+  }
+
+  .ace-feature-strip {
+    bottom: 48px;
+    padding-right: 0;
+  }
+
+  .ace-map-stamp {
+    display: none;
+  }
+
+  .ace-map-controls {
+    mask-image: linear-gradient(90deg, #000 0%, #000 92%, transparent 100%);
   }
 }
