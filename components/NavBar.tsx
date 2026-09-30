@@ -49,6 +49,7 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
   const prefetch = (view: View) => {
     if (view === View.FACILITY_DEMO) void import('./CampusExperience');
     if (view === View.SPECIFICATIONS) void import('./Specifications');
+    if (view === View.AMENITIES) void import('./AtlasProduct');
   };
 
   React.useEffect(() => {
