@@ -59,6 +59,8 @@ requireText(theme, /spec/, 'facility theme must define SPEC material');
 requireText(theme, /vision/, 'facility theme must define VISION material');
 requireText(scene, /ACE_FACILITY_THEME/, 'Pascal scene must consume shared facility theme');
 requireText(sketch, /ace-augmentation-glass/, 'campus overlays must use augmentation glass semantics');
+requireText(app, /ace-feature-card-state/, 'campus selection must expose compact epistemic annotation state');
+requireText(css, /Campus attention hierarchy/, 'campus must keep the world primary and attention-responsive');
 
 console.log(JSON.stringify({
   ok: true,
