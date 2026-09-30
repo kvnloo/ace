@@ -4,7 +4,7 @@ import { View, FeatureData } from './types';
 import NavBar from './components/NavBar';
 const PascalFacility = React.lazy(() => import('./components/PascalFacility'));
 import AIChat from './components/AIChat';
-import Specifications from './components/Specifications';
+const Specifications = React.lazy(() => import('./components/Specifications'));
 import AtlasLanding, { AtlasProduct } from './components/AtlasLanding';
 import { campusNested, product } from './landing/public.ts';
 
@@ -52,7 +52,15 @@ const App: React.FC = () => {
               variants={pageVariants}
               className="h-full overflow-y-auto custom-scrollbar"
             >
-              <Specifications />
+              <Suspense
+                fallback={
+                  <div className="w-full h-full bg-[#050806] grid place-items-center">
+                    <div className="ace-kicker">LOADING SPEC MATRIX</div>
+                  </div>
+                }
+              >
+                <Specifications />
+              </Suspense>
             </motion.div>
           )}
 
