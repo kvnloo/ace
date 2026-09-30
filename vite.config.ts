@@ -1,5 +1,5 @@
 import path from 'path';
-import { defineConfig, loadEnv, Plugin } from 'vite';
+import { defineConfig, Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 
 function pascalForceWebgl(): Plugin {
@@ -21,32 +21,24 @@ function pascalForceWebgl(): Plugin {
   };
 }
 
-export default defineConfig(({ mode }) => {
-    const env = loadEnv(mode, '.', '');
+export default defineConfig(() => {
+  const base = process.env.VITE_BASE_PATH || '/';
 
-    // Determine base path based on branch (set via environment variable during build)
-    const base = process.env.VITE_BASE_PATH || '/';
-
-    return {
-      base,
-      server: {
-        port: 3000,
-        host: '0.0.0.0',
+  return {
+    base,
+    server: {
+      port: 3000,
+      host: '0.0.0.0',
+    },
+    plugins: [pascalForceWebgl(), react()],
+    optimizeDeps: {
+      exclude: ['@pascal-app/viewer', '@pascal-app/nodes'],
+    },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, '.'),
+        '@pascal-app/editor': path.resolve(__dirname, 'facility/pascal-editor-shim.ts'),
       },
-      plugins: [pascalForceWebgl(), react()],
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.NODE_ENV': JSON.stringify(mode === 'production' ? 'production' : 'development'),
-      },
-      optimizeDeps: {
-        exclude: ['@pascal-app/viewer', '@pascal-app/nodes'],
-      },
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, '.'),
-          '@pascal-app/editor': path.resolve(__dirname, 'facility/pascal-editor-shim.ts'),
-        }
-      }
-    };
+    },
+  };
 });
