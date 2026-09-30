@@ -3487,3 +3487,295 @@ html[data-ace-menu="open"] {
     background-position: 0 0;
   }
 }
+
+
+/* --- Campus fallback as an intentional system map ----------------------- */
+
+.ace-campus-fallback-art {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(220,255,69,.055), transparent 24rem),
+    linear-gradient(135deg, #101611, #070b08 62%, #050806);
+}
+
+.ace-campus-fallback-grid {
+  position: absolute;
+  inset: 0;
+  opacity: .36;
+  background-image:
+    linear-gradient(rgba(241,243,232,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(241,243,232,.025) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: radial-gradient(circle at center, black 0 56%, transparent 88%);
+}
+
+.ace-campus-fallback-title {
+  position: absolute;
+  right: -.03em;
+  top: 51%;
+  transform: translateY(-50%);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(241,243,232,.035);
+  font-family: var(--ace-display);
+  font-size: min(58vw, 620px);
+  font-weight: 200;
+  line-height: .7;
+  letter-spacing: -.08em;
+  user-select: none;
+}
+
+.ace-campus-blueprint {
+  position: absolute;
+  inset: 18% 8% 18%;
+  display: grid;
+  grid-template-columns: minmax(180px,1fr) 92px 120px 92px minmax(180px,1fr);
+  align-items: center;
+  gap: 0;
+}
+
+.ace-campus-origin,
+.ace-campus-apex {
+  position: relative;
+  min-height: 230px;
+  border: 1px solid var(--ace-line-strong);
+  background: rgba(5,8,6,.58);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.ace-campus-origin {
+  box-shadow: inset 0 0 0 1px rgba(241,243,232,.025);
+}
+
+.ace-campus-apex {
+  border-color: rgba(220,255,69,.32);
+}
+
+.ace-campus-zone-id {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  color: var(--ace-faint);
+  font-family: var(--ace-mono);
+  font-size: 8px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.ace-campus-origin strong,
+.ace-campus-apex strong,
+.ace-campus-human-hub strong {
+  font-family: var(--ace-display);
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.ace-campus-origin strong,
+.ace-campus-apex strong {
+  color: var(--ace-paper);
+  font-size: 26px;
+  line-height: .95;
+}
+
+.ace-campus-origin > span:last-child,
+.ace-campus-apex > span:last-child {
+  margin-top: 7px;
+  color: var(--ace-faint);
+  font-family: var(--ace-mono);
+  font-size: 8px;
+  line-height: 1.4;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.ace-campus-apex-cells {
+  position: absolute;
+  inset: 18px 18px 76px;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1px;
+  background: rgba(220,255,69,.13);
+}
+
+.ace-campus-apex-cells span {
+  background: rgba(5,8,6,.94);
+  box-shadow: inset 0 0 0 1px rgba(220,255,69,.08);
+}
+
+.ace-campus-human-hub {
+  position: relative;
+  z-index: 3;
+  width: 112px;
+  height: 112px;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(220,255,69,.48);
+  background: var(--ace-signal);
+  color: var(--ace-ink);
+  box-shadow:
+    0 0 0 10px rgba(220,255,69,.025),
+    0 0 52px rgba(220,255,69,.11);
+}
+
+.ace-campus-human-hub > span {
+  position: absolute;
+  inset: -22px;
+  border: 1px solid rgba(140,236,255,.16);
+  border-radius: 50%;
+}
+
+.ace-campus-human-hub strong {
+  font-size: 26px;
+  line-height: .85;
+}
+
+.ace-campus-human-hub small {
+  margin-top: 5px;
+  font-family: var(--ace-mono);
+  font-size: 7px;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.ace-campus-corridor {
+  position: relative;
+  min-width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--ace-line-strong), rgba(220,255,69,.42));
+}
+
+.ace-campus-corridor-right {
+  background: linear-gradient(90deg, rgba(220,255,69,.42), rgba(140,236,255,.34));
+}
+
+.ace-campus-corridor i {
+  position: absolute;
+  top: -2px;
+  left: 12%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ace-cyan);
+  box-shadow: 0 0 10px rgba(140,236,255,.55);
+  animation: aceCorridor 2.6s ease-in-out infinite;
+}
+
+.ace-campus-corridor span {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--ace-faint);
+  font-family: var(--ace-mono);
+  font-size: 7px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ace-campus-fallback-legend {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: flex;
+  gap: 16px;
+  color: var(--ace-faint);
+  font-family: var(--ace-mono);
+  font-size: 7px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.ace-campus-fallback-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ace-campus-fallback-legend i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.ace-campus-fallback-legend i[data-tone="spec"] { background: var(--ace-paper); }
+.ace-campus-fallback-legend i[data-tone="vision"] { background: var(--ace-cyan); }
+.ace-campus-fallback-legend i[data-tone="human"] { background: var(--ace-signal); }
+
+@keyframes aceCorridor {
+  0%,100% { left: 12%; opacity: .35; }
+  50% { left: 78%; opacity: 1; }
+}
+
+@media (max-width: 780px) {
+  .ace-campus-blueprint {
+    inset: 28% 8px 22%;
+    grid-template-columns: minmax(0,1fr) 28px 72px 28px minmax(0,1fr);
+  }
+
+  .ace-campus-origin,
+  .ace-campus-apex {
+    min-height: 150px;
+    padding: 11px;
+  }
+
+  .ace-campus-zone-id {
+    left: 9px;
+    top: 9px;
+    font-size: 6px;
+  }
+
+  .ace-campus-origin strong,
+  .ace-campus-apex strong {
+    font-size: 18px;
+  }
+
+  .ace-campus-origin > span:last-child,
+  .ace-campus-apex > span:last-child {
+    display: none;
+  }
+
+  .ace-campus-apex-cells {
+    inset: 14px 10px 54px;
+  }
+
+  .ace-campus-human-hub {
+    width: 68px;
+    height: 68px;
+  }
+
+  .ace-campus-human-hub > span {
+    inset: -11px;
+  }
+
+  .ace-campus-human-hub strong {
+    font-size: 17px;
+  }
+
+  .ace-campus-human-hub small {
+    font-size: 5px;
+  }
+
+  .ace-campus-corridor span {
+    display: none;
+  }
+
+  .ace-campus-fallback-legend {
+    left: 8px;
+    bottom: 9px;
+    gap: 9px;
+    font-size: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ace-campus-corridor i {
+    animation: none;
+    left: 50%;
+  }
+}
