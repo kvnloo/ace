@@ -3555,6 +3555,35 @@ html[data-ace-scrolling="true"] .ace-nav {
   box-shadow: 0 14px 36px rgba(2,8,16,.14);
 }
 
+@media (min-width: 781px) {
+  .ace-nav-links,
+  .ace-channel,
+  .ace-live-section {
+    transition:
+      opacity .28s ease,
+      color .24s ease,
+      border-color .24s ease;
+  }
+
+  html[data-ace-scrolling="true"][data-ace-direction="down"] .ace-nav-links {
+    opacity: .54;
+  }
+
+  html[data-ace-scrolling="true"][data-ace-direction="down"] .ace-channel,
+  html[data-ace-scrolling="true"][data-ace-direction="down"] .ace-live-section {
+    opacity: .5;
+  }
+
+  .ace-nav:hover .ace-nav-links,
+  .ace-nav:focus-within .ace-nav-links,
+  .ace-nav:hover .ace-channel,
+  .ace-nav:focus-within .ace-channel,
+  .ace-nav:hover .ace-live-section,
+  .ace-nav:focus-within .ace-live-section {
+    opacity: 1;
+  }
+}
+
 .ace-augmentation-glass,
 .ace-control-panel,
 .ace-feature-card,
