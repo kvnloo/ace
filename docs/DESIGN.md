@@ -1,255 +1,316 @@
-# ACE visual system
+# ACE design constitution
 
-ACE should feel like a field instrument, research poster, and world-model interface sharing one visual language.
+ACE is a **living instrument for human potential**: part physical campus, part evidence system, part expert network, part digital twin.
 
-The target is not "premium SaaS." It is a distinct, information-dense editorial system with enough restraint that evidence and status remain legible.
+The interface should feel futuristic, solarpunk and quietly magical without asking the user to admire the interface. The governing idea is **invisible augmentation**: reality stays primary; technology makes the right part of reality more legible at the right moment.
 
-## Design thesis
+## North star
 
-**The facility is the environment. The feedback loop is the product.**
+**The facility is the environment. The feedback loop is the product. The human is the stable reference frame.**
 
-The interface should make that architecture visible:
-- the human stays at the center;
-- evidence and uncertainty are structural, not footnotes;
-- experts and agents are visibly different kinds of actors;
-- simulation is visually compelling without being presented as reality;
-- LIVE / SHIPPED / RESEARCH / VISION / SPEC / MOCK / PRETOTYPE remain obvious.
+ACE should feel like entering flow:
+- one focal idea at a time;
+- low decision friction;
+- information arrives progressively;
+- the system responds to attention instead of competing for it;
+- motion preserves context, reveals causality, or rewards attention;
+- detail recedes when it is not useful.
 
-## Reference qualities
+A useful review question for every visual behavior is:
 
-Quackles is a useful internal quality bar for:
-- poster-scale type;
-- confident geometry;
-- a single memorable visual per view;
-- strong art direction on mobile, not merely responsive shrinking;
-- sparse high-contrast color;
-- motion used as hierarchy rather than decoration;
-- no generic component-library look.
+> When ___ happens, ___ changes because this teaches the visitor that ___.
 
-ACE should share those qualities without reusing Quackles branding or scene language.
+If that sentence cannot be completed with a meaningful ACE concept, remove the motion.
 
-## Core grammar
+## Brand story
 
-### Typography
+### Structure
 
-Display:
-- Barlow Condensed
-- very large, light weights
-- uppercase for architectural statements
-- tight line-height and tracking
+Scientific rigor, evidence, provenance, architecture and trust boundaries are precise. Grids, rails, measured spacing and restrained typography express that precision.
 
-Interface / evidence:
-- IBM Plex Mono
-- small uppercase labels
-- explicit status / provenance / coordinates / counts
+### Atmosphere
 
-Body:
-- Inter
-- compact readable measures
-- secondary to the display layer
-
-A page should normally have one dominant display statement, one information diagram, and one evidence/status layer.
-
-### Color
+Deep navy is the environmental substrate: calm, spatial and continuous. It should feel closer to evening sky, deep water or shaded architecture than to a black "AI" dashboard.
 
 Primary field:
-- void: `#050806`
-- paper: `#f1f3e8`
-- signal: `#dcff45`
-- evidence cyan: `#8cecff`
-- caution orange: `#ff9a62`
+- navy: `#071426`
+- raised navy: `#0B1B31`
+- soft navy: `#10243B`
+- mineral paper: `#F4F7EF`
+- tennis / living signal: `#DFFF4F`
 
-Use signal yellow-green for actions and important state, not as ambient decoration everywhere.
+Tennis-lime means **life, active state, intervention or meaningful attention**. It is rare enough to retain meaning.
 
-A useful default budget is roughly:
-- 80% void / paper field
-- 15% line / muted information
-- 5% signal color
+Cyan and warm mineral tones are secondary semantic colors, not competing brand accents.
 
-### Geometry
+### Augmentation
 
-Prefer:
-- square corners;
-- 1px dividers;
-- grids;
-- coordinates;
-- rails;
+Liquid glass has a specific meaning: **information layered over reality without replacing it**.
+
+Use glass for:
+- navigation;
+- 3D / campus controls;
+- contextual annotations;
+- transient guidance;
+- selected-object detail;
+- controls that sit over a world.
+
+Do not use glass as a generic card treatment.
+
+### Life
+
+Human, biological and interactive surfaces may be softer and more rounded. Physical architecture, evidence matrices and system structure remain more precise.
+
+Rounded corners should communicate touch, affordance or humanity—not "premium SaaS."
+
+## Geometry
+
+Use geometry according to ontology.
+
+**Structural / factual**
+- precise grids;
+- restrained corners;
+- 1px relationships;
 - matrices;
-- large empty fields;
-- hard typography transitions.
+- rails;
+- generous negative space.
+
+**Human / interactive**
+- restrained `10–18px` radii;
+- softer material transitions;
+- glass where information augments another surface;
+- comfortable hit targets.
 
 Avoid:
-- nested rounded cards;
-- pills as the primary information structure;
-- floating glass rectangles everywhere;
-- generic icon + title + paragraph card grids;
-- large gradients used only to imply "AI."
+- rounded cards around every paragraph;
+- endless pills;
+- floating glass rectangles with no semantic reason;
+- decorative neon;
+- arbitrary gradients;
+- brutalism as an aesthetic end in itself.
 
-Small chips are acceptable when they behave like taxonomy or evidence labels.
+## Typography
 
-## Signature compositions
+Display:
+- Barlow Condensed;
+- large, light weights;
+- tight rhythm;
+- used for architectural statements, not shouting.
 
-### Hero
+Interface / evidence:
+- IBM Plex Mono;
+- explicit status, provenance, measurements and small labels.
 
-Required qualities:
-- poster-scale ACE typography in the field;
-- one human-centered systems visual;
-- visible feedback-loop structure;
-- strong asymmetry;
-- one obvious action;
-- micro-labels that reward inspection.
+Body:
+- Inter;
+- calm readable measures;
+- never animate body copy simply because it entered the viewport.
 
-The hero must still work with motion disabled.
+A viewport should usually contain one dominant statement, one supporting system relationship, and optional detail.
+
+## Motion language
+
+Motion is part of ACE's ontology.
+
+| Concept | Motion semantic | Meaning |
+| --- | --- | --- |
+| Goal | anchor | intention organizes the system |
+| Observe | resolve | evidence reduces ambiguity |
+| Model | resolve | relationships become legible |
+| Hypothesize | branch | possibility appears without becoming truth |
+| Simulate | branch | counterfactual diverges from observed reality |
+| Connect | connect | the relevant human/tool becomes available in context |
+| Intervene | commit | one possibility crosses into action |
+| Measure | compare | a baseline remains available |
+| Verify | verify | prediction meets observation |
+| Learn | retain | the system settles into a changed state |
+
+### Motion rules
+
+- Human / goal stays spatially stable.
+- Prefer opacity, clarity, material response and progressive disclosure over translation.
+- Do not animate a word by literally acting out the word.
+- Do not move body copy for decoration.
+- No autonomous marquee.
+- No automatic hero orbit.
+- No global pointer spotlight.
+- No moving background grid.
+- No generic hover lift / rotate.
+- No CTA shine sweep.
+- No stagger merely to prove that a list is interactive.
+- Route continuity should be nearly imperceptible.
+- `prefers-reduced-motion` keeps all information and semantic distinctions.
+
+The target is **more interactive states with less visible motion**.
+
+## Route narratives
+
+### Manifesto
+
+Story: **idea → system**.
+
+The human is the stable point. One restrained signal traces the feedback loop as the reader moves through the hero. The surrounding relationships resolve; they do not orbit for spectacle.
+
+Operating beliefs sit quietly in the page rather than scrolling past as a ticker.
+
+Principle interactions add complementary meaning:
+- Human agency → surrounding system yields to the anchor.
+- Evidence → ambiguity resolves.
+- Humans are infrastructure → a relationship becomes available.
+- Simulation must earn trust → an alternate branch remains visibly distinct from reality.
 
 ### System
 
-Use rows / rails / matrices rather than cards.
+Story: **how the loop compounds**.
 
-The system view should communicate relationships before details.
+Each lane gets its own behavior:
+- Understand → clarity / resolution.
+- Simulate → translucent branch.
+- Connect → context-dependent relationship.
+- Improve → new state remains comparable with baseline.
 
-### First proof
+Do not give all four lanes the same hover animation.
 
-Use a deliberately different tonal field to create rhythm.
+### Research
 
-Current pattern:
-- paper / ink interlude;
-- four-step intervention loop;
-- clear return arrow back to measurement.
+Story: **possibility with discipline**.
+
+Epistemic maturity is expressed by material confidence:
+- LIVE / SHIPPED → stable and solid;
+- SPEC → grounded;
+- RESEARCH → slightly unresolved;
+- VISION → lighter / more translucent.
+
+Labels remain explicit. Material treatment reinforces the claim; it never replaces provenance text.
+
+### Spec
+
+Story: **trust does not need choreography**.
+
+This is the quietest route.
+- no card fly-ins;
+- no stagger;
+- no positional hover motion;
+- provenance/status available without spectacle.
 
 ### Campus
 
-Treat the 3D / Pascal view as an instrument:
-- map controls are compact and rectangular;
-- floor / overlay state is explicit;
-- feature selection uses a horizontal evidence strip;
-- feature detail panels do not hide the world;
-- fallback mode must look intentional, not like an error page.
+Story: **system → place**.
+
+The campus must feel like the same ACE world acquiring depth, not a separate 3D demo.
+
+- deep navy environment;
+- subdued physical materials;
+- tennis-lime for active selection / human / live signal;
+- SPEC geometry feels grounded;
+- VISION geometry can feel lighter;
+- glass overlays augment the world;
+- labels and controls remain quiet until useful;
+- no automatic camera orbit;
+- no autonomous HUD motion.
+
+Fallback and Pascal/WebGL views must share the same palette and hierarchy.
 
 ### Contact
 
-Contact is a collaboration surface, not a startup waitlist template.
+Story: **the system organizes around the person's goal**.
 
-It should communicate:
-- what kind of human belongs in the loop;
-- that the public form is MOCK until submission exists;
-- no medical or performance claim is implied.
+The first question is:
 
-## Motion budget
+> What do you want ACE to help you improve?
 
-Motion must explain hierarchy.
+Only after a meaningful answer should role/context appear. Identity/contact comes later. Space expands calmly; the user's current context does not jump away.
 
-Good:
-- slow orbital system motion;
-- one marquee / signal rail;
-- short page-entry transitions;
-- line / border reveals;
-- small hover transitions.
+The pretotype must continue to say when it does not submit/store data.
 
-Avoid:
-- every card floating independently;
-- large parallax on body copy;
-- motion that competes with reading;
-- continuous animation in every section.
+## The solar moment
 
-All continuous motion needs a `prefers-reduced-motion` fallback.
+ACE can use one deliberate light/mineral interlude for **verification / first proof**.
 
-## Mobile
+It is not a random light-theme section. It represents an idea leaving the dark modeling space and entering daylight where reality can falsify it.
 
-Do not shrink desktop.
+Because this contrast carries meaning, it should remain rare.
 
-Recompose:
-- hero type can become more dominant;
-- feedback loop becomes a horizontal rail;
-- campus controls become horizontal strips;
-- two-column editorial spreads become stacked sequences;
-- text measures shorten;
-- persistent side labels disappear.
+## Campus palette
 
-The mobile composition should still feel designed, not merely functional.
+The website, CSS fallback and Pascal scene share one environmental family.
 
-## Truth / provenance UI
+Physical sport surfaces may retain subdued identity colors, but the scene should not become a rainbow architectural model. APEX/VISION spaces stay within cool mineral/navy families so the tennis-lime signal remains special.
 
-Status vocabulary is part of the design system:
+## Interaction hierarchy
 
-- `LIVE`
-- `SHIPPED`
-- `RESEARCH`
-- `VISION`
-- `SPEC`
-- `MOCK`
-- `PRETOTYPE`
+1. **Reading** — no interaction required.
+2. **Attention** — subtle clarity/material response.
+3. **Intent** — progressive detail appears.
+4. **Action** — control becomes clearly active.
+5. **Consequence** — state persists and remains comparable.
 
-Evidence classes:
-- observation;
-- self report;
-- expert judgment;
-- estimate;
-- hypothesis;
-- simulation;
-- recommendation;
-- intervention;
-- verified outcome.
+Hover should mean "the system noticed your attention," not "move this object two pixels."
 
-Do not style all of these as equivalent colored badges. Hierarchy must reflect epistemic difference.
+## Performance is part of calm
 
-## Performance
+Flow breaks when the interface stalls.
 
-Visual ambition cannot depend on loading the full twin.
+- landing renders without Pascal;
+- Pascal remains lazy-loaded;
+- chat remains interaction-deferred;
+- lite mode can defer 3D;
+- avoid decorative media payloads;
+- preserve bundle budgets;
+- avoid continuous animation work when idle.
 
-- landing must render without Pascal;
-- Pascal stays lazy-loaded;
-- avoid unnecessary image/video payloads;
-- use CSS / vector structure when it produces a stronger result than decorative media;
-- real renders/screenshots should be introduced only when provenance-safe and materially better;
-- remove the Tailwind browser runtime when build-time CSS migration is ready.
+## Accessibility
+
+Calm is not an excuse to hide affordances.
+
+- keyboard/focus states remain explicit;
+- reduced motion preserves meaning;
+- status is never color-only;
+- progressive disclosure remains logically ordered;
+- contrast must remain readable on glass and navy;
+- the page remains understandable with motion disabled.
 
 ## Regression gates
 
-`npm test` includes `check:design`.
+`npm test` must include the flow-state design contract.
 
-It should fail when core public surfaces regress toward:
-- generic `rounded-2xl` / `rounded-3xl` card UI;
-- loss of display / mono typography;
-- loss of the human-centered hero visual;
-- loss of the feedback-loop rail;
-- loss of reduced-motion handling;
-- loss of mobile composition;
-- loss of the paper proof interlude;
-- loss of campus control art direction.
+The suite should fail on structural regressions such as:
+- loss of navy + tennis-lime identity;
+- glass used without augmentation semantics;
+- autonomous ticker/corridor motion;
+- reintroduced hero orbit;
+- positional reveal motion;
+- generic hover translate/rotate;
+- animated Spec cards;
+- loss of goal-first Contact;
+- divergent Campus palettes;
+- lost reduced-motion behavior.
 
-These checks are intentionally structural. They do not replace real visual QA.
-
-## Visual acceptance before promotion
-
-Before calling a public design wave complete, inspect:
-- desktop wide;
-- laptop;
-- tablet portrait;
-- narrow mobile;
-- reduced-motion;
-- Campus with WebGL;
-- Campus fallback;
+Real-browser smoke should cover:
+- desktop Manifesto;
 - System;
 - Spec;
-- Contact;
-- guide open / closed.
+- Contact progressive disclosure;
+- mobile/lite Campus;
+- reduced motion;
+- lazy-loading boundaries;
+- overflow;
+- bundle budgets.
 
-Check:
-- no horizontal overflow;
-- no obscured controls;
-- no contrast failures;
-- no accidental generic card islands;
-- no UI claiming more maturity than the underlying evidence;
-- no private state or facility detail exposed.
+## Promotion standard
 
-## Next quality bar
+Before promotion, inspect wide desktop, laptop, tablet, narrow mobile and reduced motion.
 
-The next major visual jump should come from **real, provenance-safe ACE media**, not more decoration.
+Ask:
+- Is there one focal idea per viewport?
+- Does every visible movement add information?
+- Does the interface recede when the user is reading?
+- Is tennis-lime still meaningful because it is sparse?
+- Does glass always represent augmentation?
+- Does Campus feel like the same world?
+- Can the visitor distinguish fact, research and vision without decoding decoration?
+- Does the experience feel calmer after adding interaction?
 
-Candidates:
-1. real racquet-twin render;
-2. one traceable rally replay;
-3. one measured intervention before/after visualization;
-4. one campus / lab render tied to an explicit SPEC or VISION label.
+The target is not "more designed."
 
-Until those assets are publishable, the abstract systems poster is preferable to fake photorealism.
+The target is a system that becomes almost invisible while helping the visitor understand more.

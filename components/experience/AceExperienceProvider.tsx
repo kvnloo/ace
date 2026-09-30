@@ -59,14 +59,11 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
     let scrollIdleTimer = 0;
     const onScroll = (instance: Lenis) => {
       const progress = Number.isFinite(instance.progress) ? instance.progress : 0;
-      const velocity = Number.isFinite(instance.velocity) ? instance.velocity : 0;
       setRootVar('--ace-scroll', progress.toFixed(5));
+      const heroLoopProgress = Math.min(1, Math.max(0, instance.scroll / Math.max(window.innerHeight * 1.05, 1)));
+      setRootVar('--ace-loop-progress', `${(heroLoopProgress * 100).toFixed(2)}%`);
       setRootVar('--ace-scroll-px', `${Math.min(progress * 72, 72).toFixed(2)}px`);
-      setRootVar('--ace-velocity', Math.min(Math.abs(velocity), 5).toFixed(3));
-      setRootVar('--ace-marquee-x', `${(-progress * 360).toFixed(1)}px`);
-      setRootVar('--ace-grid-y', `${(-progress * 42).toFixed(1)}px`);
       root.dataset.aceDirection = instance.direction < 0 ? 'up' : 'down';
-      root.dataset.aceLoop = String(Math.min(10, Math.max(1, Math.floor(progress * 10) + 1)));
       root.dataset.aceScrolling = 'true';
       window.clearTimeout(scrollIdleTimer);
       scrollIdleTimer = window.setTimeout(() => {
@@ -104,42 +101,6 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   }, [reducedMotion, liteMode]);
 
-  React.useEffect(() => {
-    const finePointer = window.matchMedia('(pointer: fine)');
-    if (!finePointer.matches || reducedMotion) return;
-
-    const root = document.documentElement;
-    let raf = 0;
-    let latestX = window.innerWidth / 2;
-    let latestY = window.innerHeight / 2;
-
-    const publish = () => {
-      raf = 0;
-      const xRatio = latestX / Math.max(window.innerWidth, 1);
-      const yRatio = latestY / Math.max(window.innerHeight, 1);
-      const dx = (xRatio - 0.5) * 12;
-      const dy = (yRatio - 0.5) * 10;
-      setRootVar('--ace-pointer-x', `${(xRatio * 100).toFixed(2)}%`);
-      setRootVar('--ace-pointer-y', `${(yRatio * 100).toFixed(2)}%`);
-      setRootVar('--ace-pointer-dx', `${dx.toFixed(2)}px`);
-      setRootVar('--ace-pointer-dy', `${dy.toFixed(2)}px`);
-    };
-
-    const onPointerMove = (event: PointerEvent) => {
-      latestX = event.clientX;
-      latestY = event.clientY;
-      if (!raf) raf = requestAnimationFrame(publish);
-    };
-
-    root.dataset.acePointer = 'fine';
-    window.addEventListener('pointermove', onPointerMove, { passive: true });
-
-    return () => {
-      window.removeEventListener('pointermove', onPointerMove);
-      if (raf) cancelAnimationFrame(raf);
-      delete root.dataset.acePointer;
-    };
-  }, [reducedMotion]);
 
   React.useEffect(() => {
     const root = document.documentElement;

@@ -4,6 +4,7 @@ import App from './App';
 import { AceExperienceProvider } from './components/experience/AceExperienceProvider';
 import './styles/tailwind.css';
 import './styles/ace.css';
+import './styles/flow-state.css';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

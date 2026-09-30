@@ -1,0 +1,680 @@
+/* ACE flow-state design layer
+ * Story: a calm living system around the human.
+ * This intentionally overrides the noisier nightly exploration without deleting it.
+ */
+:root {
+  --ace-bg: #071426;
+  --ace-bg-2: #0B1B31;
+  --ace-paper: #F4F7EF;
+  --ace-ink: #071426;
+  --ace-signal: #DFFF4F;
+  --ace-cyan: #9FD7E8;
+  --ace-orange: #D8A86B;
+  --ace-line: rgba(230, 241, 244, 0.12);
+  --ace-line-strong: rgba(230, 241, 244, 0.24);
+  --ace-muted: rgba(236, 243, 241, 0.62);
+  --ace-faint: rgba(236, 243, 241, 0.34);
+  --ace-glass-bg: rgba(10, 28, 48, 0.58);
+  --ace-glass-bg-strong: rgba(8, 24, 42, 0.76);
+  --ace-glass-edge: rgba(184, 215, 226, 0.16);
+  --ace-radius-interactive: 14px;
+  --ace-radius-panel: 18px;
+  --ace-ease-attention: cubic-bezier(.22, 1, .36, 1);
+}
+
+body {
+  background:
+    radial-gradient(circle at 70% 10%, rgba(74, 132, 153, .08), transparent 34rem),
+    radial-gradient(circle at 20% 80%, rgba(223, 255, 79, .035), transparent 30rem),
+    var(--ace-bg);
+}
+
+.ace-page,
+.ace-campus-shell {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.008), transparent 32rem),
+    var(--ace-bg);
+}
+
+/* Atmosphere should sit still. */
+.ace-page::before {
+  opacity: .075 !important;
+  background-position: 0 0 !important;
+  transition: none !important;
+}
+
+.ace-page::after {
+  content: none !important;
+}
+
+/* Glass has one job: augmentation layered over reality. */
+.ace-nav,
+.ace-mobile-nav,
+.ace-map-controls,
+.ace-control-panel,
+.ace-feature-card,
+.ace-campus-enable-3d,
+.ace-chat-button {
+  background: var(--ace-glass-bg);
+  border-color: var(--ace-glass-edge);
+  backdrop-filter: blur(18px) saturate(115%);
+  -webkit-backdrop-filter: blur(18px) saturate(115%);
+}
+
+.ace-nav {
+  box-shadow: 0 10px 34px rgba(0, 8, 18, .12);
+}
+
+.ace-action-primary,
+.ace-action-secondary,
+.ace-nav-cta,
+.ace-menu-button,
+.ace-floor-btn,
+.ace-overlay-btn,
+.ace-feature-btn,
+.ace-disabled-cta,
+.ace-input,
+.ace-select,
+.ace-textarea {
+  border-radius: var(--ace-radius-interactive);
+}
+
+.ace-action-primary,
+.ace-action-secondary,
+.ace-nav-cta,
+.ace-menu-button,
+.ace-floor-btn,
+.ace-overlay-btn,
+.ace-feature-btn {
+  transform: none !important;
+  transition:
+    color .18s ease,
+    background-color .18s ease,
+    border-color .18s ease,
+    box-shadow .24s ease,
+    opacity .18s ease !important;
+}
+
+.ace-action-primary:hover,
+.ace-action-primary:focus-visible {
+  background: var(--ace-signal);
+  border-color: var(--ace-signal);
+  color: var(--ace-ink);
+  box-shadow: 0 0 0 1px rgba(223,255,79,.22), 0 8px 28px rgba(223,255,79,.08);
+}
+
+.ace-nav-cta:hover,
+.ace-nav-cta:focus-visible {
+  background: rgba(223,255,79,.08);
+  border-color: rgba(223,255,79,.52);
+  color: var(--ace-signal);
+  box-shadow: 0 0 0 1px rgba(223,255,79,.12);
+}
+
+.ace-action-secondary:hover,
+.ace-action-secondary:focus-visible,
+.ace-floor-btn:hover,
+.ace-overlay-btn:hover,
+.ace-feature-btn:hover {
+  background: rgba(223,255,79,.055);
+}
+
+/* Wordmark acknowledges attention without performing. */
+.ace-wordmark-mark,
+.ace-wordmark:hover .ace-wordmark-mark,
+.ace-wordmark:focus-visible .ace-wordmark-mark,
+html[data-ace-scrolling="true"] .ace-wordmark-mark {
+  transform: none !important;
+}
+
+.ace-wordmark:hover .ace-wordmark-mark,
+.ace-wordmark:focus-visible .ace-wordmark-mark {
+  border-color: var(--ace-signal);
+  box-shadow: 0 0 0 4px rgba(223,255,79,.035), 0 0 20px rgba(223,255,79,.18);
+}
+
+/* Hero: human stays fixed. One scroll-coupled signal traces the surrounding loop. */
+.ace-core-orbit {
+  animation: none !important;
+}
+
+.ace-core-ring {
+  animation: none !important;
+  transform: none !important;
+  opacity: .34 !important;
+}
+
+.ace-core-node {
+  background: rgba(7,20,38,.64);
+  border-color: rgba(228,238,241,.13);
+  box-shadow: none !important;
+  transition: opacity .22s ease, border-color .22s ease, background-color .22s ease !important;
+}
+
+.ace-core-node::before {
+  transform: none !important;
+  box-shadow: none;
+}
+
+html[data-ace-scrolling="true"] .ace-core-node {
+  opacity: .78;
+}
+
+.ace-core-human {
+  transform: none !important;
+  box-shadow: 0 0 0 1px rgba(223,255,79,.28), 0 0 80px rgba(223,255,79,.11) !important;
+}
+
+.ace-core-trace-signal {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px;
+  border-radius: 50%;
+  background: var(--ace-signal);
+  box-shadow: 0 0 16px rgba(223,255,79,.42);
+  offset-path: circle(46% at 50% 50%);
+  offset-distance: var(--ace-loop-progress, 0%);
+  transition: offset-distance .10s linear, opacity .2s ease;
+  opacity: .62;
+  pointer-events: none;
+}
+
+html[data-ace-scrolling="false"] .ace-core-trace-signal {
+  opacity: .28;
+}
+
+/* The old ticker becomes a quiet constellation of beliefs. */
+.ace-signal-field {
+  position: relative;
+  z-index: 2;
+  width: min(100% - 48px, 1440px);
+  margin: 0 auto;
+  padding: 22px 0;
+  border-top: 1px solid var(--ace-line);
+  border-bottom: 1px solid var(--ace-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+.ace-signal-field span {
+  position: relative;
+  padding-left: 12px;
+  color: var(--ace-faint);
+  font-family: var(--ace-mono);
+  font-size: 8px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+.ace-signal-field span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .45em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ace-signal);
+  opacity: .48;
+}
+
+/* Principles: tiny material metaphors, activated by attention only. */
+.ace-manifest-item {
+  position: relative;
+  border-radius: 10px;
+  padding-inline: 18px;
+  transition: background-color .24s ease, border-color .24s ease;
+}
+
+.ace-manifest-item:hover,
+.ace-manifest-item:focus-within {
+  background: rgba(255,255,255,.018);
+}
+
+.ace-principle-signal {
+  position: absolute;
+  right: 18px;
+  top: 20px;
+  width: 42px;
+  height: 18px;
+  opacity: .30;
+  transition: opacity .25s ease;
+}
+
+.ace-manifest-item:hover .ace-principle-signal,
+.ace-manifest-item:focus-within .ace-principle-signal {
+  opacity: .72;
+}
+
+.ace-manifest-item[data-principle="human-agency"] .ace-principle-signal {
+  border-radius: 999px;
+  box-shadow: inset 21px 0 0 rgba(223,255,79,.10);
+  border: 1px solid rgba(223,255,79,.24);
+}
+
+.ace-manifest-item[data-principle="evidence"] .ace-principle-signal {
+  background: linear-gradient(90deg, rgba(159,215,232,.08), rgba(159,215,232,.42), rgba(159,215,232,.08));
+  mask: linear-gradient(#000 0 0) center / 100% 1px no-repeat;
+}
+
+.ace-manifest-item[data-principle="humans"] .ace-principle-signal::before,
+.ace-manifest-item[data-principle="humans"] .ace-principle-signal::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ace-paper);
+}
+
+.ace-manifest-item[data-principle="humans"] .ace-principle-signal::before { left: 2px; }
+.ace-manifest-item[data-principle="humans"] .ace-principle-signal::after { right: 2px; }
+.ace-manifest-item[data-principle="humans"] .ace-principle-signal {
+  border-top: 1px solid rgba(244,247,239,.20);
+  margin-top: 8px;
+}
+
+.ace-manifest-item[data-principle="simulation"] .ace-principle-signal {
+  border-top: 1px solid rgba(244,247,239,.36);
+}
+
+.ace-manifest-item[data-principle="simulation"] .ace-principle-signal::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  right: 0;
+  top: 5px;
+  border-top: 1px solid rgba(216,168,107,.42);
+  transform: rotate(-8deg);
+  transform-origin: left;
+}
+
+/* System lanes communicate distinct epistemic operations, not four copies of one hover. */
+.ace-product-lane {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--ace-radius-panel);
+  background: rgba(255,255,255,.012);
+  transition: background-color .25s ease, border-color .25s ease;
+}
+
+.ace-product-lane > svg {
+  transform: none !important;
+  transition: color .2s ease, opacity .2s ease !important;
+}
+
+.ace-product-lane::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .26s ease, transform .32s var(--ace-ease-attention);
+}
+
+.ace-product-lane:hover::after,
+.ace-product-lane:focus-within::after {
+  opacity: .58;
+}
+
+.ace-product-lane[data-motion="resolve"]::after {
+  inset: 16px;
+  background: linear-gradient(90deg, transparent, rgba(159,215,232,.16), transparent);
+  filter: blur(10px);
+}
+
+.ace-product-lane[data-motion="branch"]::after {
+  inset: 24px 18px;
+  border-top: 1px solid rgba(216,168,107,.34);
+  border-bottom: 1px solid rgba(216,168,107,.13);
+  transform: skewY(-3deg);
+}
+
+.ace-product-lane[data-motion="connect"]::after {
+  left: 18px;
+  right: 18px;
+  top: 44px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--ace-paper), transparent 35%, transparent 65%, var(--ace-paper));
+}
+
+.ace-product-lane[data-motion="compare"]::after {
+  left: 18px;
+  right: 18px;
+  bottom: 24px;
+  height: 8px;
+  border-top: 1px solid rgba(244,247,239,.22);
+  border-bottom: 1px solid rgba(223,255,79,.34);
+}
+
+/* Epistemic materiality. Stable claims are solid; possibility is lighter. */
+[data-stamp*="LIVE"],
+[data-stamp*="SHIPPED"] {
+  --ace-material-opacity: 1;
+}
+
+[data-stamp*="SPEC"] {
+  --ace-material-opacity: .94;
+}
+
+[data-stamp*="RESEARCH"] {
+  --ace-material-opacity: .84;
+}
+
+[data-stamp*="VISION"] {
+  --ace-material-opacity: .72;
+}
+
+.ace-spec-card,
+.ace-status-card,
+.ace-research-card {
+  opacity: var(--ace-material-opacity, 1);
+}
+
+.ace-spec-card {
+  border-radius: 10px;
+  transform: none !important;
+  animation: none !important;
+  transition: border-color .18s ease, background-color .18s ease, opacity .18s ease !important;
+}
+
+/* Campus: navy world, subdued materials, glass only for augmentation. */
+.ace-campus-fallback-art,
+.ace-campus-shell,
+.ace-campus-shell > div {
+  background-color: var(--ace-bg);
+}
+
+.ace-campus-fallback-art {
+  background:
+    radial-gradient(circle at 50% 48%, rgba(223,255,79,.035), transparent 24rem),
+    linear-gradient(135deg, #10243B, #0B1B31 58%, #071426) !important;
+}
+
+.ace-campus-origin,
+.ace-campus-apex {
+  border-radius: 12px;
+  background: rgba(8,24,42,.68);
+}
+
+.ace-campus-corridor i {
+  animation: none !important;
+  left: 50% !important;
+  opacity: .48;
+}
+
+.ace-feature-card {
+  border-radius: var(--ace-radius-panel);
+  max-width: 380px;
+}
+
+.ace-feature-card-enter {
+  animation: none !important;
+}
+
+.ace-feature-card h3,
+.ace-feature-card p {
+  transform: none !important;
+}
+
+/* Goal-first contact: space expands, context stays anchored. */
+.ace-goal-form {
+  align-self: start;
+}
+
+.ace-goal-field .ace-textarea {
+  min-height: 150px;
+}
+
+.ace-field-help {
+  margin: 8px 0 0;
+  color: var(--ace-faint);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.ace-progressive-field {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  overflow: hidden;
+  transition: grid-template-rows .36s var(--ace-ease-attention), opacity .24s ease;
+}
+
+.ace-progressive-field > * {
+  min-height: 0;
+}
+
+.ace-progressive-field[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: 22px;
+}
+
+.ace-contact-principle {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+  color: var(--ace-faint);
+  font-family: var(--ace-mono);
+  font-size: 8px;
+  letter-spacing: .08em;
+}
+
+.ace-contact-principle i {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(244,247,239,.12), rgba(223,255,79,.32));
+}
+
+/* Navigation recedes while moving through content, then becomes legible on intent. */
+html[data-ace-scrolling="true"] .ace-nav {
+  background: rgba(7,20,38,.46);
+  border-bottom-color: rgba(230,241,244,.08);
+}
+
+.ace-nav:hover,
+.ace-nav:focus-within {
+  background: var(--ace-glass-bg-strong);
+}
+
+/* Reduced motion keeps every semantic distinction while removing movement. */
+@media (prefers-reduced-motion: reduce) {
+  .ace-core-trace-signal {
+    offset-distance: 0 !important;
+    transition: none !important;
+    opacity: .45;
+  }
+
+  .ace-progressive-field,
+  .ace-product-lane::after,
+  .ace-principle-signal,
+  .ace-nav {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 780px) {
+  .ace-signal-field {
+    width: calc(100% - 32px);
+    gap: 8px 14px;
+  }
+
+  .ace-feature-card {
+    border-radius: 16px 16px 0 0;
+  }
+}
+
+/* Specificity reset for the nightly per-step flashes: the new branch uses one continuous trace. */
+html[data-ace-loop] .ace-core-node {
+  color: var(--ace-paper);
+  border-color: rgba(228,238,241,.13);
+  background: rgba(7,20,38,.64);
+  box-shadow: none !important;
+}
+html[data-ace-loop] .ace-core-node::before {
+  background: var(--ace-cyan);
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* CSS fallback and Pascal shell use the same environmental family. */
+.ace-facility-bg { background: var(--ace-bg) !important; }
+.ace-facility-cell { background: rgba(7,20,38,.95) !important; }
+.ace-facility-farm {
+  background: linear-gradient(145deg, #173247, #10263B 54%, #071426) !important;
+}
+.ace-facility-apex {
+  background: linear-gradient(145deg, #122B45, #0D223A 54%, #071426) !important;
+}
+.ace-facility-court {
+  background: linear-gradient(145deg, #102B40, #0B2036 56%, #071426) !important;
+}
+.ace-surface-tennis { background: #33542D !important; }
+.ace-surface-badminton { background: #265044 !important; }
+.ace-surface-pickle { background: #385F3D !important; }
+
+
+/* --- Noise quarantine ----------------------------------------------------
+ * Nightly explored many interaction primitives. This branch keeps the learning,
+ * but only allows motion that carries meaning.
+ */
+.ace-core-orbit {
+  transform: none !important;
+  transition: none !important;
+}
+
+.ace-core-node,
+html[data-ace-loop] .ace-core-node {
+  transform: translate(-50%, -50%) !important;
+}
+
+.ace-hero::before {
+  transform: translateY(-50%) !important;
+}
+
+.ace-hero-entry {
+  animation: aceFlowResolve .42s ease both !important;
+}
+
+.ace-hero-entry-copy,
+.ace-hero-entry-core {
+  animation-delay: 0ms !important;
+}
+
+.ace-route-enter {
+  animation: none !important;
+}
+
+[data-ace-reveal] {
+  transform: none !important;
+  transition: opacity .34s ease !important;
+}
+
+[data-ace-reveal][data-inview="true"] {
+  transform: none !important;
+}
+
+[data-ace-reveal][data-inview="true"] .ace-manifest-item,
+[data-ace-reveal][data-inview="true"] .ace-flow-row,
+[data-ace-reveal][data-inview="true"] .ace-proof-card,
+[data-ace-reveal][data-inview="true"] .ace-status-card,
+[data-ace-reveal][data-inview="true"] .ace-research-card {
+  animation: none !important;
+}
+
+.ace-flow-row,
+.ace-manifest-item,
+.ace-proof-card,
+.ace-status-card,
+.ace-product-lane,
+.ace-research-card,
+.ace-spec-card,
+.ace-chip,
+.ace-chat-button,
+.ace-chat-send {
+  transform: none !important;
+}
+
+.ace-flow-row:hover,
+.ace-manifest-item:hover,
+.ace-proof-card:hover,
+.ace-status-card:hover,
+.ace-product-lane:hover,
+.ace-research-card:hover,
+.ace-spec-card:hover,
+.ace-chip:hover,
+.ace-chat-button:hover,
+.ace-chat-button:active,
+.ace-chat-send:hover:not(:disabled) {
+  transform: none !important;
+}
+
+.ace-flow-row:hover .ace-flow-title,
+.ace-product-lane:hover h3,
+.ace-research-card:hover h4,
+.ace-spec-card:hover h2 {
+  transform: none !important;
+}
+
+.ace-flow-row::before,
+.ace-manifest-item::before,
+.ace-spec-card::before,
+.ace-product-lane::before,
+.ace-research-card::before {
+  width: 0 !important;
+  transition: none !important;
+}
+
+.ace-action-primary::before,
+.ace-nav-cta::before {
+  content: none !important;
+}
+
+.ace-action-secondary {
+  background-image: none !important;
+  background-size: auto !important;
+}
+
+.ace-scroll-cue {
+  transform: translateX(-50%) !important;
+}
+
+.ace-scroll-cue i {
+  animation: none !important;
+  transform: none !important;
+  opacity: .48;
+}
+
+.ace-mobile-nav,
+.ace-mobile-nav .ace-nav-link {
+  animation: none !important;
+}
+
+::view-transition-old(ace-content) {
+  animation: aceFlowContentOut .12s ease both !important;
+}
+
+::view-transition-new(ace-content) {
+  animation: aceFlowContentIn .20s ease both !important;
+}
+
+@keyframes aceFlowResolve {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes aceFlowContentOut {
+  to { opacity: 0; }
+}
+
+@keyframes aceFlowContentIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

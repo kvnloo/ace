@@ -13,6 +13,7 @@ import {
   statusLegend,
 } from '../landing/public.ts';
 import { View } from '../types';
+import { loopMotion, principleMotion } from '../landing/motion.ts';
 
 type Props = {
   onChangeView: (view: View) => void;
@@ -36,6 +37,7 @@ const OrbitCore: React.FC = () => (
   <div className="ace-core-wrap" aria-label="ACE human-centered system diagram">
     <div className="ace-core">
       <div className="ace-core-ring" aria-hidden="true" />
+      <span className="ace-core-trace-signal" aria-hidden="true" />
       <div className="ace-core-orbit" aria-hidden="true">
         {orbitNodes.map((node) => (
           <div
@@ -131,7 +133,11 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
 
       <div className="ace-loop-rail" aria-label="ACE feedback loop">
         {feedbackLoop.map((step, index) => (
-          <div className="ace-loop-rail-item" key={step.label}>
+          <div
+            className="ace-loop-rail-item"
+            data-motion={loopMotion[step.label]}
+            key={step.label}
+          >
             <span>{String(index + 1).padStart(2, '0')}</span>
             <strong>{step.label}</strong>
           </div>
@@ -152,13 +158,25 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
               {blueprintPositioning.body} {blueprintPositioning.disclaimer}
             </p>
             <div className="ace-manifest-grid">
-              {principles.map((principle) => (
-                <article className="ace-manifest-item" key={principle.title}>
+              {principles.map((principle) => {
+                const principleKey =
+                  principle.title === 'Human agency first' ? 'human-agency' :
+                  principle.title === 'Evidence before optimization' ? 'evidence' :
+                  principle.title === 'Humans are infrastructure' ? 'humans' : 'simulation';
+                return (
+                <article
+                  className="ace-manifest-item"
+                  key={principle.title}
+                  data-principle={principleKey}
+                  data-motion={principleMotion[principle.title as keyof typeof principleMotion]}
+                >
                   <ShieldCheck className="ace-item-icon" />
+                  <span className="ace-principle-signal" aria-hidden="true" />
                   <h3>{principle.title}</h3>
                   <p>{principle.body}</p>
                 </article>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -243,7 +261,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
             </p>
             <div className="ace-proof-grid">
               {firstProof.map((step) => (
-                <article className="ace-proof-card" key={step.title}>
+                <article className="ace-proof-card" data-stamp={step.stamp} key={step.title}>
                   <Stamp stamp={step.stamp} />
                   <h3>{step.title}</h3>
                   <p>{step.body}</p>
@@ -288,12 +306,8 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
         </div>
       </section>
 
-      <div className="ace-signal-band" aria-hidden="true">
-        <div className="ace-signal-track">
-          {[...marquee, ...marquee].map((item, index) => (
-            <span key={item + index}>✦ {item}</span>
-          ))}
-        </div>
+      <div className="ace-signal-field" aria-label="ACE operating beliefs">
+        {marquee.map((item) => <span key={item}>{item}</span>)}
       </div>
 
       <section className="ace-final" data-ace-reveal data-ace-section="06 / Manifesto">
