@@ -19,6 +19,7 @@ import {
   WALL_HEIGHT,
   WALL_THICKNESS,
 } from './program.ts';
+import { FACILITY_COLORS } from './theme.ts';
 import {
   APEX_BUILDING_ID,
   APEX_DEPTH,
@@ -195,7 +196,7 @@ function roomsForFloor(floor: number): Room[] {
       {
         id: 'tennis',
         name: 'Tennis arena',
-        color: '#3f6b1d',
+        color: FACILITY_COLORS.spec.tennis,
         polygon: rect(X0, Z0, 120, BUILDING_DEPTH),
         floorFinish: 'sport-court',
         occupancy: '24 tennis courts (hard/clay/grass/wood — split unspecified)',
@@ -204,7 +205,7 @@ function roomsForFloor(floor: number): Room[] {
       {
         id: 'pro-shop',
         name: 'Pro shop',
-        color: '#8B5A2B',
+        color: FACILITY_COLORS.spec.retail,
         polygon: rect(X0 + 120, Z0, 20, 60),
         floorFinish: 'wood',
         occupancy: 'retail',
@@ -213,7 +214,7 @@ function roomsForFloor(floor: number): Room[] {
       {
         id: 'lockers',
         name: 'Lockers',
-        color: '#4a5568',
+        color: FACILITY_COLORS.spec.lockers,
         polygon: rect(X0 + 120, Z0 + 60, 20, 60),
         floorFinish: 'tile',
         occupancy: 'lockers',
@@ -226,7 +227,7 @@ function roomsForFloor(floor: number): Room[] {
       {
         id: 'badminton',
         name: 'Badminton',
-        color: '#1f6b4a',
+        color: FACILITY_COLORS.spec.badminton,
         polygon: rect(X0, Z0, 80, BUILDING_DEPTH),
         floorFinish: 'sport-court',
         occupancy: '16 badminton courts',
@@ -235,7 +236,7 @@ function roomsForFloor(floor: number): Room[] {
       {
         id: 'squash',
         name: 'Squash',
-        color: '#2c5282',
+        color: FACILITY_COLORS.spec.squash,
         polygon: rect(X0 + 80, Z0, 60, 60),
         floorFinish: 'sport-court',
         occupancy: '4 squash courts',
@@ -244,7 +245,7 @@ function roomsForFloor(floor: number): Room[] {
       {
         id: 'table-tennis',
         name: 'Table tennis',
-        color: '#2b6cb0',
+        color: FACILITY_COLORS.spec.tableTennis,
         polygon: rect(X0 + 80, Z0 + 60, 60, 60),
         floorFinish: 'sport-court',
         occupancy: '16 table tennis stations',
@@ -257,7 +258,7 @@ function roomsForFloor(floor: number): Room[] {
       {
         id: 'pickleball',
         name: 'Pickleball',
-        color: '#3d7a3a',
+        color: FACILITY_COLORS.spec.pickleball,
         polygon: rect(X0, Z0, 90, BUILDING_DEPTH),
         floorFinish: 'sport-court',
         occupancy: '8 pickleball courts',
@@ -266,7 +267,7 @@ function roomsForFloor(floor: number): Room[] {
       {
         id: 'real-tennis',
         name: 'Real tennis',
-        color: '#6b4f2a',
+        color: FACILITY_COLORS.spec.heritage,
         polygon: rect(X0 + 90, Z0, 50, BUILDING_DEPTH),
         floorFinish: 'sport-court',
         occupancy: '1 real tennis court',
@@ -278,7 +279,7 @@ function roomsForFloor(floor: number): Room[] {
     {
       id: 'grass-lab',
       name: 'Grass lab',
-      color: '#1a3d24',
+      color: FACILITY_COLORS.spec.grassLab,
       polygon: rect(X0, Z0, BUILDING_WIDTH, BUILDING_DEPTH),
       floorFinish: 'grow-deck',
       occupancy: '500 m² per section; section count unspecified',
