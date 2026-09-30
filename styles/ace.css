@@ -2314,12 +2314,6 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
     transform .18s ease;
 }
 
-.ace-floor-btn:hover,
-.ace-overlay-btn:hover,
-.ace-feature-btn:hover {
-  transform: translateX(2px);
-}
-
 ::view-transition-old(root) {
   animation: aceRouteOut .16s ease both;
 }
@@ -2350,8 +2344,7 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
   }
 }
 
-@media (max-width: 780px) {
-  @media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
