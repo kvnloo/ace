@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { View, FeatureData } from './types';
 import NavBar from './components/NavBar';
 const PascalFacility = React.lazy(() => import('./components/PascalFacility'));
-import AIChat from './components/AIChat';
+const AIChat = React.lazy(() => import('./components/AIChat'));
 const Specifications = React.lazy(() => import('./components/Specifications'));
 import AtlasLanding, { AtlasProduct } from './components/AtlasLanding';
 import { campusNested, product } from './landing/public.ts';
@@ -221,7 +221,7 @@ const App: React.FC = () => {
         </AnimatePresence>
       </main>
 
-      <AIChat />
+      <Suspense fallback={null}><AIChat /></Suspense>
     </div>
   );
 };
