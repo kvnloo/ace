@@ -20,6 +20,7 @@ const setRootVar = (name: string, value: string) => {
 
 export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [reducedMotion, setReducedMotion] = React.useState(false);
+  const [liteMode, setLiteMode] = React.useState(false);
 
   React.useEffect(() => {
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
@@ -29,6 +30,7 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
       (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 2) ||
       (typeof deviceMemory === 'number' && deviceMemory <= 2);
     document.documentElement.dataset.aceQuality = lowPower ? 'lite' : 'full';
+    setLiteMode(lowPower);
 
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     const sync = () => setReducedMotion(media.matches);
@@ -41,10 +43,10 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
     const root = document.documentElement;
     const lenis = new Lenis({
       autoRaf: false,
-      lerp: reducedMotion ? 1 : 0.12,
-      smoothWheel: !reducedMotion,
-      syncTouch: true,
-      touchMultiplier: 1.08,
+      lerp: reducedMotion || liteMode ? 1 : 0.12,
+      smoothWheel: !reducedMotion && !liteMode,
+      syncTouch: !liteMode,
+      touchMultiplier: liteMode ? 1 : 1.08,
       respectReducedMotion: true,
     });
 
@@ -76,14 +78,26 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
     };
     raf = requestAnimationFrame(loop);
 
+    const onVisibility = () => {
+      if (document.hidden) {
+        lenis.stop();
+        cancelAnimationFrame(raf);
+      } else {
+        lenis.start();
+        raf = requestAnimationFrame(loop);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
     return () => {
       window.clearTimeout(scrollIdleTimer);
+      document.removeEventListener('visibilitychange', onVisibility);
       cancelAnimationFrame(raf);
       lenis.destroy();
       if (window.__ACE_LENIS__ === lenis) window.__ACE_LENIS__ = undefined;
       root.dataset.aceScrolling = 'false';
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, liteMode]);
 
   React.useEffect(() => {
     const finePointer = window.matchMedia('(pointer: fine)');
