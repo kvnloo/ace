@@ -177,7 +177,7 @@ html[data-ace-scrolling="true"] .ace-core-node {
   background: var(--ace-signal);
   box-shadow: 0 0 16px rgba(223,255,79,.42);
   offset-path: circle(46% at 50% 50%);
-  offset-distance: calc(var(--ace-loop-progress, 0) * 100%);
+  offset-distance: var(--ace-loop-progress, 0%);
   transition: offset-distance .10s linear, opacity .2s ease;
   opacity: .62;
   pointer-events: none;
