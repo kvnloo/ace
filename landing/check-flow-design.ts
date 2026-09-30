@@ -40,6 +40,9 @@ forbidText(css, /\[data-ace-reveal\]\s*\{[^}]*translate3d/s, 'section reveal mus
 forbidText(css, /\.ace-action-primary::before|\.ace-nav-cta::before/, 'primary actions must not use decorative light-sweep pseudo elements');
 forbidText(css, /html\[data-ace-scrolling="true"\]\s+\.ace-wordmark-mark\s*\{[^}]*transform:/s, 'wordmark must not pulse or scale merely because the page is scrolling');
 forbidText(css, /\.ace-flow-row:hover[\s\S]{0,320}translateY\(-2px\)/, 'content surfaces must acknowledge attention without lift-on-hover');
+forbidText(css, /@keyframes\s+aceHeroIn[\s\S]{0,220}translate/i, 'hero entry should resolve optically in place, not travel into view');
+forbidText(css, /@keyframes\s+aceRouteFallbackIn[\s\S]{0,180}translate/i, 'route fallback should preserve spatial context');
+forbidText(css, /@keyframes\s+acePanelIn[\s\S]{0,220}translate/i, 'augmentation panels should resolve where they belong instead of flying in');
 
 requireText(landing, /data-motion="stable-human"/, 'hero must declare stable-human motion semantics');
 requireText(motion, /'Evidence before optimization'[\s\S]*resolve-evidence/, 'principles must expose evidence-resolution semantics');
