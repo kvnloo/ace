@@ -2927,28 +2927,6 @@ html[data-ace-quality="lite"] .ace-campus-enable-3d {
 }
 
 /* Hover state is also a compact preview of what a clickable row means. */
-.ace-flow-row::after,
-.ace-product-lane::after,
-.ace-spec-card::after {
-  content: "↗";
-  position: absolute;
-  right: 12px;
-  bottom: 10px;
-  color: var(--ace-faint);
-  font-family: var(--ace-display);
-  font-size: 16px;
-  opacity: 0;
-  transform: translate(-4px, 4px);
-  transition: opacity .18s ease, transform .18s ease;
-  pointer-events: none;
-}
-
-.ace-flow-row:hover::after,
-.ace-product-lane:hover::after,
-.ace-spec-card:hover::after {
-  opacity: .55;
-  transform: none;
-}
 
 /* Keep evidence/status UI feeling instrument-like instead of bubbly. */
 .ace-stamp,
@@ -3315,5 +3293,151 @@ html[data-ace-loop="10"] .ace-core-human {
   .ace-live-section,
   .ace-product-lane > svg {
     transition: none;
+  }
+}
+
+
+/* --- Route continuity + mobile navigation ------------------------------- */
+
+.ace-nav {
+  view-transition-name: ace-nav;
+}
+
+#ace-main {
+  view-transition-name: ace-content;
+}
+
+::view-transition-group(ace-nav) {
+  animation-duration: .001ms;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-old(ace-content) {
+  animation: aceContentOut .14s ease both;
+}
+
+::view-transition-new(ace-content) {
+  animation: aceContentIn .28s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes aceContentOut {
+  to { opacity: 0; transform: translateY(-5px); }
+}
+
+@keyframes aceContentIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+html[data-ace-menu="open"] {
+  overflow: hidden;
+}
+
+@media (max-width: 780px) {
+  .ace-mobile-nav {
+    position: fixed;
+    z-index: 79;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    padding: 42px 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow-y: auto;
+    background:
+      linear-gradient(180deg, rgba(220,255,69,.025), transparent 38%),
+      var(--ace-bg);
+    border-bottom: 0;
+  }
+
+  .ace-mobile-nav::before {
+    content: "ACE / HUMAN FLOURISHING SYSTEM";
+    display: block;
+    margin-bottom: 28px;
+    color: var(--ace-faint);
+    font-family: var(--ace-mono);
+    font-size: 8px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .ace-mobile-nav::after {
+    content: "PRETOTYPE · GOAL → OBSERVE → MODEL → VERIFY → LEARN";
+    margin-top: auto;
+    padding-top: 28px;
+    color: var(--ace-faint);
+    font-family: var(--ace-mono);
+    font-size: 8px;
+    line-height: 1.5;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .ace-mobile-nav .ace-nav-link {
+    position: relative;
+    width: 100%;
+    min-height: 70px;
+    padding: 10px 0 10px 56px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--ace-line);
+    color: var(--ace-paper);
+    font-size: clamp(34px, 10vw, 48px);
+    font-weight: 200;
+    line-height: .88;
+    letter-spacing: -.015em;
+    text-align: left;
+    animation: aceMenuItemIn .34s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  .ace-mobile-nav .ace-nav-link::before {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ace-faint);
+    font-family: var(--ace-mono);
+    font-size: 9px;
+    letter-spacing: .08em;
+  }
+
+  .ace-mobile-nav .ace-nav-link:nth-child(2)::before { content: "01"; }
+  .ace-mobile-nav .ace-nav-link:nth-child(3)::before { content: "02"; }
+  .ace-mobile-nav .ace-nav-link:nth-child(4)::before { content: "03"; }
+  .ace-mobile-nav .ace-nav-link:nth-child(5)::before { content: "04"; }
+  .ace-mobile-nav .ace-nav-link:nth-child(6)::before { content: "05"; }
+
+  .ace-mobile-nav .ace-nav-link:nth-child(2) { animation-delay: 20ms; }
+  .ace-mobile-nav .ace-nav-link:nth-child(3) { animation-delay: 45ms; }
+  .ace-mobile-nav .ace-nav-link:nth-child(4) { animation-delay: 70ms; }
+  .ace-mobile-nav .ace-nav-link:nth-child(5) { animation-delay: 95ms; }
+  .ace-mobile-nav .ace-nav-link:nth-child(6) { animation-delay: 120ms; }
+
+  .ace-mobile-nav .ace-nav-link[aria-current="page"] {
+    color: var(--ace-signal);
+  }
+
+  .ace-mobile-nav .ace-nav-link::after {
+    display: none;
+  }
+}
+
+@keyframes aceMenuItemIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(ace-content),
+  ::view-transition-new(ace-content),
+  .ace-mobile-nav .ace-nav-link {
+    animation: none;
   }
 }
