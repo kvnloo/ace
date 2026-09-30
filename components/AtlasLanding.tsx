@@ -85,7 +85,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
 
   return (
     <div className="ace-page">
-      <section className="ace-hero">
+      <section className="ace-hero" data-ace-section="Manifesto">
         <div className="ace-hero-grid">
           <motion.div
             className="ace-hero-copy"
@@ -148,7 +148,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
         ))}
       </div>
 
-      <section className="ace-section">
+      <section className="ace-section" data-ace-reveal data-ace-section="01 / Principles">
         <div className="ace-section-grid">
           <div className="ace-section-index">
             <span className="ace-number">01</span>
@@ -174,7 +174,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
         </div>
       </section>
 
-      <section className="ace-section">
+      <section className="ace-section" data-ace-reveal data-ace-section="02 / System topology">
         <div className="ace-section-grid">
           <div className="ace-section-index">
             <span className="ace-number">02</span>
@@ -201,7 +201,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
         </div>
       </section>
 
-      <section className="ace-section">
+      <section className="ace-section" data-ace-reveal data-ace-section="03 / Humans + evidence">
         <div className="ace-section-grid">
           <div className="ace-section-index">
             <span className="ace-number">03</span>
@@ -238,7 +238,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
         </div>
       </section>
 
-      <section className="ace-section ace-paper-section">
+      <section className="ace-section ace-paper-section" data-ace-reveal data-ace-section="04 / First proof">
         <div className="ace-section-grid">
           <div className="ace-section-index">
             <span className="ace-number">04</span>
@@ -264,7 +264,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
         </div>
       </section>
 
-      <section className="ace-section">
+      <section className="ace-section" data-ace-reveal data-ace-section="05 / Truth model">
         <div className="ace-section-grid">
           <div className="ace-section-index">
             <span className="ace-number">05</span>
@@ -306,7 +306,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
         </div>
       </div>
 
-      <section className="ace-final">
+      <section className="ace-final" data-ace-reveal data-ace-section="06 / Manifesto">
         <p className="ace-kicker">ACE / PRETOTYPE</p>
         <h2>
           The facility is the environment.<br />
@@ -332,7 +332,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
 
 export const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({ onChangeView }) => (
   <div className="ace-product">
-    <header className="ace-product-head">
+    <header className="ace-product-head" data-ace-reveal data-ace-section="System">
       <p className="ace-kicker">ACE SYSTEM</p>
       <h2>How the loop compounds.</h2>
       <p className="ace-section-lede">{product.subhead}</p>
@@ -350,7 +350,7 @@ export const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({
       ))}
     </div>
 
-    <section className="ace-section" style={{ width: '100%' }}>
+    <section className="ace-section" style={{ width: '100%' }} data-ace-reveal data-ace-section="System / R&D">
       <div className="ace-section-grid">
         <div className="ace-section-index">
           <span className="ace-number">R&D</span>
@@ -371,7 +371,7 @@ export const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({
       </div>
     </section>
 
-    <section className="ace-section" style={{ width: '100%' }}>
+    <section className="ace-section" style={{ width: '100%' }} data-ace-reveal data-ace-section="System / Campus">
       <div className="ace-section-grid">
         <div className="ace-section-index">
           <span className="ace-number">PHY</span>
