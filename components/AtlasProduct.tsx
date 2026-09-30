@@ -8,6 +8,7 @@ import {
   product,
 } from '../landing/public.ts';
 import { View } from '../types';
+import { laneMotion, motionBehavior } from '../landing/motion.ts';
 
 const laneIcon = (group: string) => {
   if (group === 'Understand') return <Activity />;
@@ -28,17 +29,12 @@ const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({ onChan
       <p className="ace-section-lede">{product.subhead}</p>
     </header>
 
-    <div className="ace-product-lanes">
+    <div className="ace-product-lanes" data-ace-reveal>
       {lanes.map((lane) => (
         <article
           className="ace-product-lane"
           data-lane={lane.group.toLowerCase()}
-          data-motion={{
-            Understand: 'clarify',
-            Simulate: 'branch',
-            Connect: 'contextual-connect',
-            Improve: 'compare',
-          }[lane.group]}
+          data-motion={motionBehavior(laneMotion, lane.group)}
           key={lane.group}
         >
           {laneIcon(lane.group)}
