@@ -203,6 +203,12 @@ async function main(){
         initialPascal:resources.some((u)=>/PascalFacility/.test(u)),
         initialChat:resources.some((u)=>/AIChat/.test(u)),
         tailwindCdn:resources.some((u)=>/cdn\\.tailwindcss\\.com/.test(u)),
+        semanticTrace:Boolean(document.querySelector(".ace-core-trace-signal")),
+        movingTicker:Boolean(document.querySelector(".ace-signal-track")),
+        palette:{
+          bg:getComputedStyle(document.documentElement).getPropertyValue("--ace-bg").trim(),
+          signal:getComputedStyle(document.documentElement).getPropertyValue("--ace-signal").trim(),
+        },
       };
     })()`);
     report.desktop.home=facts;
@@ -213,6 +219,10 @@ async function main(){
     if(facts.initialPascal) failures.push("Pascal chunk loaded on home");
     if(facts.initialChat) failures.push("AIChat chunk loaded before interaction");
     if(facts.tailwindCdn) failures.push("Tailwind CDN runtime requested");
+    if(!facts.semanticTrace) failures.push("semantic loop trace missing");
+    if(facts.movingTicker) failures.push("autonomous signal ticker regressed");
+    if(facts.palette.bg.toLowerCase()!=="#071426") failures.push("ACE navy token mismatch "+facts.palette.bg);
+    if(facts.palette.signal.toLowerCase()!=="#dfff4f") failures.push("ACE signal token mismatch "+facts.palette.signal);
 
     const perf=await evaluate(cdp,desktop.sessionId,`(async()=>{
       const frames=[];
@@ -265,6 +275,65 @@ async function main(){
     report.desktop.systemShot=await screenshot(cdp,desktop.sessionId,"desktop-system");
     if(!system.heading) failures.push("System route did not render");
     if(system.overflow>2) failures.push("System horizontal overflow "+system.overflow+"px");
+
+    await evaluate(cdp,desktop.sessionId,`(()=>{
+      const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Spec");
+      button?.click();
+      return Boolean(button);
+    })()`);
+    await sleep(450);
+    const specFacts=await evaluate(cdp,desktop.sessionId,`(()=>({
+      cards:document.querySelectorAll(".ace-spec-card").length,
+      moving:[...document.querySelectorAll(".ace-spec-card")].some((el)=>{
+        const style=getComputedStyle(el);
+        return style.animationName!=="none" || (style.transform && style.transform!=="none");
+      }),
+    }))()`);
+    report.desktop.spec=specFacts;
+    report.desktop.specShot=await screenshot(cdp,desktop.sessionId,"desktop-spec");
+    if(specFacts.cards<8) failures.push("Spec matrix incomplete");
+    if(specFacts.moving) failures.push("Spec route regressed to positional/stagger motion");
+
+    await evaluate(cdp,desktop.sessionId,`(()=>{
+      const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Contact");
+      button?.click();
+      return Boolean(button);
+    })()`);
+    await sleep(350);
+    const contactBefore=await evaluate(cdp,desktop.sessionId,`(()=>({
+      goal:Boolean(document.querySelector("#ace-goal")),
+      role:Boolean(document.querySelector("#ace-role")),
+      email:Boolean(document.querySelector("#ace-email")),
+    }))()`);
+    await evaluate(cdp,desktop.sessionId,`(()=>{
+      const goal=document.querySelector("#ace-goal");
+      if(!goal) return false;
+      const setter=Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,"value")?.set;
+      setter?.call(goal,"Improve my repeatable movement quality");
+      goal.dispatchEvent(new Event("input",{bubbles:true}));
+      return true;
+    })()`);
+    await sleep(120);
+    const roleReady=await evaluate(cdp,desktop.sessionId,`Boolean(document.querySelector("#ace-role"))`);
+    if(roleReady){
+      await evaluate(cdp,desktop.sessionId,`(()=>{
+        const role=document.querySelector("#ace-role");
+        const setter=Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,"value")?.set;
+        setter?.call(role,"Athlete / member");
+        role.dispatchEvent(new Event("change",{bubbles:true}));
+        return true;
+      })()`);
+      await sleep(120);
+    }
+    const contactAfter=await evaluate(cdp,desktop.sessionId,`(()=>({
+      role:Boolean(document.querySelector("#ace-role")),
+      email:Boolean(document.querySelector("#ace-email")),
+    }))()`);
+    report.desktop.contact={before:contactBefore,after:contactAfter};
+    report.desktop.contactShot=await screenshot(cdp,desktop.sessionId,"desktop-contact");
+    if(!contactBefore.goal || contactBefore.role || contactBefore.email) failures.push("Contact must begin goal-only");
+    if(!contactAfter.role || !contactAfter.email) failures.push("Contact progressive disclosure failed");
+
     failures.push(...desktop.failures.map((e)=>"desktop request: "+e));
     await closePage(cdp,desktop);
 
