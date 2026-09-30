@@ -1,75 +1,56 @@
-import { GoogleGenAI } from '@google/genai';
+type HistoryItem = { role: string; parts: { text: string }[] };
 
-let aiClient: GoogleGenAI | null = null;
+const concise = (text: string) => text.replace(/\s+/g, ' ').trim();
 
-const getClient = (): GoogleGenAI | null => {
-  if (aiClient) return aiClient;
-  if (process.env.API_KEY) {
-    aiClient = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    return aiClient;
-  }
-  return null;
-};
+const answers: Array<{ test: RegExp; answer: string }> = [
+  {
+    test: /live|shipped|working|status/i,
+    answer:
+      'The public Pages site is a PRETOTYPE. A private racquet digital twin and Facility OS exist elsewhere. The evidence spine, WorldKernel/physics bakeoff, intervention-response loop, expert graph, traceable 3D loop, and machine-checkable sport laws are active RESEARCH or VISION, not shipped claims.',
+  },
+  {
+    test: /doctor|physician|pt|physical therap|expert|coach|nutrition/i,
+    answer:
+      'ACE treats experts as first-class architecture. Coaches, PTs, physicians, nutritionists, biomechanists, researchers, farmers, engineers, peers, and mentors should receive purpose-scoped access and retain authority for consequential actions. Agents are meant to extend attention and coordination, not replace expertise.',
+  },
+  {
+    test: /digital twin|twin/i,
+    answer:
+      'ACE treats a personal twin as an evidence graph, not a synthetic copy of a person. Observations, estimates, hypotheses, simulations, interventions, and verified outcomes stay distinct with provenance and uncertainty. The 3D world is a projection of that state, never the source of truth.',
+  },
+  {
+    test: /sport|pickleball|tennis|badminton|rules/i,
+    answer:
+      'Sports are ACE’s first proving ground. Pickleball 2026 is the current rules testbed: a small sport-blind transition protocol, an independent pickleball package, deterministic differential tapes, and formal-law experiments. Other sports should extend the protocol rather than force one giant universal rules schema.',
+  },
+  {
+    test: /simulate|physics|worldkernel|world kernel/i,
+    answer:
+      'ACE is researching a backend-neutral WorldKernel for time, bodies, contacts, surfaces, trajectories, and deterministic replay. Sport packages assign meaning after the physical observation. Physics backends should be benchmarked against measured cases before ACE trusts simulation-derived coaching decisions.',
+  },
+  {
+    test: /blueprint|bryan johnson/i,
+    answer:
+      'ACE is inspired by the ambition behind quantified-self and Blueprint-style continuous measurement, but it is independent and broader. The goal is to connect measurement to experts, simulation, learning, nutrition, environment, community, intervention, and verified follow-up rather than stop at a personal dashboard.',
+  },
+  {
+    test: /learn|personal|intervention|plateau/i,
+    answer:
+      'ACE personalization is meant to learn from measured response to interventions, not fixed learning-style labels. A narrow first loop is: baseline observation → capability estimate → coaching hypothesis → human-approved intervention → repeated measurement → update the belief or reject the hypothesis.',
+  },
+  {
+    test: /farm|agriculture|food/i,
+    answer:
+      'Controlled-environment agriculture is part of the broader campus vision where it genuinely supports nutrition, food systems, experimentation, and facility operations. It is not treated as proof that nutrition outcomes are optimized; those links need their own evidence and intervention-response studies.',
+  },
+];
 
-const SYSTEM_INSTRUCTION = `
-You are the guide for the ACE public pretotype.
+export const sendQueryToConcierge = async (history: HistoryItem[]): Promise<string> => {
+  const latest = history.at(-1)?.parts.map((part) => part.text).join(' ') ?? '';
+  const hit = answers.find((entry) => entry.test.test(latest));
+  if (hit) return hit.answer;
 
-ACE is a consent-governed human-flourishing feedback system. Its intended loop is:
-goal -> observe -> model -> hypothesize -> simulate -> connect the right humans/agents -> intervene -> measure -> verify -> learn.
-
-Core principles:
-- Human-defined goals are the objective function. Do not reduce a person to one universal score.
-- Personal and facility twins are evidence graphs. Keep observation, self-report, expert judgment, estimate, hypothesis, simulation, recommendation, intervention, and verified outcome distinct.
-- Coaches, physical therapists, physicians, nutritionists, biomechanists, scientists, learning experts, engineers, farmers, peers, and mentors are first-class participants.
-- Agents extend human attention and coordination; they do not acquire unlimited authority.
-- Sports are the first proving ground for a reusable world/simulation substrate plus independently codified sport packages.
-- Personalization means measured response to interventions, not fixed learning-style labels.
-- The 3D twin is a projection of authoritative state and evidence, never the source of truth.
-
-CURRENT / VERIFIED DIRECTION
-- A private racquet digital twin and Facility OS exist outside this Pages bundle.
-- 2026 pickleball rule-profile, sport-blind transition-kernel, deterministic replay/differential-harness, and formal-law experiments are active engineering/research work.
-- The public site runs a Pascal campus pretotype and fallback sketch.
-
-RESEARCH / VISION, NOT SHIPPED
-- provenance-aware personal-twin evidence spine
-- backend-neutral WorldKernel and physics bakeoff
-- personalized intervention-response learning
-- expert graph and scoped agent authority
-- traceable 3D evidence/replay loop
-- broader multidisciplinary campus spanning training, PT, medical/research, nutrition, recovery, community, engineering, and controlled-environment agriculture
-
-FACILITY SPEC / VISION
-- Naperville origin spec: 24 tennis / 16 badminton / 4 squash / 16 table tennis / 8 pickleball / 1 real tennis.
-- Grass lab: 500 m² per section; section count unspecified.
-- APEX human-performance rooms and inferred dimensions are VISION, not origin measurements.
-
-Do not invent receipts, clinical outcomes, medical claims, facility completion, or simulation accuracy.
-Always distinguish LIVE / SHIPPED / RESEARCH / VISION / SPEC / MOCK / PRETOTYPE when relevant.
-Keep answers concise unless the user asks for detail.
-`;
-
-export const sendQueryToConcierge = async (
-  history: { role: string; parts: { text: string }[] }[],
-): Promise<string> => {
-  const client = getClient();
-  if (!client) {
-    return 'This chat is a stub on GitHub Pages. ACE is a public pretotype for a human-flourishing feedback loop; live/private systems and research capabilities are labeled separately.';
-  }
-
-  try {
-    const response = await client.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: history as any,
-      config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
-        temperature: 0.5,
-      },
-    });
-
-    return response.text || "I couldn't process that request.";
-  } catch (error) {
-    console.error('Gemini API Error:', error);
-    return 'The pretotype guide is unavailable right now. Please try again in a moment.';
-  }
+  return concise(
+    'ACE is a public pretotype for a human-flourishing feedback loop: set a goal, observe reality, update evidence-backed digital twins, form hypotheses, simulate options, connect the right humans and agents, intervene with scoped authority, measure again, verify the outcome, and learn. Ask me about the digital twin, experts, sports, simulation, personalized learning, the campus, or what is actually live.',
+  );
 };
