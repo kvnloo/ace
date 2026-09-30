@@ -1853,3 +1853,152 @@ body {
     bottom: 8px;
   }
 }
+
+
+/* --- Signature poster details -------------------------------------------- */
+
+.ace-hero::before {
+  content: "ACE";
+  position: absolute;
+  z-index: 0;
+  right: -0.03em;
+  top: 52%;
+  transform: translateY(-50%);
+  font-family: var(--ace-display);
+  font-size: min(46vw, 690px);
+  font-weight: 200;
+  line-height: .7;
+  letter-spacing: -.08em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(241,243,232,.055);
+  pointer-events: none;
+  user-select: none;
+}
+
+.ace-hero::after {
+  content: "PUBLIC PRETOTYPE / ACE SYSTEM / 2026";
+  position: absolute;
+  z-index: 4;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  font-family: var(--ace-mono);
+  font-size: 8px;
+  letter-spacing: .18em;
+  color: var(--ace-faint);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.ace-hero-grid::before {
+  content: "";
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 104px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--ace-signal), transparent 32%, transparent 68%, rgba(140,236,255,.55));
+  opacity: .38;
+}
+
+.ace-core-wrap::after {
+  content: "SYSTEM / 001";
+  position: absolute;
+  top: 4%;
+  right: 3%;
+  font-family: var(--ace-mono);
+  font-size: 8px;
+  letter-spacing: .12em;
+  color: var(--ace-faint);
+}
+
+.ace-section-index::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 72px;
+  margin-top: 24px;
+  background: linear-gradient(var(--ace-signal), transparent);
+  opacity: .5;
+}
+
+.ace-flow-row,
+.ace-proof-card,
+.ace-status-card,
+.ace-manifest-item,
+.ace-spec-card,
+.ace-product-lane,
+.ace-research-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.ace-flow-row::before,
+.ace-manifest-item::before,
+.ace-spec-card::before,
+.ace-product-lane::before,
+.ace-research-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 1px;
+  background: var(--ace-signal);
+  transition: width .35s ease;
+}
+
+.ace-flow-row:hover::before,
+.ace-manifest-item:hover::before,
+.ace-spec-card:hover::before,
+.ace-product-lane:hover::before,
+.ace-research-card:hover::before {
+  width: 100%;
+}
+
+.ace-action-primary,
+.ace-action-secondary,
+.ace-nav-cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.ace-action-primary::after,
+.ace-nav-cta::after {
+  content: "↗";
+  font-family: var(--ace-display);
+  font-size: 15px;
+  line-height: 1;
+  margin-left: 2px;
+}
+
+.ace-action-secondary::after {
+  content: "→";
+  font-family: var(--ace-display);
+  font-size: 16px;
+  line-height: 1;
+}
+
+@media (max-width: 780px) {
+  .ace-hero::before {
+    top: 42%;
+    right: -.1em;
+    font-size: 86vw;
+    -webkit-text-stroke-color: rgba(241,243,232,.04);
+  }
+
+  .ace-hero::after {
+    display: none;
+  }
+
+  .ace-hero-grid::before {
+    left: 16px;
+    right: 16px;
+    top: 84px;
+  }
+
+  .ace-section-index::after {
+    display: none;
+  }
+}
