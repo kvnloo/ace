@@ -2874,3 +2874,108 @@ html[data-ace-zone="first-proof"] { --ace-context: var(--ace-orange); }
   .ace-core-orbit { transform: none; transition: none; }
   .ace-core-node { transform: translate(-50%, -50%); transition: none; }
 }
+
+
+/* --- Adaptive campus + finishing details -------------------------------- */
+
+html {
+  scrollbar-color: color-mix(in srgb, var(--ace-context) 55%, transparent) var(--ace-bg);
+  scrollbar-width: thin;
+}
+
+.ace-campus-enable-3d {
+  position: absolute;
+  z-index: 28;
+  right: 14px;
+  top: 14px;
+  display: grid;
+  gap: 2px;
+  min-width: 210px;
+  padding: 11px 13px;
+  border: 1px solid rgba(220,255,69,.36);
+  background: rgba(5,8,6,.88);
+  color: var(--ace-signal);
+  text-align: left;
+  font-family: var(--ace-display);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+
+.ace-campus-enable-3d span {
+  color: var(--ace-faint);
+  font-family: var(--ace-mono);
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: .04em;
+  text-transform: none;
+}
+
+.ace-campus-enable-3d:hover {
+  transform: translateY(-2px);
+  background: var(--ace-signal);
+  color: var(--ace-ink);
+}
+
+.ace-campus-enable-3d:hover span {
+  color: rgba(9,12,10,.62);
+}
+
+html[data-ace-quality="lite"] .ace-campus-enable-3d {
+  backdrop-filter: none;
+}
+
+/* Hover state is also a compact preview of what a clickable row means. */
+.ace-flow-row::after,
+.ace-product-lane::after,
+.ace-spec-card::after {
+  content: "↗";
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  color: var(--ace-faint);
+  font-family: var(--ace-display);
+  font-size: 16px;
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: opacity .18s ease, transform .18s ease;
+  pointer-events: none;
+}
+
+.ace-flow-row:hover::after,
+.ace-product-lane:hover::after,
+.ace-spec-card:hover::after {
+  opacity: .55;
+  transform: none;
+}
+
+/* Keep evidence/status UI feeling instrument-like instead of bubbly. */
+.ace-stamp,
+.ace-channel,
+.ace-chip,
+.ace-map-stamp {
+  text-wrap: balance;
+}
+
+@media (max-width: 780px) {
+  .ace-campus-enable-3d {
+    top: auto;
+    right: 8px;
+    bottom: 82px;
+    min-width: 0;
+    max-width: calc(100vw - 16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ace-campus-enable-3d,
+  .ace-flow-row::after,
+  .ace-product-lane::after,
+  .ace-spec-card::after {
+    transition: none;
+  }
+}
