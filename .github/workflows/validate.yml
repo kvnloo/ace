@@ -24,3 +24,27 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+      - name: Start production preview
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/ace-preview.log 2>&1 &
+          echo $! > /tmp/ace-preview.pid
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/ace-preview.log
+          exit 1
+      - name: Visual + interaction smoke
+        run: npm run visual:smoke
+        env:
+          BASE_URL: http://127.0.0.1:4173
+          ARTIFACTS: artifacts/visual-smoke
+      - name: Upload visual receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ace-visual-smoke-${{ github.sha }}
+          path: artifacts/visual-smoke
+          if-no-files-found: warn
