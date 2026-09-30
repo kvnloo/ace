@@ -63,6 +63,8 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
       setRootVar('--ace-scroll', progress.toFixed(5));
       setRootVar('--ace-scroll-px', `${Math.min(progress * 72, 72).toFixed(2)}px`);
       setRootVar('--ace-velocity', Math.min(Math.abs(velocity), 5).toFixed(3));
+      setRootVar('--ace-marquee-x', `${(-progress * 360).toFixed(1)}px`);
+      setRootVar('--ace-grid-y', `${(-progress * 42).toFixed(1)}px`);
       root.dataset.aceDirection = instance.direction < 0 ? 'up' : 'down';
       root.dataset.aceLoop = String(Math.min(10, Math.max(1, Math.floor(progress * 10) + 1)));
       root.dataset.aceScrolling = 'true';
