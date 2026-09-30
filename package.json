@@ -13,7 +13,8 @@
     "check:design": "esbuild landing/check-design.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-design.mjs && node /tmp/ace-check-design.mjs",
     "check:flow": "esbuild landing/check-flow-design.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-flow-design.mjs && node /tmp/ace-check-flow-design.mjs",
     "visual:smoke": "node scripts/visual-smoke.mjs",
-    "bundle:budget": "node scripts/bundle-budget.mjs"
+    "bundle:budget": "node scripts/bundle-budget.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@pascal-app/core": "1.0.0",
