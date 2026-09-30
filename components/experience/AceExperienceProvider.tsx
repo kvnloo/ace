@@ -61,7 +61,6 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
       const progress = Number.isFinite(instance.progress) ? instance.progress : 0;
       setRootVar('--ace-scroll', progress.toFixed(5));
       root.dataset.aceDirection = instance.direction < 0 ? 'up' : 'down';
-      root.dataset.aceLoop = String(Math.min(10, Math.max(1, Math.floor(progress * 10) + 1)));
       root.dataset.aceScrolling = 'true';
       window.clearTimeout(scrollIdleTimer);
       scrollIdleTimer = window.setTimeout(() => {
