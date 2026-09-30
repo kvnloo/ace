@@ -2348,45 +2348,6 @@ html[data-ace-scrolling="true"] .ace-wordmark-mark {
   transition: color .18s ease, opacity .18s ease;
 }
 
-html[data-ace-loop="1"] .ace-loop-rail-item:nth-child(1),
-html[data-ace-loop="2"] .ace-loop-rail-item:nth-child(2),
-html[data-ace-loop="3"] .ace-loop-rail-item:nth-child(3),
-html[data-ace-loop="4"] .ace-loop-rail-item:nth-child(4),
-html[data-ace-loop="5"] .ace-loop-rail-item:nth-child(5),
-html[data-ace-loop="6"] .ace-loop-rail-item:nth-child(6),
-html[data-ace-loop="7"] .ace-loop-rail-item:nth-child(7),
-html[data-ace-loop="8"] .ace-loop-rail-item:nth-child(8),
-html[data-ace-loop="9"] .ace-loop-rail-item:nth-child(9),
-html[data-ace-loop="10"] .ace-loop-rail-item:nth-child(10) {
-  background: rgba(223,255,79,.055);
-}
-
-html[data-ace-loop="1"] .ace-loop-rail-item:nth-child(1)::after,
-html[data-ace-loop="2"] .ace-loop-rail-item:nth-child(2)::after,
-html[data-ace-loop="3"] .ace-loop-rail-item:nth-child(3)::after,
-html[data-ace-loop="4"] .ace-loop-rail-item:nth-child(4)::after,
-html[data-ace-loop="5"] .ace-loop-rail-item:nth-child(5)::after,
-html[data-ace-loop="6"] .ace-loop-rail-item:nth-child(6)::after,
-html[data-ace-loop="7"] .ace-loop-rail-item:nth-child(7)::after,
-html[data-ace-loop="8"] .ace-loop-rail-item:nth-child(8)::after,
-html[data-ace-loop="9"] .ace-loop-rail-item:nth-child(9)::after,
-html[data-ace-loop="10"] .ace-loop-rail-item:nth-child(10)::after {
-  transform: scaleX(1);
-}
-
-html[data-ace-loop="1"] .ace-loop-rail-item:nth-child(1) strong,
-html[data-ace-loop="2"] .ace-loop-rail-item:nth-child(2) strong,
-html[data-ace-loop="3"] .ace-loop-rail-item:nth-child(3) strong,
-html[data-ace-loop="4"] .ace-loop-rail-item:nth-child(4) strong,
-html[data-ace-loop="5"] .ace-loop-rail-item:nth-child(5) strong,
-html[data-ace-loop="6"] .ace-loop-rail-item:nth-child(6) strong,
-html[data-ace-loop="7"] .ace-loop-rail-item:nth-child(7) strong,
-html[data-ace-loop="8"] .ace-loop-rail-item:nth-child(8) strong,
-html[data-ace-loop="9"] .ace-loop-rail-item:nth-child(9) strong,
-html[data-ace-loop="10"] .ace-loop-rail-item:nth-child(10) strong {
-  color: var(--ace-signal);
-}
-
 .ace-chip[data-evidence="OBSERVATION"],
 .ace-chip[data-evidence="SELF REPORT"],
 .ace-chip[data-evidence="EXPERT JUDGMENT"] {
@@ -2920,42 +2881,6 @@ html[data-ace-view="facility_demo"] .fixed.bottom-4.right-4 {
 .ace-core-node[data-node="outcome"] { --node-signal: var(--ace-paper); }
 .ace-core-node[data-node="agents"] { --node-signal: var(--ace-signal); }
 .ace-core-node[data-node="simulation"] { --node-signal: var(--ace-orange); }
-
-html[data-ace-loop="2"] .ace-core-node[data-node="evidence"],
-html[data-ace-loop="4"] .ace-core-node[data-node="evidence"],
-html[data-ace-loop="8"] .ace-core-node[data-node="evidence"],
-html[data-ace-loop="3"] .ace-core-node[data-node="twin"],
-html[data-ace-loop="5"] .ace-core-node[data-node="simulation"],
-html[data-ace-loop="6"] .ace-core-node[data-node="experts"],
-html[data-ace-loop="7"] .ace-core-node[data-node="agents"],
-html[data-ace-loop="9"] .ace-core-node[data-node="outcome"] {
-  color: var(--ace-paper);
-  border-color: color-mix(in srgb, var(--node-signal) 78%, transparent);
-  background: color-mix(in srgb, var(--node-signal) 7%, rgba(7,20,38,.92));
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--node-signal) 12%, transparent),
-    0 0 24px color-mix(in srgb, var(--node-signal) 10%, transparent);
-}
-
-html[data-ace-loop="2"] .ace-core-node[data-node="evidence"]::before,
-html[data-ace-loop="4"] .ace-core-node[data-node="evidence"]::before,
-html[data-ace-loop="8"] .ace-core-node[data-node="evidence"]::before,
-html[data-ace-loop="3"] .ace-core-node[data-node="twin"]::before,
-html[data-ace-loop="5"] .ace-core-node[data-node="simulation"]::before,
-html[data-ace-loop="6"] .ace-core-node[data-node="experts"]::before,
-html[data-ace-loop="7"] .ace-core-node[data-node="agents"]::before,
-html[data-ace-loop="9"] .ace-core-node[data-node="outcome"]::before {
-  background: var(--node-signal);
-  box-shadow: 0 0 18px color-mix(in srgb, var(--node-signal) 72%, transparent);
-  transform: scale(1.55);
-}
-
-html[data-ace-loop="1"] .ace-core-human,
-html[data-ace-loop="10"] .ace-core-human {
-  box-shadow:
-    0 0 0 1px rgba(223,255,79,.42),
-    0 0 96px rgba(223,255,79,.30);
-}
 
 @media (max-width: 780px) {
   .ace-campus-enable-3d {
