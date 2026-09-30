@@ -4,7 +4,8 @@ import NavBar from './components/NavBar';
 import DeferredGuide from './components/DeferredGuide';
 const CampusExperience = React.lazy(() => import('./components/CampusExperience'));
 const Specifications = React.lazy(() => import('./components/Specifications'));
-import AtlasLanding, { AtlasProduct } from './components/AtlasLanding';
+import AtlasLanding from './components/AtlasLanding';
+const AtlasProduct = React.lazy(() => import('./components/AtlasProduct'));
 import { campusNested, product } from './landing/public.ts';
 
 type TransitionDocument = Document & {
@@ -93,7 +94,7 @@ const App: React.FC = () => {
 
         {currentView === View.AMENITIES && (
           <div className="ace-route-enter ace-page min-h-[calc(100dvh-72px)] px-4 sm:px-6">
-            <AtlasProduct onChangeView={navigate} />
+            <Suspense fallback={<div className="min-h-[70vh] grid place-items-center"><div className="ace-kicker">LOADING SYSTEM MAP</div></div>}><AtlasProduct onChangeView={navigate} /></Suspense>
           </div>
         )}
 
