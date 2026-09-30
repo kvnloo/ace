@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Activity, ArrowRight, Cpu, Network, ShieldCheck, Users, Zap } from 'lucide-react';
 import {
   architectureFlow,
@@ -87,12 +86,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
     <div className="ace-page">
       <section className="ace-hero" data-ace-section="Manifesto">
         <div className="ace-hero-grid">
-          <motion.div
-            className="ace-hero-copy"
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <div className="ace-hero-copy ace-hero-entry ace-hero-entry-copy">
             <p className="ace-kicker">{product.kicker}</p>
             <h1>
               <span>A feedback loop</span>
@@ -133,15 +127,11 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
                 <span>human goal owner at the center</span>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.14, duration: 0.7 }}
-          >
+          <div className="ace-hero-entry ace-hero-entry-core">
             <OrbitCore />
-          </motion.div>
+          </div>
         </div>
       </section>
 
