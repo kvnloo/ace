@@ -20,8 +20,12 @@ const scene = read('facility/generateScene.ts');
 const vision = read('facility/vision.ts');
 const theme = read('facility/theme.ts');
 const index = read('index.tsx');
+const designDoc = read('docs/DESIGN.md');
 
 requireText(index, /flow-state\.css/, 'flow-state layer must load after the nightly experiment layer');
+requireText(designDoc, /invisible augmentation/i, 'design constitution must preserve the invisible-augmentation thesis');
+requireText(designDoc, /more interactive states with less visible motion/i, 'design constitution must preserve the interaction-density rule');
+forbidText(designDoc, /slow orbital system motion|one marquee \/ signal rail/i, 'obsolete nightly motion guidance must not return');
 requireText(css, /--ace-bg:\s*#071426/i, 'ACE navy substrate missing');
 requireText(css, /--ace-signal:\s*#DFFF4F/i, 'legacy tennis-lime signal must be restored');
 requireText(css, /--ace-glass-bg:/, 'augmentation glass token missing');
