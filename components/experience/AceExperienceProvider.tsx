@@ -25,8 +25,11 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
   React.useEffect(() => {
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
     const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+    const effectiveType = (connection as { effectiveType?: string } | undefined)?.effectiveType;
+    const slowNetwork = effectiveType === 'slow-2g' || effectiveType === '2g';
     const lowPower =
       Boolean(connection?.saveData) ||
+      slowNetwork ||
       (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 2) ||
       (typeof deviceMemory === 'number' && deviceMemory <= 2);
     document.documentElement.dataset.aceQuality = lowPower ? 'lite' : 'full';
