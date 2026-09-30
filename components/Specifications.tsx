@@ -132,7 +132,7 @@ const Specifications: React.FC = () => {
         </header>
 
         <div className="ace-spec-grid">
-          {specs.map((category) => {
+          {specs.map((category, index) => {
             const Icon = category.icon;
             return (
               <article
