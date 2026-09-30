@@ -57,7 +57,7 @@ const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({ onChan
         </div>
         <div className="ace-research-grid">
           {inFlight.map((item) => (
-            <article className="ace-research-card" key={item.title}>
+            <article className="ace-research-card" data-stamp={item.stamp} key={item.title}>
               <Stamp stamp={item.stamp} />
               <h4>{item.title}</h4>
               <p>{item.body}</p>
