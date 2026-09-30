@@ -80,7 +80,7 @@ const App: React.FC = () => {
               {selectedFeature && (
                 <article className="ace-feature-card ace-feature-card-enter">
                   <div className="ace-feature-card-top">
-                    <span className="ace-feature-card-icon" aria-hidden="true">{selectedFeature.icon}</span>
+                    <span className="ace-feature-card-marker" aria-hidden="true"><span /></span>
                     <button type="button" onClick={() => setSelectedFeature(null)} className="ace-feature-close">Close</button>
                   </div>
                   <h3>{selectedFeature.title}</h3>
