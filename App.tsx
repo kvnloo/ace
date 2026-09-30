@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { View, FeatureData } from './types';
 import NavBar from './components/NavBar';
 import DeferredGuide from './components/DeferredGuide';
-const PascalFacility = React.lazy(() => import('./components/PascalFacility'));
+const CampusExperience = React.lazy(() => import('./components/CampusExperience'));
 const Specifications = React.lazy(() => import('./components/Specifications'));
 import AtlasLanding, { AtlasProduct } from './components/AtlasLanding';
 import { campusNested, product } from './landing/public.ts';
@@ -64,8 +64,8 @@ const App: React.FC = () => {
         {currentView === View.FACILITY_DEMO && (
           <div className="ace-route-enter ace-campus-shell w-full h-[calc(100dvh-72px)] relative overflow-hidden">
             <div className="absolute inset-0 z-0">
-              <Suspense fallback={<div className="w-full h-full bg-[#050806] grid place-items-center"><div className="ace-kicker">LOADING CAMPUS TWIN</div></div>}>
-                <PascalFacility onFeatureSelect={setSelectedFeature} />
+              <Suspense fallback={<div className="w-full h-full bg-[#050806] grid place-items-center"><div className="ace-kicker">LOADING CAMPUS SHELL</div></div>}>
+                <CampusExperience onFeatureSelect={setSelectedFeature} />
               </Suspense>
             </div>
 
