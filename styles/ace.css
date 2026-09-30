@@ -1376,7 +1376,13 @@ body {
   grid-template-columns: minmax(0, .43fr) minmax(0, .57fr);
   gap: 0;
   margin-top: 34px;
-  border: 1px solid var(--ace-line);
+  overflow: hidden;
+  border: 1px solid var(--ace-glass-border);
+  border-radius: var(--ace-radius-human);
+  background: var(--ace-glass);
+  box-shadow: 0 24px 72px rgba(2,8,16,.18);
+  backdrop-filter: blur(20px) saturate(116%);
+  -webkit-backdrop-filter: blur(20px) saturate(116%);
 }
 
 .ace-contact-context {
