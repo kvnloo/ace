@@ -23,6 +23,8 @@ jobs:
       - run: npm ci
       - name: Contract tests
         run: npm test
+      - name: Typecheck
+        run: npm run typecheck
       - name: Production build
         run: npm run build
         env:
