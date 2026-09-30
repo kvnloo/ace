@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layers, Ruler, Eye, Box, Maximize2 } from 'lucide-react';
-import { FeatureData } from '../types';
+import { FeatureData } from '../../types';
 import {
   AnnotationMode,
   FEATURES,
@@ -90,7 +90,7 @@ const CourtDiagram: React.FC<{
           aria-hidden="true"
           style={{
             backgroundImage:
-              'repeating-linear-gradient(90deg, transparent 0, transparent 18px, rgba(220,255,69,0.13) 18px, rgba(220,255,69,0.13) 19px), repeating-linear-gradient(0deg, transparent 0, transparent 22px, rgba(220,255,69,0.06) 22px, rgba(220,255,69,0.06) 23px)',
+              'repeating-linear-gradient(90deg, transparent 0, transparent 18px, rgba(223,255,79,0.13) 18px, rgba(223,255,79,0.13) 19px), repeating-linear-gradient(0deg, transparent 0, transparent 22px, rgba(223,255,79,0.06) 22px, rgba(223,255,79,0.06) 23px)',
           }}
         />
         <div className="absolute inset-[12%] border border-tennis-yellow/25 bg-black/20 flex flex-col items-center justify-center gap-2 text-center px-3">
@@ -175,7 +175,7 @@ const CourtDiagram: React.FC<{
 
   return (
     <div className="absolute inset-0 bg-gradient-to-br from-[#0b1a2e] via-[#071426] to-[#050d18]">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(220,255,69,0.10),_transparent_68%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(223,255,79,0.10),_transparent_68%)]" />
       <div className="absolute inset-0 flex items-center justify-center p-8 md:p-20">
         <div className={`relative h-[68%] sm:h-auto sm:w-full sm:max-w-xl aspect-[10/22] ${surface} shadow-[0_0_90px_rgba(0,0,0,0.55)] border border-white/15`}>
           <div className="absolute inset-[6%] border border-white/55">
