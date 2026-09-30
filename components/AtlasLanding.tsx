@@ -299,7 +299,7 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
 
       <div className="ace-signal-band" aria-hidden="true">
         <div className="ace-signal-track">
-          {[...marquee, ...marquee].map((item, index) => (
+          {marquee.map((item, index) => (
             <span key={item + index}>✦ {item}</span>
           ))}
         </div>
