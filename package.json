@@ -11,7 +11,8 @@
     "check:facility": "esbuild facility/check-scene.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-facility.mjs && node /tmp/ace-check-facility.mjs",
     "check:landing": "esbuild landing/check-copy.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-landing.mjs && node /tmp/ace-check-landing.mjs",
     "check:design": "esbuild landing/check-design.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-design.mjs && node /tmp/ace-check-design.mjs",
-    "visual:smoke": "node scripts/visual-smoke.mjs"
+    "visual:smoke": "node scripts/visual-smoke.mjs",
+    "bundle:budget": "node scripts/bundle-budget.mjs"
   },
   "dependencies": {
     "@pascal-app/core": "1.0.0",
