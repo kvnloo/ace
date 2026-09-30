@@ -1,192 +1,146 @@
-# ATLAS — public pretotype landing
+# ACE — human flourishing feedback-loop pretotype
 
-<div align="center">
+ACE is a physical campus + digital twin ecosystem for setting goals, measuring reality, connecting the right experts, simulating options, acting, and learning from verified outcomes.
 
-**ATLAS is soil to cell: specify a stack, simulate it, bind a twin. Under an hour a week.**
+Production: https://kvnloo.github.io/ace/
+Dev: https://kvnloo.github.io/ace/dev/
+Nightly: https://kvnloo.github.io/ace/nightly/
 
-[Live Pages (`main`)](https://kvnloo.github.io/ace/) • [Dev Preview](https://kvnloo.github.io/ace/dev/) • [Deployment](.github/DEPLOYMENT.md)
+This repository is the public ACE pretotype. It does not run the private 60 Hz racquet twin, clinical systems, or experimental simulation backends.
 
-This Pages site is a **pretotype landing**, not a live GPU or UE5 twin. Stamps say **SHIPPED**, **LIVE** (elsewhere), **VISION**, **SPEC**, **PLANNED**, or **MOCK**. GitHub Pages deploys **`main`** and **`dev` only**.
+## Thesis
 
-</div>
+ACE is a consent-governed cyber-physical feedback system for human flourishing.
 
----
+Goal -> observe -> model -> hypothesize -> simulate -> connect the right humans/agents -> intervene -> measure -> verify -> learn -> repeat.
 
-## What this site is
+The facility, sport engines, agents, personal twins, 3D scenes, agriculture, robotics, and software are infrastructure around that loop.
 
-Public face of **ATLAS** (outlined on Blueprint as soil-to-cell). GrowTwin is PCPartPicker for farms. The racquet Facility OS shipped in a private twin. This site does **not** start a second 60Hz loop, bundle that engine, or run Unreal.
+## Principles
 
-A nested **Pascal campus sketch** remains: Naperville racquet **SPEC** plus an APEX peak-performance wing (**VISION**). That sketch is not a live twin.
+- Human goals are the objective function. Do not reduce a person to one universal score.
+- Evidence before optimization. Observation, estimate, hypothesis, simulation, intervention, and verified outcome stay distinct.
+- Humans are first-class architecture. Coaches, PTs, physicians, nutritionists, researchers, farmers, engineers, peers, and mentors are not escalation paths from AI.
+- Agents extend attention and coordination. Consequential actions remain purpose-scoped and approval-scoped.
+- The digital twin is an evidence-backed model. A 3D scene is a projection of authoritative state, never the source of truth.
+- Simulation must earn trust. Counterfactuals do not count unless predictions and intervention rankings transfer to real measured outcomes.
+- Personalization means measured response to intervention, not fixed “learning-style” labels.
 
-| Stamp | What |
+ACE is inspired by the ambition behind quantified-self and Blueprint-style continuous measurement, but is an independent concept with broader scope. No affiliation with Blueprint or Bryan Johnson is implied.
+
+## What exists vs what is being tested
+
+| Stamp | Meaning |
 |---|---|
-| **SHIPPED** | USAPA 2025 engine + Facility OS MVP in the private racquet twin (demo/sim data). Not this bundle. |
-| **VISION** | GrowTwin CEA — spec → yield/watts → bind a twin. UE5/Cesium is the twin claim. |
-| **LIVE** | GPU racquet twin and photoreal farm twin — private apps only. |
-| **SPEC** | Naperville origin racquet counts on the nested sketch. Grass lab: 500 m² per section, section count unspecified. |
-| **PLANNED / MOCK** | Blender-native GFX, web GFX quality lanes, waitlist form, Gemini chat. |
-| **This repo runs** | ATLAS landing copy + Pascal Viewer + CSS fallback. Live loops stay private. |
+| LIVE | A running system exists elsewhere, outside this Pages bundle. |
+| SHIPPED | An implemented capability exists, sometimes against demo/simulation data. |
+| RESEARCH | Active engineering or experiment; not yet a product claim. |
+| VISION | Intended architecture or campus direction. |
+| SPEC | Sourced facility/program fact. |
+| MOCK | Illustrative UI/behavior only. |
+| PRETOTYPE | This public site: a truthful interface to the vision, not the full product. |
 
-Do not copy facility floor plans or private twin source into this tree. Do not resurrect the Three.js lab theater as the renderer. Mine campus program through Pascal.
+Current direction:
 
----
+- LIVE — private racquet digital twin.
+- SHIPPED — Facility OS foundations such as booking/operations/cleaning coverage/utilization against demo/sim data.
+- RESEARCH — provenance-aware evidence spine, 2026 pickleball rule packages, sport-blind transition kernel, deterministic differential tapes, WorldKernel/physics bakeoff, intervention-response loop, expert/agent authority, traceable 3D replay, machine-checkable sport-law experiments.
+- VISION — multidisciplinary human-performance campus connecting training, PT, medical/research, nutrition, recovery, community, engineering, and controlled-environment agriculture.
 
-## 🏗️ Naperville origin layout (SPEC)
+## First proving ground
 
-### **Ground Floor** - Tennis Complex
-24 tennis courts featuring:
-- Grass courts (replaceable modular turf)
-- Hard courts
-- Clay courts
-- Wood courts
-- Pro shop and locker rooms
-- Surface split is **unspecified** (not 6/6/6/6 unless the spec says so)
+Pickleball is the first end-to-end testbed because rules and outcomes are explicit enough to falsify the architecture.
 
-### **First Floor** - Mezzanine Sports
-- 16 badminton courts
-- 4 squash courts
-- 16 table tennis stations
+The target vertical slice is:
 
-### **Second Floor** - Specialty Courts
-- 8 pickleball courts
-- 1 historic real tennis court
+1. play or ingest one real or intentionally synthetic session;
+2. preserve an evidence chain for rally observations and rule-adjudicated state;
+3. estimate one athlete capability with explicit uncertainty;
+4. compare a small number of simulated alternatives;
+5. let the user/coach choose an intervention;
+6. repeat a comparable measurement;
+7. keep or reject the hypothesis based on the observed outcome.
 
-### **Third Floor** - Vertical Grass Lab
-Origin spec: **500 m² per section**. Section count is not in the origin (an earlier public page inferred 4 × 500 = 2,000 m²).
-- Hydroponics and climate control (**PLANNED**)
-- Patch transport (**PLANNED** — not a live robot fleet)
-- Fast turf swap is a pretotype goal, not a measured receipt
+The goal is not to maximize feature count. The goal is to prove whether the loop creates useful capability gains beyond strong conventional coaching/software.
 
----
+## Public campus sketch
 
-## What this repo actually runs
+The Pascal campus pretotype preserves the sourced Naperville racquet program and a broader APEX human-performance VISION.
 
-### Pages demo (this tree)
-- **ATLAS landing copy** (`landing/public.ts`) — pretotype; does not run the live twin
-- **React 19.2** + TypeScript
-- **Pascal Viewer** (`@pascal-app/core` / `viewer` / `nodes` 1.0.0) — nested campus sketch: Site → LawnTech levels 0–3 + APEX VISION wing
-- Envelope **140×120 m** and **10 m** storeys are **inferred**, not origin measurements
-- APEX rooms are **nine VISION zones** on inferred 30×30 m cells
-- Grass lab is **one PLANNED zone** (origin: 500 m²/section; section count unspecified)
-- CSS campus / court fallback when WebGL cannot paint
-- **Framer Motion**, **Vite**
-- **Gemini** chat is a **stub** on GitHub Pages (not a concierge product)
-- Pascal **editor** is not shipped; `@pascal-app/editor` is a read-only shim so node definitions can load
+Naperville origin SPEC:
+- 24 tennis courts; surface mix includes hard, clay, grass, and wood, but the split is unspecified.
+- 16 badminton courts.
+- 4 squash courts.
+- 16 table-tennis stations.
+- 8 pickleball courts.
+- 1 real-tennis court.
+- Grass lab: 500 m² per section; section count unspecified.
 
-### Proof
+The public scene must not convert inferred geometry into origin measurements.
 
-```bash
-npm test          # facility/check-scene.ts + landing/check-copy.ts
-npm run build
-```
+APEX / ACE campus VISION includes:
+- strength and conditioning;
+- biomechanics / motion capture;
+- physiotherapy / rehabilitation;
+- medical / diagnostics partnerships;
+- nutrition and food;
+- recovery;
+- research labs;
+- social/community spaces;
+- controlled-environment agriculture;
+- maker / engineering spaces.
 
-Mutation is **n/a** — Stryker is not adopted. Do not invent a score.
+Some capabilities may ultimately be partnerships rather than co-located services. The sketch is a program exploration, not a construction claim.
 
-### Not in this tree
-OpenTwins, Eclipse Ditto, Eclipse Hono, Jenkins, Unity-in-Docker, and a live BMS are **origin research language**, not wired dependencies. Do not treat README history as a running stack.
+## What this repository actually runs
 
-Agents: read [`AGENTS.md`](AGENTS.md) and [`ROADMAP.md`](ROADMAP.md). Workers never merge `main` or `dev`.
+- React 19 + TypeScript + Vite.
+- Pascal Viewer for the campus sketch.
+- CSS/fallback campus visualization when WebGL cannot paint.
+- Public ACE narrative/status data in landing/public.ts.
+- Deterministic local pretotype guide; the public bundle does not expose an AI API key.
+- Landing/facility honesty checks.
 
----
+Validation:
+- npm test
+- npm run build
 
-## 💻 Development
+Mutation testing is n/a; do not invent a mutation score.
 
-### Prerequisites
-- Node.js (v20 or higher)
-- npm
-- Git
+The live/private racquet twin, private Facility OS runtime, clinical integrations, and simulation backends do not run in this tree.
 
-### Local Setup
+Agents should read AGENTS.md. Workers never merge main or dev.
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/kvnloo/ace.git
-   cd ace
-   ```
+## Development
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+- git clone https://github.com/kvnloo/ace.git
+- cd ace
+- npm ci
+- npm run dev
 
-3. **Configure environment** (optional; chat is a stub without it)
-   Create a `.env.local` file:
-   ```env
-   GEMINI_API_KEY=your_api_key_here
-   ```
+Build and validate:
+- npm test
+- npm run build
+- npm run preview
 
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
+No API key is required for the public pretotype.
 
-### Build for Production
+## Deployment channels
 
-```bash
-npm test
-npm run build
-npm run preview
-```
+The Pages artifact contains three independent builds:
 
----
+- Production / main -> https://kvnloo.github.io/ace/
+- Development / dev -> https://kvnloo.github.io/ace/dev/
+- Nightly / nightly -> https://kvnloo.github.io/ace/nightly/
 
-## 🌐 Deployment
+A push to any of those branches rebuilds the combined artifact from the current heads of all three channels.
 
-This project uses GitHub Actions for automated deployment to GitHub Pages:
+nightly is intentionally the fast-moving preview surface. Work can be pushed there directly without changing dev or main.
 
-- **Production**: Automatically deploys from `main` branch to `/`
-- **Development**: Automatically deploys from `dev` branch to `/dev/`
+## Relationship to the deeper ACE work
 
-Rolling git branches (`preview`, `nightly`) from the Verified OSS Loop are **not** Pages slots. Do not invent `/preview/<slug>/` without extending `.github/workflows/deploy.yml`.
+This public repo is the presentation/projection layer.
 
-See [Deployment Guide](.github/DEPLOYMENT.md) for detailed setup instructions.
+The deeper ACE digital-twin work owns the evolving evidence, rules, simulation, athlete-learning, expert/agent-authority, and 3D traceability experiments. The landing should summarize that direction without copying private data or converting research into shipped claims.
 
-### Deployment URLs
-- Production: https://kvnloo.github.io/ace/
-- Development: https://kvnloo.github.io/ace/dev/
-
----
-
-## Spec lineage
-
-- **Vision program**: `origin/enhance/3D` APEX campus (labs, physio, gym, pool, clubhouse, all sports)
-- **Origin numbers**: private racket-sports spec (Naperville, four floors)
-- Voyager/Eureka-style curriculum language is inspiration for a future ops loop, not a second scheduler in this tree
-
-A pretty 3D scene is a **projection**, not proof of autonomy.
-
----
-
-## 📝 Project Structure
-
-```
-ace/
-├── AGENTS.md                 # Verified OSS Loop + ACE ownership
-├── ROADMAP.md              # First untracked item is what autodevelop mints
-├── facility/              # Pascal program + scene compiler
-│   ├── program.ts
-│   ├── vision.ts           # APEX VISION rooms
-│   ├── generateScene.ts
-│   └── check-scene.ts
-├── components/
-│   ├── PascalFacility.tsx
-│   ├── facility/SketchMap.tsx
-│   └── ThreeScene.tsx     # unused legacy — do not remount
-├── .github/workflows/      # Pages deploy + validate + loop receipts
-└── App.tsx
-```
-
----
-
-## 📄 License
-
-This project is licensed under the terms specified in [LICENSE](LICENSE).
-
----
-
-## Acknowledgments
-
-- Origin facility spec (private digital-twin racket-sports project)
-- APEX campus program from the `enhance/3D` branch
-- Pascal Viewer for the public sketch
-- Gemini is optional and stubbed on Pages
+A pretty scene is not evidence. A model prediction is not an observation. A simulation is not an outcome.
