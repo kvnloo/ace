@@ -110,7 +110,7 @@ const CourtDiagram: React.FC<{
         <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-8 md:p-16">
           <div className="grid grid-cols-3 gap-px w-full max-w-xl aspect-square border border-white/10 bg-white/10">
             {cells.map((label, index) => (
-              <div key={label} className="ace-facility-bg/95 flex flex-col items-center justify-center min-w-0 p-2">
+              <div key={label} className="ace-facility-cell flex flex-col items-center justify-center min-w-0 p-2">
                 <span className="ace-mono text-[8px] text-tennis-yellow/70 mb-2">{String(index + 1).padStart(2, '0')}</span>
                 <span className="ace-display text-[11px] sm:text-sm tracking-[0.08em] text-white/70 uppercase text-center break-words">
                   {label}
