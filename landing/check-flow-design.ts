@@ -39,7 +39,7 @@ forbidText(css, /\.ace-core-orbit\s*\{[^}]*animation:\s*aceSpin/s, 'hero system 
 forbidText(css, /rotate\(calc\(var\(--ace-scroll\)/, 'hero system must not rotate merely because the page scrolls');
 forbidText(css, /\[data-ace-reveal\]\s*\{[^}]*translate3d/s, 'section reveal must clarify in place instead of moving content into position');
 forbidText(css, /\.ace-action-primary::before|\.ace-nav-cta::before/, 'primary actions must not use decorative light-sweep pseudo elements');
-forbidText(css, /html\[data-ace-scrolling="true"\]\s+\.ace-wordmark-mark\s*\{[^}]*transform:/s, 'wordmark must not pulse or scale merely because the page is scrolling');
+forbidText(css, /html\[data-ace-scrolling="true"\]\s+\.ace-wordmark-mark\s*\{[^}]*transform:\s*(?!none\b)[^;]+;/s, 'wordmark must not pulse or scale merely because the page is scrolling');
 forbidText(css, /\.ace-flow-row:hover[\s\S]{0,320}translateY\(-2px\)/, 'content surfaces must acknowledge attention without lift-on-hover');
 forbidText(css, /@keyframes\s+aceHeroIn[\s\S]{0,220}translate/i, 'hero entry should resolve optically in place, not travel into view');
 forbidText(css, /@keyframes\s+aceRouteFallbackIn[\s\S]{0,180}translate/i, 'route fallback should preserve spatial context');
