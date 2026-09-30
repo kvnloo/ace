@@ -1,5 +1,6 @@
 import { generateLawnTechScene, sceneStats } from './generateScene.ts';
 import { APEX_BUILDING_ID, APEX_LEVEL_ID, APEX_ROOMS, APEX_ZONE_IDS } from './vision.ts';
+import { FEATURES, sceneSelectionForFeature } from './program.ts';
 
 const scene = generateLawnTechScene();
 const stats = sceneStats(scene);
@@ -51,6 +52,27 @@ if (siteMeta.envelope !== 'inferred-140x120') {
 }
 if (siteMeta.vision !== 'peak-performance-campus') {
   throw new Error('site vision stamp missing');
+}
+
+
+for (const feature of FEATURES) {
+  const selection = sceneSelectionForFeature(feature.id);
+  if (!selection) {
+    throw new Error(`feature ${feature.id} is missing a scene-selection contract`);
+  }
+  if (!selection.selectedIds.length) {
+    throw new Error(`feature ${feature.id} must resolve to at least one authoritative scene node`);
+  }
+  const missingSelected = selection.selectedIds.filter((id) => !scene.nodes[id]);
+  if (missingSelected.length) {
+    throw new Error(`feature ${feature.id} selects missing nodes: ${missingSelected.join(', ')}`);
+  }
+  if (feature.id.startsWith('apex_') && selection.floor !== 'APEX') {
+    throw new Error(`APEX feature ${feature.id} must select the APEX floor`);
+  }
+  if (!feature.id.startsWith('apex_') && selection.floor === 'APEX') {
+    throw new Error(`non-APEX feature ${feature.id} cannot select the APEX floor`);
+  }
 }
 
 const site = scene.nodes.site_naperville as { children?: string[] };
