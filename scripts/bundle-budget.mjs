@@ -50,7 +50,7 @@ if(/AIChat-.*\.js/.test(html)) failures.push("AIChat must not be referenced by i
 
 const receipt={
   entryJs:{file:path.basename(jsPath),bytes:jsBytes,budget:MAX_ENTRY_JS},
-  entryCss:{files:cssPaths.map(path.basename),bytes:cssBytes,budget:MAX_ENTRY_CSS},
+  entryCss:{files:cssPaths.map((filePath)=>path.basename(filePath)),bytes:cssBytes,budget:MAX_ENTRY_CSS},
   split:{pascal,system,chat},
   result:failures.length?"FAIL":"PASS",
   failures,
