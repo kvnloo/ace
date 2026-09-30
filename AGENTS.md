@@ -54,6 +54,9 @@ Tests from another head are not evidence.
 
 ## ACE ownership
 
+Visual design work must also read [`docs/DESIGN.md`](docs/DESIGN.md). The public surface is intentionally editorial/instrument-like, not generic rounded-card SaaS UI; preserve the design regression contracts in `landing/check-design.ts`.
+
+
 This repository is the **public ACE presentation/projection layer**.
 
 ACE's top-level thesis is a consent-governed human-flourishing feedback loop:
