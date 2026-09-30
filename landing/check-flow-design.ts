@@ -48,6 +48,8 @@ forbidText(css, /--ace-scroll-px|--ace-velocity/, 'ambient scroll parallax/veloc
 forbidText(experience, /--ace-scroll-px|--ace-velocity|--ace-grid-y|--ace-marquee-x/, 'runtime should publish only narrative scroll state, not decorative motion fields');
 forbidText(css, /@keyframes\s+ace(?:RouteOut|RouteIn|ContentOut|ContentIn|MenuIn|MenuItemIn)[\s\S]{0,260}transform:/i, 'navigation continuity should resolve in place instead of moving the viewport');
 forbidText(css, /animation:\s*ace(?:Pulse|Cue|Corridor)\b/i, 'continuous decorative loops must not run in the flow-state system');
+forbidText(css, /data-ace-loop/, 'the feedback loop must remain continuous rather than flashing discrete scroll-index states');
+forbidText(experience, /dataset\.aceLoop/, 'runtime must not quantize scroll into ten visual loop states');
 
 requireText(landing, /data-motion="stable-human"/, 'hero must declare stable-human motion semantics');
 requireText(motion, /'Evidence before optimization'[\s\S]*resolve-evidence/, 'principles must expose evidence-resolution semantics');
