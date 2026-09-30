@@ -20,7 +20,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      DEPLOY_DIR: ${{ runner.temp }}/ace-pages
+      DEPLOY_DIR: /tmp/ace-pages
 
     steps:
       - name: Checkout main
@@ -81,7 +81,7 @@ jobs:
       - name: Upload combined artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.DEPLOY_DIR }}
+          path: /tmp/ace-pages
 
   deploy:
     needs: build-and-deploy
