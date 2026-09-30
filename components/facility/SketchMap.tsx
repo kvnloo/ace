@@ -125,30 +125,47 @@ const CourtDiagram: React.FC<{
 
   if (variant === 'campus') {
     return (
-      <div className="absolute inset-0 bg-gradient-to-br from-[#111812] via-[#090d0a] to-[#050806]">
-        <div
-          className="absolute inset-0 opacity-30"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px)',
-            backgroundSize: '30px 30px',
-          }}
-        />
-        <div className="absolute inset-0 flex items-center justify-center gap-3 sm:gap-8 p-5 sm:p-8">
-          <div className="w-[48%] sm:w-[42%] max-w-sm aspect-[7/6] border border-white/20 bg-tennis-yellow/[0.055] flex flex-col items-center justify-center gap-2 text-center px-2">
-            <span className="ace-mono text-[9px] text-white/50 tracking-widest">SPEC / RACQUET</span>
-            <span className="ace-display text-xl sm:text-3xl font-light uppercase text-white">Origin campus</span>
-            <span className="hidden sm:block ace-mono text-[9px] text-white/40">24 tennis · grass lab</span>
+      <div className="ace-campus-fallback-art absolute inset-0">
+        <div className="ace-campus-fallback-grid" aria-hidden="true" />
+        <div className="ace-campus-fallback-title" aria-hidden="true">ACE</div>
+
+        <div className="ace-campus-blueprint">
+          <div className="ace-campus-origin">
+            <span className="ace-campus-zone-id">SPEC / 01</span>
+            <strong>Racquet campus</strong>
+            <span>24 tennis · grass lab</span>
           </div>
-          <div className="w-[42%] sm:w-[38%] max-w-xs aspect-square border border-tennis-yellow/30 bg-white/[0.02] grid grid-cols-3 gap-px p-2">
-            {Array.from({ length: 9 }).map((_, i) => (
-              <div key={i} className="border border-white/[0.04] bg-tennis-yellow/[0.055]" />
-            ))}
+
+          <div className="ace-campus-corridor" aria-hidden="true">
+            <i />
+            <span>feedback corridor</span>
+          </div>
+
+          <div className="ace-campus-human-hub">
+            <span />
+            <strong>Human</strong>
+            <small>goal owner</small>
+          </div>
+
+          <div className="ace-campus-corridor ace-campus-corridor-right" aria-hidden="true">
+            <i />
+            <span>evidence + experts</span>
+          </div>
+
+          <div className="ace-campus-apex">
+            <span className="ace-campus-zone-id">VISION / 02</span>
+            <div className="ace-campus-apex-cells">
+              {Array.from({ length: 9 }).map((_, i) => <span key={i} />)}
+            </div>
+            <strong>Human performance</strong>
+            <span>labs · recovery · research</span>
           </div>
         </div>
-        <div className="absolute bottom-[17%] left-1/2 -translate-x-1/2 ace-mono text-[9px] text-tennis-yellow/70 tracking-widest whitespace-nowrap uppercase">
-          VISION / HUMAN PERFORMANCE WING
+
+        <div className="ace-campus-fallback-legend">
+          <span><i data-tone="spec" /> sourced program</span>
+          <span><i data-tone="vision" /> vision layer</span>
+          <span><i data-tone="human" /> human loop</span>
         </div>
       </div>
     );
