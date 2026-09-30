@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Bot, Loader2 } from 'lucide-react';
-import { sendQueryToConcierge } from '../services/geminiService';
 import { ChatMessage } from '../types';
 
 const AIChat: React.FC = () => {
@@ -11,7 +10,7 @@ const AIChat: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: 'model',
-      text: 'This chat is a stub. ACE is the human-flourishing feedback-loop pretotype: personal + facility twins, expert collaboration, sport simulation, and measured intervention-response. Ask about the campus vision, current research tracks, or what is actually live versus planned.',
+      text: 'ACE is a public pretotype for a human-flourishing feedback loop. Ask about the digital twin, experts, sports, simulation, personalized learning, the campus, or what is actually live.',
     },
   ]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -33,15 +32,17 @@ const AIChat: React.FC = () => {
     setMessages(newMessages);
     setIsLoading(true);
 
-    const history = newMessages.map((m) => ({
-      role: m.role,
-      parts: [{ text: m.text }],
-    }));
-
-    const responseText = await sendQueryToConcierge(history);
-
-    setMessages((prev) => [...prev, { role: 'model', text: responseText }]);
-    setIsLoading(false);
+    try {
+      const { sendQueryToConcierge } = await import('../services/geminiService');
+      const history = newMessages.map((m) => ({
+        role: m.role,
+        parts: [{ text: m.text }],
+      }));
+      const responseText = await sendQueryToConcierge(history);
+      setMessages((prev) => [...prev, { role: 'model', text: responseText }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -71,11 +72,7 @@ const AIChat: React.FC = () => {
               </button>
             </div>
 
-            <div
-              className="flex-1 overflow-y-auto p-4 space-y-4"
-              ref={scrollRef}
-              aria-live="polite"
-            >
+            <div className="flex-1 overflow-y-auto p-4 space-y-4" ref={scrollRef} aria-live="polite">
               {messages.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div
