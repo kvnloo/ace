@@ -132,13 +132,13 @@ const Specifications: React.FC = () => {
         </header>
 
         <div className="ace-spec-grid">
-          {specs.map((category, index) => {
+          {specs.map((category) => {
             const Icon = category.icon;
             return (
               <article
-                className="ace-spec-card ace-spec-enter"
+                className="ace-spec-card"
+                data-stamp={category.stamp}
                 key={category.category}
-                style={{ '--ace-index': Math.min(index, 8) } as React.CSSProperties}
               >
                 <div className="ace-spec-card-head">
                   <div className="ace-spec-card-icon"><Icon size={19} /></div>
