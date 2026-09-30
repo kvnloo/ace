@@ -142,8 +142,17 @@ async function createPage(cdp,{width,height,mobile=false,lite=false,reduced=fals
     if(msg.sessionId!==sessionId) return;
     if(msg.method==="Network.responseReceived") resources.push(msg.params.response?.url || "");
     if(msg.method==="Network.loadingFailed"){
-      const url=msg.params?.requestId || "";
-      if(msg.params?.errorText) failures.push(msg.params.errorText+" "+url);
+      const requestId=msg.params?.requestId || "";
+      if(msg.params?.errorText) failures.push("network: "+msg.params.errorText+" "+requestId);
+    }
+    if(msg.method==="Runtime.exceptionThrown"){
+      const details=msg.params?.exceptionDetails;
+      const description=details?.exception?.description || details?.text || "uncaught runtime exception";
+      failures.push("runtime: "+description);
+    }
+    if(msg.method==="Runtime.consoleAPICalled" && msg.params?.type==="error"){
+      const rendered=(msg.params.args || []).map((arg)=>arg.value ?? arg.description ?? "").filter(Boolean).join(" ");
+      failures.push("console: "+(rendered || "console.error"));
     }
   };
   cdp.listeners.add(listener);
@@ -154,7 +163,15 @@ async function createPage(cdp,{width,height,mobile=false,lite=false,reduced=fals
   await sleep(250);
   await evaluate(cdp,sessionId,`document.fonts?.ready?.then(()=>true).catch(()=>true)`,true).catch(()=>{});
 
-  return {sessionId,targetId,resources,failures,cleanup:()=>cdp.listeners.delete(listener)};
+  let mounted=false;
+  for(let i=0;i<40;i++){
+    mounted=await evaluate(cdp,sessionId,`Boolean(document.querySelector("#root > *"))`).catch(()=>false);
+    if(mounted) break;
+    await sleep(100);
+  }
+  if(!mounted) failures.push("runtime: app root did not mount");
+
+  return {sessionId,targetId,resources,failures,mounted,cleanup:()=>cdp.listeners.delete(listener)};
 }
 
 async function evaluate(cdp,sessionId,expression,awaitPromise=false){
@@ -350,14 +367,19 @@ async function main(){
     await closePage(cdp,mobile);
 
     const reduced=await createPage(cdp,{width:1280,height:800,reduced:true});
-    const reducedFacts=await evaluate(cdp,reduced.sessionId,`(()=>({
-      motion:document.documentElement.dataset.aceMotion,
-      orbitAnimation:getComputedStyle(document.querySelector(".ace-core-orbit")).animationName,
-      overflow:document.documentElement.scrollWidth-window.innerWidth,
-    }))()`);
+    const reducedFacts=await evaluate(cdp,reduced.sessionId,`(()=>{
+      const orbit=document.querySelector(".ace-core-orbit");
+      return {
+        motion:document.documentElement.dataset.aceMotion,
+        orbitPresent:Boolean(orbit),
+        orbitAnimation:orbit ? getComputedStyle(orbit).animationName : "",
+        overflow:document.documentElement.scrollWidth-window.innerWidth,
+      };
+    })()`);
     report.reduced=reducedFacts;
     report.reduced.shot=await screenshot(cdp,reduced.sessionId,"reduced-home");
     if(reducedFacts.motion!=="reduced") failures.push("reduced-motion dataset missing ("+reducedFacts.motion+")");
+    if(!reducedFacts.orbitPresent) failures.push("reduced-motion home did not mount semantic hero");
     if(reducedFacts.overflow>2) failures.push("reduced-motion horizontal overflow "+reducedFacts.overflow+"px");
     failures.push(...reduced.failures.map((e)=>"reduced request: "+e));
     await closePage(cdp,reduced);
