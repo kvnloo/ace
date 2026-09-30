@@ -79,9 +79,14 @@ const App: React.FC = () => {
 
             <div className="absolute inset-0 z-20 pointer-events-none flex flex-col justify-end">
               {selectedFeature && (
-                <article className="ace-feature-card ace-feature-card-enter">
+                <article className="ace-feature-card ace-feature-card-enter" aria-live="polite">
                   <div className="ace-feature-card-top">
-                    <span className="ace-feature-card-marker" aria-hidden="true"><span /></span>
+                    <div className="ace-feature-card-state">
+                      <span className="ace-feature-card-marker" aria-hidden="true"><span /></span>
+                      <span className="ace-stamp" data-stamp={selectedFeature.id.includes('apex') ? 'VISION' : selectedFeature.id.includes('level3') ? 'PLANNED' : 'SPEC'}>
+                        {selectedFeature.id.includes('apex') ? 'VISION' : selectedFeature.id.includes('level3') ? 'PLANNED' : 'SPEC'}
+                      </span>
+                    </div>
                     <button type="button" onClick={() => setSelectedFeature(null)} className="ace-feature-close">Close</button>
                   </div>
                   <h3>{selectedFeature.title}</h3>
