@@ -153,7 +153,16 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
             </p>
             <div className="ace-manifest-grid">
               {principles.map((principle) => (
-                <article className="ace-manifest-item" key={principle.title}>
+                <article
+                  className="ace-manifest-item"
+                  data-motion={{
+                    'Human agency first': 'stable-agency',
+                    'Evidence before optimization': 'resolve-evidence',
+                    'Humans are infrastructure': 'contextual-connect',
+                    'Simulation must earn trust': 'branch-counterfactual',
+                  }[principle.title]}
+                  key={principle.title}
+                >
                   <ShieldCheck className="ace-item-icon" />
                   <h3>{principle.title}</h3>
                   <p>{principle.body}</p>
