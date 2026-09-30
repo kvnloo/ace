@@ -104,7 +104,13 @@ const AtlasLanding: React.FC<Props> = ({ onChangeView }) => {
               <button type="button" className="ace-action-primary" onClick={() => onChangeView(View.AMENITIES)}>
                 Enter the system <ArrowRight size={17} />
               </button>
-              <button type="button" className="ace-action-secondary" onClick={() => onChangeView(View.FACILITY_DEMO)}>
+              <button
+                type="button"
+                className="ace-action-secondary"
+                onPointerEnter={() => void import('./PascalFacility')}
+                onFocus={() => void import('./PascalFacility')}
+                onClick={() => onChangeView(View.FACILITY_DEMO)}
+              >
                 Explore the campus
               </button>
             </div>
@@ -386,7 +392,13 @@ export const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({
             {facilityDomains.map((domain) => <span className="ace-chip" key={domain}>{domain}</span>)}
           </div>
           <div className="ace-actions">
-            <button type="button" className="ace-action-secondary" onClick={() => onChangeView(View.FACILITY_DEMO)}>
+            <button
+              type="button"
+              className="ace-action-secondary"
+              onPointerEnter={() => void import('./PascalFacility')}
+              onFocus={() => void import('./PascalFacility')}
+              onClick={() => onChangeView(View.FACILITY_DEMO)}
+            >
               Open Pascal campus
             </button>
           </div>
