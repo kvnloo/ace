@@ -3229,3 +3229,91 @@ html[data-ace-loop="10"] .ace-core-human {
     transition: none;
   }
 }
+
+
+/* --- Semantic color context --------------------------------------------- */
+
+/* Actions stay signal-lime. Context tells the reader what kind of state is active. */
+.ace-kicker,
+.ace-section-index::after,
+.ace-live-section {
+  transition:
+    color .24s ease,
+    background .24s ease,
+    border-color .24s ease;
+}
+
+.ace-section:not(.ace-paper-section) .ace-kicker {
+  color: var(--ace-context);
+}
+
+.ace-section:not(.ace-paper-section) .ace-section-index::after {
+  background: linear-gradient(var(--ace-context), transparent);
+}
+
+.ace-page::after {
+  background:
+    radial-gradient(
+      circle 220px at var(--ace-pointer-x) var(--ace-pointer-y),
+      color-mix(in srgb, var(--ace-context) 4.8%, transparent),
+      color-mix(in srgb, var(--ace-context) 1.8%, transparent) 42%,
+      transparent 72%
+    );
+}
+
+/* System lanes have their own meaning instead of one arbitrary accent. */
+.ace-product-lane {
+  --lane-color: var(--ace-signal);
+}
+
+.ace-product-lane[data-lane="understand"] { --lane-color: var(--ace-cyan); }
+.ace-product-lane[data-lane="simulate"] { --lane-color: var(--ace-orange); }
+.ace-product-lane[data-lane="connect"] { --lane-color: var(--ace-paper); }
+.ace-product-lane[data-lane="improve"] { --lane-color: var(--ace-signal); }
+
+.ace-product-lane > svg {
+  color: var(--lane-color);
+  transition: color .2s ease, transform .24s cubic-bezier(.22,1,.36,1);
+}
+
+.ace-product-lane::before {
+  background: var(--lane-color);
+}
+
+.ace-product-lane:hover > svg {
+  transform: translateY(-2px) rotate(-3deg);
+}
+
+.ace-product-lane:hover h3 {
+  color: var(--lane-color);
+}
+
+/* Spec icons inherit epistemic maturity. */
+.ace-spec-card[data-stamp*="RESEARCH"] .ace-spec-card-icon {
+  color: var(--ace-cyan);
+  border-color: rgba(140,236,255,.28);
+}
+
+.ace-spec-card[data-stamp*="VISION"] .ace-spec-card-icon {
+  color: var(--ace-paper);
+  border-color: rgba(241,243,232,.25);
+}
+
+.ace-spec-card[data-stamp*="SPEC"] .ace-spec-card-icon {
+  color: var(--ace-muted);
+  border-color: var(--ace-line);
+}
+
+.ace-spec-card[data-stamp*="SHIPPED"] .ace-spec-card-icon {
+  color: var(--ace-signal);
+  border-color: rgba(220,255,69,.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ace-kicker,
+  .ace-section-index::after,
+  .ace-live-section,
+  .ace-product-lane > svg {
+    transition: none;
+  }
+}
