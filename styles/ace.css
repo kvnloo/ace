@@ -2580,3 +2580,68 @@ html[data-ace-scrolling="true"] .ace-feature-strip {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
+
+
+/* --- ACE core mark ------------------------------------------------------- */
+
+.ace-wordmark-mark {
+  position: relative;
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  border: 1px solid var(--ace-signal);
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 22px rgba(220,255,69,.22);
+  transition:
+    transform .28s cubic-bezier(.22,1,.36,1),
+    box-shadow .28s ease,
+    border-color .28s ease;
+}
+
+.ace-wordmark-mark::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: var(--ace-signal);
+  box-shadow: 0 0 10px rgba(220,255,69,.75);
+}
+
+.ace-wordmark-mark::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(140,236,255,.68) 50%, transparent calc(50% + .5px)),
+    linear-gradient(transparent calc(50% - .5px), rgba(140,236,255,.68) 50%, transparent calc(50% + .5px));
+  clip-path: polygon(47% 0,53% 0,53% 32%,100% 32%,100% 38%,53% 38%,53% 62%,100% 62%,100% 68%,53% 68%,53% 100%,47% 100%,47% 68%,0 68%,0 62%,47% 62%,47% 38%,0 38%,0 32%,47% 32%);
+  opacity: .46;
+}
+
+.ace-wordmark:hover .ace-wordmark-mark,
+.ace-wordmark:focus-visible .ace-wordmark-mark {
+  transform: rotate(45deg) scale(1.08);
+  border-color: var(--ace-cyan);
+  box-shadow:
+    0 0 0 3px rgba(220,255,69,.045),
+    0 0 28px rgba(140,236,255,.24);
+}
+
+html[data-ace-scrolling="true"] .ace-wordmark-mark {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 0 2px rgba(220,255,69,.035),
+    0 0 30px rgba(220,255,69,.34);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ace-wordmark-mark {
+    transition: none;
+  }
+  .ace-wordmark:hover .ace-wordmark-mark,
+  .ace-wordmark:focus-visible .ace-wordmark-mark,
+  html[data-ace-scrolling="true"] .ace-wordmark-mark {
+    transform: none;
+  }
+}
