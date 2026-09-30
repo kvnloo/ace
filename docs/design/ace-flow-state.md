@@ -36,7 +36,8 @@ Glass is not decoration. It is used where information is intentionally layered *
 - campus controls;
 - selected-place annotations;
 - assistant / guide surfaces;
-- contextual instrumentation.
+- contextual instrumentation;
+- human-to-system collaboration surfaces such as Contact.
 
 Content that is itself the source of truth should generally not look like glass.
 
@@ -69,6 +70,10 @@ Motion whose only reason is "it feels dynamic" does not ship.
 ### Human is the stable frame
 
 ACE adapts around the person. The human/goal should not orbit, wobble, parallax, or become a moving target.
+
+### Resolve in place
+
+When content becomes available, prefer optical clarity over spatial travel. Fade, focus, and material resolution preserve context better than cards flying upward or controls lifting toward the pointer.
 
 ### Semantic loop
 
@@ -138,13 +143,19 @@ This is deliberately the least animated route.
 
 **System → place.**
 
-The world is primary. Controls recede until attended. Selecting a place changes spatial context first; annotation follows. SPEC and VISION remain distinguishable.
+The world is primary. Controls recede until attended. Selecting a place changes authoritative scene geometry first; annotation follows. SPEC and VISION remain distinguishable.
 
 ### Contact
 
 **Start with the human goal.**
 
-Ask what the person wants to improve before asking who they are. Additional fields resolve only when context is useful.
+Ask what the person wants to improve before asking who they are. Additional fields resolve only after the goal is meaningful and the person pauses long enough for context to become useful. The form is glass because it is an augmentation surface, not a source-of-truth document.
+
+### Navigation
+
+**Peripheral until needed.**
+
+The ACE mark remains stable. While the reader moves forward, secondary chrome recedes. Scrolling back toward prior context—or deliberately approaching the navigation—restores full clarity.
 
 ## Interaction density
 
