@@ -46,10 +46,17 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
     return () => observer.disconnect();
   }, [currentView]);
 
+  const prefetch = (view: View) => {
+    if (view === View.FACILITY_DEMO) void import('./PascalFacility');
+    if (view === View.SPECIFICATIONS) void import('./Specifications');
+  };
+
   const NavItem = ({ view, label }: { view: View; label: string }) => (
     <button
       type="button"
       aria-current={currentView === view ? 'page' : undefined}
+      onPointerEnter={() => prefetch(view)}
+      onFocus={() => prefetch(view)}
       onClick={() => onChangeView(view)}
       className="ace-nav-link"
     >
@@ -79,7 +86,13 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
           <NavItem view={View.SPECIFICATIONS} label="Spec" />
           <NavItem view={View.FACILITY_DEMO} label="Campus" />
           <NavItem view={View.INVEST} label="Contact" />
-          <button type="button" className="ace-nav-cta" onClick={() => onChangeView(View.FACILITY_DEMO)}>
+          <button
+            type="button"
+            className="ace-nav-cta"
+            onPointerEnter={() => prefetch(View.FACILITY_DEMO)}
+            onFocus={() => prefetch(View.FACILITY_DEMO)}
+            onClick={() => onChangeView(View.FACILITY_DEMO)}
+          >
             Enter twin
           </button>
         </nav>
