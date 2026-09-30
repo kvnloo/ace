@@ -76,6 +76,8 @@ requireText(app, /ace-contact-progressive/, 'contact form needs progressive goal
 requireText(app, /CONTACT_CONTEXT_DELAY_MS/, 'contact flow must intentionally pause before revealing routing context');
 requireText(app, /contactGoal\.trim\(\)\.length\s*>=\s*12/, 'contact flow should wait for a meaningful goal phrase before expanding');
 requireText(app, /contactContextReady/, 'contact follow-up must be governed by attention-ready state');
+requireText(css, /\.ace-contact-layout\s*\{[^}]*var\(--ace-glass\)/s, 'contact should use glass because it is a human-to-system augmentation surface');
+requireText(css, /\.ace-contact-layout\s*\{[^}]*border-radius:\s*var\(--ace-radius-human\)/s, 'contact augmentation surface should use the human radius');
 
 requireText(theme, /ACE_FACILITY_THEME/, 'facility theme must be centralized');
 requireText(theme, /environment/, 'facility theme must define environmental substrate');
