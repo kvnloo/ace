@@ -1,6 +1,7 @@
 import fs from 'node:fs';
+import path from 'node:path';
 
-const read = (path: string) => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const read = (filePath: string) => fs.readFileSync(path.resolve(process.cwd(), filePath), 'utf8');
 
 const landing = read('components/AtlasLanding.tsx');
 const nav = read('components/NavBar.tsx');
