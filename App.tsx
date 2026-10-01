@@ -24,7 +24,7 @@ const App: React.FC = () => {
 
   const navigate = React.useCallback((nextView: View) => {
     if (nextView === currentView) {
-      window.__ACE_LENIS__?.scrollTo(0, { immediate: false });
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       return;
     }
 
@@ -32,8 +32,7 @@ const App: React.FC = () => {
       setCurrentView(nextView);
       setSelectedFeature(null);
       requestAnimationFrame(() => {
-        if (window.__ACE_LENIS__) window.__ACE_LENIS__.scrollTo(0, { immediate: true });
-        else window.scrollTo({ top: 0, left: 0 });
+        window.scrollTo({ top: 0, left: 0 });
       });
     };
 
@@ -72,7 +71,7 @@ const App: React.FC = () => {
             </div>
 
             <div className="ace-campus-copy hidden md:block" data-ace-reveal data-ace-section="Campus">
-              <span className="ace-stamp" data-stamp="VISION">VISION · PRETOTYPE</span>
+              <span className="ace-stamp" data-stamp="SPEC">SPEC · PUBLIC EXPORT</span>
               <h2>{campusNested.title}</h2>
               <p>{campusNested.body}</p>
             </div>

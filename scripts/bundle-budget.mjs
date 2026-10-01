@@ -22,7 +22,7 @@ const resolveAsset=(url)=>{
   const rel=normalize(url);
   const candidates=[
     path.join(DIST,rel),
-    path.join(DIST,rel.replace(/^ace\/(?:nightly\/|dev\/)?/,"")),
+    path.join(DIST,rel.replace(/^ace\/(?:nightly\/|dev\/|preview\/)?/,"")),
   ];
   return candidates.find(fs.existsSync);
 };
@@ -35,6 +35,7 @@ if(!cssPaths.length) throw new Error("entry CSS assets not found");
 const jsBytes=fs.statSync(jsPath).size;
 const cssBytes=cssPaths.reduce((sum,p)=>sum+fs.statSync(p).size,0);
 const assets=fs.readdirSync(path.join(DIST,"assets"));
+const twin=assets.find((name)=>/^TwinExportCampus-.*\.js$/.test(name));
 const pascal=assets.find((name)=>/^PascalFacility-.*\.js$/.test(name));
 const system=assets.find((name)=>/^AtlasProduct-.*\.js$/.test(name));
 const chat=assets.find((name)=>/^AIChat-.*\.js$/.test(name));
@@ -42,16 +43,18 @@ const chat=assets.find((name)=>/^AIChat-.*\.js$/.test(name));
 const failures=[];
 if(jsBytes>MAX_ENTRY_JS) failures.push(`entry JS ${jsBytes} > budget ${MAX_ENTRY_JS}`);
 if(cssBytes>MAX_ENTRY_CSS) failures.push(`entry CSS ${cssBytes} > budget ${MAX_ENTRY_CSS}`);
-if(!pascal) failures.push("PascalFacility must remain a split chunk");
+if(!twin) failures.push("TwinExportCampus must remain a split chunk");
+if(pascal) failures.push("PascalFacility must not ship in the export-backed preview build");
 if(!system) failures.push("AtlasProduct/System must remain a split chunk");
 if(!chat) failures.push("AIChat must remain a split chunk");
+if(/TwinExportCampus-.*\.js/.test(html)) failures.push("TwinExportCampus must not be referenced by initial HTML");
 if(/PascalFacility-.*\.js/.test(html)) failures.push("PascalFacility must not be referenced by initial HTML");
 if(/AIChat-.*\.js/.test(html)) failures.push("AIChat must not be referenced by initial HTML");
 
 const receipt={
   entryJs:{file:path.basename(jsPath),bytes:jsBytes,budget:MAX_ENTRY_JS},
   entryCss:{files:cssPaths.map((filePath)=>path.basename(filePath)),bytes:cssBytes,budget:MAX_ENTRY_CSS},
-  split:{pascal,system,chat},
+  split:{twin,pascal,system,chat},
   result:failures.length?"FAIL":"PASS",
   failures,
 };

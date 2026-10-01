@@ -1,60 +1,110 @@
 import React from 'react';
 import { FeatureData } from '../types';
-import { AnnotationMode, FloorLevel } from '../facility/program';
-import { SketchFallback } from './facility/SketchMap';
+import { usePublicTwinExport } from '../twin/adapter';
+import TwinExportFallback from './twin/TwinExportFallback';
 
-const PascalFacility = React.lazy(() => import('./PascalFacility'));
+const TwinExportCampus = React.lazy(() => import('./TwinExportCampus'));
 
 type Props = {
   onFeatureSelect: (feature: FeatureData) => void;
 };
 
+class TwinChunkBoundary extends React.Component<
+  { onFail: () => void; children: React.ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: Error) {
+    console.error('[ACE twin chunk]', error);
+    this.props.onFail();
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
 const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
-  const [force3d, setForce3d] = React.useState(false);
-  const [activeFloor, setActiveFloor] = React.useState<FloorLevel>('ALL');
-  const [annotationMode, setAnnotationMode] = React.useState<AnnotationMode>('LABELS');
+  const [enable3d, setEnable3d] = React.useState(false);
+  const [chunkFailed, setChunkFailed] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
-  const lite = document.documentElement.dataset.aceQuality === 'lite';
+  const { data, error } = usePublicTwinExport();
 
   const handleSelect = (feature: FeatureData) => {
     setSelectedId(feature.id);
     onFeatureSelect(feature);
   };
 
-  if (lite && !force3d) {
+  if (error) {
+    return (
+      <div className="ace-twin-load-error absolute inset-0">
+        <span className="ace-kicker">STRUCTURAL EXPORT UNAVAILABLE</span>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="w-full h-full bg-[#071426] grid place-items-center">
+        <div className="ace-kicker">LOADING DIGITAL TWIN EXPORT</div>
+      </div>
+    );
+  }
+
+  if (!enable3d || chunkFailed) {
     return (
       <div className="absolute inset-0">
-        <SketchFallback
-          activeFloor={activeFloor}
-          setActiveFloor={setActiveFloor}
-          annotationMode={annotationMode}
-          setAnnotationMode={setAnnotationMode}
+        <TwinExportFallback
+          data={data}
           selectedId={selectedId}
           onSelect={handleSelect}
-          reason="Lite mode · 3D deferred"
+          reason={chunkFailed ? 'Interactive 3D unavailable · structural twin remains active' : 'Structural twin · 3D available on demand'}
         />
         <button
           type="button"
           className="ace-campus-enable-3d"
-          onClick={() => setForce3d(true)}
+          onClick={() => {
+            setChunkFailed(false);
+            setEnable3d(true);
+          }}
         >
-          Enable full 3D
-          <span>loads the Pascal renderer on demand</span>
+          {chunkFailed ? 'Retry interactive 3D' : 'Enter interactive 3D'}
+          <span>loads only when requested</span>
         </button>
       </div>
     );
   }
 
   return (
-    <React.Suspense
-      fallback={
-        <div className="w-full h-full bg-[#071426] grid place-items-center">
-          <div className="ace-kicker">LOADING CAMPUS TWIN</div>
-        </div>
-      }
+    <TwinChunkBoundary
+      onFail={() => {
+        setChunkFailed(true);
+        setEnable3d(false);
+      }}
     >
-      <PascalFacility onFeatureSelect={onFeatureSelect} />
-    </React.Suspense>
+      <React.Suspense
+        fallback={
+          <TwinExportFallback
+            data={data}
+            selectedId={selectedId}
+            onSelect={handleSelect}
+            reason="Loading interactive 3D"
+          />
+        }
+      >
+        <TwinExportCampus
+          data={data}
+          selectedId={selectedId}
+          onSelect={handleSelect}
+        />
+      </React.Suspense>
+    </TwinChunkBoundary>
   );
 };
 

@@ -164,7 +164,14 @@ async function evaluate(cdp,sessionId,expression,awaitPromise=false){
     returnByValue:true,
     userGesture:true
   },sessionId);
-  if(result.exceptionDetails) throw new Error(result.exceptionDetails.text || "Runtime.evaluate failed");
+  if(result.exceptionDetails) {
+    const description =
+      result.exceptionDetails.exception?.description ||
+      result.exceptionDetails.exception?.value ||
+      result.exceptionDetails.text ||
+      "Runtime.evaluate failed";
+    throw new Error(description);
+  }
   return result.result?.value;
 }
 
@@ -195,11 +202,12 @@ async function main(){
       return {
         title:document.title,
         hero:/A FEEDBACK LOOP/i.test(text),
-        lenis:Boolean(window.__ACE_LENIS__),
+        nativeScroll:!('__ACE_LENIS__' in window),
         quality:document.documentElement.dataset.aceQuality,
         overflow:document.documentElement.scrollWidth-window.innerWidth,
         scrollHeight:document.documentElement.scrollHeight,
         resources,
+        initialTwin:resources.some((u)=>/TwinExportCampus/.test(u)),
         initialPascal:resources.some((u)=>/PascalFacility/.test(u)),
         initialChat:resources.some((u)=>/AIChat/.test(u)),
         tailwindCdn:resources.some((u)=>/cdn\\.tailwindcss\\.com/.test(u)),
@@ -214,9 +222,10 @@ async function main(){
     report.desktop.home=facts;
     report.desktop.hero=await screenshot(cdp,desktop.sessionId,"desktop-hero");
     if(!facts.hero) failures.push("desktop hero copy missing");
-    if(!facts.lenis) failures.push("Lenis did not initialize on desktop");
+    if(!facts.nativeScroll) failures.push("legacy Lenis runtime still present");
     if(facts.overflow>2) failures.push("desktop horizontal overflow "+facts.overflow+"px");
-    if(facts.initialPascal) failures.push("Pascal chunk loaded on home");
+    if(facts.initialTwin) failures.push("Twin renderer chunk loaded on home");
+    if(facts.initialPascal) failures.push("Pascal chunk should not ship or load");
     if(facts.initialChat) failures.push("AIChat chunk loaded before interaction");
     if(facts.tailwindCdn) failures.push("Tailwind CDN runtime requested");
     if(!facts.semanticTrace) failures.push("semantic loop trace missing");
@@ -275,6 +284,70 @@ async function main(){
     report.desktop.systemShot=await screenshot(cdp,desktop.sessionId,"desktop-system");
     if(!system.heading) failures.push("System route did not render");
     if(system.overflow>2) failures.push("System horizontal overflow "+system.overflow+"px");
+
+    await evaluate(cdp,desktop.sessionId,`(()=>{
+      const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Campus");
+      button?.click();
+      return Boolean(button);
+    })()`);
+    for(let i=0;i<50;i++){
+      const ready=await evaluate(cdp,desktop.sessionId,`Boolean(document.querySelector(".ace-twin-export-badge")) && Boolean(document.querySelector(".ace-campus-enable-3d"))`);
+      if(ready) break;
+      await sleep(100);
+    }
+    const campusFast=await evaluate(cdp,desktop.sessionId,`(()=>{
+      const resources=performance.getEntriesByType("resource").map((r)=>r.name);
+      const plan=document.querySelector(".ace-twin-plan");
+      const planStyle=plan ? getComputedStyle(plan) : null;
+      const planRect=plan?.getBoundingClientRect();
+      const overlay=document.querySelector(".ace-campus-shell > .z-20");
+      return {
+        canvas:Boolean(document.querySelector("canvas")),
+        badge:document.querySelector(".ace-twin-export-badge")?.textContent || "",
+        enable3d:Boolean(document.querySelector(".ace-campus-enable-3d")),
+        specStamp:[...document.querySelectorAll(".ace-stamp")].some((el)=>/SPEC · PUBLIC EXPORT/.test(el.textContent||"")),
+        exportLoaded:resources.some((u)=>u.includes("/twin/ace-digital-twin-v1.json")),
+        twinLoaded:resources.some((u)=>/TwinExportCampus/.test(u)),
+        pascalLoaded:resources.some((u)=>/PascalFacility/.test(u)),
+        overflow:document.documentElement.scrollWidth-window.innerWidth,
+        overlayBackground:overlay ? getComputedStyle(overlay).backgroundColor : null,
+        planBox:planRect && planStyle ? {width:planRect.width,height:planRect.height,display:planStyle.display,visibility:planStyle.visibility,opacity:planStyle.opacity} : null,
+      };
+    })()`);
+    report.desktop.campusFast=campusFast;
+    report.desktop.campusFastShot=await screenshot(cdp,desktop.sessionId,"desktop-twin-fast");
+    if(campusFast.canvas) failures.push("Campus mounted WebGL before explicit opt-in");
+    if(!campusFast.enable3d) failures.push("Campus 3D opt-in missing");
+    if(!/STRUCTURAL EXPORT/.test(campusFast.badge)) failures.push("real twin export badge missing");
+    if(!campusFast.specStamp) failures.push("Campus must identify exported geometry as SPEC");
+    if(!campusFast.exportLoaded) failures.push("public twin JSON was not loaded");
+    if(campusFast.twinLoaded) failures.push("TwinExportCampus lazy chunk loaded before opt-in");
+    if(campusFast.pascalLoaded) failures.push("Pascal loaded on real-twin Campus route");
+    if(campusFast.overflow>2) failures.push("Campus horizontal overflow "+campusFast.overflow+"px");
+    if(campusFast.overlayBackground && campusFast.overlayBackground!=="rgba(0, 0, 0, 0)") failures.push("Campus interaction overlay is painting over the world: "+campusFast.overlayBackground);
+    if(!campusFast.planBox || campusFast.planBox.width<100 || campusFast.planBox.height<100 || campusFast.planBox.display==="none" || campusFast.planBox.visibility==="hidden" || Number(campusFast.planBox.opacity)===0) failures.push("Campus fast twin plan is not visibly occupying the viewport");
+
+    await evaluate(cdp,desktop.sessionId,`document.querySelector(".ace-campus-enable-3d")?.click()`);
+    for(let i=0;i<100;i++){
+      const ready=await evaluate(cdp,desktop.sessionId,`Boolean(document.querySelector("canvas"))`);
+      if(ready) break;
+      await sleep(100);
+    }
+    const campus3d=await evaluate(cdp,desktop.sessionId,`(()=>{
+      const resources=performance.getEntriesByType("resource").map((r)=>r.name);
+      const canvas=document.querySelector("canvas");
+      const style=canvas ? getComputedStyle(canvas) : null;
+      const rect=canvas?.getBoundingClientRect();
+      return {
+        canvas:Boolean(canvas),
+        twinLoaded:resources.some((u)=>/TwinExportCampus/.test(u)),
+        box:rect && style ? {width:rect.width,height:rect.height,display:style.display,visibility:style.visibility,opacity:style.opacity} : null,
+      };
+    })()`);
+    report.desktop.campus3d=campus3d;
+    report.desktop.campusShot=await screenshot(cdp,desktop.sessionId,"desktop-real-twin");
+    if(!campus3d.canvas || !campus3d.twinLoaded) failures.push("interactive 3D twin did not load after opt-in");
+    if(!campus3d.box || campus3d.box.width<100 || campus3d.box.height<100 || campus3d.box.display==="none" || campus3d.box.visibility==="hidden" || Number(campus3d.box.opacity)===0) failures.push("interactive 3D canvas is not visibly occupying the viewport");
 
     await evaluate(cdp,desktop.sessionId,`(()=>{
       const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Spec");
@@ -357,16 +430,34 @@ async function main(){
         overflow:document.documentElement.scrollWidth-window.innerWidth,
         hasCanvas:Boolean(document.querySelector("canvas")),
         enable3d:Boolean(document.querySelector(".ace-campus-enable-3d")),
+        twinLoaded:resources.some((u)=>/TwinExportCampus/.test(u)),
         pascalLoaded:resources.some((u)=>/PascalFacility/.test(u)),
+        exportLoaded:resources.some((u)=>u.includes("/twin/ace-digital-twin-v1.json")),
+        exportBadge:Boolean(document.querySelector(".ace-twin-export-badge")),
+        planBox:(()=>{
+          const el=document.querySelector(".ace-twin-plan");
+          if(!el) return null;
+          const style=getComputedStyle(el);
+          const rect=el.getBoundingClientRect();
+          return {opacity:style.opacity,display:style.display,visibility:style.visibility,width:rect.width,height:rect.height};
+        })(),
+        overlayBackground:(()=>{
+          const el=document.querySelector(".ace-campus-shell > .z-20");
+          return el ? getComputedStyle(el).backgroundColor : null;
+        })(),
       };
     })()`);
     report.mobile=mobileFacts;
     report.mobile.shot=await screenshot(cdp,mobile.sessionId,"mobile-campus-lite");
     if(mobileFacts.quality!=="lite") failures.push("mobile quality expected lite, got "+mobileFacts.quality);
     if(mobileFacts.overflow>2) failures.push("mobile horizontal overflow "+mobileFacts.overflow+"px");
-    if(!mobileFacts.enable3d) failures.push("lite campus 3D opt-in missing");
+    if(!mobileFacts.enable3d) failures.push("mobile Campus 3D opt-in missing");
     if(mobileFacts.hasCanvas) failures.push("lite campus mounted a canvas before opt-in");
-    if(mobileFacts.pascalLoaded) failures.push("lite campus fetched Pascal before opt-in");
+    if(mobileFacts.twinLoaded) failures.push("mobile Campus fetched 3D twin renderer before opt-in");
+    if(mobileFacts.pascalLoaded) failures.push("lite campus fetched obsolete Pascal code");
+    if(!mobileFacts.exportLoaded || !mobileFacts.exportBadge) failures.push("lite campus must render the real export-backed fallback");
+    if(!mobileFacts.planBox || mobileFacts.planBox.width<100 || mobileFacts.planBox.height<100 || mobileFacts.planBox.display==="none" || mobileFacts.planBox.visibility==="hidden" || Number(mobileFacts.planBox.opacity)===0) failures.push("lite campus SVG fallback is not visibly occupying the viewport");
+    if(mobileFacts.overlayBackground && mobileFacts.overlayBackground!=="rgba(0, 0, 0, 0)") failures.push("mobile Campus overlay is opaque: "+mobileFacts.overlayBackground);
     failures.push(...mobile.failures.map((e)=>"mobile request: "+e));
     await closePage(cdp,mobile);
 
@@ -398,7 +489,7 @@ async function main(){
     "",
     "- desktop scroll p95: "+report.desktop.scroll.p95.toFixed(1)+"ms · max "+report.desktop.scroll.max.toFixed(1)+"ms",
     "- desktop section after scroll: "+(report.desktop.scroll.section || "unknown"),
-    "- mobile lite mode: "+report.mobile.quality+" · Pascal preloaded: "+report.mobile.pascalLoaded,
+    "- mobile lite mode: "+report.mobile.quality+" · twin renderer preloaded: "+report.mobile.twinLoaded+" · export fallback: "+report.mobile.exportBadge,
     "- reduced motion: "+report.reduced.motion,
     "- result: "+(failures.length ? "FAIL — "+failures.join("; ") : "PASS"),
     "",

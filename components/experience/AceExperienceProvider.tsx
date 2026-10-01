@@ -1,12 +1,4 @@
 import React from 'react';
-import Lenis from 'lenis';
-import 'lenis/dist/lenis.css';
-
-declare global {
-  interface Window {
-    __ACE_LENIS__?: Lenis;
-  }
-}
 
 type AceExperience = {
   reducedMotion: boolean;
@@ -20,23 +12,31 @@ const setRootVar = (name: string, value: string) => {
 
 export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [reducedMotion, setReducedMotion] = React.useState(false);
-  const [liteMode, setLiteMode] = React.useState(false);
 
   React.useEffect(() => {
-    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    const connection = (navigator as Navigator & {
+      connection?: { saveData?: boolean; effectiveType?: string };
+    }).connection;
     const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
-    const effectiveType = (connection as { effectiveType?: string } | undefined)?.effectiveType;
-    const slowNetwork = effectiveType === 'slow-2g' || effectiveType === '2g';
+    const effectiveType = connection?.effectiveType;
+    const compact =
+      window.matchMedia('(max-width: 780px)').matches ||
+      window.matchMedia('(pointer: coarse)').matches;
     const lowPower =
+      compact ||
       Boolean(connection?.saveData) ||
-      slowNetwork ||
+      effectiveType === 'slow-2g' ||
+      effectiveType === '2g' ||
       (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 2) ||
       (typeof deviceMemory === 'number' && deviceMemory <= 2);
+
     document.documentElement.dataset.aceQuality = lowPower ? 'lite' : 'full';
-    setLiteMode(lowPower);
 
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const sync = () => setReducedMotion(media.matches);
+    const sync = () => {
+      setReducedMotion(media.matches);
+      document.documentElement.dataset.aceMotion = media.matches ? 'reduced' : 'full';
+    };
     sync();
     media.addEventListener('change', sync);
     return () => media.removeEventListener('change', sync);
@@ -44,66 +44,50 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
 
   React.useEffect(() => {
     const root = document.documentElement;
-    const lenis = new Lenis({
-      autoRaf: false,
-      lerp: reducedMotion || liteMode ? 1 : 0.12,
-      smoothWheel: !reducedMotion && !liteMode,
-      syncTouch: !liteMode,
-      touchMultiplier: liteMode ? 1 : 1.08,
-      respectReducedMotion: true,
-    });
+    let lastY = window.scrollY;
+    let raf = 0;
+    let idleTimer = 0;
 
-    window.__ACE_LENIS__ = lenis;
-    root.dataset.aceMotion = reducedMotion ? 'reduced' : 'full';
+    const publish = () => {
+      raf = 0;
+      const y = window.scrollY;
+      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, y / max));
+      const heroLoopProgress = Math.min(1, Math.max(0, y / Math.max(window.innerHeight * 1.05, 1)));
 
-    let scrollIdleTimer = 0;
-    const onScroll = (instance: Lenis) => {
-      const progress = Number.isFinite(instance.progress) ? instance.progress : 0;
       setRootVar('--ace-scroll', progress.toFixed(5));
-      const heroLoopProgress = Math.min(1, Math.max(0, instance.scroll / Math.max(window.innerHeight * 1.05, 1)));
       setRootVar('--ace-loop-progress', `${(heroLoopProgress * 100).toFixed(2)}%`);
       setRootVar('--ace-scroll-px', `${Math.min(progress * 72, 72).toFixed(2)}px`);
-      root.dataset.aceDirection = instance.direction < 0 ? 'up' : 'down';
+      root.dataset.aceDirection = y < lastY ? 'up' : 'down';
       root.dataset.aceScrolling = 'true';
-      window.clearTimeout(scrollIdleTimer);
-      scrollIdleTimer = window.setTimeout(() => {
+      lastY = y;
+
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => {
         root.dataset.aceScrolling = 'false';
       }, 120);
     };
 
-    lenis.on('scroll', onScroll);
-
-    let raf = 0;
-    const loop = (time: number) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(loop);
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(publish);
     };
-    raf = requestAnimationFrame(loop);
 
-    const onVisibility = () => {
-      if (document.hidden) {
-        lenis.stop();
-        cancelAnimationFrame(raf);
-      } else {
-        lenis.start();
-        raf = requestAnimationFrame(loop);
-      }
-    };
-    document.addEventListener('visibilitychange', onVisibility);
+    publish();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
 
     return () => {
-      window.clearTimeout(scrollIdleTimer);
-      document.removeEventListener('visibilitychange', onVisibility);
-      cancelAnimationFrame(raf);
-      lenis.destroy();
-      if (window.__ACE_LENIS__ === lenis) window.__ACE_LENIS__ = undefined;
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      if (raf) cancelAnimationFrame(raf);
+      window.clearTimeout(idleTimer);
       root.dataset.aceScrolling = 'false';
     };
-  }, [reducedMotion, liteMode]);
-
+  }, []);
 
   React.useEffect(() => {
     const root = document.documentElement;
+
     if (reducedMotion) {
       document.querySelectorAll<HTMLElement>('[data-ace-reveal]').forEach((node) => {
         node.dataset.inview = 'true';

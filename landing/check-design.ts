@@ -7,6 +7,7 @@ const landing = read('components/AtlasLanding.tsx');
 const nav = read('components/NavBar.tsx');
 const specs = read('components/Specifications.tsx');
 const app = read('App.tsx');
+const contact = read('components/ContactExperience.tsx');
 const css = read('styles/ace.css');
 const html = read('index.html');
 
@@ -22,7 +23,7 @@ requireText(landing, /The facility is the environment/, 'landing must retain the
 requireText(nav, /ace-wordmark/, 'navigation must use ACE editorial chrome');
 requireText(nav, /aria-current/, 'navigation must expose current-page state accessibly');
 requireText(specs, /ace-spec-grid/, 'spec page must use the editorial matrix');
-requireText(app, /ace-contact-layout/, 'contact page must use the editorial collaboration surface');
+requireText(contact, /ace-contact-layout/, 'contact page must use the editorial collaboration surface');
 requireText(app, /ace-campus-shell/, 'campus must use the shared ACE visual system');
 
 requireText(css, /Barlow Condensed/, 'display typography token missing');
@@ -32,10 +33,11 @@ requireText(css, /@media \(max-width: 780px\)/, 'narrow-mobile design contract m
 requireText(css, /ace-core-orbit/, 'hero orbit motion contract missing');
 requireText(css, /\.ace-hero::before/, 'poster-scale ACE hero signature missing');
 requireText(css, /\.ace-paper-section/, 'paper/ink editorial interlude missing');
-requireText(css, /ace-map-controls/, 'campus controls design contract missing');
+requireText(read('components/TwinExportCampus.tsx'), /ace-twin-export-badge/, 'real twin augmentation layer missing');
 requireText(css, /ace-campus-enable-3d/, 'adaptive campus control missing');
-requireText(read('components/experience/AceExperienceProvider.tsx'), /from 'lenis'/, 'Lenis runtime missing');
-requireText(read('components/CampusExperience.tsx'), /aceQuality === 'lite'/, 'lite-mode campus gate missing');
+requireText(read('components/experience/AceExperienceProvider.tsx'), /addEventListener\('scroll'/, 'event-driven native scroll runtime missing');
+requireText(read('components/CampusExperience.tsx'), /!enable3d/, 'on-demand campus 3D gate missing');
+requireText(read('components/CampusExperience.tsx'), /TwinExportCampus/, 'Campus must use the export renderer');
 requireText(read('App.tsx'), /DeferredGuide/, 'guide must remain interaction-deferred');
 if (/framer-motion/.test(read('package.json'))) {
   throw new Error('public runtime must not regress to framer-motion');

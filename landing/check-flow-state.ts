@@ -16,9 +16,9 @@ const spec = read('components/Specifications.tsx');
 const app = read('App.tsx');
 const contact = read('components/ContactExperience.tsx');
 const motion = read('landing/motion.ts');
-const scene = read('facility/generateScene.ts');
-const vision = read('facility/vision.ts');
-const theme = read('facility/theme.ts');
+const campus = read('components/CampusExperience.tsx');
+const twinRenderer = read('components/TwinExportCampus.tsx');
+const twinFallback = read('components/twin/TwinExportFallback.tsx');
 const index = read('index.tsx');
 const designDoc = read('docs/DESIGN.md');
 
@@ -54,11 +54,14 @@ requireText(contact, /What do you want ACE to help you improve\?/, 'contact must
 requireText(contact, /data-open=\{hasGoal/, 'contact must progressively disclose context after goal');
 requireText(app, /ContactExperience/, 'App must use the goal-first contact experience');
 
-requireText(scene, /FACILITY_COLORS/, 'Pascal scene must use shared facility theme');
-requireText(vision, /FACILITY_COLORS/, 'VISION rooms must use shared facility theme');
-requireText(theme, /ACE_ENVIRONMENT/, 'facility environment tokens missing');
-requireText(theme, /signal:\s*'#DFFF4F'/, 'facility signal must match ACE brand');
+requireText(campus, /TwinExportCampus/, 'Campus must render the real digital-twin export');
+forbidText(campus, /PascalFacility/, 'Campus must not route through Pascal');
+requireText(twinRenderer, /frameloop="demand"/, 'real twin renderer must remain idle when the user is idle');
+requireText(twinRenderer, /autoRotate=\{false\}/, 'real twin camera must not animate itself');
+requireText(twinFallback, /ACE DIGITAL TWIN · STRUCTURAL EXPORT/, 'lite fallback must use the real twin export');
 forbidText(css, /animation:\s*aceCorridor/, 'campus connectors must not autonomously shuttle');
+forbidText(css, /\.ace-campus-shell\s*>\s*div\s*\{[^}]*background(?:-color)?\s*:/s, 'Campus direct-child overlays must never be painted over the world');
+requireText(css, /\.ace-campus-shell\s*>\s*\.z-20\s*\{[^}]*background-color:\s*transparent\s*!important/s, 'Campus interaction overlay must stay transparent');
 forbidText(css, /transform:\s*rotate\([^)]*\).*ace-wordmark/s, 'wordmark should not perform decorative rotation');
 
 console.log(JSON.stringify({
@@ -71,7 +74,7 @@ console.log(JSON.stringify({
     'semantic lane motion',
     'low-motion spec',
     'goal-first contact',
-    'shared campus palette',
+    'real export-backed campus',
     'no autonomous marquee/corridor motion',
     'reduced motion parity',
   ],
