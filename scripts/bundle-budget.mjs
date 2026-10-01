@@ -22,7 +22,7 @@ const resolveAsset=(url)=>{
   const rel=normalize(url);
   const candidates=[
     path.join(DIST,rel),
-    path.join(DIST,rel.replace(/^ace\/(?:nightly\\/|dev\\/|preview\\/)?/,"")),
+    path.join(DIST,rel.replace(/^ace\/(?:nightly\/|dev\/|preview\/)?/,"")),
   ];
   return candidates.find(fs.existsSync);
 };
