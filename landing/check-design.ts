@@ -32,10 +32,11 @@ requireText(css, /@media \(max-width: 780px\)/, 'narrow-mobile design contract m
 requireText(css, /ace-core-orbit/, 'hero orbit motion contract missing');
 requireText(css, /\.ace-hero::before/, 'poster-scale ACE hero signature missing');
 requireText(css, /\.ace-paper-section/, 'paper/ink editorial interlude missing');
-requireText(css, /ace-map-controls/, 'campus controls design contract missing');
+requireText(read('components/TwinExportCampus.tsx'), /ace-twin-export-badge/, 'real twin augmentation layer missing');
 requireText(css, /ace-campus-enable-3d/, 'adaptive campus control missing');
 requireText(read('components/experience/AceExperienceProvider.tsx'), /from 'lenis'/, 'Lenis runtime missing');
 requireText(read('components/CampusExperience.tsx'), /aceQuality === 'lite'/, 'lite-mode campus gate missing');
+requireText(read('components/CampusExperience.tsx'), /TwinExportCampus/, 'Campus must use the export renderer');
 requireText(read('App.tsx'), /DeferredGuide/, 'guide must remain interaction-deferred');
 if (/framer-motion/.test(read('package.json'))) {
   throw new Error('public runtime must not regress to framer-motion');
