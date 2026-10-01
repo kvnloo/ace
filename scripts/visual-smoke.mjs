@@ -315,11 +315,6 @@ async function main(){
       button?.click();
       return Boolean(button);
     })()`);
-
-      const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Spec");
-      button?.click();
-      return Boolean(button);
-    })()`);
     await sleep(450);
     const specFacts=await evaluate(cdp,desktop.sessionId,`(()=>({
       cards:document.querySelectorAll(".ace-spec-card").length,
