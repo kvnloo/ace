@@ -301,7 +301,7 @@ async function main(){
         canvas:Boolean(document.querySelector("canvas")),
         badge:document.querySelector(".ace-twin-export-badge")?.textContent || "",
         specStamp:[...document.querySelectorAll(".ace-stamp")].some((el)=>/SPEC · PUBLIC EXPORT/.test(el.textContent||"")),
-        exportLoaded:resources.some((u)=>/twin\/ace-digital-twin-v1\.json/.test(u)),
+        exportLoaded:resources.some((u)=>u.includes("/twin/ace-digital-twin-v1.json")),
         twinLoaded:resources.some((u)=>/TwinExportCampus/.test(u)),
         pascalLoaded:resources.some((u)=>/PascalFacility/.test(u)),
         overflow:document.documentElement.scrollWidth-window.innerWidth,
@@ -400,7 +400,7 @@ async function main(){
         enable3d:Boolean(document.querySelector(".ace-campus-enable-3d")),
         twinLoaded:resources.some((u)=>/TwinExportCampus/.test(u)),
         pascalLoaded:resources.some((u)=>/PascalFacility/.test(u)),
-        exportLoaded:resources.some((u)=>/twin\/ace-digital-twin-v1\.json/.test(u)),
+        exportLoaded:resources.some((u)=>u.includes("/twin/ace-digital-twin-v1.json")),
         exportBadge:Boolean(document.querySelector(".ace-twin-export-badge")),
       };
     })()`);
