@@ -19,7 +19,11 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
     }).connection;
     const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
     const effectiveType = connection?.effectiveType;
+    const compact =
+      window.matchMedia('(max-width: 780px)').matches ||
+      window.matchMedia('(pointer: coarse)').matches;
     const lowPower =
+      compact ||
       Boolean(connection?.saveData) ||
       effectiveType === 'slow-2g' ||
       effectiveType === '2g' ||
