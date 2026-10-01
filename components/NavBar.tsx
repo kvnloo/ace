@@ -54,16 +54,10 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
 
   React.useEffect(() => {
     const root = document.documentElement;
-    if (isMobileOpen) {
-      root.dataset.aceMenu = 'open';
-      window.__ACE_LENIS__?.stop();
-    } else {
-      delete root.dataset.aceMenu;
-      window.__ACE_LENIS__?.start();
-    }
+    if (isMobileOpen) root.dataset.aceMenu = 'open';
+    else delete root.dataset.aceMenu;
     return () => {
       delete root.dataset.aceMenu;
-      window.__ACE_LENIS__?.start();
     };
   }, [isMobileOpen]);
 
