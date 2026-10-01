@@ -305,6 +305,27 @@ async function main(){
         twinLoaded:resources.some((u)=>/TwinExportCampus/.test(u)),
         pascalLoaded:resources.some((u)=>/PascalFacility/.test(u)),
         overflow:document.documentElement.scrollWidth-window.innerWidth,
+        overlay:(()=>{
+          const el=document.querySelector(".ace-campus-shell > .z-20");
+          if(!el) return null;
+          const style=getComputedStyle(el);
+          const rect=el.getBoundingClientRect();
+          return {background:style.backgroundColor,opacity:style.opacity,display:style.display,visibility:style.visibility,width:rect.width,height:rect.height};
+        })(),
+        canvasBox:(()=>{
+          const el=document.querySelector("canvas");
+          if(!el) return null;
+          const style=getComputedStyle(el);
+          const rect=el.getBoundingClientRect();
+          return {opacity:style.opacity,display:style.display,visibility:style.visibility,width:rect.width,height:rect.height};
+        })(),
+        badgeBox:(()=>{
+          const el=document.querySelector(".ace-twin-export-badge");
+          if(!el) return null;
+          const style=getComputedStyle(el);
+          const rect=el.getBoundingClientRect();
+          return {opacity:style.opacity,display:style.display,visibility:style.visibility,width:rect.width,height:rect.height};
+        })(),
       };
     })()`);
     report.desktop.campus=campusFacts;
@@ -316,6 +337,9 @@ async function main(){
     if(!campusFacts.twinLoaded) failures.push("TwinExportCampus lazy chunk did not load");
     if(campusFacts.pascalLoaded) failures.push("Pascal loaded on real-twin Campus route");
     if(campusFacts.overflow>2) failures.push("Campus horizontal overflow "+campusFacts.overflow+"px");
+    if(campusFacts.overlay && campusFacts.overlay.background!=="rgba(0, 0, 0, 0)") failures.push("Campus interaction overlay is painting over the world: "+campusFacts.overlay.background);
+    if(!campusFacts.canvasBox || campusFacts.canvasBox.width<100 || campusFacts.canvasBox.height<100 || campusFacts.canvasBox.display==="none" || campusFacts.canvasBox.visibility==="hidden" || Number(campusFacts.canvasBox.opacity)===0) failures.push("Campus canvas is not visibly occupying the viewport");
+    if(!campusFacts.badgeBox || campusFacts.badgeBox.width<20 || campusFacts.badgeBox.height<10 || campusFacts.badgeBox.display==="none" || campusFacts.badgeBox.visibility==="hidden" || Number(campusFacts.badgeBox.opacity)===0) failures.push("Campus export badge is not visibly rendered");
 
     await evaluate(cdp,desktop.sessionId,`(()=>{
       const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Spec");
@@ -402,6 +426,17 @@ async function main(){
         pascalLoaded:resources.some((u)=>/PascalFacility/.test(u)),
         exportLoaded:resources.some((u)=>u.includes("/twin/ace-digital-twin-v1.json")),
         exportBadge:Boolean(document.querySelector(".ace-twin-export-badge")),
+        planBox:(()=>{
+          const el=document.querySelector(".ace-twin-plan");
+          if(!el) return null;
+          const style=getComputedStyle(el);
+          const rect=el.getBoundingClientRect();
+          return {opacity:style.opacity,display:style.display,visibility:style.visibility,width:rect.width,height:rect.height};
+        })(),
+        overlayBackground:(()=>{
+          const el=document.querySelector(".ace-campus-shell > .z-20");
+          return el ? getComputedStyle(el).backgroundColor : null;
+        })(),
       };
     })()`);
     report.mobile=mobileFacts;
@@ -413,6 +448,8 @@ async function main(){
     if(mobileFacts.twinLoaded) failures.push("lite campus fetched 3D twin renderer before opt-in");
     if(mobileFacts.pascalLoaded) failures.push("lite campus fetched obsolete Pascal code");
     if(!mobileFacts.exportLoaded || !mobileFacts.exportBadge) failures.push("lite campus must render the real export-backed fallback");
+    if(!mobileFacts.planBox || mobileFacts.planBox.width<100 || mobileFacts.planBox.height<100 || mobileFacts.planBox.display==="none" || mobileFacts.planBox.visibility==="hidden" || Number(mobileFacts.planBox.opacity)===0) failures.push("lite campus SVG fallback is not visibly occupying the viewport");
+    if(mobileFacts.overlayBackground && mobileFacts.overlayBackground!=="rgba(0, 0, 0, 0)") failures.push("mobile Campus overlay is opaque: "+mobileFacts.overlayBackground);
     failures.push(...mobile.failures.map((e)=>"mobile request: "+e));
     await closePage(cdp,mobile);
 
