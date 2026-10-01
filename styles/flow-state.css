@@ -678,3 +678,179 @@ html[data-ace-loop] .ace-core-node {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+
+/* --- Real ACE digital-twin export ---------------------------------------
+ * The world is authoritative geometry. UI is the augmentation layer.
+ */
+.ace-real-twin,
+.ace-twin-fallback {
+  background:
+    radial-gradient(circle at 52% 46%, rgba(60, 103, 126, .11), transparent 30rem),
+    linear-gradient(160deg, #0b1b31 0%, #071426 72%);
+}
+
+.ace-twin-plan {
+  position: absolute;
+  inset: 7% 5% 9%;
+  width: 90%;
+  height: 84%;
+  overflow: visible;
+}
+
+.ace-twin-plan-envelope,
+.ace-twin-plan-wing {
+  fill: rgba(12, 32, 51, .72);
+  stroke: rgba(112, 151, 170, .40);
+  stroke-width: .18;
+}
+
+.ace-twin-plan-wing {
+  fill: rgba(18, 45, 67, .48);
+  stroke: rgba(126, 158, 175, .28);
+}
+
+.ace-twin-plan-fire {
+  stroke: rgba(159, 215, 232, .18);
+  stroke-width: .10;
+  stroke-dasharray: .5 .7;
+}
+
+.ace-twin-plan-court {
+  fill: rgba(41, 74, 58, .92);
+  stroke: rgba(123, 152, 146, .68);
+  stroke-width: .14;
+  transition: fill .16s ease, stroke .16s ease;
+}
+
+.ace-twin-plan-room {
+  fill: rgba(110, 140, 166, .055);
+  stroke: rgba(110, 140, 166, .58);
+  stroke-width: .13;
+  transition: fill .16s ease, stroke .16s ease;
+}
+
+.ace-twin-plan-court[data-active="true"],
+.ace-twin-plan-room[data-active="true"],
+.ace-twin-plan-target:hover .ace-twin-plan-court,
+.ace-twin-plan-target:hover .ace-twin-plan-room,
+.ace-twin-plan-target:focus-visible .ace-twin-plan-court,
+.ace-twin-plan-target:focus-visible .ace-twin-plan-room {
+  stroke: var(--ace-signal);
+  fill: rgba(64, 98, 72, .96);
+}
+
+.ace-twin-plan-target {
+  cursor: pointer;
+  outline: none;
+}
+
+.ace-twin-plan-label {
+  fill: rgba(244, 247, 239, .72);
+  font-family: var(--ace-mono);
+  font-size: 1.55px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
+.ace-twin-plan-entrance {
+  stroke: var(--ace-signal);
+  stroke-width: .42;
+  stroke-linecap: round;
+}
+
+.ace-twin-export-badge,
+.ace-twin-hint,
+.ace-twin-fallback-note {
+  position: absolute;
+  z-index: 7;
+  pointer-events: none;
+  font-family: var(--ace-mono);
+  text-transform: uppercase;
+}
+
+.ace-twin-export-badge {
+  left: 18px;
+  bottom: 18px;
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  border: 1px solid var(--ace-glass-edge);
+  border-radius: 12px;
+  background: rgba(7, 20, 38, .58);
+  backdrop-filter: blur(16px) saturate(112%);
+  -webkit-backdrop-filter: blur(16px) saturate(112%);
+}
+
+.ace-twin-export-badge span {
+  color: var(--ace-paper);
+  font-size: 8px;
+  letter-spacing: .12em;
+}
+
+.ace-twin-export-badge small {
+  color: var(--ace-faint);
+  font-size: 7px;
+  letter-spacing: .065em;
+}
+
+.ace-twin-hint {
+  right: 18px;
+  bottom: 20px;
+  color: var(--ace-faint);
+  font-size: 7px;
+  letter-spacing: .08em;
+}
+
+.ace-twin-fallback-note {
+  top: 18px;
+  right: 18px;
+  color: var(--ace-faint);
+  font-size: 7px;
+  letter-spacing: .08em;
+}
+
+.ace-twin-load-error {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 14px;
+  padding: 24px;
+  background: var(--ace-bg);
+  text-align: center;
+}
+
+.ace-twin-load-error p {
+  max-width: 560px;
+  margin: 0;
+  color: var(--ace-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (max-width: 780px) {
+  .ace-twin-plan {
+    inset: 12% 2% 17%;
+    width: 96%;
+    height: 71%;
+  }
+
+  .ace-twin-export-badge {
+    left: 8px;
+    bottom: 9px;
+    max-width: calc(100vw - 16px);
+  }
+
+  .ace-twin-hint,
+  .ace-twin-fallback-note {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ace-twin-plan-court,
+  .ace-twin-plan-room {
+    transition: none;
+  }
+}
