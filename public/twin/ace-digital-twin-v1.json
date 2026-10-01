@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "ace.public-campus.v1",
+  "source": {
+    "system": "ACE digital twin",
+    "exportId": "public-campus-v1",
+    "units": "meters",
+    "coordinateSystem": "threejs-y-up"
+  },
+  "facility": {
+    "id": "rally-house-001",
+    "name": "Racquet facility digital twin",
+    "courtArea": { "width": 41.6357, "depth": 58.5216 },
+    "officeWing": {
+      "x": 30.30474,
+      "z": -19.3548,
+      "width": 18.9738,
+      "depth": 19.812
+    },
+    "entrance": {
+      "x": 20.20824,
+      "z": 29.2608,
+      "width": 3,
+      "height": 2.8
+    },
+    "fireZoneZ": [-10.0584, 19.2024]
+  },
+  "courtSpec": {
+    "width": 6.096,
+    "length": 13.4112,
+    "kitchenDepth": 2.1336,
+    "netHeight": 0.91
+  },
+  "courts": [
+    { "id": 8, "x": -14.938248, "z": -19.2024, "orientation": "v", "width": 6.096, "depth": 13.4112 },
+    { "id": 7, "x": -5.794248, "z": -19.2024, "orientation": "v", "width": 6.096, "depth": 13.4112 },
+    { "id": 6, "x": 5.88264, "z": -19.2024, "orientation": "v", "width": 6.096, "depth": 13.4112 },
+    { "id": 5, "x": 15.02664, "z": -19.2024, "orientation": "v", "width": 6.096, "depth": 13.4112 },
+    { "id": 10, "x": -14.72184, "z": 1.2192, "orientation": "v", "width": 6.096, "depth": 13.4112 },
+    { "id": 9, "x": -6.79704, "z": 1.2192, "orientation": "v", "width": 6.096, "depth": 13.4112 },
+    { "id": 4, "x": 4.48056, "z": -2.4384, "orientation": "h", "width": 13.4112, "depth": 6.096 },
+    { "id": 3, "x": 4.48056, "z": 6.096, "orientation": "h", "width": 13.4112, "depth": 6.096 },
+    { "id": 1, "x": 16.52016, "z": 6.7056, "orientation": "v", "width": 6.096, "depth": 13.4112 },
+    { "id": 11, "x": -8.62584, "z": 24.6888, "orientation": "h", "width": 13.4112, "depth": 6.096 },
+    { "id": 2, "x": 7.22376, "z": 24.6888, "orientation": "h", "width": 13.4112, "depth": 6.096 }
+  ],
+  "rooms": [
+    { "id": "womens", "label": "WOMEN'S", "x": 24.47544, "z": -16.9164, "width": 4.8768, "depth": 3.3528 },
+    { "id": "mens", "label": "MEN'S", "x": 23.86584, "z": -13.4112, "width": 3.6576, "depth": 2.4384 },
+    { "id": "pro-shop", "label": "PRO SHOP", "x": 30.30474, "z": -25.908, "width": 15.9258, "depth": 4.8768 },
+    { "id": "open-office", "label": "OPEN OFFICE", "x": 33.00984, "z": -20.574, "width": 10.9728, "depth": 3.9624 },
+    { "id": "office-left", "label": "OFFICE", "x": 24.17064, "z": -21.0312, "width": 4.2672, "depth": 3.048 },
+    { "id": "office-right", "label": "OFFICE", "x": 35.44824, "z": -16.1544, "width": 4.8768, "depth": 3.048 },
+    { "id": "jan", "label": "JAN", "x": 27.98064, "z": -16.3068, "width": 2.1336, "depth": 1.524 },
+    { "id": "fan", "label": "FAN", "x": 30.72384, "z": -16.3068, "width": 2.1336, "depth": 1.524 },
+    { "id": "elec", "label": "ELEC", "x": 37.20084, "z": -12.0396, "width": 3.9624, "depth": 3.9624 }
+  ],
+  "amenities": [
+    { "type": "jumbotron", "x": 0, "z": -25 },
+    { "type": "seating", "x": 0, "z": 0 }
+  ],
+  "provenance": {
+    "facility": "SPEC",
+    "courts": "SPEC",
+    "rooms": "SPEC",
+    "amenities": "CONFIG",
+    "runtimeStateExcluded": true
+  }
+}
