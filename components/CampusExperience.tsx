@@ -1,9 +1,9 @@
 import React from 'react';
 import { FeatureData } from '../types';
-import { AnnotationMode, FloorLevel } from '../facility/program';
-import { SketchFallback } from './facility/SketchMap';
+import { usePublicTwinExport } from '../twin/adapter';
+import TwinExportFallback from './twin/TwinExportFallback';
 
-const PascalFacility = React.lazy(() => import('./PascalFacility'));
+const TwinExportCampus = React.lazy(() => import('./TwinExportCampus'));
 
 type Props = {
   onFeatureSelect: (feature: FeatureData) => void;
@@ -11,9 +11,8 @@ type Props = {
 
 const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
   const [force3d, setForce3d] = React.useState(false);
-  const [activeFloor, setActiveFloor] = React.useState<FloorLevel>('ALL');
-  const [annotationMode, setAnnotationMode] = React.useState<AnnotationMode>('LABELS');
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
+  const { data, error } = usePublicTwinExport();
   const lite = document.documentElement.dataset.aceQuality === 'lite';
 
   const handleSelect = (feature: FeatureData) => {
@@ -21,14 +20,28 @@ const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
     onFeatureSelect(feature);
   };
 
+  if (error) {
+    return (
+      <div className="ace-twin-load-error absolute inset-0">
+        <span className="ace-kicker">STRUCTURAL EXPORT UNAVAILABLE</span>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="w-full h-full bg-[#071426] grid place-items-center">
+        <div className="ace-kicker">LOADING DIGITAL TWIN EXPORT</div>
+      </div>
+    );
+  }
+
   if (lite && !force3d) {
     return (
       <div className="absolute inset-0">
-        <SketchFallback
-          activeFloor={activeFloor}
-          setActiveFloor={setActiveFloor}
-          annotationMode={annotationMode}
-          setAnnotationMode={setAnnotationMode}
+        <TwinExportFallback
+          data={data}
           selectedId={selectedId}
           onSelect={handleSelect}
           reason="Lite mode · 3D deferred"
@@ -39,7 +52,7 @@ const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
           onClick={() => setForce3d(true)}
         >
           Enable full 3D
-          <span>loads the Pascal renderer on demand</span>
+          <span>loads the exported twin renderer on demand</span>
         </button>
       </div>
     );
@@ -48,12 +61,19 @@ const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
   return (
     <React.Suspense
       fallback={
-        <div className="w-full h-full bg-[#071426] grid place-items-center">
-          <div className="ace-kicker">LOADING CAMPUS TWIN</div>
-        </div>
+        <TwinExportFallback
+          data={data}
+          selectedId={selectedId}
+          onSelect={handleSelect}
+          reason="Loading exported twin renderer"
+        />
       }
     >
-      <PascalFacility onFeatureSelect={onFeatureSelect} />
+      <TwinExportCampus
+        data={data}
+        selectedId={selectedId}
+        onSelect={handleSelect}
+      />
     </React.Suspense>
   );
 };
