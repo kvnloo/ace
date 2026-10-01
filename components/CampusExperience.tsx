@@ -9,8 +9,29 @@ type Props = {
   onFeatureSelect: (feature: FeatureData) => void;
 };
 
+class TwinChunkBoundary extends React.Component<
+  { onFail: () => void; children: React.ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: Error) {
+    console.error('[ACE twin chunk]', error);
+    this.props.onFail();
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
 const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
   const [enable3d, setEnable3d] = React.useState(false);
+  const [chunkFailed, setChunkFailed] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
   const { data, error } = usePublicTwinExport();
 
@@ -36,23 +57,24 @@ const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
     );
   }
 
-  if (!enable3d) {
+  if (!enable3d || chunkFailed) {
     return (
       <div className="absolute inset-0">
         <TwinExportFallback
           data={data}
           selectedId={selectedId}
           onSelect={handleSelect}
-          reason="Structural twin · 3D available on demand"
+          reason={chunkFailed ? 'Interactive 3D unavailable · structural twin remains active' : 'Structural twin · 3D available on demand'}
         />
         <button
           type="button"
           className="ace-campus-enable-3d"
-          onPointerEnter={() => void import('./TwinExportCampus')}
-          onFocus={() => void import('./TwinExportCampus')}
-          onClick={() => setEnable3d(true)}
+          onClick={() => {
+            setChunkFailed(false);
+            setEnable3d(true);
+          }}
         >
-          Enter interactive 3D
+          {chunkFailed ? 'Retry interactive 3D' : 'Enter interactive 3D'}
           <span>loads only when requested</span>
         </button>
       </div>
@@ -60,22 +82,29 @@ const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
   }
 
   return (
-    <React.Suspense
-      fallback={
-        <TwinExportFallback
+    <TwinChunkBoundary
+      onFail={() => {
+        setChunkFailed(true);
+        setEnable3d(false);
+      }}
+    >
+      <React.Suspense
+        fallback={
+          <TwinExportFallback
+            data={data}
+            selectedId={selectedId}
+            onSelect={handleSelect}
+            reason="Loading interactive 3D"
+          />
+        }
+      >
+        <TwinExportCampus
           data={data}
           selectedId={selectedId}
           onSelect={handleSelect}
-          reason="Loading interactive 3D"
         />
-      }
-    >
-      <TwinExportCampus
-        data={data}
-        selectedId={selectedId}
-        onSelect={handleSelect}
-      />
-    </React.Suspense>
+      </React.Suspense>
+    </TwinChunkBoundary>
   );
 };
 
