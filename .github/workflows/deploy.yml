@@ -6,6 +6,7 @@ on:
       - main
       - dev
       - nightly
+      - preview
 
 permissions:
   contents: read
@@ -77,6 +78,21 @@ jobs:
           cp -r dist/. "$DEPLOY_DIR/nightly/"
         env:
           VITE_BASE_PATH: '/ace/nightly/'
+
+      - name: Checkout preview
+        uses: actions/checkout@v4
+        with:
+          ref: preview
+          clean: true
+
+      - name: Build preview
+        run: |
+          npm ci
+          npm run build
+          mkdir -p "$DEPLOY_DIR/preview"
+          cp -r dist/. "$DEPLOY_DIR/preview/"
+        env:
+          VITE_BASE_PATH: '/ace/preview/'
 
       - name: Upload combined artifact
         uses: actions/upload-pages-artifact@v3
