@@ -320,7 +320,7 @@ export const inFlight: Pillar[] = [
 ];
 
 export const campusNested = {
-  stamp: 'VISION' as HonestyStamp,
-  title: 'Human-performance campus sketch',
+  stamp: 'SPEC' as HonestyStamp,
+  title: 'Racquet facility digital twin',
   body: 'Public structural export from the ACE digital twin: authoritative racquet-facility geometry for the current proving ground. Mutable match state and private operational data are intentionally excluded.',
 };
