@@ -164,7 +164,14 @@ async function evaluate(cdp,sessionId,expression,awaitPromise=false){
     returnByValue:true,
     userGesture:true
   },sessionId);
-  if(result.exceptionDetails) throw new Error(result.exceptionDetails.text || "Runtime.evaluate failed");
+  if(result.exceptionDetails) {
+    const description =
+      result.exceptionDetails.exception?.description ||
+      result.exceptionDetails.exception?.value ||
+      result.exceptionDetails.text ||
+      "Runtime.evaluate failed";
+    throw new Error(description);
+  }
   return result.result?.value;
 }
 
