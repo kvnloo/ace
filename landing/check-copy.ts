@@ -137,11 +137,14 @@ if (!inFlight.some((item) => /3D|traceable/i.test(item.title))) {
   throw new Error('research tracks must include traceable 3D projection');
 }
 
-if (campusNested.stamp === 'LIVE') {
-  throw new Error('campus sketch is not the live GPU twin');
+if (campusNested.stamp !== 'SPEC') {
+  throw new Error('public campus geometry must be labeled SPEC');
 }
-if (!/Pascal|campus/i.test(campusNested.body)) {
-  throw new Error('campus nested copy must identify the Pascal/campus pretotype');
+if (!/structural export|digital twin/i.test(campusNested.body)) {
+  throw new Error('campus copy must identify the real digital-twin export');
+}
+if (!/runtime state|private operational data/i.test(campusNested.body)) {
+  throw new Error('campus copy must preserve the public/private state boundary');
 }
 
 if (/learning styles/i.test(blob)) {
