@@ -72,7 +72,7 @@ const App: React.FC = () => {
             </div>
 
             <div className="ace-campus-copy hidden md:block" data-ace-reveal data-ace-section="Campus">
-              <span className="ace-stamp" data-stamp="VISION">VISION · PRETOTYPE</span>
+              <span className="ace-stamp" data-stamp="SPEC">SPEC · PUBLIC EXPORT</span>
               <h2>{campusNested.title}</h2>
               <p>{campusNested.body}</p>
             </div>
