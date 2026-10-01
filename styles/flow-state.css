@@ -385,9 +385,14 @@ html[data-ace-scrolling="false"] .ace-core-trace-signal {
 
 /* Campus: navy world, subdued materials, glass only for augmentation. */
 .ace-campus-fallback-art,
-.ace-campus-shell,
-.ace-campus-shell > div {
+.ace-campus-shell {
   background-color: var(--ace-bg);
+}
+
+/* Never paint over the renderer: App.tsx uses a full-screen transparent z-20
+ * interaction layer above the world. */
+.ace-campus-shell > .z-20 {
+  background-color: transparent !important;
 }
 
 .ace-campus-fallback-art {
