@@ -10,10 +10,9 @@ type Props = {
 };
 
 const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
-  const [force3d, setForce3d] = React.useState(false);
+  const [enable3d, setEnable3d] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
   const { data, error } = usePublicTwinExport();
-  const lite = document.documentElement.dataset.aceQuality === 'lite';
 
   const handleSelect = (feature: FeatureData) => {
     setSelectedId(feature.id);
@@ -37,22 +36,24 @@ const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
     );
   }
 
-  if (lite && !force3d) {
+  if (!enable3d) {
     return (
       <div className="absolute inset-0">
         <TwinExportFallback
           data={data}
           selectedId={selectedId}
           onSelect={handleSelect}
-          reason="Lite mode · 3D deferred"
+          reason="Structural twin · 3D available on demand"
         />
         <button
           type="button"
           className="ace-campus-enable-3d"
-          onClick={() => setForce3d(true)}
+          onPointerEnter={() => void import('./TwinExportCampus')}
+          onFocus={() => void import('./TwinExportCampus')}
+          onClick={() => setEnable3d(true)}
         >
-          Enable full 3D
-          <span>loads the exported twin renderer on demand</span>
+          Enter interactive 3D
+          <span>loads only when requested</span>
         </button>
       </div>
     );
@@ -65,7 +66,7 @@ const CampusExperience: React.FC<Props> = ({ onFeatureSelect }) => {
           data={data}
           selectedId={selectedId}
           onSelect={handleSelect}
-          reason="Loading exported twin renderer"
+          reason="Loading interactive 3D"
         />
       }
     >
