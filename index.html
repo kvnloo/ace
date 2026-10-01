@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#050806" />\n    <link rel="icon" type="image/svg+xml" href="%BASE_URL%ace-mark.svg" />
+    <meta name="theme-color" content="#071426" />\n    <link rel="icon" type="image/svg+xml" href="%BASE_URL%ace-mark.svg" />
     <meta name="color-scheme" content="dark" />
     <meta
       name="description"
@@ -27,12 +27,12 @@
     />
 <style>
       :root {
-        background: #050806;
+        background: #071426;
       }
 
       html {
         min-height: 100%;
-        background: #050806;
+        background: #071426;
       }
 
       body {
@@ -40,7 +40,7 @@
         margin: 0;
         background:
           radial-gradient(circle at 50% -20%, rgba(223, 255, 79, 0.08), transparent 35rem),
-          #050806;
+          #071426;
         color: white;
         overflow-x: hidden;
         text-rendering: optimizeLegibility;
@@ -57,6 +57,52 @@
       :focus-visible {
         outline: 2px solid #DFFF4F;
         outline-offset: 3px;
+      }
+
+      #ace-boot-shell {
+        min-height: 100dvh;
+        box-sizing: border-box;
+        display: grid;
+        align-content: center;
+        gap: 18px;
+        padding: clamp(24px, 7vw, 96px);
+        background:
+          radial-gradient(circle at 68% 30%, rgba(75, 128, 151, 0.12), transparent 28rem),
+          #071426;
+        color: #F4F7EF;
+        font-family: Inter, system-ui, sans-serif;
+      }
+
+      #ace-boot-shell small {
+        font: 500 10px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+        letter-spacing: .13em;
+        color: #DFFF4F;
+        text-transform: uppercase;
+      }
+
+      #ace-boot-shell strong {
+        max-width: 900px;
+        font: 300 clamp(48px, 9vw, 120px)/.88 "Barlow Condensed", system-ui, sans-serif;
+        letter-spacing: -.025em;
+        text-transform: uppercase;
+      }
+
+      #ace-boot-shell span {
+        max-width: 620px;
+        color: rgba(244, 247, 239, .58);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .ace-boot-error {
+        min-height: 100dvh;
+        box-sizing: border-box;
+        display: grid;
+        align-content: center;
+        justify-items: start;
+        gap: 18px;
+        padding: clamp(24px, 7vw, 96px);
+        background: #071426;
       }
 
       .glass-panel {
@@ -80,7 +126,13 @@
   </head>
   <body>
     <noscript>ACE needs JavaScript to render this public pretotype.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <main id="ace-boot-shell" aria-label="ACE preview loading">
+        <small>ACE · PUBLIC PREVIEW</small>
+        <strong>A feedback loop around the human.</strong>
+        <span>Loading the flow-state interface and digital-twin export…</span>
+      </main>
+    </div>
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
