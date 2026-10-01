@@ -60,6 +60,8 @@ requireText(twinRenderer, /frameloop="demand"/, 'real twin renderer must remain 
 requireText(twinRenderer, /autoRotate=\{false\}/, 'real twin camera must not animate itself');
 requireText(twinFallback, /ACE DIGITAL TWIN · STRUCTURAL EXPORT/, 'lite fallback must use the real twin export');
 forbidText(css, /animation:\s*aceCorridor/, 'campus connectors must not autonomously shuttle');
+forbidText(css, /\.ace-campus-shell\s*>\s*div\s*\{[^}]*background(?:-color)?\s*:/s, 'Campus direct-child overlays must never be painted over the world');
+requireText(css, /\.ace-campus-shell\s*>\s*\.z-20\s*\{[^}]*background-color:\s*transparent\s*!important/s, 'Campus interaction overlay must stay transparent');
 forbidText(css, /transform:\s*rotate\([^)]*\).*ace-wordmark/s, 'wordmark should not perform decorative rotation');
 
 console.log(JSON.stringify({
