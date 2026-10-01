@@ -209,7 +209,7 @@ The campus must feel like the same ACE world acquiring depth, not a separate 3D 
 - no automatic camera orbit;
 - no autonomous HUD motion.
 
-Fallback and Pascal/WebGL views must share the same palette and hierarchy.
+The WebGL view and lite fallback must render the same versioned digital-twin export, with the same palette and hierarchy.
 
 ### Contact
 
@@ -233,7 +233,7 @@ Because this contrast carries meaning, it should remain rare.
 
 ## Campus palette
 
-The website, CSS fallback and Pascal scene share one environmental family.
+The website, export-backed SVG fallback and export-backed 3D scene share one environmental family.
 
 Physical sport surfaces may retain subdued identity colors, but the scene should not become a rainbow architectural model. APEX/VISION spaces stay within cool mineral/navy families so the tennis-lime signal remains special.
 
@@ -251,8 +251,8 @@ Hover should mean "the system noticed your attention," not "move this object two
 
 Flow breaks when the interface stalls.
 
-- landing renders without Pascal;
-- Pascal remains lazy-loaded;
+- landing renders without the 3D twin renderer;
+- the exported twin renderer remains lazy-loaded;
 - chat remains interaction-deferred;
 - lite mode can defer 3D;
 - avoid decorative media payloads;
