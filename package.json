@@ -7,13 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "npm run check:facility && npm run check:landing && npm run check:design && npm run check:flow-state",
+    "test": "npm run check:facility && npm run check:landing && npm run check:design && npm run check:flow-state && npm run check:twin-export",
     "check:facility": "esbuild facility/check-scene.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-facility.mjs && node /tmp/ace-check-facility.mjs",
     "check:landing": "esbuild landing/check-copy.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-landing.mjs && node /tmp/ace-check-landing.mjs",
     "check:design": "esbuild landing/check-design.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-design.mjs && node /tmp/ace-check-design.mjs",
     "visual:smoke": "node scripts/visual-smoke.mjs",
     "bundle:budget": "node scripts/bundle-budget.mjs",
-    "check:flow-state": "esbuild landing/check-flow-state.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-flow-state.mjs && node /tmp/ace-check-flow-state.mjs"
+    "check:flow-state": "esbuild landing/check-flow-state.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-flow-state.mjs && node /tmp/ace-check-flow-state.mjs",
+    "check:twin-export": "esbuild landing/check-twin-export.ts --bundle --platform=node --format=esm --outfile=/tmp/ace-check-twin-export.mjs && node /tmp/ace-check-twin-export.mjs"
   },
   "dependencies": {
     "@pascal-app/core": "1.0.0",
