@@ -43,7 +43,7 @@ export const product = {
   subhead:
     'A physical campus + digital twin ecosystem for setting goals, measuring reality, connecting with the right experts, simulating options, acting, and learning from verified outcomes.',
   thisSite:
-    'PRETOTYPE landing. This page communicates the system direction and runs the Pascal campus sketch; it does not run the private 60Hz twin, clinical systems, or the experimental simulation stack.',
+    'PRETOTYPE landing. This page communicates the system direction and renders a public structural export from the ACE digital twin; it does not run private 60Hz match state, clinical systems, or the experimental simulation stack.',
   liveTwin:
     'The live racquet twin and Facility OS remain private products. Research and vision capabilities below are labeled explicitly and are not presented as shipped.',
 };
@@ -322,5 +322,5 @@ export const inFlight: Pillar[] = [
 export const campusNested = {
   stamp: 'VISION' as HonestyStamp,
   title: 'Human-performance campus sketch',
-  body: 'Nested Pascal pretotype: Naperville racquet SPEC plus an APEX human-performance wing for training, labs, physiotherapy, recovery, research and community. Dimensions outside the origin spec remain inferred.',
+  body: 'Public structural export from the ACE digital twin: authoritative racquet-facility geometry for the current proving ground. Mutable match state and private operational data are intentionally excluded.',
 };
