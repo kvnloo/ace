@@ -89,7 +89,7 @@ const AtlasProduct: React.FC<{ onChangeView: (view: View) => void }> = ({ onChan
               onFocus={() => void import('./CampusExperience')}
               onClick={() => onChangeView(View.FACILITY_DEMO)}
             >
-              Open Pascal campus
+              Enter living twin
             </button>
           </div>
         </div>
