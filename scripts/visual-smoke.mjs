@@ -200,6 +200,7 @@ async function main(){
         overflow:document.documentElement.scrollWidth-window.innerWidth,
         scrollHeight:document.documentElement.scrollHeight,
         resources,
+        initialTwin:resources.some((u)=>/TwinExportCampus/.test(u)),
         initialPascal:resources.some((u)=>/PascalFacility/.test(u)),
         initialChat:resources.some((u)=>/AIChat/.test(u)),
         tailwindCdn:resources.some((u)=>/cdn\\.tailwindcss\\.com/.test(u)),
@@ -216,7 +217,8 @@ async function main(){
     if(!facts.hero) failures.push("desktop hero copy missing");
     if(!facts.lenis) failures.push("Lenis did not initialize on desktop");
     if(facts.overflow>2) failures.push("desktop horizontal overflow "+facts.overflow+"px");
-    if(facts.initialPascal) failures.push("Pascal chunk loaded on home");
+    if(facts.initialTwin) failures.push("Twin renderer chunk loaded on home");
+    if(facts.initialPascal) failures.push("Pascal chunk should not ship or load");
     if(facts.initialChat) failures.push("AIChat chunk loaded before interaction");
     if(facts.tailwindCdn) failures.push("Tailwind CDN runtime requested");
     if(!facts.semanticTrace) failures.push("semantic loop trace missing");
@@ -277,6 +279,43 @@ async function main(){
     if(system.overflow>2) failures.push("System horizontal overflow "+system.overflow+"px");
 
     await evaluate(cdp,desktop.sessionId,`(()=>{
+      const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Campus");
+      button?.click();
+      return Boolean(button);
+    })()`);
+    for(let i=0;i<80;i++){
+      const ready=await evaluate(cdp,desktop.sessionId,`Boolean(document.querySelector(".ace-twin-export-badge")) && Boolean(document.querySelector("canvas"))`);
+      if(ready) break;
+      await sleep(100);
+    }
+    const campusFacts=await evaluate(cdp,desktop.sessionId,`(()=>{
+      const resources=performance.getEntriesByType("resource").map((r)=>r.name);
+      return {
+        canvas:Boolean(document.querySelector("canvas")),
+        badge:document.querySelector(".ace-twin-export-badge")?.textContent || "",
+        specStamp:[...document.querySelectorAll(".ace-stamp")].some((el)=>/SPEC · PUBLIC EXPORT/.test(el.textContent||"")),
+        exportLoaded:resources.some((u)=>/twin\/ace-digital-twin-v1\.json/.test(u)),
+        twinLoaded:resources.some((u)=>/TwinExportCampus/.test(u)),
+        pascalLoaded:resources.some((u)=>/PascalFacility/.test(u)),
+        overflow:document.documentElement.scrollWidth-window.innerWidth,
+      };
+    })()`);
+    report.desktop.campus=campusFacts;
+    report.desktop.campusShot=await screenshot(cdp,desktop.sessionId,"desktop-real-twin");
+    if(!campusFacts.canvas) failures.push("real twin canvas did not render");
+    if(!/STRUCTURAL EXPORT/.test(campusFacts.badge)) failures.push("real twin export badge missing");
+    if(!campusFacts.specStamp) failures.push("Campus must identify exported geometry as SPEC");
+    if(!campusFacts.exportLoaded) failures.push("public twin JSON was not loaded");
+    if(!campusFacts.twinLoaded) failures.push("TwinExportCampus lazy chunk did not load");
+    if(campusFacts.pascalLoaded) failures.push("Pascal loaded on real-twin Campus route");
+    if(campusFacts.overflow>2) failures.push("Campus horizontal overflow "+campusFacts.overflow+"px");
+
+    await evaluate(cdp,desktop.sessionId,`(()=>{
+      const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Spec");
+      button?.click();
+      return Boolean(button);
+    })()`);
+
       const button=[...document.querySelectorAll("button")].find((el)=>el.textContent?.trim()==="Spec");
       button?.click();
       return Boolean(button);
@@ -357,7 +396,10 @@ async function main(){
         overflow:document.documentElement.scrollWidth-window.innerWidth,
         hasCanvas:Boolean(document.querySelector("canvas")),
         enable3d:Boolean(document.querySelector(".ace-campus-enable-3d")),
+        twinLoaded:resources.some((u)=>/TwinExportCampus/.test(u)),
         pascalLoaded:resources.some((u)=>/PascalFacility/.test(u)),
+        exportLoaded:resources.some((u)=>/twin\/ace-digital-twin-v1\.json/.test(u)),
+        exportBadge:Boolean(document.querySelector(".ace-twin-export-badge")),
       };
     })()`);
     report.mobile=mobileFacts;
@@ -366,7 +408,9 @@ async function main(){
     if(mobileFacts.overflow>2) failures.push("mobile horizontal overflow "+mobileFacts.overflow+"px");
     if(!mobileFacts.enable3d) failures.push("lite campus 3D opt-in missing");
     if(mobileFacts.hasCanvas) failures.push("lite campus mounted a canvas before opt-in");
-    if(mobileFacts.pascalLoaded) failures.push("lite campus fetched Pascal before opt-in");
+    if(mobileFacts.twinLoaded) failures.push("lite campus fetched 3D twin renderer before opt-in");
+    if(mobileFacts.pascalLoaded) failures.push("lite campus fetched obsolete Pascal code");
+    if(!mobileFacts.exportLoaded || !mobileFacts.exportBadge) failures.push("lite campus must render the real export-backed fallback");
     failures.push(...mobile.failures.map((e)=>"mobile request: "+e));
     await closePage(cdp,mobile);
 
@@ -398,7 +442,7 @@ async function main(){
     "",
     "- desktop scroll p95: "+report.desktop.scroll.p95.toFixed(1)+"ms · max "+report.desktop.scroll.max.toFixed(1)+"ms",
     "- desktop section after scroll: "+(report.desktop.scroll.section || "unknown"),
-    "- mobile lite mode: "+report.mobile.quality+" · Pascal preloaded: "+report.mobile.pascalLoaded,
+    "- mobile lite mode: "+report.mobile.quality+" · twin renderer preloaded: "+report.mobile.twinLoaded+" · export fallback: "+report.mobile.exportBadge,
     "- reduced motion: "+report.reduced.motion,
     "- result: "+(failures.length ? "FAIL — "+failures.join("; ") : "PASS"),
     "",
