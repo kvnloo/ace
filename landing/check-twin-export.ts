@@ -27,8 +27,8 @@ if ('repository' in manifest.source || 'commit' in manifest.source) {
 if (!/TwinExportCampus/.test(campus) || /PascalFacility/.test(campus)) {
   throw new Error('CampusExperience must use the real export renderer, not Pascal');
 }
-if (!/aceQuality === 'lite'/.test(campus) || !/TwinExportFallback/.test(campus)) {
-  throw new Error('lite mode must use the same export-backed fallback');
+if (!/!enable3d/.test(campus) || !/TwinExportFallback/.test(campus)) {
+  throw new Error('Campus must default to the same export-backed fallback before 3D opt-in');
 }
 if (!/frameloop="demand"/.test(renderer)) {
   throw new Error('twin renderer must remain demand-rendered while idle');
