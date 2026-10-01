@@ -216,8 +216,8 @@ const TwinExportCampus: React.FC<Props> = ({ data, selectedId, onSelect }) => {
           <Canvas
             camera={{ position: [58, 48, 72], fov: 42, near: 0.1, far: 220 }}
             frameloop="demand"
-            dpr={[1, 1.4]}
-            gl={{ antialias: true, powerPreference: 'high-performance' }}
+            dpr={1}
+            gl={{ antialias: false, powerPreference: 'high-performance', stencil: false }}
             onCreated={() => setReady(true)}
           >
             <color attach="background" args={['#071426']} />
@@ -226,8 +226,7 @@ const TwinExportCampus: React.FC<Props> = ({ data, selectedId, onSelect }) => {
             <FacilityModel data={data} selectedId={selectedId} onSelect={onSelect} />
             <OrbitControls
               makeDefault
-              enableDamping
-              dampingFactor={0.075}
+              enableDamping={false}
               target={[8, 0, 0]}
               minDistance={34}
               maxDistance={118}
