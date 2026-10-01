@@ -202,7 +202,7 @@ async function main(){
       return {
         title:document.title,
         hero:/A FEEDBACK LOOP/i.test(text),
-        lenis:Boolean(window.__ACE_LENIS__),
+        nativeScroll:!('__ACE_LENIS__' in window),
         quality:document.documentElement.dataset.aceQuality,
         overflow:document.documentElement.scrollWidth-window.innerWidth,
         scrollHeight:document.documentElement.scrollHeight,
@@ -222,7 +222,7 @@ async function main(){
     report.desktop.home=facts;
     report.desktop.hero=await screenshot(cdp,desktop.sessionId,"desktop-hero");
     if(!facts.hero) failures.push("desktop hero copy missing");
-    if(!facts.lenis) failures.push("Lenis did not initialize on desktop");
+    if(!facts.nativeScroll) failures.push("legacy Lenis runtime still present");
     if(facts.overflow>2) failures.push("desktop horizontal overflow "+facts.overflow+"px");
     if(facts.initialTwin) failures.push("Twin renderer chunk loaded on home");
     if(facts.initialPascal) failures.push("Pascal chunk should not ship or load");
