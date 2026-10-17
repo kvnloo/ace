@@ -1,308 +1,146 @@
-# LawnTech Dynamics - Autonomous Indoor Grass Court Facility
+# ACE — human flourishing feedback-loop pretotype
 
-<div align="center">
+ACE is a physical campus + digital twin ecosystem for setting goals, measuring reality, connecting the right experts, simulating options, acting, and learning from verified outcomes.
 
-**The world's first fully autonomous indoor grass court tennis facility**
+Production: https://kvnloo.github.io/ace/
+Dev: https://kvnloo.github.io/ace/dev/
+Nightly: https://kvnloo.github.io/ace/nightly/
 
-[View Live Demo](https://kvnloo.github.io/ace/) • [Dev Preview](https://kvnloo.github.io/ace/dev/) • [Documentation](.github/DEPLOYMENT.md)
+This repository is the public ACE pretotype. It does not run the private 60 Hz racquet twin, clinical systems, or experimental simulation backends.
 
-</div>
+## Thesis
 
----
+ACE is a consent-governed cyber-physical feedback system for human flourishing.
 
-## 🎯 Project Overview
+Goal -> observe -> model -> hypothesize -> simulate -> connect the right humans/agents -> intervene -> measure -> verify -> learn -> repeat.
 
-LawnTech Dynamics is an innovative multi-floor racquet sports facility concept combining autonomous operations, sustainable grass cultivation, and AI-powered performance analytics. Located in Naperville, Illinois, this facility aims to revolutionize indoor sports through cutting-edge technology and sustainable practices.
+The facility, sport engines, agents, personal twins, 3D scenes, agriculture, robotics, and software are infrastructure around that loop.
 
-### Core Innovation
-- **🌱 Autonomous Grass Management**: Vertical farming system that grows and swaps court surfaces robotically
-- **🤖 AI-Powered Operations**: Self-managing facility with minimal human oversight
-- **📊 Performance Analytics**: Real-time biomechanics tracking and injury prevention
-- **♻️ Sustainable Design**: Solar-powered with advanced resource optimization
+## Principles
 
----
+- Human goals are the objective function. Do not reduce a person to one universal score.
+- Evidence before optimization. Observation, estimate, hypothesis, simulation, intervention, and verified outcome stay distinct.
+- Humans are first-class architecture. Coaches, PTs, physicians, nutritionists, researchers, farmers, engineers, peers, and mentors are not escalation paths from AI.
+- Agents extend attention and coordination. Consequential actions remain purpose-scoped and approval-scoped.
+- The digital twin is an evidence-backed model. A 3D scene is a projection of authoritative state, never the source of truth.
+- Simulation must earn trust. Counterfactuals do not count unless predictions and intervention rankings transfer to real measured outcomes.
+- Personalization means measured response to intervention, not fixed “learning-style” labels.
 
-## 🏗️ Facility Layout
+ACE is inspired by the ambition behind quantified-self and Blueprint-style continuous measurement, but is an independent concept with broader scope. No affiliation with Blueprint or Bryan Johnson is implied.
 
-### **Ground Floor** - Tennis Complex
-24 premium tennis courts featuring:
-- Grass courts (replaceable modular turf)
-- Hard courts
-- Clay courts
-- Wood courts
-- Pro shop and premium locker rooms
+## What exists vs what is being tested
 
-### **First Floor** - Mezzanine Sports
-- 16 badminton courts
-- 4 squash courts
-- 16 table tennis stations
+| Stamp | Meaning |
+|---|---|
+| LIVE | A running system exists elsewhere, outside this Pages bundle. |
+| SHIPPED | An implemented capability exists, sometimes against demo/simulation data. |
+| RESEARCH | Active engineering or experiment; not yet a product claim. |
+| VISION | Intended architecture or campus direction. |
+| SPEC | Sourced facility/program fact. |
+| MOCK | Illustrative UI/behavior only. |
+| PRETOTYPE | This public site: a truthful interface to the vision, not the full product. |
 
-### **Second Floor** - Specialty Courts
-- 8 pickleball courts
-- 1 historic real tennis court
+Current direction:
 
-### **Third Floor** - Vertical Grass Lab
-2,000 m² autonomous farming facility with:
-- Hydroponics and climate control
-- Robotic patch transport system
-- 60-minute court surface replacement capability
+- LIVE — private racquet digital twin.
+- SHIPPED — Facility OS foundations such as booking/operations/cleaning coverage/utilization against demo/sim data.
+- RESEARCH — provenance-aware evidence spine, 2026 pickleball rule packages, sport-blind transition kernel, deterministic differential tapes, WorldKernel/physics bakeoff, intervention-response loop, expert/agent authority, traceable 3D replay, machine-checkable sport-law experiments.
+- VISION — multidisciplinary human-performance campus connecting training, PT, medical/research, nutrition, recovery, community, engineering, and controlled-environment agriculture.
 
----
+## First proving ground
 
-## 🚀 Technology Stack
+Pickleball is the first end-to-end testbed because rules and outcomes are explicit enough to falsify the architecture.
 
-### Frontend
-- **React 19** with TypeScript
-- **Framer Motion** for animations
-- **Three.js** for 3D facility visualization
-- **Tailwind CSS** for styling
-- **Vite** for build tooling
+The target vertical slice is:
 
-### AI & Analytics
-- **Google Gemini AI** for chat interface
-- Computer vision for biomechanics analysis
-- Predictive maintenance algorithms
+1. play or ingest one real or intentionally synthetic session;
+2. preserve an evidence chain for rally observations and rule-adjudicated state;
+3. estimate one athlete capability with explicit uncertainty;
+4. compare a small number of simulated alternatives;
+5. let the user/coach choose an intervention;
+6. repeat a comparable measurement;
+7. keep or reject the hypothesis based on the observed outcome.
 
-### Autonomous Systems
-- Building Management System (BMS)
-- Robotic mowers and maintenance drones
-- Biometric access control
-- Smart HVAC optimization
+The goal is not to maximize feature count. The goal is to prove whether the loop creates useful capability gains beyond strong conventional coaching/software.
 
----
+## Public campus sketch
 
-## 💻 Development
+The Pascal campus pretotype preserves the sourced Naperville racquet program and a broader APEX human-performance VISION.
 
-### Prerequisites
-- Node.js (v20 or higher)
-- npm or yarn
-- Git
+Naperville origin SPEC:
+- 24 tennis courts; surface mix includes hard, clay, grass, and wood, but the split is unspecified.
+- 16 badminton courts.
+- 4 squash courts.
+- 16 table-tennis stations.
+- 8 pickleball courts.
+- 1 real-tennis court.
+- Grass lab: 500 m² per section; section count unspecified.
 
-### Local Setup
+The public scene must not convert inferred geometry into origin measurements.
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/kvnloo/ace.git
-   cd ace
-   ```
+APEX / ACE campus VISION includes:
+- strength and conditioning;
+- biomechanics / motion capture;
+- physiotherapy / rehabilitation;
+- medical / diagnostics partnerships;
+- nutrition and food;
+- recovery;
+- research labs;
+- social/community spaces;
+- controlled-environment agriculture;
+- maker / engineering spaces.
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+Some capabilities may ultimately be partnerships rather than co-located services. The sketch is a program exploration, not a construction claim.
 
-3. **Configure environment**
-   Create a `.env.local` file:
-   ```env
-   GEMINI_API_KEY=your_api_key_here
-   ```
+## What this repository actually runs
 
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
+- React 19 + TypeScript + Vite.
+- Pascal Viewer for the campus sketch.
+- CSS/fallback campus visualization when WebGL cannot paint.
+- Public ACE narrative/status data in landing/public.ts.
+- Deterministic local pretotype guide; the public bundle does not expose an AI API key.
+- Landing/facility honesty checks.
 
-   Open [http://localhost:3000](http://localhost:3000) in your browser
+Validation:
+- npm test
+- npm run build
 
-### Build for Production
+Mutation testing is n/a; do not invent a mutation score.
 
-```bash
-npm run build
-npm run preview
-```
+The live/private racquet twin, private Facility OS runtime, clinical integrations, and simulation backends do not run in this tree.
 
----
+Agents should read AGENTS.md. Workers never merge main or dev.
 
-## 🌐 Deployment
+## Development
 
-This project uses GitHub Actions for automated deployment to GitHub Pages:
+- git clone https://github.com/kvnloo/ace.git
+- cd ace
+- npm ci
+- npm run dev
 
-- **Production**: Automatically deploys from `main` branch to `/`
-- **Development**: Automatically deploys from `dev` branch to `/dev/`
+Build and validate:
+- npm test
+- npm run build
+- npm run preview
 
-See [Deployment Guide](.github/DEPLOYMENT.md) for detailed setup instructions.
+No API key is required for the public pretotype.
 
-### Deployment URLs
-- Production: https://kvnloo.github.io/ace/
-- Development: https://kvnloo.github.io/ace/dev/
+## Deployment channels
 
----
+The Pages artifact contains three independent builds:
 
-## 🎨 Features
+- Production / main -> https://kvnloo.github.io/ace/
+- Development / dev -> https://kvnloo.github.io/ace/dev/
+- Nightly / nightly -> https://kvnloo.github.io/ace/nightly/
 
-### Interactive 3D Facility Tour
-Explore the entire facility complex with:
-- Rotatable 3D visualization
-- Interactive hotspots for each area
-- Detailed feature information cards
+A push to any of those branches rebuilds the combined artifact from the current heads of all three channels.
 
-### AI-Powered Chat Assistant
-Get instant answers about:
-- Facility features and amenities
-- Membership options
-- Technical specifications
-- Court booking
+nightly is intentionally the fast-moving preview surface. Work can be pushed there directly without changing dev or main.
 
-### Real-Time Performance Analytics
-- Biomechanics tracking at 60 FPS
-- Serve speed analysis (225 km/h capability)
-- Ground force measurement (1900 N torque)
-- Pronation/supination tracking
+## Relationship to the deeper ACE work
 
-### Autonomous Operations Dashboard
-Monitor facility systems:
-- Smart HVAC climate control
-- Robotic maintenance status
-- Court surface quality metrics
-- Energy consumption analytics
-
----
-
-## 🏛️ Project Architecture
-
-### Digital Twin Framework
-Built on **OpenTwins** technology:
-- **Eclipse Ditto**: Digital twin definitions
-- **Eclipse Hono**: IoT device integration
-- Real-time monitoring and control
-- Predictive maintenance algorithms
+This public repo is the presentation/projection layer.
 
-### Agent-Based Automation
-Inspired by Voyager and Eureka methodologies:
-- **Automatic Curriculum**: Dynamic task progression
-- **Skill Library**: Reusable action patterns
-- **Reward Optimization**: Evolutionary performance tuning
-- **Self-Verification**: Continuous improvement loops
-
-### Feedback-Driven Learning
-- Environment feedback integration
-- Execution error analysis
-- Iterative skill refinement
-- Performance metrics tracking
+The deeper ACE digital-twin work owns the evolving evidence, rules, simulation, athlete-learning, expert/agent-authority, and 3D traceability experiments. The landing should summarize that direction without copying private data or converting research into shipped claims.
 
----
-
-## 👥 Expert Roles
-
-| Role | Responsibility |
-|------|----------------|
-| **Architect** | Facility layout and safety compliance |
-| **Digital Twin Modeler** | Virtual replica and simulation systems |
-| **Automation Engineer** | Robotics and autonomous systems integration |
-| **Sports Surface Specialist** | Court maintenance and quality assurance |
-| **Building Systems Engineer** | BMS and energy optimization |
-
----
-
-## 🎯 Strategic Goals
-
-1. **Autonomous Excellence**: Achieve 24/7 operation with minimal human intervention
-2. **Sustainability**: Net-zero energy consumption through solar and smart systems
-3. **User Experience**: Seamless booking, access, and service delivery
-4. **Performance**: Industry-leading analytics and injury prevention
-5. **Community**: Local partnerships and educational collaborations
-
----
-
-## 🤝 Partnerships & Funding
-
-### Strategic Partnerships
-- Local sports organizations for cost sharing
-- Educational institutions for research collaboration
-- Government agencies for sustainability grants
-
-### Investment Opportunities
-Currently raising Series A funding for Austin, Texas pilot facility.
-Contact via the [Invest page](https://kvnloo.github.io/ace/) for more information.
-
----
-
-## 📊 Technical Specifications
-
-### Data Collection
-- Multi-sensor array for court conditions
-- Environmental monitoring (temperature, humidity, air quality)
-- Player movement tracking and analysis
-- Real-time video analytics
-
-### Simulation & Analysis
-- Energy usage forecasting
-- Maintenance schedule optimization
-- Player traffic pattern analysis
-- Resource allocation modeling
-
-### System Integration
-- Centralized control via BMS
-- Real-time IoT device communication
-- Cloud-based analytics platform
-- Mobile app for member access
-
----
-
-## 📝 Project Structure
-
-```
-ace/
-├── .github/
-│   ├── workflows/        # CI/CD pipelines
-│   └── DEPLOYMENT.md     # Deployment documentation
-├── components/           # React components
-│   ├── NavBar.tsx
-│   ├── ThreeScene.tsx
-│   ├── AIChat.tsx
-│   └── Specifications.tsx
-├── services/            # Service layer
-├── App.tsx              # Main application
-├── index.tsx            # Entry point
-├── types.ts             # TypeScript definitions
-└── vite.config.ts       # Build configuration
-```
-
----
-
-## 🔧 Configuration
-
-### Base Path Configuration
-The project supports dynamic base paths for multi-environment deployment:
-
-```typescript
-// vite.config.ts
-const base = process.env.VITE_BASE_PATH || '/';
-```
-
-Set via environment variable during build:
-```bash
-VITE_BASE_PATH=/dev/ npm run build
-```
-
----
-
-## 📖 Documentation
-
-- [Deployment Guide](.github/DEPLOYMENT.md) - GitHub Pages setup and troubleshooting
-- [AI Studio Link](https://ai.studio/apps/drive/1Fc7kvKrC_eN-FRp7CerebmQONPqJW6z2) - Original project workspace
-
----
-
-## 📄 License
-
-This project is licensed under the terms specified in [LICENSE](LICENSE).
-
----
-
-## 🙏 Acknowledgments
-
-- **OpenTwins** for digital twin infrastructure
-- **Eclipse Foundation** for Ditto and Hono frameworks
-- **Google** for Gemini AI integration
-- **Community Contributors** for feedback and support
-
----
-
-<div align="center">
-
-**Built with ❤️ by the LawnTech Dynamics team**
-
-[Report Bug](https://github.com/kvnloo/ace/issues) • [Request Feature](https://github.com/kvnloo/ace/issues) • [Contact Us](https://kvnloo.github.io/ace/)
-
-</div>
+A pretty scene is not evidence. A model prediction is not an observation. A simulation is not an outcome.

@@ -1,0 +1,22 @@
+name: Evidence receipt
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  receipt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check evidence receipt and exact head
+        env:
+          BODY: ${{ github.event.pull_request.body }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          printf '%s' "$BODY" > /tmp/pr-body.md
+          python3 .github/scripts/check-receipt.py --file /tmp/pr-body.md --head "$HEAD"

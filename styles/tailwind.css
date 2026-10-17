@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+  --color-tennis-yellow: #dcff45;
+  --color-tennis-green: #2c5f2d;
+  --color-tennis-dark: #1a2e1b;
+  --color-tennis-light: #f0fdf4;
+  --color-glass: rgba(255, 255, 255, 0.1);
+}

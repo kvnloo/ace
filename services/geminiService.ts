@@ -1,71 +1,56 @@
-import { GoogleGenAI } from "@google/genai";
+type HistoryItem = { role: string; parts: { text: string }[] };
 
-let aiClient: GoogleGenAI | null = null;
+const concise = (text: string) => text.replace(/\s+/g, ' ').trim();
 
-// Initialize client only when needed or if key is present
-const getClient = (): GoogleGenAI | null => {
-  if (aiClient) return aiClient;
-  if (process.env.API_KEY) {
-    aiClient = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    return aiClient;
-  }
-  return null;
-};
+const answers: Array<{ test: RegExp; answer: string }> = [
+  {
+    test: /live|shipped|working|status/i,
+    answer:
+      'The public Pages site is a PRETOTYPE. A private racquet digital twin and Facility OS exist elsewhere. The evidence spine, WorldKernel/physics bakeoff, intervention-response loop, expert graph, traceable 3D loop, and machine-checkable sport laws are active RESEARCH or VISION, not shipped claims.',
+  },
+  {
+    test: /doctor|physician|pt|physical therap|expert|coach|nutrition/i,
+    answer:
+      'ACE treats experts as first-class architecture. Coaches, PTs, physicians, nutritionists, biomechanists, researchers, farmers, engineers, peers, and mentors should receive purpose-scoped access and retain authority for consequential actions. Agents are meant to extend attention and coordination, not replace expertise.',
+  },
+  {
+    test: /digital twin|twin/i,
+    answer:
+      'ACE treats a personal twin as an evidence graph, not a synthetic copy of a person. Observations, estimates, hypotheses, simulations, interventions, and verified outcomes stay distinct with provenance and uncertainty. The 3D world is a projection of that state, never the source of truth.',
+  },
+  {
+    test: /sport|pickleball|tennis|badminton|rules/i,
+    answer:
+      'Sports are ACE’s first proving ground. Pickleball 2026 is the current rules testbed: a small sport-blind transition protocol, an independent pickleball package, deterministic differential tapes, and formal-law experiments. Other sports should extend the protocol rather than force one giant universal rules schema.',
+  },
+  {
+    test: /simulate|physics|worldkernel|world kernel/i,
+    answer:
+      'ACE is researching a backend-neutral WorldKernel for time, bodies, contacts, surfaces, trajectories, and deterministic replay. Sport packages assign meaning after the physical observation. Physics backends should be benchmarked against measured cases before ACE trusts simulation-derived coaching decisions.',
+  },
+  {
+    test: /blueprint|bryan johnson/i,
+    answer:
+      'ACE is inspired by the ambition behind quantified-self and Blueprint-style continuous measurement, but it is independent and broader. The goal is to connect measurement to experts, simulation, learning, nutrition, environment, community, intervention, and verified follow-up rather than stop at a personal dashboard.',
+  },
+  {
+    test: /learn|personal|intervention|plateau/i,
+    answer:
+      'ACE personalization is meant to learn from measured response to interventions, not fixed learning-style labels. A narrow first loop is: baseline observation → capability estimate → coaching hypothesis → human-approved intervention → repeated measurement → update the belief or reject the hypothesis.',
+  },
+  {
+    test: /farm|agriculture|food/i,
+    answer:
+      'Controlled-environment agriculture is part of the broader campus vision where it genuinely supports nutrition, food systems, experimentation, and facility operations. It is not treated as proof that nutrition outcomes are optimized; those links need their own evidence and intervention-response studies.',
+  },
+];
 
-const SYSTEM_INSTRUCTION = `
-You are the AI Concierge for "LawnTech Dynamics", a futuristic, multi-story autonomous sports facility.
-Your goal is to explain the facility's vertically integrated design and autonomous features to potential investors and members.
+export const sendQueryToConcierge = async (history: HistoryItem[]): Promise<string> => {
+  const latest = history.at(-1)?.parts.map((part) => part.text).join(' ') ?? '';
+  const hit = answers.find((entry) => entry.test.test(latest));
+  if (hit) return hit.answer;
 
-Key Facility Layout & Features:
-
-**Ground Floor (The Tennis Arena)**
-- 24 Total Tennis Courts: 6 Hard, 6 Clay, 6 Grass, 6 Wood.
-- Autonomous maintenance: Robotic mowers and cleaners.
-- Amenities: Pro Shop, Locker Rooms, Smart Recovery Areas.
-
-**First Floor (The Racquet Mezzanine)**
-- 16 Badminton Courts.
-- 4 Squash Courts (Glass-walled).
-- 16 Table Tennis Tables.
-
-**Second Floor (The Pickleball & Heritage Deck)**
-- 8 Pickleball Courts.
-- 1 Real Tennis Court (The historic sport).
-
-**Third Floor (The Vertical Grass Lab)**
-- 4 massive autonomous farming sections (500 sq meters each).
-- Hydroponic cultivation of court surfaces using robotics.
-
-**Autonomous Tech**
-- Drones for court monitoring.
-- Biometric entry and payments.
-- AI Building Management System (BMS) for renewable energy and HVAC.
-- Emergency response AI.
-
-Tone: Visionary, precise, architectural, and welcoming.
-Keep answers concise (under 100 words) unless asked for detail.
-`;
-
-export const sendQueryToConcierge = async (history: {role: string, parts: {text: string}[]}[]): Promise<string> => {
-  const client = getClient();
-  if (!client) {
-    return "I'm currently offline (API Key missing). Please imagine I gave you a brilliant answer about our autonomous multi-story complex!";
-  }
-
-  try {
-    // Use the generateContent method with the full history as contents
-    const response = await client.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: history as any, 
-      config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
-        temperature: 0.7,
-      }
-    });
-
-    return response.text || "I apologize, I couldn't process that request.";
-  } catch (error) {
-    console.error("Gemini API Error:", error);
-    return "Our systems are currently recalibrating. Please try again in a moment.";
-  }
+  return concise(
+    'ACE is a public pretotype for a human-flourishing feedback loop: set a goal, observe reality, update evidence-backed digital twins, form hypotheses, simulate options, connect the right humans and agents, intervene with scoped authority, measure again, verify the outcome, and learn. Ask me about the digital twin, experts, sports, simulation, personalized learning, the campus, or what is actually live.',
+  );
 };

@@ -1,74 +1,150 @@
 import React from 'react';
-import { View } from '../types';
 import { Menu, X } from 'lucide-react';
+import { View } from '../types';
 
 interface NavBarProps {
   currentView: View;
   onChangeView: (view: View) => void;
 }
 
+const fallbackSection: Record<View, string> = {
+  [View.HOME]: 'Manifesto',
+  [View.AMENITIES]: 'System',
+  [View.SPECIFICATIONS]: 'Spec',
+  [View.FACILITY_DEMO]: 'Campus',
+  [View.INVEST]: 'Contact',
+};
+
 const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
+  const [liveSection, setLiveSection] = React.useState(fallbackSection[currentView]);
+  const base = import.meta.env.BASE_URL;
+  const channel = base.includes('/nightly/') ? 'NIGHTLY' : base.includes('/dev/') ? 'DEV' : 'PRETOTYPE';
+
+  React.useEffect(() => {
+    setIsMobileOpen(false);
+    setLiveSection(fallbackSection[currentView]);
+
+    if (currentView !== View.HOME) return;
+
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-ace-section]'));
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        const label = (visible.target as HTMLElement).dataset.aceSection;
+        if (label) setLiveSection(label);
+      },
+      { rootMargin: '-34% 0px -52% 0px', threshold: [0, 0.2, 0.5, 1] },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [currentView]);
+
+  const prefetch = (view: View) => {
+    if (view === View.FACILITY_DEMO) void import('./CampusExperience');
+    if (view === View.SPECIFICATIONS) void import('./Specifications');
+    if (view === View.AMENITIES) void import('./AtlasProduct');
+  };
+
+  React.useEffect(() => {
+    const root = document.documentElement;
+    if (isMobileOpen) {
+      root.dataset.aceMenu = 'open';
+      window.__ACE_LENIS__?.stop();
+    } else {
+      delete root.dataset.aceMenu;
+      window.__ACE_LENIS__?.start();
+    }
+    return () => {
+      delete root.dataset.aceMenu;
+      window.__ACE_LENIS__?.start();
+    };
+  }, [isMobileOpen]);
+
+  React.useEffect(() => {
+    const zone = liveSection
+      .toLowerCase()
+      .replace(/^\d+\s*\/\s*/, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+    document.documentElement.dataset.aceZone = zone || 'manifesto';
+  }, [liveSection]);
 
   const NavItem = ({ view, label }: { view: View; label: string }) => (
     <button
-      onClick={() => {
-        onChangeView(view);
-        setIsMobileOpen(false);
-      }}
-      className={`text-sm font-semibold tracking-wide transition-colors uppercase ${
-        currentView === view ? 'text-tennis-yellow' : 'text-white/70 hover:text-white'
-      }`}
+      type="button"
+      aria-current={currentView === view ? 'page' : undefined}
+      onPointerEnter={() => prefetch(view)}
+      onFocus={() => prefetch(view)}
+      onClick={() => onChangeView(view)}
+      className="ace-nav-link"
     >
       {label}
     </button>
   );
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 bg-gradient-to-b from-slate-900/90 to-transparent pt-4 pb-8 px-6">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div 
-            className="text-2xl font-extrabold tracking-tighter text-white cursor-pointer flex items-center gap-2"
-            onClick={() => onChangeView(View.HOME)}
+    <header className="ace-nav">
+      <div className="ace-nav-inner">
+        <button
+          type="button"
+          className="ace-wordmark"
+          aria-label="Go to ACE home"
+          onClick={() => onChangeView(View.HOME)}
         >
-            <span className="w-3 h-3 bg-tennis-yellow rounded-full animate-pulse"></span>
-            LAWNTECH <span className="text-tennis-yellow font-light">DYNAMICS</span>
-        </div>
+          <span className="ace-wordmark-mark" aria-hidden="true" />
+          <span>ACE</span>
+        </button>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          <NavItem view={View.HOME} label="Vision" />
-          <NavItem view={View.SPECIFICATIONS} label="Specs" />
-          <NavItem view={View.FACILITY_DEMO} label="3D Map" />
-          <NavItem view={View.AMENITIES} label="Amenities" />
-          <NavItem view={View.INVEST} label="Invest" />
-          <button 
-            className="border border-tennis-yellow text-tennis-yellow px-5 py-2 rounded-full text-sm font-bold hover:bg-tennis-yellow hover:text-tennis-dark transition-all"
-            onClick={() => onChangeView(View.INVEST)}
+        <span className="ace-channel">{channel}</span>
+        <span className="ace-live-section" aria-live="polite">{liveSection}</span>
+
+        <nav className="ace-nav-links" aria-label="Primary navigation">
+          <NavItem view={View.HOME} label="Manifesto" />
+          <NavItem view={View.AMENITIES} label="System" />
+          <NavItem view={View.SPECIFICATIONS} label="Spec" />
+          <NavItem view={View.FACILITY_DEMO} label="Campus" />
+          <NavItem view={View.INVEST} label="Contact" />
+          <button
+            type="button"
+            className="ace-nav-cta"
+            onPointerEnter={() => prefetch(View.FACILITY_DEMO)}
+            onFocus={() => prefetch(View.FACILITY_DEMO)}
+            onClick={() => onChangeView(View.FACILITY_DEMO)}
           >
-            JOIN WAITING LIST
+            Enter twin
           </button>
-        </div>
+        </nav>
 
-        {/* Mobile Toggle */}
-        <div className="md:hidden">
-          <button onClick={() => setIsMobileOpen(!isMobileOpen)} className="text-white">
-            {isMobileOpen ? <X /> : <Menu />}
-          </button>
-        </div>
+        <button
+          type="button"
+          className="ace-menu-button"
+          aria-label={isMobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={isMobileOpen}
+          aria-controls="ace-mobile-nav"
+          onClick={() => setIsMobileOpen((open) => !open)}
+        >
+          {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+
+        {isMobileOpen && (
+          <nav id="ace-mobile-nav" className="ace-mobile-nav" aria-label="Mobile navigation">
+            <NavItem view={View.HOME} label="Manifesto" />
+            <NavItem view={View.AMENITIES} label="System" />
+            <NavItem view={View.SPECIFICATIONS} label="Spec" />
+            <NavItem view={View.FACILITY_DEMO} label="Campus" />
+            <NavItem view={View.INVEST} label="Contact" />
+          </nav>
+        )}
       </div>
-
-      {/* Mobile Menu */}
-      {isMobileOpen && (
-        <div className="absolute top-full left-0 w-full bg-slate-900 border-b border-white/10 p-6 flex flex-col gap-6 md:hidden glass-panel">
-          <NavItem view={View.HOME} label="Vision" />
-          <NavItem view={View.SPECIFICATIONS} label="Specs" />
-          <NavItem view={View.FACILITY_DEMO} label="3D Map" />
-          <NavItem view={View.AMENITIES} label="Amenities" />
-          <NavItem view={View.INVEST} label="Invest" />
-        </div>
-      )}
-    </nav>
+      <div className="ace-scroll-meter" aria-hidden="true"><span /></div>
+    </header>
   );
 };
 

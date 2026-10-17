@@ -1,0 +1,25 @@
+name: Claim
+description: Bounded claim lease for an already-triaged claimable issue. Prefer a comment on the existing issue.
+title: "claim: "
+labels: ["claimed"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Prefer commenting this YAML on the existing issue. Open this form only if the project asks for a dedicated claim issue.
+  - type: textarea
+    id: lease
+    attributes:
+      label: Lease
+      value: |
+        ```yaml
+        issue:
+        claimant:
+        base_revision:
+        claimed_at:
+        expires_at:
+        scope:
+        work_url:
+        ```
+    validations:
+      required: true

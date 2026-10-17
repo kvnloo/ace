@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discussions
+    url: https://github.com/kvnloo/ace/discussions
+    about: Ideas, adoption help, or questions that are not a claimable issue
