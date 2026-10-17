@@ -212,6 +212,30 @@ async function main(){
       };
     })()`);
     report.desktop.home=facts;
+    // Text can exist in the DOM while entrance animations and reveal gates paint nothing.
+    // This must pass before any scripted/user scroll, including on browsers that pause animations.
+    const firstPaint=await evaluate(cdp,desktop.sessionId,`(()=>{
+      const copy=document.querySelector(".ace-hero-entry-copy");
+      const headline=copy?.querySelector("h1");
+      const reveal=document.querySelector(".ace-section[data-ace-reveal]");
+      const rect=copy?.getBoundingClientRect();
+      const style=copy && getComputedStyle(copy);
+      return {
+        scrollY:window.scrollY,
+        heroOpacity:Number(style?.opacity ?? 0),
+        heroAnimation:style?.animationName ?? "missing",
+        headlineVisible:Boolean(headline && getComputedStyle(headline).visibility === "visible"),
+        heroInViewport:Boolean(rect && rect.height > 0 && rect.top < innerHeight && rect.bottom > 0),
+        revealOpacity:Number(reveal && getComputedStyle(reveal).opacity),
+      };
+    })()`);
+    report.desktop.firstPaint=firstPaint;
+    if(firstPaint.scrollY>2) failures.push("home must begin unscrolled");
+    if(!firstPaint.heroInViewport || !firstPaint.headlineVisible ||
+      firstPaint.heroOpacity<0.99 || firstPaint.heroAnimation!=="none") {
+      failures.push("home hero hidden or animation-gated before scroll "+JSON.stringify(firstPaint));
+    }
+    if(firstPaint.revealOpacity<0.99) failures.push("content opacity gated on scroll "+firstPaint.revealOpacity);
     report.desktop.hero=await screenshot(cdp,desktop.sessionId,"desktop-hero");
     if(!facts.hero) failures.push("desktop hero copy missing");
     if(!facts.lenis) failures.push("Lenis did not initialize on desktop");
@@ -338,6 +362,23 @@ async function main(){
     await closePage(cdp,desktop);
 
     const mobile=await createPage(cdp,{width:390,height:844,mobile:true,lite:true});
+    const mobileFirstPaint=await evaluate(cdp,mobile.sessionId,`(()=>{
+      const hero=document.querySelector(".ace-hero-entry-copy");
+      const rect=hero?.getBoundingClientRect();
+      const style=hero && getComputedStyle(hero);
+      return {
+        scrollY:window.scrollY,
+        heroOpacity:Number(style?.opacity ?? 0),
+        heroAnimation:style?.animationName ?? "missing",
+        heroInViewport:Boolean(rect && rect.height > 0 && rect.top < innerHeight && rect.bottom > 0),
+      };
+    })()`);
+    if(mobileFirstPaint.scrollY>2 || !mobileFirstPaint.heroInViewport ||
+      mobileFirstPaint.heroOpacity<0.99 || mobileFirstPaint.heroAnimation!=="none") {
+      failures.push("mobile hero hidden or animation-gated before scroll "+JSON.stringify(mobileFirstPaint));
+    }
+    report.mobile.firstPaint=mobileFirstPaint;
+    report.mobile.homeShot=await screenshot(cdp,mobile.sessionId,"mobile-home-first-paint");
     await evaluate(cdp,mobile.sessionId,`document.querySelector('button[aria-label="Open navigation menu"]')?.click()`);
     await sleep(80);
     await evaluate(cdp,mobile.sessionId,`(()=>{
@@ -360,7 +401,7 @@ async function main(){
         pascalLoaded:resources.some((u)=>/PascalFacility/.test(u)),
       };
     })()`);
-    report.mobile=mobileFacts;
+    report.mobile={...mobileFacts,firstPaint:mobileFirstPaint};
     report.mobile.shot=await screenshot(cdp,mobile.sessionId,"mobile-campus-lite");
     if(mobileFacts.quality!=="lite") failures.push("mobile quality expected lite, got "+mobileFacts.quality);
     if(mobileFacts.overflow>2) failures.push("mobile horizontal overflow "+mobileFacts.overflow+"px");
