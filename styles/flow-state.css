@@ -559,8 +559,11 @@ html[data-ace-loop] .ace-core-node {
   transform: translateY(-50%) !important;
 }
 
+/* Initial content is never gated by an animation frame. In mobile browsers
+ * entrance animations can remain paused until the first user scroll. */
 .ace-hero-entry {
-  animation: aceFlowResolve .42s ease both !important;
+  animation: none !important;
+  opacity: 1 !important;
 }
 
 .ace-hero-entry-copy,
@@ -572,9 +575,12 @@ html[data-ace-loop] .ace-core-node {
   animation: none !important;
 }
 
+/* Scroll observation is progressive enhancement, not a visibility dependency.
+ * A skipped or delayed IntersectionObserver must never yield blank content. */
 [data-ace-reveal] {
+  opacity: 1 !important;
   transform: none !important;
-  transition: opacity .34s ease !important;
+  transition: none !important;
 }
 
 [data-ace-reveal][data-inview="true"] {
