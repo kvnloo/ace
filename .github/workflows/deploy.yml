@@ -128,3 +128,32 @@ jobs:
             fi
             echo "PASS $url | asset $asset"
           done
+
+      - name: Checkout published source for visual smoke
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js for browser checks
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install browser-smoke dependencies
+        run: npm ci
+
+      - name: Test production before any scroll
+        run: npm run visual:smoke
+        env:
+          BASE_URL: https://kvnloo.github.io/ace/
+          ARTIFACTS: artifacts/live-visual-smoke
+
+      - name: Upload live browser receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ace-live-visual-smoke
+          path: artifacts/live-visual-smoke
+          if-no-files-found: warn
+
