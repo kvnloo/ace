@@ -35,6 +35,8 @@ requireText(css, /\[data-ace-reveal\]\s*\{[^}]*transform:\s*none\s*!important/s,
 requireText(css, /\.ace-scroll-cue i\s*\{[^}]*animation:\s*none\s*!important/s, 'scroll cue must not pulse autonomously');
 requireText(css, /\.ace-action-primary::before[\s\S]*content:\s*none\s*!important/, 'decorative CTA shine sweep must stay disabled');
 requireText(css, /\.ace-progressive-field/, 'goal-first contact progressive disclosure styling missing');
+requireText(css, /\.ace-hero-entry\s*\{[^}]*animation:\s*none\s*!important;[^}]*opacity:\s*1\s*!important;/s, 'hero must be visible without waiting for an animation or scroll');
+requireText(css, /\[data-ace-reveal\]\s*\{[^}]*opacity:\s*1\s*!important;/s, 'content must remain visible when the scroll observer does not run');
 requireText(css, /prefers-reduced-motion/, 'reduced-motion flow-state rules missing');
 
 requireText(motion, /Goal:\s*'anchor'/, 'Goal must map to anchor semantics');
