@@ -7,6 +7,7 @@ const landing = read('components/AtlasLanding.tsx');
 const nav = read('components/NavBar.tsx');
 const specs = read('components/Specifications.tsx');
 const app = read('App.tsx');
+const contact = read('components/ContactExperience.tsx');
 const css = read('styles/ace.css');
 const html = read('index.html');
 
@@ -22,7 +23,7 @@ requireText(landing, /The facility is the environment/, 'landing must retain the
 requireText(nav, /ace-wordmark/, 'navigation must use ACE editorial chrome');
 requireText(nav, /aria-current/, 'navigation must expose current-page state accessibly');
 requireText(specs, /ace-spec-grid/, 'spec page must use the editorial matrix');
-requireText(app, /ace-contact-layout/, 'contact page must use the editorial collaboration surface');
+requireText(contact, /ace-contact-layout/, 'contact page must use the editorial collaboration surface');
 requireText(app, /ace-campus-shell/, 'campus must use the shared ACE visual system');
 
 requireText(css, /Barlow Condensed/, 'display typography token missing');
