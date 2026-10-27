@@ -1,9 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { View, FeatureData } from './types';
+import { View } from './types';
 import NavBar from './components/NavBar';
-import ThreeScene from './components/ThreeScene';
 import AIChat from './components/AIChat';
 import Specifications from './components/Specifications';
 import { 
@@ -21,16 +20,10 @@ import {
   ShoppingBag
 } from 'lucide-react';
 
+const TWIN_URL = (import.meta as any).env?.VITE_TWIN_URL || 'http://localhost:5173';
+
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
-  const [selectedFeature, setSelectedFeature] = useState<FeatureData | null>(null);
-
-  // Reset selected feature when leaving demo view
-  useEffect(() => {
-    if (currentView !== View.FACILITY_DEMO) {
-      setSelectedFeature(null);
-    }
-  }, [currentView]);
 
   const pageVariants = {
     initial: { opacity: 0, y: 20 },
@@ -98,13 +91,13 @@ const App: React.FC = () => {
                     transition={{ delay: 0.5 }}
                     className="flex flex-col sm:flex-row items-center justify-center gap-4"
                   >
-                    <button 
-                      onClick={() => setCurrentView(View.FACILITY_DEMO)}
+                    <a
+                      href={TWIN_URL}
                       className="px-8 py-4 bg-tennis-yellow text-tennis-dark font-bold rounded-full hover:bg-white transition-all flex items-center gap-2 group"
                     >
-                      Explore 3D Demo
+                      Open digital twin
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </button>
+                    </a>
                     <button 
                       onClick={() => setCurrentView(View.AMENITIES)}
                       className="px-8 py-4 bg-white/10 text-white font-bold rounded-full hover:bg-white/20 transition-all backdrop-blur-sm"
@@ -150,61 +143,28 @@ const App: React.FC = () => {
             </motion.div>
           )}
 
-          {/* 3D FACILITY DEMO */}
           {currentView === View.FACILITY_DEMO && (
-            <motion.div 
+            <motion.div
               key="demo"
               initial="initial"
               animate="enter"
               exit="exit"
               variants={pageVariants}
-              className="w-full h-full relative bg-gradient-to-b from-slate-900 to-black"
+              className="h-full overflow-y-auto custom-scrollbar pb-20 px-6"
             >
-              <div className="absolute inset-0 z-0">
-                <ThreeScene onFeatureSelect={setSelectedFeature} />
-              </div>
-              
-              {/* HUD Layer */}
-              <div className="absolute inset-0 z-10 pointer-events-none p-6 flex flex-col justify-between">
-                <div className="mt-12">
-                   <h2 className="text-3xl font-bold text-white drop-shadow-lg">Facility Interactive Map</h2>
-                   <p className="text-white/70 text-sm max-w-md drop-shadow-md mt-2">
-                     24 Courts • Vertical Farm • Performance Gym <br/>
-                     Rotate the view to explore the entire complex.
-                   </p>
-                </div>
-
-                {/* Selected Feature Info Card */}
-                <AnimatePresence>
-                  {selectedFeature && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                      className="pointer-events-auto self-end md:self-start md:max-w-sm w-full bg-slate-900/90 backdrop-blur-xl border border-tennis-yellow/30 p-6 rounded-2xl shadow-2xl"
-                    >
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="w-12 h-12 rounded-full bg-tennis-yellow/20 flex items-center justify-center text-2xl">
-                          {selectedFeature.icon}
-                        </div>
-                        <button 
-                          onClick={() => setSelectedFeature(null)}
-                          className="text-white/50 hover:text-white text-sm uppercase tracking-wider font-bold"
-                        >
-                          Close
-                        </button>
-                      </div>
-                      <h3 className="text-2xl font-bold text-white mb-2">{selectedFeature.title}</h3>
-                      <p className="text-gray-300 leading-relaxed mb-4">{selectedFeature.description}</p>
-                      <button 
-                        onClick={() => setCurrentView(View.SPECIFICATIONS)}
-                        className="w-full py-3 bg-tennis-yellow text-tennis-dark font-bold rounded-lg hover:bg-white transition-colors"
-                      >
-                        View Full Specs
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+              <div className="max-w-3xl mx-auto pt-16 text-center">
+                <h2 className="text-4xl font-bold mb-4">Digital twin</h2>
+                <p className="text-gray-400 mb-8">
+                  ACE is the landing site. The live GPU facility twin (courts, engine, campus schematic) runs in homebase, not this repo.
+                </p>
+                <a
+                  href={TWIN_URL}
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-tennis-yellow text-tennis-dark font-bold rounded-full hover:bg-white"
+                >
+                  Open twin
+                  <ArrowRight className="w-5 h-5" />
+                </a>
+                <p className="text-white/40 text-xs mt-6 font-mono">{TWIN_URL}</p>
               </div>
             </motion.div>
           )}

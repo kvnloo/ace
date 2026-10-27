@@ -1,12 +1,10 @@
-# LawnTech Dynamics - Autonomous Indoor Grass Court Facility
+# LawnTech Dynamics — landing site
 
-<div align="center">
+Marketing / waitlist / specs for the Naperville racquet campus.
 
-**The world's first fully autonomous indoor grass court tennis facility**
+**The digital twin is not this repo.** Live GPU + USAPA engine live in homebase (`wt/homebase-dream-photoreal`, `npm run dev` on :5173). Set `VITE_TWIN_URL` so “Open digital twin” points there.
 
-[View Live Demo](https://kvnloo.github.io/ace/) • [Dev Preview](https://kvnloo.github.io/ace/dev/) • [Documentation](.github/DEPLOYMENT.md)
-
-</div>
+[Pages](https://kvnloo.github.io/ace/) is this landing shell.
 
 ---
 
@@ -96,6 +94,8 @@ LawnTech Dynamics is an innovative multi-floor racquet sports facility concept c
    ```env
    GEMINI_API_KEY=your_api_key_here
    ```
+
+   > **Security:** Never commit `.env.local` or real API keys. Public GitHub Pages builds intentionally omit the key; the AI concierge degrades gracefully without it.
 
 4. **Start development server**
    ```bash
@@ -286,7 +286,7 @@ VITE_BASE_PATH=/dev/ npm run build
 
 ## 📄 License
 
-This project is licensed under the terms specified in [LICENSE](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
