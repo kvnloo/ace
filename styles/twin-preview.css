@@ -1,0 +1,25 @@
+/* Twin preview: deep zoom stage + film strip. Glass only on overlays sitting over the world (DESIGN.md). */
+.ace-twin { max-width: 1320px; margin: 0 auto; padding: 32px 20px 96px; }
+.ace-twin-head { max-width: 760px; margin-bottom: 24px; }
+.ace-twin-head h1 { font-size: clamp(28px, 4vw, 46px); line-height: 1.08; margin: 10px 0 12px; letter-spacing: -0.02em; }
+.ace-twin-head p { color: rgba(244, 247, 239, 0.72); font-size: 16px; line-height: 1.6; }
+.ace-twin-empty { color: rgba(244, 247, 239, 0.7); padding: 48px 0; }
+
+.ace-twin-stage { position: relative; margin: 0 0 28px; border-radius: 14px; overflow: hidden; background: #0B1B31; border: 1px solid rgba(244, 247, 239, 0.08); }
+.ace-twin-zoom, .ace-twin-still { width: 100%; height: min(72vh, 760px); display: block; object-fit: cover; background: #0B1B31; }
+.ace-twin-stage figcaption { position: absolute; left: 16px; bottom: 16px; max-width: min(520px, calc(100% - 32px)); display: flex; flex-direction: column; gap: 4px;
+  padding: 12px 14px; border-radius: 12px; background: rgba(7, 20, 38, 0.62); backdrop-filter: blur(14px) saturate(1.2); border: 1px solid rgba(244, 247, 239, 0.12); pointer-events: none; }
+.ace-twin-stage figcaption strong { font-size: 15px; }
+.ace-twin-stage figcaption span { color: rgba(244, 247, 239, 0.78); font-size: 13px; line-height: 1.45; }
+.ace-twin-prov { margin: 2px 0 0; font-size: 11px; color: rgba(244, 247, 239, 0.5); }
+.ace-twin-tabs { position: absolute; top: 14px; left: 14px; display: flex; gap: 6px; flex-wrap: wrap; }
+.ace-twin-tabs button { font-size: 12px; padding: 6px 10px; border-radius: 999px; color: #F4F7EF; background: rgba(7, 20, 38, 0.6); border: 1px solid rgba(244, 247, 239, 0.16); backdrop-filter: blur(10px); cursor: pointer; }
+.ace-twin-tabs button[aria-selected="true"] { border-color: #DFFF4F; color: #DFFF4F; }
+
+.ace-twin-films { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 18px; }
+.ace-twin-film { margin: 0; border-radius: 12px; overflow: hidden; background: #0B1B31; border: 1px solid rgba(244, 247, 239, 0.08); }
+.ace-twin-film video { width: 100%; aspect-ratio: 16 / 9; display: block; background: #071426; }
+.ace-twin-film figcaption { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; }
+.ace-twin-film figcaption strong { font-size: 14px; }
+.ace-twin-film figcaption span { color: rgba(244, 247, 239, 0.72); font-size: 13px; line-height: 1.45; }
+@media (max-width: 640px) { .ace-twin-zoom, .ace-twin-still { height: auto; aspect-ratio: 4 / 3; } .ace-twin-stage figcaption { position: static; max-width: none; border-radius: 0; } }

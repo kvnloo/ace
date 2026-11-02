@@ -3,7 +3,8 @@ export enum View {
   FACILITY_DEMO = 'FACILITY_DEMO',
   AMENITIES = 'AMENITIES',
   INVEST = 'INVEST',
-  SPECIFICATIONS = 'SPECIFICATIONS'
+  SPECIFICATIONS = 'SPECIFICATIONS',
+  TWIN = 'TWIN'
 }
 
 export interface FeatureData {

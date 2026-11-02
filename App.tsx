@@ -7,6 +7,7 @@ const CampusExperience = React.lazy(() => import('./components/CampusExperience'
 const Specifications = React.lazy(() => import('./components/Specifications'));
 import AtlasLanding from './components/AtlasLanding';
 const AtlasProduct = React.lazy(() => import('./components/AtlasProduct'));
+const TwinPreview = React.lazy(() => import('./components/TwinPreview'));
 import { campusNested } from './landing/public.ts';
 
 type TransitionDocument = Document & {
@@ -96,6 +97,12 @@ const App: React.FC = () => {
         {currentView === View.AMENITIES && (
           <div className="ace-route-enter ace-page min-h-[calc(100dvh-72px)] px-4 sm:px-6">
             <Suspense fallback={<div className="min-h-[70vh] grid place-items-center"><div className="ace-kicker">LOADING SYSTEM MAP</div></div>}><AtlasProduct onChangeView={navigate} /></Suspense>
+          </div>
+        )}
+
+        {currentView === View.TWIN && (
+          <div className="ace-route-enter ace-page min-h-[calc(100dvh-72px)]">
+            <Suspense fallback={<div className="min-h-[70vh] grid place-items-center"><div className="ace-kicker">LOADING TWIN PREVIEW</div></div>}><TwinPreview /></Suspense>
           </div>
         )}
 

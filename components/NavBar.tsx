@@ -13,6 +13,7 @@ const fallbackSection: Record<View, string> = {
   [View.SPECIFICATIONS]: 'Spec',
   [View.FACILITY_DEMO]: 'Campus',
   [View.INVEST]: 'Contact',
+  [View.TWIN]: 'Twin',
 };
 
 const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
@@ -50,6 +51,7 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
     if (view === View.FACILITY_DEMO) void import('./CampusExperience');
     if (view === View.SPECIFICATIONS) void import('./Specifications');
     if (view === View.AMENITIES) void import('./AtlasProduct');
+    if (view === View.TWIN) void import('./TwinPreview');
   };
 
   React.useEffect(() => {
@@ -114,9 +116,9 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
           <button
             type="button"
             className="ace-nav-cta"
-            onPointerEnter={() => prefetch(View.FACILITY_DEMO)}
-            onFocus={() => prefetch(View.FACILITY_DEMO)}
-            onClick={() => onChangeView(View.FACILITY_DEMO)}
+            onPointerEnter={() => prefetch(View.TWIN)}
+            onFocus={() => prefetch(View.TWIN)}
+            onClick={() => onChangeView(View.TWIN)}
           >
             Enter twin
           </button>
@@ -140,6 +142,7 @@ const NavBar: React.FC<NavBarProps> = ({ currentView, onChangeView }) => {
             <NavItem view={View.SPECIFICATIONS} label="Spec" />
             <NavItem view={View.FACILITY_DEMO} label="Campus" />
             <NavItem view={View.INVEST} label="Contact" />
+            <NavItem view={View.TWIN} label="Enter twin" />
           </nav>
         )}
       </div>
