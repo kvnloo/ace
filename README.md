@@ -8,6 +8,8 @@ Nightly: https://kvnloo.github.io/ace/nightly/
 
 This repository is the public ACE pretotype. It does not run the private 60 Hz racquet twin, clinical systems, or experimental simulation backends.
 
+**Long-term direction:** [North star and original decision record](docs/NORTH_STAR.md) · [Public roadmap](ROADMAP.md) · [Design constitution](docs/DESIGN.md).
+
 ## Thesis
 
 ACE is a consent-governed cyber-physical feedback system for human flourishing.
