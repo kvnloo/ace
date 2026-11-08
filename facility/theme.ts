@@ -1,4 +1,4 @@
-export const ACE_ENVIRONMENT = {
+const ACE_ENVIRONMENT = {
   navy: '#071426',
   navyRaised: '#0B1B31',
   navySoft: '#10243B',

@@ -1,7 +1,7 @@
 import { FeatureData } from '../types';
 import { APEX_GAP } from './vision.ts';
 
-export { APEX_BUILDING_ID, APEX_LEVEL_ID, APEX_ROOMS, APEX_ZONE_IDS } from './vision.ts';
+export { APEX_BUILDING_ID, APEX_LEVEL_ID,   } from './vision.ts';
 
 /** Inferred envelope from the earlier Three.js sketch — not in the origin spec. */
 export const BUILDING_WIDTH = 140;
