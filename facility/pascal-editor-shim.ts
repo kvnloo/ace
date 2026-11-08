@@ -1,0 +1,186 @@
+/**
+ * Read-only stub for `@pascal-app/editor`.
+ *
+ * `@pascal-app/nodes` 1.0.0 still imports editor tools/panels at module load.
+ * ACE mounts the Viewer only — never the Pascal editor, Next, or HomeForge.
+ */
+
+export const EDITOR_LAYER = 1;
+export const NO_RAYCAST = 0;
+export const WALL_CONNECT_SNAP_RADIUS = 0.4;
+export const WALL_JOIN_SNAP_RADIUS = 0.4;
+export const ARROW_COLOR = '#DFFF4F';
+export const ARROW_SCALE = 1;
+export const MEASUREMENT_ACTIVE_COLOR = '#DFFF4F';
+export const DEFAULT_SPIRAL_STAIR_SWEEP_ANGLE = Math.PI;
+export const DRAWING_TYPE_OPTIONS = [] as const;
+export const DRAFTING_SURFACE_EXTENSION_KEY = 'pascal:editor/drafting-surface';
+
+const empty = {};
+const noop = (..._args: unknown[]) => null;
+const False = (..._args: unknown[]) => false;
+const Zero = (..._args: unknown[]) => 0;
+
+export function cn(...parts: Array<string | false | null | undefined>) {
+  return parts.filter(Boolean).join(' ');
+}
+
+function storeHook(selector?: (state: Record<string, unknown>) => unknown) {
+  return selector ? selector(empty) : empty;
+}
+storeHook.getState = () => empty;
+storeHook.setState = () => {};
+storeHook.subscribe = () => () => {};
+
+export const useAlignmentGuides = storeHook;
+export const useDraftNode = storeHook;
+export const useDragAction = storeHook;
+export const useDrawingView = storeHook;
+export const useEditingHole = storeHook;
+export const useEditor = storeHook;
+export const useFacingPose = storeHook;
+export const useFenceCurveDraft = storeHook;
+export const useFloorplanDraftPreview = storeHook;
+export const useFloorplanRender = storeHook;
+export const useFreshPlacementVisibility = storeHook;
+export const useInteractionScope = storeHook;
+export const useMeasurementDraft = storeHook;
+export const useOpeningGuides = storeHook;
+export const usePathDraftPreview = storeHook;
+export const usePlacementCoordinator = storeHook;
+export const usePlacementPreview = storeHook;
+export const useRegistryToolContext = storeHook;
+export const useSegmentDraftChain = storeHook;
+export const useWallMoveGhosts = storeHook;
+export const useWallSnapIndicator = storeHook;
+
+export const ActionButton = (_props: Record<string, unknown>) => null;
+export const ActionGroup = (_props: Record<string, unknown>) => null;
+export const CollectionsPopover = (_props: Record<string, unknown>) => null;
+export const CursorSphere = (_props: Record<string, unknown>) => null;
+export const DimensionPill = (_props: Record<string, unknown>) => null;
+export const DragBoundingBox = (_props: Record<string, unknown>) => null;
+export const FloorplanGeometryRenderer = (_props: Record<string, unknown>) => null;
+export const HandleArrow = (_props: Record<string, unknown>) => null;
+export const MeasurementPill = (_props: Record<string, unknown>) => null;
+export const MetricControl = (_props: Record<string, unknown>) => null;
+export const NodeActionMenu = (_props: Record<string, unknown>) => null;
+export const PanelSection = (_props: Record<string, unknown>) => null;
+export const PanelWrapper = (_props: Record<string, unknown>) => null;
+export const PlacementBox = (_props: Record<string, unknown>) => null;
+export const PlacementDimensionGuides = (_props: Record<string, unknown>) => null;
+export const PolygonEditor = (_props: Record<string, unknown>) => null;
+export const SegmentedControl = (_props: Record<string, unknown>) => null;
+export const SliderControl = (_props: Record<string, unknown>) => null;
+export const ToggleControl = (_props: Record<string, unknown>) => null;
+
+export const activateQuickMeasurementHudSource = noop;
+export const alignFloorplanDraftPoint = noop;
+export const applyFloorplanAlignment = noop;
+export const boundaryReshapeScope = noop;
+export const buildFloorplanStairEntry = noop;
+export const buildMeasurementAngleArcPoints = noop;
+export const buildSvgAnnularSectorPath = noop;
+export const buildSvgArcPath = noop;
+export const buildSvgArrowHeadPoints = noop;
+export const calculateItemRotation = noop;
+export const chainEndJoinsExistingWall = False;
+export const clearCeilingSnapFeedback = noop;
+export const clearPlacementSurface = noop;
+export const clearQuickMeasurementHudSource = noop;
+export const clearSlabSnapFeedback = noop;
+export const clearStructuralElevationGuide = noop;
+export const clearSurfacePlanSnapFeedback = noop;
+export const commitFreshPlacementSubtree = noop;
+export const commitMeasurementDraft = noop;
+export const consumePlacementDragRelease = noop;
+export const createEditorApi = noop;
+export const createFenceOnCurrentLevel = noop;
+export const createFreshPlacementSubtree = noop;
+export const createQuickMeasurementPointerScheduler = noop;
+export const createSplineFenceOnCurrentLevel = noop;
+export const createWallOnCurrentLevel = noop;
+export const curveReshapeScope = noop;
+export const duplicateRoofSubtree = noop;
+export const duplicateStairSubtree = noop;
+export const finishMeasurementDraft = noop;
+export const floorplanGeometryMetadata = noop;
+export const formatAngleRadians = noop;
+export const formatAreaLabel = noop;
+export const formatLinearMeasurement = noop;
+export const formatMeasurement = noop;
+export const formatVolumeLabel = noop;
+export const getAngleArcToSegmentReference = noop;
+export const getAngleToSegmentReference = noop;
+export const getArcPlanPoint = noop;
+export const getFloatingMenuScale = Zero;
+export const getFloorStackPreviewPosition = noop;
+export const getFloorplanWallThickness = Zero;
+export const getGridEventScreenProjection = noop;
+export const getLinearUnitLabel = Zero;
+export const getSegmentAngleReferenceAtPoint = Zero;
+export const getSegmentGridStep = Zero;
+export const getSideFromNormal = noop;
+export const getStairLevelOptions = noop;
+export const handleMeasurementDraftEscape = noop;
+export const hasRoofFaceChildOverlap = False;
+export const holeEditScope = noop;
+export const isAlignmentGuideActive = False;
+export const isAngleSnapActive = False;
+export const isFreshPlacementMetadata = False;
+export const isGridSnapActive = False;
+export const isMagneticSnapActive = False;
+export const isSegmentLongEnough = False;
+export const isValidWallSideFace = False;
+export const linearControlValueToMeters = noop;
+export const linearUnitToMeters = Zero;
+export const markToolCancelConsumed = noop;
+export const measurementFloorplanPresentationColor = noop;
+export const measurementPolygonLabelAnchor = noop;
+export const measurementPolygonMidpoints = noop;
+export const measurementPresentationColor = noop;
+export const meshEditScope = noop;
+export const metersToLinearUnit = Zero;
+export const movementSfxStepKey = noop;
+export const parseMeasurement = noop;
+export const projectAlignmentGuidesWorldToActiveBuildingLocal = noop;
+export const publishHorizontalConstructionPlane = noop;
+export const publishPlacementSurface = noop;
+export const publishQuickMeasurementHudSource = noop;
+export const publishResolvedElevationGuide = noop;
+export const publishStructuralElevationGuide = noop;
+export const readFloorplanContext = noop;
+export const readFloorplanGeometryMetadata = noop;
+export const readFloorplanMetricNotationOverride = noop;
+export const resampleTerrainConstructionPlane = noop;
+export const resolveAlignmentForActiveBuilding = noop;
+export const resolveCeilingPlanPointSnap = noop;
+export const resolveElevatorNodeSupportY = noop;
+export const resolveElevatorSupportY = noop;
+export const resolveEndpointWallSplit = noop;
+export const resolveEventConstructionPlane = noop;
+export const resolveLevelConstructionPlane = noop;
+export const resolvePlanarCursorPosition = noop;
+export const resolvePointerSupportSurface = noop;
+export const resolveQuickMeasurementReport = noop;
+export const resolveRoofWallHit = noop;
+export const resolveSlabEdgeBandSnap = noop;
+export const resolveSlabPlanPointSnap = noop;
+export const resolveStairDestinationLevel = noop;
+export const resolveStairFromLevelId = noop;
+export const resolveStairToLevelId = noop;
+export const resolveStructuralElevationSnap = noop;
+export const resolveSurfacePlanPointSnap = noop;
+export const snapBuildingLocalToWorldGrid = noop;
+export const snapFenceDraftPoint = noop;
+export const snapPointToGrid = noop;
+export const snapScalarToGrid = noop;
+export const snapToHalf = noop;
+export const snapWallDraftPoint = noop;
+export const snapWallDraftPointDetailed = noop;
+export const snapWorldXZForActiveBuilding = noop;
+export const stripPlacementMetadataFlags = noop;
+export const swallowNextClick = noop;
+export const triangulateMeasurementPolygon = noop;
+export const triggerSFX = noop;
+export const withFloorplanGeometryMetadata = noop;

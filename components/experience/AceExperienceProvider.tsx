@@ -151,4 +151,4 @@ export const AceExperienceProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-const useAceExperience = () => React.useContext(AceExperienceContext);
+export const useAceExperience = () => React.useContext(AceExperienceContext);

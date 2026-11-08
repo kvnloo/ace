@@ -37,6 +37,7 @@ export default defineConfig(() => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
+        '@pascal-app/editor': path.resolve(__dirname, 'facility/pascal-editor-shim.ts'),
       },
     },
   };

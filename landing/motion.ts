@@ -35,7 +35,7 @@ export const laneMotion = {
   Improve: 'compare',
 } as const;
 
-const motionReason = {
+export const motionReason = {
   anchor: 'keep the human or goal spatially stable while the system adapts around it',
   resolve: 'reduce ambiguity without adding spectacle',
   branch: 'show possibility without replacing observed reality',
