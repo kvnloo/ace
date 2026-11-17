@@ -32,3 +32,6 @@ pnpm-debug.log*
 
 # OS
 Thumbs.db
+
+# Keep templates tracked
+!.env.example
